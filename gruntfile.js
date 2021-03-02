@@ -14,21 +14,21 @@ module.exports = function ( grunt ) {
 				stripBanners: true,
 				sourceMap: true,
 			},
-			custom: {
-				src: [ 'js/src/custom-2.js' ],
-				dest: 'js/custom-2.src.js',
+			admin: {
+				src: [ 'js/src/admin.js' ],
+				dest: 'js/admin.src.js',
 			},
-			commong: {
-				src: [ 'js/src/common.js' ],
-				dest: 'js/common.src.js',
+			main: {
+				src: [ 'js/src/main.js' ],
+				dest: 'js/main.src.js',
 			},
 		},
 
 		uglify: {
 			all: {
 				files: {
-					'js/common.min.js': [ 'js/common.src.js' ],
-					'js/custom-2.min.js': [ 'js/custom-2.src.js' ],
+					'js/admin.min.js': [ 'js/admin.src.js' ],
+					'js/main.min.js': [ 'js/main.src.js' ],
 				},
 				options: {
 					mangle: {
@@ -43,7 +43,7 @@ module.exports = function ( grunt ) {
 			src: [ 'js/src/**/*.js' ],
 			options: {
 				fix: true,
-				configFile: '.eslintrc.json',
+				configFile: '.eslintrc.js',
 			},
 		},
 
@@ -51,7 +51,7 @@ module.exports = function ( grunt ) {
 			src: [ 'assets/css/src/**/*.scss' ],
 			options: {
 				fix: true,
-				configFile: '.stylelintrc.json',
+				configFile: '.stylelintrc',
 			},
 		},
 
@@ -178,27 +178,6 @@ module.exports = function ( grunt ) {
 			},
 		},
 	} );
-
-	// Set a default, so if phpcs is run directly it scans everything
-	grunt.config.set( 'gmf.filtered', [ '**/*.php', '!vendor/**', '!node_modules/**' ] );
-	grunt.registerTask( 'precommit', [ 'git_modified_files', 'maybe-phpcs' ] );
-	grunt.registerTask(
-		'maybe-phpcs',
-		'Only run phpcs if git_modified_files has found changes.',
-		function () {
-			// Check all, because there's no default set for all and we can see if we have files
-			const allModified = grunt.config.get( 'gmf.all' );
-			const matches = allModified.filter( function ( str ) {
-				return -1 !== str.search( /\.php$/ );
-			} );
-
-			if ( ! matches.length ) {
-				grunt.log.writeln( 'No php files to sniff. Skipping phpcs.' );
-			} else {
-				grunt.task.run( 'phpcs' );
-			}
-		}
-	);
 
 	// PHP Only
 	grunt.registerTask( 'php', [ 'phplint', 'phpcs' ] );

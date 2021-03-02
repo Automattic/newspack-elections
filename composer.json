@@ -1,0 +1,29 @@
+{
+  "name": "automattic/govpack",
+  "description": "Govpack TK",
+  "type": "wordpress-plugin",
+  "require": {
+  },
+  "require-dev": {
+    "automattic/vipwpcs": "^2.2",
+    "wp-coding-standards/wpcs": "^2.3",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
+    "phpcompatibility/phpcompatibility-wp": "^2.1.1",
+    "brainmaestro/composer-git-hooks": "^2.8.5"
+  },
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "post-install-cmd": [ "vendor/bin/cghooks add --no-lock" ],
+    "post-update-cmd": [ "vendor/bin/cghooks update" ]
+  },
+  "extra": {
+    "hooks": {
+      "pre-commit": [
+        "./node_modules/.bin/lint-staged"
+      ],
+      "commit-msg": [
+        "cat $1 | ./node_modules/.bin/commitlint"
+      ]
+    }
+  }
+}

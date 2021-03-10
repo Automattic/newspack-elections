@@ -22,10 +22,9 @@ class Profile {
 	 * WordPress Hooks
 	 */
 	public static function hooks() {
-		add_action( 'init', [ get_called_class(), 'register_post_type' ] );
+		add_action( 'init', [ __CLASS__, 'register_post_type' ] );
 
 		add_action( 'cmb2_admin_init', [ __CLASS__, 'add_profile_boxes' ] );
-		// add_action( 'fm_post_' . self::CPT_SLUG, [ __CLASS__, 'add_profile_fields' ] );
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
 		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
 	}
@@ -109,7 +108,7 @@ class Profile {
 				'priority'     => 'high',
 				'show_names'   => true,
 				'cmb_styles'   => false,
-			] 
+			]
 		);
 
 		$cmb->add_field(
@@ -119,7 +118,7 @@ class Profile {
 				'type'             => 'select',
 				'show_option_none' => true,
 				'options'          => Helpers::prefixes(),
-			] 
+			]
 		);
 
 		$cmb->add_field(
@@ -127,7 +126,7 @@ class Profile {
 				'name' => __( 'First name', 'govpack' ),
 				'id'   => 'first_name',
 				'type' => 'text',
-			] 
+			]
 		);
 
 		$cmb->add_field(
@@ -135,54 +134,18 @@ class Profile {
 				'name' => __( 'Last name', 'govpack' ),
 				'id'   => 'last_name',
 				'type' => 'text',
-			] 
+			]
 		);
 
 		$cmb->add_field(
 			[
-				'name'             => __( 'Party', 'cmb2' ),
-				'id'               => 'party',
-				'type'             => 'select',
-				'show_option_none' => true,
-				'options'          => Helpers::parties(),
-			] 
-		);
-	}
+				'name'     => __( 'Party', 'govpack' ),
+				'id'       => 'party',
+				'type'     => 'taxonomy_select',
+				'taxonomy' => Party::TAX_SLUG,
 
-	/**
-	 * Using FieldManager, add custom fields to profile.
-	 */
-	public static function add_profile_fields() {
-		$fm = new \Fieldmanager_Group(
-			[
-				'name'     => 'id',
-				'children' => [
-					'prefix'     => new \Fieldmanager_Select(
-						'Prefix',
-						[
-							'options'     => Helpers::prefixes(),
-							'first_empty' => true,
-						]
-					),
-					'first_name' => new \Fieldmanager_Textfield( 'First Name', [ 'required' => true ] ),
-					'last_name'  => new \Fieldmanager_Textfield( 'Last Name', [ 'required' => true ] ),
-					'party'      => new \Fieldmanager_Select(
-						'Party',
-						[
-							'options'     => Helpers::parties(),
-							'first_empty' => true,
-						]
-					),
-				],
 			]
 		);
-		$fm->add_meta_box( 'Name', self::CPT_SLUG );
-
-		$fm = new \Fieldmanager_Group( self::address_fields( 'main_office' ) );
-		$fm->add_meta_box( 'Main Office Address', self::CPT_SLUG );
-
-		$fm = new \Fieldmanager_Group( self::address_fields( 'secondary_office' ) );
-		$fm->add_meta_box( 'Secondary Office Address', self::CPT_SLUG );
 	}
 
 	/**
@@ -195,7 +158,7 @@ class Profile {
 	 * @return array
 	 */
 	public static function set_profile_title( $data, $postarr, $unsanitized_postarr ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		$title = join( ' ', array_filter( [ $postarr['id']['first_name'] ?? '', $postarr['id']['last_name'] ?? '' ] ) );
+		$title = join( ' ', array_filter( [ $postarr['first_name'] ?? '', $postarr['last_name'] ?? '' ] ) );
 		if ( $title ) {
 				$data['post_title'] = $title;
 				$data['post_name']  = null;

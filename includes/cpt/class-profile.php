@@ -24,8 +24,8 @@ class Profile {
 	public static function hooks() {
 		add_action( 'init', [ get_called_class(), 'register_post_type' ] );
 
-		add_action( 'fm_post_' . self::CPT_SLUG, [ __CLASS__, 'add_profile_fields' ] );
 		add_action( 'cmb2_admin_init', [ __CLASS__, 'add_profile_boxes' ] );
+		// add_action( 'fm_post_' . self::CPT_SLUG, [ __CLASS__, 'add_profile_fields' ] );
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
 		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
 	}

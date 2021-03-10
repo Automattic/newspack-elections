@@ -103,7 +103,7 @@ class Profile {
 		$cmb = new_cmb2_box(
 			[
 				'id'           => 'id',
-				'title'        => __( 'Name', 'cmb2' ),
+				'title'        => __( 'Name', 'govpack' ),
 				'object_types' => [ self::CPT_SLUG ],
 				'context'      => 'normal',
 				'priority'     => 'high',
@@ -114,7 +114,7 @@ class Profile {
 
 		$cmb->add_field(
 			[
-				'name'             => __( 'Prefix', 'cmb2' ),
+				'name'             => __( 'Prefix', 'govpack' ),
 				'id'               => 'prefix',
 				'type'             => 'select',
 				'show_option_none' => true,
@@ -124,7 +124,7 @@ class Profile {
 
 		$cmb->add_field(
 			[
-				'name' => __( 'First name', 'cmb2' ),
+				'name' => __( 'First name', 'govpack' ),
 				'id'   => 'first_name',
 				'type' => 'text',
 			] 
@@ -132,7 +132,7 @@ class Profile {
 
 		$cmb->add_field(
 			[
-				'name' => __( 'Last name', 'cmb2' ),
+				'name' => __( 'Last name', 'govpack' ),
 				'id'   => 'last_name',
 				'type' => 'text',
 			] 

@@ -25,6 +25,7 @@ class Profile {
 		add_action( 'init', [ get_called_class(), 'register_post_type' ] );
 
 		add_action( 'fm_post_' . self::CPT_SLUG, [ __CLASS__, 'add_profile_fields' ] );
+		add_action( 'cmb2_admin_init', [ __CLASS__, 'add_profile_boxes' ] );
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
 		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
 	}
@@ -89,6 +90,63 @@ class Profile {
 		$post_types[] = static::CPT_SLUG;
 
 		return $post_types;
+	}
+
+
+	/**
+	 * Using CMB2, add custom fields to profile.
+	 */
+	public static function add_profile_boxes() {
+		/**
+		 * Initiate the metabox
+		 */
+		$cmb = new_cmb2_box(
+			[
+				'id'           => 'id',
+				'title'        => __( 'Name', 'cmb2' ),
+				'object_types' => [ self::CPT_SLUG ],
+				'context'      => 'normal',
+				'priority'     => 'high',
+				'show_names'   => true,
+				'cmb_styles'   => false,
+			] 
+		);
+
+		$cmb->add_field(
+			[
+				'name'             => __( 'Prefix', 'cmb2' ),
+				'id'               => 'prefix',
+				'type'             => 'select',
+				'show_option_none' => true,
+				'options'          => Helpers::prefixes(),
+			] 
+		);
+
+		$cmb->add_field(
+			[
+				'name' => __( 'First name', 'cmb2' ),
+				'id'   => 'first_name',
+				'type' => 'text',
+			] 
+		);
+
+		$cmb->add_field(
+			[
+				'name' => __( 'Last name', 'cmb2' ),
+				'id'   => 'last_name',
+				'type' => 'text',
+			] 
+		);
+
+		$cmb->add_field(
+			[
+				'name'             => __( 'Party', 'cmb2' ),
+				'id'               => 'party',
+				'type'             => 'select',
+				'show_option_none' => true,
+				'options'          => Helpers::parties(),
+			] 
+		);
 	}
 
 	/**

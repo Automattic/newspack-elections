@@ -25,3 +25,4 @@ if ( ! class_exists( 'Govpack' ) ) {
 }
 
 require_once __DIR__ . '/fieldmanager/fieldmanager.php';
+require_once __DIR__ . '/cmb2/init.php';

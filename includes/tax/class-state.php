@@ -8,7 +8,7 @@
 namespace Newspack\Govpack;
 
 /**
- * Register and handle the "Profile" Custom Post Type
+ * Register and handle the "State" Taxonomy.
  */
 class State extends Taxonomy {
 
@@ -16,6 +16,11 @@ class State extends Taxonomy {
 	 * Post Type slug. Used when registering and referencing
 	 */
 	const TAX_SLUG = 'govpack_state';
+
+	/**
+	 * URL slug. Also used for fixtures.
+	 */
+	const SLUG = 'state';
 
 	/**
 	 * Register this taxonomy for profiles.
@@ -50,7 +55,7 @@ class State extends Taxonomy {
 				'public'            => true,
 				'hierarchical'      => false,
 				'rewrite'           => [
-					'slug'         => 'state',
+					'slug'         => self::SLUG,
 					'with_front'   => false,
 					'hierarchical' => false,
 				],

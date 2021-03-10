@@ -8,7 +8,7 @@
 namespace Newspack\Govpack;
 
 /**
- * Register and handle the "Profile" Custom Post Type
+ * Register and handle the "Party" Taxonomy.
  */
 class Party extends Taxonomy {
 
@@ -16,6 +16,11 @@ class Party extends Taxonomy {
 	 * Post Type slug. Used when registering and referencing
 	 */
 	const TAX_SLUG = 'govpack_party';
+
+	/**
+	 * URL slug. Also used for fixtures.
+	 */
+	const SLUG = 'party';
 
 	/**
 	 * Register this taxonomy for profiles.
@@ -50,7 +55,7 @@ class Party extends Taxonomy {
 				'public'            => true,
 				'hierarchical'      => false,
 				'rewrite'           => [
-					'slug'         => 'party',
+					'slug'         => self::SLUG,
 					'with_front'   => false,
 					'hierarchical' => false,
 				],

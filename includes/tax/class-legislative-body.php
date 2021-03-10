@@ -8,7 +8,7 @@
 namespace Newspack\Govpack;
 
 /**
- * Register and handle the "Profile" Custom Post Type
+ * Register and handle the "Legislative_Body" Taxonomy.
  */
 class Legislative_Body extends Taxonomy {
 
@@ -16,6 +16,11 @@ class Legislative_Body extends Taxonomy {
 	 * Post Type slug. Used when registering and referencing
 	 */
 	const TAX_SLUG = 'govpack_legislature';
+
+	/**
+	 * URL slug. Also used for fixtures.
+	 */
+	const SLUG = 'legislative_body';
 
 	/**
 	 * Register this taxonomy for profiles.
@@ -50,7 +55,7 @@ class Legislative_Body extends Taxonomy {
 				'public'            => true,
 				'hierarchical'      => false,
 				'rewrite'           => [
-					'slug'         => 'legislature',
+					'slug'         => self::SLUG,
 					'with_front'   => false,
 					'hierarchical' => false,
 				],
@@ -59,7 +64,6 @@ class Legislative_Body extends Taxonomy {
 			]
 		);
 	}
-
 }
 
 add_action( 'after_setup_theme', [ '\Newspack\Govpack\Legislative_Body', 'hooks' ] );

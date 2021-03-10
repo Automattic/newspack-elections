@@ -8,7 +8,7 @@
 namespace Newspack\Govpack;
 
 /**
- * Register and handle the "Profile" Custom Post Type
+ * Register and handle the "Installation" Taxonomy.
  */
 class Installation extends Taxonomy {
 
@@ -16,6 +16,11 @@ class Installation extends Taxonomy {
 	 * Post Type slug. Used when registering and referencing
 	 */
 	const TAX_SLUG = 'govpack_installation';
+
+	/**
+	 * URL slug. Also used for fixtures.
+	 */
+	const SLUG = 'installation';
 
 	/**
 	 * Register this taxonomy for profiles.
@@ -50,7 +55,7 @@ class Installation extends Taxonomy {
 				'public'            => true,
 				'hierarchical'      => false,
 				'rewrite'           => [
-					'slug'         => 'installation',
+					'slug'         => self::SLUG,
 					'with_front'   => false,
 					'hierarchical' => false,
 				],

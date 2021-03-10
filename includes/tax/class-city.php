@@ -8,7 +8,7 @@
 namespace Newspack\Govpack;
 
 /**
- * Register and handle the "Profile" Custom Post Type
+ * Register and handle the "City" Taxonomy.
  */
 class City extends Taxonomy {
 
@@ -16,6 +16,11 @@ class City extends Taxonomy {
 	 * Post Type slug. Used when registering and referencing
 	 */
 	const TAX_SLUG = 'govpack_city';
+
+	/**
+	 * URL slug. Also used for fixtures.
+	 */
+	const SLUG = 'city';
 
 	/**
 	 * Register this taxonomy for profiles.
@@ -50,7 +55,7 @@ class City extends Taxonomy {
 				'public'            => true,
 				'hierarchical'      => false,
 				'rewrite'           => [
-					'slug'         => 'city',
+					'slug'         => self::SLUG,
 					'with_front'   => false,
 					'hierarchical' => false,
 				],

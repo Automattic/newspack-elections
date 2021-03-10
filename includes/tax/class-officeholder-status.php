@@ -8,7 +8,7 @@
 namespace Newspack\Govpack;
 
 /**
- * Register and handle the "Profile" Custom Post Type
+ * Register and handle the "OfficeHolder_Status" Taxonomy.
  */
 class OfficeHolder_Status extends Taxonomy {
 
@@ -16,6 +16,11 @@ class OfficeHolder_Status extends Taxonomy {
 	 * Post Type slug. Used when registering and referencing
 	 */
 	const TAX_SLUG = 'govpack_officeholder';
+
+	/**
+	 * URL slug. Also used for fixtures.
+	 */
+	const SLUG = 'officeholder_status';
 
 	/**
 	 * Register this taxonomy for profiles.
@@ -50,7 +55,7 @@ class OfficeHolder_Status extends Taxonomy {
 				'public'            => true,
 				'hierarchical'      => false,
 				'rewrite'           => [
-					'slug'         => 'officeholder',
+					'slug'         => self::SLUG,
 					'with_front'   => false,
 					'hierarchical' => false,
 				],

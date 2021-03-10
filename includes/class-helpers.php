@@ -17,17 +17,7 @@ class Helpers {
 	 * @return array
 	 */
 	public static function prefixes() {
-		$data = file_get_contents( GOVPACK_PLUGIN_FILE . 'assets/json/prefixes.json' );
-		return json_decode( $data, true );
-	}
-
-	/**
-	 * List political parties.
-	 *
-	 * @return array
-	 */
-	public static function parties() {
-		$data = file_get_contents( GOVPACK_PLUGIN_FILE . 'assets/json/parties.json' );
+		$data = file_get_contents( GOVPACK_PLUGIN_FILE . 'assets/json/prefix.json' );
 		return json_decode( $data, true );
 	}
 
@@ -37,7 +27,7 @@ class Helpers {
 	 * @return array
 	 */
 	public static function states() {
-		$data = file_get_contents( GOVPACK_PLUGIN_FILE . 'assets/json/states.json' );
+		$data = file_get_contents( GOVPACK_PLUGIN_FILE . 'assets/json/state.json' );
 		return json_decode( $data, true );
 	}
 

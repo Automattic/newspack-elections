@@ -23,3 +23,5 @@ if ( ! defined( 'GOVPACK_PLUGIN_FILE' ) ) {
 if ( ! class_exists( 'Govpack' ) ) {
 	require_once dirname( __FILE__ ) . '/includes/class-govpack.php';
 }
+
+require_once __DIR__ . '/fieldmanager/fieldmanager.php';

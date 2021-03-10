@@ -22,4 +22,7 @@ class Govpack {
 	}
 }
 
-add_action( 'after_setup_theme', [ '\Newspack\Govpack\Hooks', 'hooks' ] );
+add_action( 'after_setup_theme', [ '\Newspack\Govpack\Govpack', 'hooks' ] );
+
+require_once __DIR__ . '/cpt/class-profile.php';
+require_once __DIR__ . '/class-helpers.php';

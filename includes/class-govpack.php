@@ -35,7 +35,7 @@ require_once __DIR__ . '/cpt/class-profile.php';
 require_once __DIR__ . '/tax/class-city.php';
 require_once __DIR__ . '/tax/class-county.php';
 require_once __DIR__ . '/tax/class-installation.php';
-require_once __DIR__ . '/tax/class-legislature.php';
+require_once __DIR__ . '/tax/class-legislative-body.php';
 require_once __DIR__ . '/tax/class-officeholder-status.php';
 require_once __DIR__ . '/tax/class-party.php';
 require_once __DIR__ . '/tax/class-state.php';

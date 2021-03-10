@@ -35,4 +35,5 @@
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/dist/*</exclude-pattern>
 	<exclude-pattern>*/fieldmanager/*</exclude-pattern>
+	<exclude-pattern>*/cmb2/*</exclude-pattern>
 </ruleset>

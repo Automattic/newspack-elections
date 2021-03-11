@@ -263,6 +263,15 @@ class Profile {
 					'taxonomy' => State::TAX_SLUG,
 				]
 			);
+
+			$cmb_position->add_field(
+				[
+					'name'     => __( 'County', 'govpack' ),
+					'id'       => 'county',
+					'type'     => 'taxonomy_select',
+					'taxonomy' => County::TAX_SLUG,
+				]
+			);
 		}
 	}
 

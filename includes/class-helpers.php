@@ -15,24 +15,34 @@ class Helpers {
 	const CACHE_GROUP = 'govpack';
 
 	/**
+	 * Read JSON file and cache it in memory.
+	 *
+	 * @param string $slug  Name of the JSON file.
+	 * @return array
+	 */
+	public static function get_cached_list( $slug ) {
+		$cache_key = 'govpack_' . $slug;
+
+		$items = wp_cache_get( $cache_key );
+		if ( false === $items ) {
+			$data  = file_get_contents( GOVPACK_PLUGIN_FILE . "assets/json/$slug.json" );
+			$items = json_decode( $data, true );
+
+			if ( json_last_error() === JSON_ERROR_NONE && $items ) {
+				wp_cache_set( $cache_key, $items, self::CACHE_GROUP, 3600 );
+			}
+		}
+
+		return $items;
+	}
+
+	/**
 	 * List honorific name prefixes.
 	 *
 	 * @return array
 	 */
 	public static function prefixes() {
-		$cache_key = 'govpack_prefixes';
-
-		$prefixes = wp_cache_get( $cache_key );
-		if ( false === $prefixes ) {
-			$data     = file_get_contents( GOVPACK_PLUGIN_FILE . 'assets/json/prefix.json' );
-			$prefixes = json_decode( $data, true );
-
-			if ( json_last_error() === JSON_ERROR_NONE && $prefixes ) {
-				wp_cache_set( $cache_key, $prefixes, self::CACHE_GROUP, 3600 );
-			}
-		}
-
-		return $prefixes;
+		return self::get_cached_list( 'prefix' );
 	}
 
 	/**
@@ -41,21 +51,17 @@ class Helpers {
 	 * @return array
 	 */
 	public static function states() {
-		$cache_key = 'govpack_states';
-
-		$states = wp_cache_get( $cache_key );
-		if ( false === $states ) {
-			$data   = file_get_contents( GOVPACK_PLUGIN_FILE . 'assets/json/state.json' );
-			$states = json_decode( $data, true );
-
-			if ( json_last_error() === JSON_ERROR_NONE && $states ) {
-				wp_cache_set( $cache_key, $states, self::CACHE_GROUP, 3600 );
-			}
-		}
-
-		return $states;
+		return self::get_cached_list( 'state' );
 	}
 
+	/**
+	 * List officerholder titles.
+	 *
+	 * @return array
+	 */
+	public static function titles() {
+		return self::get_cached_list( 'title' );
+	}
 }
 
 /**

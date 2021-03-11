@@ -17,6 +17,8 @@ class Profile {
 	 */
 	const CPT_SLUG = 'govpack_profile';
 
+	const SHORTCODE = 'govpack';
+
 
 	/**
 	 * WordPress Hooks
@@ -26,7 +28,8 @@ class Profile {
 		add_action( 'cmb2_admin_init', [ __CLASS__, 'add_profile_boxes' ] );
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
 		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
-		add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ get_called_class(), 'sortable_columns' ] );
+		add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
+		add_shortcode( self::SHORTCODE, [ __CLASS__, 'shortcode_handler' ] );
 	}
 
 	/**
@@ -421,6 +424,59 @@ class Profile {
 			$data['post_name']  = null;
 		}
 		return $data;
+	}
+
+	/**
+	 * Shortcode handler for [govpack].
+	 *
+	 * @param array  $atts    Array of shortcode attributes.
+	 * @param string $content Post content.
+	 *
+	 * @return string HTML for recipe shortcode.
+	 */
+	public static function shortcode_handler( $atts, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		if ( ! isset( $atts['id'] ) ) {
+			return;
+		}
+
+		$profile_id = $atts['id'];
+
+		$profile_raw_data = get_post_meta( $profile_id );
+		if ( ! $profile_raw_data ) {
+			return;
+		}
+
+		$term_objects = wp_get_post_terms( $profile_id, [ Party::TAX_SLUG, State::TAX_SLUG, Legislative_Body::TAX_SLUG ] );
+		$term_data    = array_reduce(
+			$term_objects,
+			function( $carry, $item ) {
+				$carry[ $item->taxonomy ] = $item->name;
+				return $carry;
+			},
+			[]
+		);
+
+		$profile_data = [ // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+			'id'               => $profile_id,
+			'first_name'       => $profile_raw_data['first_name'][0] ?? '',
+			'last_name'        => $profile_raw_data['last_name'][0] ?? '',
+			'title'            => $profile_raw_data['title'][0] ?? '',
+			'phone'            => $profile_raw_data['main_phone'][0] ?? '',
+			'twitter'          => $profile_raw_data['twitter'][0] ?? '',
+			'instagram'        => $profile_raw_data['instagram'][0] ?? '',
+			'email'            => $profile_raw_data['email'][0] ?? '',
+			'facebook'         => $profile_raw_data['facebook'][0] ?? '',
+			'website'          => $profile_raw_data['leg_url'][0] ?? '',
+			'party'            => $term_data[ Party::TAX_SLUG ] ?? '',
+			'state'            => $term_data[ State::TAX_SLUG ] ?? '',
+			'legislative_body' => $term_data[ Legislative_Body::TAX_SLUG ] ?? '',
+		];
+
+		ob_start();
+		require_once GOVPACK_PLUGIN_FILE . 'template-parts/profile.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+		$html = ob_get_clean();
+
+		return $html;
 	}
 }
 

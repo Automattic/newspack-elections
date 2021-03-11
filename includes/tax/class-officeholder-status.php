@@ -15,7 +15,7 @@ class OfficeHolder_Status extends Taxonomy {
 	/**
 	 * Post Type slug. Used when registering and referencing
 	 */
-	const TAX_SLUG = 'govpack_officeholder';
+	const TAX_SLUG = 'govpack_officeholder_status';
 
 	/**
 	 * URL slug. Also used for fixtures.

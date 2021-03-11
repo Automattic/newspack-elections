@@ -81,6 +81,54 @@ class County extends Taxonomy {
 	}
 
 	/**
+	 * Seed taxonomies with default data.
+	 */
+	public static function seed() {
+		$file_path = GOVPACK_PLUGIN_FILE . 'assets/json/county.json';
+
+		if ( ! file_exists( $file_path ) || 0 !== validate_file( $file_path ) ) {
+			return;
+		}
+
+		$json = file_get_contents( $file_path ); // phpcs:ignore WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsUnknown
+		$data = json_decode( $json, true );
+
+		if ( json_last_error() !== JSON_ERROR_NONE ) {
+			return;
+		}
+
+		$counter = 1;
+		foreach ( $data as $item ) {
+			$name        = preg_replace( '/ (City and Borough|Borough|County|Parish|Municipio|Census Area)$/', '', $item['name'] );
+			$county_name = sprintf( '%s (%s)', $name, $item['state'] );
+
+			$term_exists_result = term_exists( $county_name, static::TAX_SLUG ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.term_exists_term_exists
+
+			if ( is_array( $term_exists_result ) ) {
+				echo 'Failed to create term for ' . esc_html( $county_name );
+			} else {
+				if ( 0 === $counter % 5 ) {
+					echo '.';
+					ob_flush();
+				}
+				if ( 0 === $counter % 100 ) {
+					echo "\n";
+				}
+			}
+			$counter++;
+
+			$new_term = wp_insert_term( $county_name, static::TAX_SLUG );
+
+			if ( is_array( $new_term ) ) {
+				add_term_meta( $new_term['term_id'], 'state', $item['state'] );
+				add_term_meta( $new_term['term_id'], 'fips', $item['fips'] );
+			} else {
+				echo 'Failed to add term meta for ' . esc_html( $county_name );
+			}
+		}
+	}
+
+	/**
 	 * Add state and fips columns to table. Rename 'Name' to 'County'.
 	 *
 	 * @param string[] $columns The column header labels keyed by column ID.

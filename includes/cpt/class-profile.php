@@ -23,10 +23,10 @@ class Profile {
 	 */
 	public static function hooks() {
 		add_action( 'init', [ __CLASS__, 'register_post_type' ] );
-
 		add_action( 'cmb2_admin_init', [ __CLASS__, 'add_profile_boxes' ] );
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
 		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
+		add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ get_called_class(), 'sortable_columns' ] );
 	}
 
 	/**
@@ -92,6 +92,18 @@ class Profile {
 		return $post_types;
 	}
 
+
+	/**
+	 * Denote State and FIPS columns as sortable.
+	 *
+	 * @param array $sortable_columns An array of sortable columns.
+	 */
+	public static function sortable_columns( $sortable_columns ) {
+		$sortable_columns[ 'taxonomy-' . State::TAX_SLUG ]            = 'State';
+		$sortable_columns[ 'taxonomy-' . Party::TAX_SLUG ]            = 'Party';
+		$sortable_columns[ 'taxonomy-' . Legislative_Body::TAX_SLUG ] = 'Legislative Body';
+		return $sortable_columns;
+	}
 
 	/**
 	 * Using CMB2, add custom fields to profile.

@@ -3,6 +3,7 @@
   "description": "Govpack TK",
   "type": "wordpress-plugin",
   "require": {
+    "cmb2/cmb2": "2.9.*"
   },
   "require-dev": {
     "automattic/vipwpcs": "^2.2",
@@ -15,6 +16,9 @@
   "scripts": {
     "post-install-cmd": [ "vendor/bin/cghooks add --no-lock" ],
     "post-update-cmd": [ "vendor/bin/cghooks update" ]
+  },
+  "autoload": {
+    "files": ["vendor/cmb2/cmb2/init.php"]
   },
   "extra": {
     "hooks": {

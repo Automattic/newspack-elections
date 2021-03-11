@@ -58,6 +58,7 @@ class Profile {
 				'show_in_rest' => true,
 				'show_ui'      => true,
 				'supports'     => [ 'revisions', 'thumbnail' ],
+				'taxonomies'   => [ 'post_tag' ],
 				'menu_icon'    => 'dashicons-groups',
 				'rewrite'      => [
 					'slug'       => 'people',

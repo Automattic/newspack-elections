@@ -194,11 +194,15 @@ class Profile {
 		/**
 		 * Office address metaboxes.
 		 */
-		foreach ( [ $cmb_address, $cmb_address2 ] as $box ) {
+		$address_boxes = [
+			'main_office'      => $cmb_address,
+			'secondary_office' => $cmb_address2,
+		];
+		foreach ( $address_boxes as $slug => $box ) {
 			$box->add_field(
 				[
 					'name' => __( 'Address', 'govpack' ),
-					'id'   => 'address',
+					'id'   => $slug . '_address',
 					'type' => 'text',
 				]
 			);
@@ -206,7 +210,7 @@ class Profile {
 			$box->add_field(
 				[
 					'name' => __( 'Address Line 2', 'govpack' ),
-					'id'   => 'address2',
+					'id'   => $slug . '_address2',
 					'type' => 'text',
 				]
 			);
@@ -214,7 +218,7 @@ class Profile {
 			$box->add_field(
 				[
 					'name' => __( 'City', 'govpack' ),
-					'id'   => 'city',
+					'id'   => $slug . '_city',
 					'type' => 'text',
 				]
 			);
@@ -222,7 +226,7 @@ class Profile {
 			$box->add_field(
 				[
 					'name'             => __( 'State', 'govpack' ),
-					'id'               => 'state',
+					'id'               => $slug . '_state',
 					'type'             => 'select',
 					'show_option_none' => true,
 					'options'          => Helpers::states(),
@@ -232,7 +236,7 @@ class Profile {
 			$box->add_field(
 				[
 					'name'       => __( 'Zip', 'govpack' ),
-					'id'         => 'zip',
+					'id'         => $slug . '_zip',
 					'type'       => 'text',
 					'attributes' => [
 						'size'      => 10,

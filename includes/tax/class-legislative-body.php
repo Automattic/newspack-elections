@@ -15,7 +15,7 @@ class Legislative_Body extends Taxonomy {
 	/**
 	 * Post Type slug. Used when registering and referencing
 	 */
-	const TAX_SLUG = 'govpack_legislature';
+	const TAX_SLUG = 'govpack_legislative_body';
 
 	/**
 	 * URL slug. Also used for fixtures.

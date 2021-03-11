@@ -353,7 +353,6 @@ class Profile {
 					'id'         => 'twitter',
 					'type'       => 'text',
 					'attributes' => [
-						'type'      => 'text',
 						'size'      => 15,
 						'maxlength' => 15,
 					],
@@ -366,7 +365,6 @@ class Profile {
 					'id'         => 'instagram',
 					'type'       => 'text',
 					'attributes' => [
-						'type'      => 'text',
 						'size'      => 30,
 						'maxlength' => 30,
 					],

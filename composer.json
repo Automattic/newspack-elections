@@ -18,7 +18,10 @@
     "post-update-cmd": [ "vendor/bin/cghooks update" ]
   },
   "autoload": {
-    "files": ["vendor/cmb2/cmb2/init.php"]
+    "files": ["vendor/cmb2/cmb2/init.php"],
+    "psr-4": {
+      "Newspack\\Govpack\\" : "includes/"
+    }
   },
   "extra": {
     "hooks": {

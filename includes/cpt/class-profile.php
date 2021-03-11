@@ -285,6 +285,97 @@ class Profile {
 					'taxonomy' => County::TAX_SLUG,
 				]
 			);
+
+			/**
+			 * Communications metabox.
+			 */
+			$cmb_comms = new_cmb2_box(
+				[
+					'id'           => 'communication',
+					'title'        => __( 'Communication channels', 'govpack' ),
+					'object_types' => [ self::CPT_SLUG ],
+					'context'      => 'normal',
+					'priority'     => 'high',
+					'show_names'   => true,
+					'cmb_styles'   => false,
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name'       => __( 'Main phone number', 'govpack' ),
+					'id'         => 'main_phone',
+					'type'       => 'text',
+					'attributes' => [
+						'size'      => 30,
+						'maxlength' => 40,
+						'type'      => 'tel',
+					],
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name'       => __( 'Secondary phone number', 'govpack' ),
+					'id'         => 'secondary_phone',
+					'type'       => 'text',
+					'attributes' => [
+						'size'      => 30,
+						'maxlength' => 40,
+						'type'      => 'tel',
+					],
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name' => __( 'Email address', 'govpack' ),
+					'id'   => 'email',
+					'type' => 'text_email',
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name'       => __( 'Twitter', 'govpack' ),
+					'id'         => 'twitter',
+					'type'       => 'text',
+					'attributes' => [
+						'type'      => 'text',
+						'size'      => 15,
+						'maxlength' => 15,
+					],
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name'       => __( 'Instagram', 'govpack' ),
+					'id'         => 'instagram',
+					'type'       => 'text',
+					'attributes' => [
+						'type'      => 'text',
+						'size'      => 30,
+						'maxlength' => 30,
+					],
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name' => __( 'Facebook URL', 'govpack' ),
+					'id'   => 'facebook',
+					'type' => 'text_url',
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name' => __( 'LinkedIn URL', 'govpack' ),
+					'id'   => 'linkedin',
+					'type' => 'text_url',
+				]
+			);
 		}
 	}
 

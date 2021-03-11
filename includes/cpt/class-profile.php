@@ -159,6 +159,14 @@ class Profile {
 			]
 		);
 
+		$cmb_name->add_field(
+			[
+				'name' => __( 'Biography', 'govpack' ),
+				'id'   => 'biography',
+				'type' => 'wysiwyg',
+			]
+		);
+
 		$cmb_address = new_cmb2_box(
 			[
 				'id'           => 'main_office',

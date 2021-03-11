@@ -94,7 +94,7 @@ class Profile {
 
 
 	/**
-	 * Denote State and FIPS columns as sortable.
+	 * Denote State, Party and Legislative Body columns as sortable.
 	 *
 	 * @param array $sortable_columns An array of sortable columns.
 	 */

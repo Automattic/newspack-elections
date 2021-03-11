@@ -165,39 +165,6 @@ class Profile {
 		}
 		return $data;
 	}
-
-	/**
-	 * Return an array containing address fields.
-	 *
-	 * @param string $label  A unique identified for the field group.
-	 * @return array
-	 */
-	public static function address_fields( $label ) {
-		return [
-			'name'     => $label,
-			'children' => [
-				'address'  => new \Fieldmanager_Textfield( 'Address' ),
-				'address2' => new \Fieldmanager_Textfield( 'Address Line 2' ),
-				'city'     => new \Fieldmanager_Textfield( 'City' ),
-				'state'    => new \Fieldmanager_Select(
-					'State',
-					[
-						'options'     => Helpers::states(),
-						'first_empty' => true,
-					]
-				),
-				'zip'      => new \Fieldmanager_Textfield(
-					'Zip',
-					[
-						'attributes' => [
-							'size'      => 10,
-							'maxlength' => 10,
-						],
-					]
-				),
-			],
-		];
-	}
 }
 
 add_action( 'after_setup_theme', [ '\Newspack\Govpack\Profile', 'hooks' ] );

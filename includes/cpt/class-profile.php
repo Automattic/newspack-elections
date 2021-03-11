@@ -22,13 +22,9 @@ class Profile {
 	 * WordPress Hooks
 	 */
 	public static function hooks() {
-		add_action( 'init', [ get_called_class(), 'register_post_type' ] );
+		add_action( 'init', [ __CLASS__, 'register_post_type' ] );
 
 		add_action( 'cmb2_admin_init', [ __CLASS__, 'add_profile_boxes' ] );
-		
-		/*
-		// add_action( 'fm_post_' . self::CPT_SLUG, [ __CLASS__, 'add_profile_fields' ] );.
-		*/
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
 		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
 	}
@@ -101,91 +97,173 @@ class Profile {
 	 */
 	public static function add_profile_boxes() {
 		/**
-		 * Initiate the metabox
+		 * Name metabox.
 		 */
-		$cmb = new_cmb2_box(
+		$cmb_name = new_cmb2_box(
 			[
 				'id'           => 'id',
-				'title'        => __( 'Name', 'cmb2' ),
+				'title'        => __( 'Name', 'govpack' ),
 				'object_types' => [ self::CPT_SLUG ],
 				'context'      => 'normal',
 				'priority'     => 'high',
 				'show_names'   => true,
 				'cmb_styles'   => false,
-			] 
+			]
 		);
 
-		$cmb->add_field(
+		$cmb_name->add_field(
 			[
-				'name'             => __( 'Prefix', 'cmb2' ),
+				'name'             => __( 'Prefix', 'govpack' ),
 				'id'               => 'prefix',
 				'type'             => 'select',
 				'show_option_none' => true,
 				'options'          => Helpers::prefixes(),
-			] 
-		);
-
-		$cmb->add_field(
-			[
-				'name' => __( 'First name', 'cmb2' ),
-				'id'   => 'first_name',
-				'type' => 'text',
-			] 
-		);
-
-		$cmb->add_field(
-			[
-				'name' => __( 'Last name', 'cmb2' ),
-				'id'   => 'last_name',
-				'type' => 'text',
-			] 
-		);
-
-		$cmb->add_field(
-			[
-				'name'             => __( 'Party', 'cmb2' ),
-				'id'               => 'party',
-				'type'             => 'select',
-				'show_option_none' => true,
-				'options'          => Helpers::parties(),
-			] 
-		);
-	}
-
-	/**
-	 * Using FieldManager, add custom fields to profile.
-	 */
-	public static function add_profile_fields() {
-		$fm = new \Fieldmanager_Group(
-			[
-				'name'     => 'id',
-				'children' => [
-					'prefix'     => new \Fieldmanager_Select(
-						'Prefix',
-						[
-							'options'     => Helpers::prefixes(),
-							'first_empty' => true,
-						]
-					),
-					'first_name' => new \Fieldmanager_Textfield( 'First Name', [ 'required' => true ] ),
-					'last_name'  => new \Fieldmanager_Textfield( 'Last Name', [ 'required' => true ] ),
-					'party'      => new \Fieldmanager_Select(
-						'Party',
-						[
-							'options'     => Helpers::parties(),
-							'first_empty' => true,
-						]
-					),
-				],
 			]
 		);
-		$fm->add_meta_box( 'Name', self::CPT_SLUG );
 
-		$fm = new \Fieldmanager_Group( self::address_fields( 'main_office' ) );
-		$fm->add_meta_box( 'Main Office Address', self::CPT_SLUG );
+		$cmb_name->add_field(
+			[
+				'name' => __( 'First name', 'govpack' ),
+				'id'   => 'first_name',
+				'type' => 'text',
+			]
+		);
 
-		$fm = new \Fieldmanager_Group( self::address_fields( 'secondary_office' ) );
-		$fm->add_meta_box( 'Secondary Office Address', self::CPT_SLUG );
+		$cmb_name->add_field(
+			[
+				'name' => __( 'Last name', 'govpack' ),
+				'id'   => 'last_name',
+				'type' => 'text',
+			]
+		);
+
+		$cmb_name->add_field(
+			[
+				'name'     => __( 'Party', 'govpack' ),
+				'id'       => 'party',
+				'type'     => 'taxonomy_select',
+				'taxonomy' => Party::TAX_SLUG,
+			]
+		);
+
+		$cmb_address = new_cmb2_box(
+			[
+				'id'           => 'main_office',
+				'title'        => __( 'Main Office', 'govpack' ),
+				'object_types' => [ self::CPT_SLUG ],
+				'context'      => 'normal',
+				'priority'     => 'high',
+				'show_names'   => true,
+				'cmb_styles'   => false,
+			]
+		);
+
+		$cmb_address2 = new_cmb2_box(
+			[
+				'id'           => 'secondary_office',
+				'title'        => __( 'Secondary Office', 'govpack' ),
+				'object_types' => [ self::CPT_SLUG ],
+				'context'      => 'normal',
+				'priority'     => 'high',
+				'show_names'   => true,
+				'cmb_styles'   => false,
+			]
+		);
+
+		/**
+		 * Office address metaboxes.
+		 */
+		foreach ( [ $cmb_address, $cmb_address2 ] as $box ) {
+			$box->add_field(
+				[
+					'name' => __( 'Address', 'govpack' ),
+					'id'   => 'address',
+					'type' => 'text',
+				]
+			);
+
+			$box->add_field(
+				[
+					'name' => __( 'Address Line 2', 'govpack' ),
+					'id'   => 'address2',
+					'type' => 'text',
+				]
+			);
+
+			$box->add_field(
+				[
+					'name' => __( 'City', 'govpack' ),
+					'id'   => 'city',
+					'type' => 'text',
+				]
+			);
+
+			$box->add_field(
+				[
+					'name'             => __( 'State', 'govpack' ),
+					'id'               => 'state',
+					'type'             => 'select',
+					'show_option_none' => true,
+					'options'          => Helpers::states(),
+				]
+			);
+
+			$box->add_field(
+				[
+					'name'       => __( 'Zip', 'govpack' ),
+					'id'         => 'zip',
+					'type'       => 'text',
+					'attributes' => [
+						'size'      => 10,
+						'maxlength' => 10,
+						'type'      => 'number',
+					],
+				]
+			);
+
+			/**
+			 * Current position metabox.
+			 */
+			$cmb_position = new_cmb2_box(
+				[
+					'id'           => 'position',
+					'title'        => __( 'Current Position', 'govpack' ),
+					'object_types' => [ self::CPT_SLUG ],
+					'context'      => 'normal',
+					'priority'     => 'high',
+					'show_names'   => true,
+					'cmb_styles'   => false,
+				]
+			);
+
+			$cmb_position->add_field(
+				[
+					'name'             => __( 'Title', 'govpack' ),
+					'id'               => 'title',
+					'type'             => 'select',
+					'show_option_none' => true,
+					'options'          => Helpers::titles(),
+				]
+			);
+
+			$cmb_position->add_field(
+				[
+					'name'     => __( 'Legislative Body', 'govpack' ),
+					'id'       => 'legislative_body',
+					'type'     => 'taxonomy_select',
+					'taxonomy' => Legislative_Body::TAX_SLUG,
+				]
+			);
+
+			$cmb_position->add_field(
+				[
+					'name'     => __( 'State', 'govpack' ),
+					'id'       => 'state',
+					'type'     => 'taxonomy_select',
+					'taxonomy' => State::TAX_SLUG,
+				]
+			);
+		}
 	}
 
 	/**
@@ -198,45 +276,12 @@ class Profile {
 	 * @return array
 	 */
 	public static function set_profile_title( $data, $postarr, $unsanitized_postarr ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		$title = join( ' ', array_filter( [ $postarr['id']['first_name'] ?? '', $postarr['id']['last_name'] ?? '' ] ) );
+		$title = join( ' ', array_filter( [ $postarr['first_name'] ?? '', $postarr['last_name'] ?? '' ] ) );
 		if ( $title ) {
-				$data['post_title'] = $title;
-				$data['post_name']  = null;
+			$data['post_title'] = $title;
+			$data['post_name']  = null;
 		}
 		return $data;
-	}
-
-	/**
-	 * Return an array containing address fields.
-	 *
-	 * @param string $label  A unique identified for the field group.
-	 * @return array
-	 */
-	public static function address_fields( $label ) {
-		return [
-			'name'     => $label,
-			'children' => [
-				'address'  => new \Fieldmanager_Textfield( 'Address' ),
-				'address2' => new \Fieldmanager_Textfield( 'Address Line 2' ),
-				'city'     => new \Fieldmanager_Textfield( 'City' ),
-				'state'    => new \Fieldmanager_Select(
-					'State',
-					[
-						'options'     => Helpers::states(),
-						'first_empty' => true,
-					]
-				),
-				'zip'      => new \Fieldmanager_Textfield(
-					'Zip',
-					[
-						'attributes' => [
-							'size'      => 10,
-							'maxlength' => 10,
-						],
-					]
-				),
-			],
-		];
 	}
 }
 

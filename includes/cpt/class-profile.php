@@ -97,9 +97,9 @@ class Profile {
 	 */
 	public static function add_profile_boxes() {
 		/**
-		 * Initiate the metabox
+		 * Name metabox.
 		 */
-		$cmb = new_cmb2_box(
+		$cmb_name = new_cmb2_box(
 			[
 				'id'           => 'id',
 				'title'        => __( 'Name', 'govpack' ),
@@ -111,7 +111,7 @@ class Profile {
 			]
 		);
 
-		$cmb->add_field(
+		$cmb_name->add_field(
 			[
 				'name'             => __( 'Prefix', 'govpack' ),
 				'id'               => 'prefix',
@@ -121,7 +121,7 @@ class Profile {
 			]
 		);
 
-		$cmb->add_field(
+		$cmb_name->add_field(
 			[
 				'name' => __( 'First name', 'govpack' ),
 				'id'   => 'first_name',
@@ -129,7 +129,7 @@ class Profile {
 			]
 		);
 
-		$cmb->add_field(
+		$cmb_name->add_field(
 			[
 				'name' => __( 'Last name', 'govpack' ),
 				'id'   => 'last_name',
@@ -137,15 +137,133 @@ class Profile {
 			]
 		);
 
-		$cmb->add_field(
+		$cmb_name->add_field(
 			[
 				'name'     => __( 'Party', 'govpack' ),
 				'id'       => 'party',
 				'type'     => 'taxonomy_select',
 				'taxonomy' => Party::TAX_SLUG,
-
 			]
 		);
+
+		$cmb_address = new_cmb2_box(
+			[
+				'id'           => 'main_office',
+				'title'        => __( 'Main Office', 'govpack' ),
+				'object_types' => [ self::CPT_SLUG ],
+				'context'      => 'normal',
+				'priority'     => 'high',
+				'show_names'   => true,
+				'cmb_styles'   => false,
+			]
+		);
+
+		$cmb_address2 = new_cmb2_box(
+			[
+				'id'           => 'secondary_office',
+				'title'        => __( 'Secondary Office', 'govpack' ),
+				'object_types' => [ self::CPT_SLUG ],
+				'context'      => 'normal',
+				'priority'     => 'high',
+				'show_names'   => true,
+				'cmb_styles'   => false,
+			]
+		);
+
+		/**
+		 * Office address metaboxes.
+		 */
+		foreach ( [ $cmb_address, $cmb_address2 ] as $box ) {
+			$box->add_field(
+				[
+					'name' => __( 'Address', 'govpack' ),
+					'id'   => 'address',
+					'type' => 'text',
+				]
+			);
+
+			$box->add_field(
+				[
+					'name' => __( 'Address Line 2', 'govpack' ),
+					'id'   => 'address2',
+					'type' => 'text',
+				]
+			);
+
+			$box->add_field(
+				[
+					'name' => __( 'City', 'govpack' ),
+					'id'   => 'city',
+					'type' => 'text',
+				]
+			);
+
+			$box->add_field(
+				[
+					'name'             => __( 'State', 'govpack' ),
+					'id'               => 'state',
+					'type'             => 'select',
+					'show_option_none' => true,
+					'options'          => Helpers::states(),
+				]
+			);
+
+			$box->add_field(
+				[
+					'name'       => __( 'Zip', 'govpack' ),
+					'id'         => 'zip',
+					'type'       => 'text',
+					'attributes' => [
+						'size'      => 10,
+						'maxlength' => 10,
+						'type'      => 'number',
+					],
+				]
+			);
+
+			/**
+			 * Current position metabox.
+			 */
+			$cmb_position = new_cmb2_box(
+				[
+					'id'           => 'position',
+					'title'        => __( 'Current Position', 'govpack' ),
+					'object_types' => [ self::CPT_SLUG ],
+					'context'      => 'normal',
+					'priority'     => 'high',
+					'show_names'   => true,
+					'cmb_styles'   => false,
+				]
+			);
+
+			$cmb_position->add_field(
+				[
+					'name'             => __( 'Title', 'govpack' ),
+					'id'               => 'title',
+					'type'             => 'select',
+					'show_option_none' => true,
+					'options'          => Helpers::titles(),
+				]
+			);
+
+			$cmb_position->add_field(
+				[
+					'name'     => __( 'Legislative Body', 'govpack' ),
+					'id'       => 'legislative_body',
+					'type'     => 'taxonomy_select',
+					'taxonomy' => Legislative_Body::TAX_SLUG,
+				]
+			);
+
+			$cmb_position->add_field(
+				[
+					'name'     => __( 'State', 'govpack' ),
+					'id'       => 'state',
+					'type'     => 'taxonomy_select',
+					'taxonomy' => State::TAX_SLUG,
+				]
+			);
+		}
 	}
 
 	/**
@@ -160,8 +278,8 @@ class Profile {
 	public static function set_profile_title( $data, $postarr, $unsanitized_postarr ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$title = join( ' ', array_filter( [ $postarr['first_name'] ?? '', $postarr['last_name'] ?? '' ] ) );
 		if ( $title ) {
-				$data['post_title'] = $title;
-				$data['post_name']  = null;
+			$data['post_title'] = $title;
+			$data['post_name']  = null;
 		}
 		return $data;
 	}

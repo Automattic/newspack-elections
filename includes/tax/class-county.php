@@ -74,7 +74,8 @@ class County extends Taxonomy {
 					'with_front'   => false,
 					'hierarchical' => false,
 				],
-				'show_admin_column' => true,
+				'meta_box_cb'       => false,
+				'show_admin_column' => false,
 				'show_in_rest'      => true,
 			]
 		);

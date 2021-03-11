@@ -59,6 +59,7 @@ class Party extends Taxonomy {
 					'with_front'   => false,
 					'hierarchical' => false,
 				],
+				'meta_box_cb'       => false,
 				'show_admin_column' => true,
 				'show_in_rest'      => true,
 			]

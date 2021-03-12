@@ -121,8 +121,8 @@ class County extends Taxonomy {
 			$new_term = wp_insert_term( $county_name, static::TAX_SLUG );
 
 			if ( is_array( $new_term ) ) {
-				add_term_meta( $new_term['term_id'], 'state', $item['state'] );
-				add_term_meta( $new_term['term_id'], 'fips', $item['fips'] );
+				update_term_meta( $new_term['term_id'], 'state', $item['state'] );
+				update_term_meta( $new_term['term_id'], 'fips', $item['fips'] );
 			} else {
 				echo 'Failed to add term meta for ' . esc_html( $county_name );
 			}

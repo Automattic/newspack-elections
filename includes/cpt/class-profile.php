@@ -446,6 +446,10 @@ class Profile {
 			return;
 		}
 
+		if ( empty( $profile_raw_data['first_name'][0] ) || empty( $profile_raw_data['last_name'][0] ) ) {
+			return;
+		}
+
 		$term_objects = wp_get_post_terms( $profile_id, [ Party::TAX_SLUG, State::TAX_SLUG, Legislative_Body::TAX_SLUG ] );
 		$term_data    = array_reduce(
 			$term_objects,

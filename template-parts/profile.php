@@ -55,6 +55,6 @@ $party_state = array_filter( [ $profile_data['party'], $profile_data['state'] ] 
 </p>
 <?php endif; ?>
 
-<?php echo wp_kses_post( get_the_post_thumbnail( $profile_data['id'] ) ); ?>
+<?php echo wp_kses_post( get_the_post_thumbnail( $profile_data['id'], 'govpack-square' ) ); ?>
 
 </aside>

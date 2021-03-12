@@ -9,6 +9,8 @@ namespace Newspack\Govpack;
 
 defined( 'ABSPATH' ) || exit;
 
+define( 'GOVPACK_VERSION', '0.0.1' );
+
 require_once GOVPACK_PLUGIN_FILE . '/vendor/autoload.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 
 /**
@@ -25,6 +27,7 @@ class Govpack {
 add_action( 'after_setup_theme', [ '\Newspack\Govpack\Govpack', 'hooks' ] );
 
 // Helper classes.
+require_once __DIR__ . '/class-hooks.php';
 require_once __DIR__ . '/class-helpers.php';
 require_once __DIR__ . '/class-taxonomy.php';
 

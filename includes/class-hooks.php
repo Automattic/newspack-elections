@@ -26,8 +26,8 @@ class Hooks {
 	public static function wp_enqueue_scripts() {
 		$type = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? 'src' : 'min';
 
-		wp_enqueue_script( 'main', get_template_directory_uri() . "/assets/js/main.{$type}.js", [], GOVPACK_VERSION, true );
-		wp_enqueue_style( 'main', get_template_directory_uri() . "/assets/css/govpack.{$type}.css", [], GOVPACK_VERSION );
+		wp_enqueue_script( 'main', plugins_url( "assets/js/main.{$type}.js", __DIR__ ), [], GOVPACK_VERSION, true );
+		wp_enqueue_style( 'main', plugins_url( "assets/css/govpack.{$type}.css", __DIR__ ), [], GOVPACK_VERSION );
 	}
 
 	/**
@@ -38,8 +38,8 @@ class Hooks {
 	public static function admin_enqueue_scripts( $hook ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$type = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? 'src' : 'min';
 
-		wp_enqueue_style( 'admin', get_template_directory_uri() . "/assets/css/admin.{$type}.css", [], GOVPACK_VERSION );
-		wp_enqueue_script( 'admin', get_template_directory_uri() . "/assets/js/admin.{$type}.js", [ 'jquery', 'underscore', 'wp-util' ], GOVPACK_VERSION, false );
+		wp_enqueue_style( 'admin', plugins_url( "assets/css/admin.{$type}.css", __DIR__ ), [], GOVPACK_VERSION );
+		wp_enqueue_script( 'admin', plugins_url( "assets/js/admin.{$type}.js", __DIR__ ), [ 'jquery', 'underscore', 'wp-util' ], GOVPACK_VERSION, false );
 	}
 
 	/**

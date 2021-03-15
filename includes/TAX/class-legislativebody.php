@@ -15,7 +15,7 @@ class LegislativeBody extends \Newspack\Govpack\Taxonomy {
 	/**
 	 * Post Type slug. Used when registering and referencing
 	 */
-	const TAX_SLUG = 'govpack_legislature';
+	const TAX_SLUG = 'govpack_legislative_body';
 
 	/**
 	 * URL slug. Also used for fixtures.
@@ -42,13 +42,13 @@ class LegislativeBody extends \Newspack\Govpack\Taxonomy {
 					'edit_item'                  => __( 'Edit Legislative Body', 'govpack' ),
 					'update_item'                => __( 'Update Legislative Body', 'govpack' ),
 					'view_item'                  => __( 'View Legislative Body', 'govpack' ),
-					'separate_items_with_commas' => __( 'Separate districts with commas', 'govpack' ),
-					'add_or_remove_items'        => __( 'Add or remove districts', 'govpack' ),
+					'separate_items_with_commas' => __( 'Separate legislative bodies with commas', 'govpack' ),
+					'add_or_remove_items'        => __( 'Add or remove legislative bodies', 'govpack' ),
 					'choose_from_most_used'      => __( 'Choose from the most used', 'govpack' ),
 					'popular_items'              => __( 'Popular Legislative Bodies', 'govpack' ),
 					'search_items'               => __( 'Search Legislative Bodies', 'govpack' ),
 					'not_found'                  => __( 'Not Found', 'govpack' ),
-					'no_terms'                   => __( 'No districts', 'govpack' ),
+					'no_terms'                   => __( 'No legislative bodies', 'govpack' ),
 					'items_list'                 => __( 'Legislative Bodies list', 'govpack' ),
 					'items_list_navigation'      => __( 'Legislative Bodies list navigation', 'govpack' ),
 				],
@@ -59,6 +59,7 @@ class LegislativeBody extends \Newspack\Govpack\Taxonomy {
 					'with_front'   => false,
 					'hierarchical' => false,
 				],
+				'meta_box_cb'       => false,
 				'show_admin_column' => true,
 				'show_in_rest'      => true,
 			]

@@ -59,6 +59,7 @@ class Profile {
 		add_action( 'cmb2_admin_init', [ __CLASS__, 'add_profile_boxes' ] );
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
 		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
+		add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ get_called_class(), 'sortable_columns' ] );
 	}
 
 	/**
@@ -90,6 +91,7 @@ class Profile {
 				'show_in_rest' => true,
 				'show_ui'      => true,
 				'supports'     => [ 'revisions', 'thumbnail' ],
+				'taxonomies'   => [ 'post_tag' ],
 				'menu_icon'    => 'dashicons-groups',
 				'rewrite'      => [
 					'slug'       => 'people',
@@ -123,6 +125,18 @@ class Profile {
 		return $post_types;
 	}
 
+
+	/**
+	 * Denote State, Party and Legislative Body columns as sortable.
+	 *
+	 * @param array $sortable_columns An array of sortable columns.
+	 */
+	public static function sortable_columns( $sortable_columns ) {
+		$sortable_columns[ 'taxonomy-' . State::TAX_SLUG ]            = 'State';
+		$sortable_columns[ 'taxonomy-' . Party::TAX_SLUG ]            = 'Party';
+		$sortable_columns[ 'taxonomy-' . Legislative_Body::TAX_SLUG ] = 'Legislative Body';
+		return $sortable_columns;
+	}
 
 	/**
 	 * Using CMB2, add custom fields to profile.
@@ -175,6 +189,14 @@ class Profile {
 				'id'       => 'party',
 				'type'     => 'taxonomy_select',
 				'taxonomy' => \Newspack\Govpack\Tax\Party::TAX_SLUG,
+			]
+		);
+
+		$cmb_name->add_field(
+			[
+				'name' => __( 'Biography', 'govpack' ),
+				'id'   => 'biography',
+				'type' => 'wysiwyg',
 			]
 		);
 
@@ -293,6 +315,106 @@ class Profile {
 					'id'       => 'state',
 					'type'     => 'taxonomy_select',
 					'taxonomy' => \Newspack\Govpack\Tax\State::TAX_SLUG,
+				]
+			);
+
+			$cmb_position->add_field(
+				[
+					'name'     => __( 'County', 'govpack' ),
+					'id'       => 'county',
+					'type'     => 'taxonomy_select',
+					'taxonomy' => County::TAX_SLUG,
+				]
+			);
+
+			/**
+			 * Communications metabox.
+			 */
+			$cmb_comms = new_cmb2_box(
+				[
+					'id'           => 'communication',
+					'title'        => __( 'Communication channels', 'govpack' ),
+					'object_types' => [ self::CPT_SLUG ],
+					'context'      => 'normal',
+					'priority'     => 'high',
+					'show_names'   => true,
+					'cmb_styles'   => false,
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name'       => __( 'Main phone number', 'govpack' ),
+					'id'         => 'main_phone',
+					'type'       => 'text',
+					'attributes' => [
+						'size'      => 30,
+						'maxlength' => 40,
+						'type'      => 'tel',
+					],
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name'       => __( 'Secondary phone number', 'govpack' ),
+					'id'         => 'secondary_phone',
+					'type'       => 'text',
+					'attributes' => [
+						'size'      => 30,
+						'maxlength' => 40,
+						'type'      => 'tel',
+					],
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name' => __( 'Email address', 'govpack' ),
+					'id'   => 'email',
+					'type' => 'text_email',
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name'       => __( 'Twitter', 'govpack' ),
+					'id'         => 'twitter',
+					'type'       => 'text',
+					'attributes' => [
+						'type'      => 'text',
+						'size'      => 15,
+						'maxlength' => 15,
+					],
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name'       => __( 'Instagram', 'govpack' ),
+					'id'         => 'instagram',
+					'type'       => 'text',
+					'attributes' => [
+						'type'      => 'text',
+						'size'      => 30,
+						'maxlength' => 30,
+					],
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name' => __( 'Facebook URL', 'govpack' ),
+					'id'   => 'facebook',
+					'type' => 'text_url',
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name' => __( 'LinkedIn URL', 'govpack' ),
+					'id'   => 'linkedin',
+					'type' => 'text_url',
 				]
 			);
 		}

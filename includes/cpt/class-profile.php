@@ -427,19 +427,17 @@ class Profile {
 	}
 
 	/**
-	 * Shortcode handler for [govpack].
+	 * Fetch profile data into an array. Used for shortcode and Gutenberg block.
 	 *
-	 * @param array  $atts    Array of shortcode attributes.
-	 * @param string $content Post content.
+	 * @param int $profile_id    Array of shortcode attributes.
 	 *
-	 * @return string HTML for recipe shortcode.
+	 * @return array Profile data
 	 */
-	public static function shortcode_handler( $atts, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		if ( ! isset( $atts['id'] ) ) {
+	public static function get_data( $profile_id ) {
+		$profile_id = absint( $profile_id );
+		if ( ! $profile_id ) {
 			return;
 		}
-
-		$profile_id = $atts['id'];
 
 		$profile_raw_data = get_post_meta( $profile_id );
 		if ( ! $profile_raw_data ) {
@@ -471,10 +469,33 @@ class Profile {
 			'email'            => $profile_raw_data['email'][0] ?? '',
 			'facebook'         => $profile_raw_data['facebook'][0] ?? '',
 			'website'          => $profile_raw_data['leg_url'][0] ?? '',
+			'bio'              => $profile_raw_data['bio'][0] ?? '',
 			'party'            => $term_data[ Party::TAX_SLUG ] ?? '',
 			'state'            => $term_data[ State::TAX_SLUG ] ?? '',
 			'legislative_body' => $term_data[ Legislative_Body::TAX_SLUG ] ?? '',
 		];
+
+		return $profile_data;
+	}
+
+	/**
+	 * Shortcode handler for [govpack].
+	 *
+	 * @param array  $atts    Array of shortcode attributes.
+	 * @param string $content Post content.
+	 *
+	 * @return string HTML for recipe shortcode.
+	 */
+	public static function shortcode_handler( $atts, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		if ( ! isset( $atts['id'] ) ) {
+			return;
+		}
+
+		$profile_data = self::get_data( $atts['id'] );
+
+		if ( ! $profile_data ) {
+			return;
+		}
 
 		ob_start();
 		require_once GOVPACK_PLUGIN_FILE . 'template-parts/profile.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant

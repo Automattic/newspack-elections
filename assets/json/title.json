@@ -1,9 +1,9 @@
-[
-	"President",
-	"Vice President",
-	"Senator",
-	"Representative",
-	"State Senator",
-	"State Represenative",
-	"City Council Member"
-]
+{
+	"President": "President",
+	"Vice President": "Vice President",
+	"Senator": "Senator",
+	"Representative": "Representative",
+	"State Senator": "State Senator",
+	"State Represenative": "State Represenative",
+	"City Council Member": "City Council Member"
+}

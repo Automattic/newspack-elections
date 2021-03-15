@@ -74,5 +74,9 @@ function gp_log( $data ) {
 		return;
 	}
 
+	if ( ! is_string( $data ) ) {
+		$data = var_export( $data, true ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
+	}
+
 	file_put_contents( ABSPATH . WP_DEBUG_LOG, $data . "\n", FILE_APPEND ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_file_put_contents
 }

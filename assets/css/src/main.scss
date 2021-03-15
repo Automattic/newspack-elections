@@ -1,0 +1,76 @@
+.govpack-profile {
+	width: 250px;
+	display: grid;
+	column-gap: 10px;
+
+	&.mini {
+		width: 150px;
+		.photo,
+		.name {
+			margin-bottom: 10px;
+		}
+
+		.last-name {
+			display: none;
+		}
+	}
+
+	&.wiki {
+		width: 550px;
+		.name-details {
+			grid-column: 2;
+			grid-row: 1 / 3;
+		}
+	}
+
+	.name,
+	.photo {
+		margin-bottom: 0;
+		margin-top: 0;
+	}
+
+	.name {
+		font-size: 20px;
+	}
+
+	.info,
+	.biography {
+		font-size: 14px;
+		margin: 0;
+	}
+
+	.links {
+		display: flex;
+		justify-content: space-between;
+		font-size: 12px;
+		a {
+			text-decoration: none;
+		}
+	}
+
+	.biography {
+		margin-top: 1em;
+	}
+
+	&.wiki,
+	&.mini {
+		.links {
+			flex-direction: column;
+			p {
+				margin: 2px;
+			}
+
+			a {
+				display: flex;
+				.label {
+					margin-left: 10px;
+				}
+			}
+
+			img {
+				width: 20px;
+				height: 20px;
+			}
+		}
+	}
+}

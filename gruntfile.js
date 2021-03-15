@@ -12,23 +12,23 @@ module.exports = function ( grunt ) {
 		concat: {
 			options: {
 				stripBanners: true,
-				sourceMap: true,
+				sourceMap: false,
 			},
 			admin: {
-				src: [ 'js/src/admin.js' ],
-				dest: 'js/admin.src.js',
+				src: [ 'assets/js/src/admin.js' ],
+				dest: 'assets/js/admin.src.js',
 			},
 			main: {
-				src: [ 'js/src/main.js' ],
-				dest: 'js/main.src.js',
+				src: [ 'assets/js/src/main.js' ],
+				dest: 'assets/js/main.src.js',
 			},
 		},
 
 		uglify: {
 			all: {
 				files: {
-					'js/admin.min.js': [ 'js/admin.src.js' ],
-					'js/main.min.js': [ 'js/main.src.js' ],
+					'assets/js/admin.min.js': [ 'assets/js/admin.src.js' ],
+					'assets/js/main.min.js': [ 'assets/js/main.src.js' ],
 				},
 				options: {
 					mangle: {
@@ -40,7 +40,7 @@ module.exports = function ( grunt ) {
 		},
 
 		eslint: {
-			src: [ 'js/src/**/*.js' ],
+			src: [ 'assets/js/src/**/*.js' ],
 			options: {
 				fix: true,
 				configFile: '.eslintrc.js',

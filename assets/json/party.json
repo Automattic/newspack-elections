@@ -1,7 +1,7 @@
-[
-	"Democrat",
-	"Republican",
-	"Independent",
-	"Green",
-	"Libertarian"
-]
+{
+	"Democrat": "Democrat",
+	"Republican": "Republican",
+	"Independent": "Independent",
+	"Green": "Green",
+	"Libertarian": "Libertarian"
+}

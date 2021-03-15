@@ -9,6 +9,7 @@ namespace Newspack\Govpack;
 
 defined( 'ABSPATH' ) || exit;
 
+define( 'GOVPACK_VERSION', '0.0.1' );
 
 /**
  * Main Govpack Class.
@@ -41,7 +42,6 @@ class Govpack {
 	 * @return self
 	 */
 	public function __construct() {
-		
 		add_action( 'after_setup_theme', [ __class__, 'hooks' ] );
 	}
 
@@ -49,14 +49,17 @@ class Govpack {
 	 * WordPress Hooks
 	 */
 	public static function hooks() {
-		
 		\Newspack\Govpack\CPT\Profile::instance();
 		\Newspack\Govpack\Tax\City::hooks();
 		\Newspack\Govpack\Tax\County::hooks();
 		\Newspack\Govpack\Tax\Installation::hooks();
+		\Newspack\Govpack\Tax\LegislativeBody::hooks();
 		\Newspack\Govpack\Tax\OfficeHolderStatus::hooks();
 		\Newspack\Govpack\Tax\Party::hooks();
 		\Newspack\Govpack\Tax\State::hooks();
 	}
 }
 
+add_action( 'after_setup_theme', [ '\Newspack\Govpack\Govpack', 'hooks' ] );
+add_action( 'after_setup_theme', [ '\Newspack\Govpack\Hooks', 'setup_hooks' ] );
+add_action( 'after_setup_theme', [ '\Newspack\Govpack\Hooks', 'set_image_sizes' ] );

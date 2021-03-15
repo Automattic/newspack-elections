@@ -14,6 +14,21 @@ use \Newspack\Govpack\Helpers;
  */
 class Profile {
 
+
+	/**
+	 * Valid profile formats.
+	 *
+	 * @var array
+	 */
+	public static $profile_formats = [ 'full', 'mini', 'wiki' ];
+
+	/**
+	 * Default profile format.
+	 *
+	 * @var string
+	 */
+	public static $default_profile_format = 'full';
+
 	/**
 	 * Stores static instance of class.
 	 *
@@ -505,7 +520,7 @@ class Profile {
 			'email'            => $profile_raw_data['email'][0] ?? '',
 			'facebook'         => $profile_raw_data['facebook'][0] ?? '',
 			'website'          => $profile_raw_data['leg_url'][0] ?? '',
-			'bio'              => $profile_raw_data['bio'][0] ?? '',
+			'biography'        => $profile_raw_data['biography'][0] ?? '',
 			'party'            => $term_data[ \Newspack\Govpack\Tax\Party::TAX_SLUG ] ?? '',
 			'state'            => $term_data[ \Newspack\Govpack\Tax\State::TAX_SLUG ] ?? '',
 			'legislative_body' => $term_data[ \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] ?? '',
@@ -532,6 +547,19 @@ class Profile {
 		if ( ! $profile_data ) {
 			return;
 		}
+
+		$atts = shortcode_atts(
+			[
+				'format' => self::$default_profile_format,
+			],
+			$atts
+		);
+
+		if ( ! in_array( $atts['format'], self::$profile_formats, true ) ) {
+			$atts['format'] = self::$default_profile_format;
+		}
+
+		$profile_data['format'] = $atts['format'];
 
 		ob_start();
 		require_once GOVPACK_PLUGIN_FILE . 'template-parts/profile.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant

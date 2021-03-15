@@ -39,6 +39,9 @@ class Profile {
 	 */
 	const CPT_SLUG = 'govpack_profile';
 
+	/**
+	 * Shortcode.
+	 */
 	const SHORTCODE = 'govpack';
 
 
@@ -135,9 +138,9 @@ class Profile {
 	 * @param array $sortable_columns An array of sortable columns.
 	 */
 	public static function sortable_columns( $sortable_columns ) {
-		$sortable_columns[ 'taxonomy-' . State::TAX_SLUG ]            = 'State';
-		$sortable_columns[ 'taxonomy-' . Party::TAX_SLUG ]            = 'Party';
-		$sortable_columns[ 'taxonomy-' . Legislative_Body::TAX_SLUG ] = 'Legislative Body';
+		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\State::TAX_SLUG ]           = 'State';
+		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\Party::TAX_SLUG ]           = 'Party';
+		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] = 'Legislative Body';
 		return $sortable_columns;
 	}
 
@@ -481,7 +484,7 @@ class Profile {
 			return;
 		}
 
-		$term_objects = wp_get_post_terms( $profile_id, [ Party::TAX_SLUG, State::TAX_SLUG, Legislative_Body::TAX_SLUG ] );
+		$term_objects = wp_get_post_terms( $profile_id, [ \Newspack\Govpack\Tax\Party::TAX_SLUG, \Newspack\Govpack\Tax\State::TAX_SLUG, \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] );
 		$term_data    = array_reduce(
 			$term_objects,
 			function( $carry, $item ) {
@@ -503,9 +506,9 @@ class Profile {
 			'facebook'         => $profile_raw_data['facebook'][0] ?? '',
 			'website'          => $profile_raw_data['leg_url'][0] ?? '',
 			'bio'              => $profile_raw_data['bio'][0] ?? '',
-			'party'            => $term_data[ Party::TAX_SLUG ] ?? '',
-			'state'            => $term_data[ State::TAX_SLUG ] ?? '',
-			'legislative_body' => $term_data[ Legislative_Body::TAX_SLUG ] ?? '',
+			'party'            => $term_data[ \Newspack\Govpack\Tax\Party::TAX_SLUG ] ?? '',
+			'state'            => $term_data[ \Newspack\Govpack\Tax\State::TAX_SLUG ] ?? '',
+			'legislative_body' => $term_data[ \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] ?? '',
 		];
 
 		return $profile_data;

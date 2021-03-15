@@ -5,12 +5,34 @@
  * @package Newspack
  */
 
-namespace Newspack\Govpack;
+namespace Newspack\Govpack\CPT;
+
+use \Newspack\Govpack\Helpers;
 
 /**
  * Register and handle the "Profile" Custom Post Type
  */
 class Profile {
+
+	/**
+	 * Stores static instance of class.
+	 *
+	 * @access protected
+	 * @var Govpack\Govpack\Profile The single instance of the class
+	 */
+	protected static $instance = null;
+
+	/**
+	 * Returns static instance of class.
+	 *
+	 * @return self
+	 */
+	public static function instance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
 
 	/**
 	 * Post Type slug. Used when registering and referencing
@@ -19,9 +41,21 @@ class Profile {
 
 
 	/**
+	 * Inits the class and registeres the hooks call
+	 *
+	 * @return self
+	 */
+	public function __construct() {
+
+		add_action( 'after_setup_theme', [ __class__, 'hooks' ], 11, 1 );
+	}
+
+
+	/**
 	 * WordPress Hooks
 	 */
 	public static function hooks() {
+		
 		add_action( 'init', [ __CLASS__, 'register_post_type' ] );
 		add_action( 'cmb2_admin_init', [ __CLASS__, 'add_profile_boxes' ] );
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
@@ -155,7 +189,7 @@ class Profile {
 				'name'     => __( 'Party', 'govpack' ),
 				'id'       => 'party',
 				'type'     => 'taxonomy_select',
-				'taxonomy' => Party::TAX_SLUG,
+				'taxonomy' => \Newspack\Govpack\Tax\Party::TAX_SLUG,
 			]
 		);
 
@@ -272,7 +306,7 @@ class Profile {
 					'name'     => __( 'Legislative Body', 'govpack' ),
 					'id'       => 'legislative_body',
 					'type'     => 'taxonomy_select',
-					'taxonomy' => Legislative_Body::TAX_SLUG,
+					'taxonomy' => \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG,
 				]
 			);
 
@@ -281,7 +315,7 @@ class Profile {
 					'name'     => __( 'State', 'govpack' ),
 					'id'       => 'state',
 					'type'     => 'taxonomy_select',
-					'taxonomy' => State::TAX_SLUG,
+					'taxonomy' => \Newspack\Govpack\Tax\State::TAX_SLUG,
 				]
 			);
 
@@ -290,7 +324,7 @@ class Profile {
 					'name'     => __( 'County', 'govpack' ),
 					'id'       => 'county',
 					'type'     => 'taxonomy_select',
-					'taxonomy' => County::TAX_SLUG,
+					'taxonomy' => \Newspack\Govpack\Tax\County::TAX_SLUG,
 				]
 			);
 
@@ -406,4 +440,3 @@ class Profile {
 	}
 }
 
-add_action( 'after_setup_theme', [ '\Newspack\Govpack\Profile', 'hooks' ] );

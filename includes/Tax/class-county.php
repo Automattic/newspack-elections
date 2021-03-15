@@ -5,12 +5,12 @@
  * @package Newspack
  */
 
-namespace Newspack\Govpack;
+namespace Newspack\Govpack\Tax;
 
 /**
  * Register and handle the "County" Taxonomy.
  */
-class County extends Taxonomy {
+class County extends \Newspack\Govpack\Taxonomy {
 
 	/**
 	 * Post Type slug. Used when registering and referencing

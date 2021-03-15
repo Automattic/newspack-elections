@@ -5,12 +5,12 @@
  * @package Newspack
  */
 
-namespace Newspack\Govpack;
+namespace Newspack\Govpack\Tax;
 
 /**
  * Register and handle the "OfficeHolder_Status" Taxonomy.
  */
-class OfficeHolder_Status extends Taxonomy {
+class OfficeHolderStatus extends \Newspack\Govpack\Taxonomy {
 
 	/**
 	 * Post Type slug. Used when registering and referencing

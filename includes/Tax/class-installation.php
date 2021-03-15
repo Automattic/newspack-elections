@@ -5,12 +5,12 @@
  * @package Newspack
  */
 
-namespace Newspack\Govpack;
+namespace Newspack\Govpack\Tax;
 
 /**
  * Register and handle the "Installation" Taxonomy.
  */
-class Installation extends Taxonomy {
+class Installation extends \Newspack\Govpack\Taxonomy {
 
 	/**
 	 * Post Type slug. Used when registering and referencing

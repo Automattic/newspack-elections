@@ -49,6 +49,3 @@ class Hooks {
 		add_image_size( 'govpack-square', 200, 200, true );
 	}
 }
-
-add_action( 'after_setup_theme', [ '\Newspack\Govpack\Hooks', 'setup_hooks' ] );
-add_action( 'after_setup_theme', [ '\Newspack\Govpack\Hooks', 'set_image_sizes' ] );

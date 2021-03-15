@@ -61,3 +61,5 @@ class Govpack {
 }
 
 add_action( 'after_setup_theme', [ '\Newspack\Govpack\Govpack', 'hooks' ] );
+add_action( 'after_setup_theme', [ '\Newspack\Govpack\Hooks', 'setup_hooks' ] );
+add_action( 'after_setup_theme', [ '\Newspack\Govpack\Hooks', 'set_image_sizes' ] );

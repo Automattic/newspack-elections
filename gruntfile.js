@@ -179,6 +179,8 @@ module.exports = function ( grunt ) {
 		},
 	} );
 
+	grunt.config.set( 'gmf.filtered', [ '**/*.php', '!vendor/**', '!node_modules/**' ] );
+
 	// PHP Only
 	grunt.registerTask( 'php', [ 'phplint', 'phpcs' ] );
 

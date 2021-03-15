@@ -48,7 +48,6 @@ class Profile {
 	 * @return self
 	 */
 	public function __construct() {
-
 		add_action( 'after_setup_theme', [ __class__, 'hooks' ], 11, 1 );
 	}
 
@@ -57,7 +56,7 @@ class Profile {
 	 * WordPress Hooks
 	 */
 	public static function hooks() {
-		
+
 		add_action( 'init', [ __CLASS__, 'register_post_type' ] );
 		add_action( 'cmb2_admin_init', [ __CLASS__, 'add_profile_boxes' ] );
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );

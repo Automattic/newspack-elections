@@ -42,7 +42,6 @@ class Govpack {
 	 * @return self
 	 */
 	public function __construct() {
-
 		add_action( 'after_setup_theme', [ __class__, 'hooks' ] );
 	}
 
@@ -50,7 +49,6 @@ class Govpack {
 	 * WordPress Hooks
 	 */
 	public static function hooks() {
-
 		\Newspack\Govpack\CPT\Profile::instance();
 		\Newspack\Govpack\Tax\City::hooks();
 		\Newspack\Govpack\Tax\County::hooks();

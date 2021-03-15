@@ -13,7 +13,7 @@ namespace Newspack\Govpack\Tax;
 class State extends \Newspack\Govpack\Taxonomy {
 
 	/**
-	 * Post Type slug. Used when registering and referencing 
+	 * Post Type slug. Used when registering and referencing
 	 */
 	const TAX_SLUG = 'govpack_state';
 

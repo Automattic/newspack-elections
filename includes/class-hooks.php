@@ -27,7 +27,7 @@ class Hooks {
 		$type = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? 'src' : 'min';
 
 		wp_enqueue_script( 'main', plugins_url( "assets/js/main.{$type}.js", __DIR__ ), [], GOVPACK_VERSION, true );
-		wp_enqueue_style( 'main', plugins_url( "assets/css/govpack.{$type}.css", __DIR__ ), [], GOVPACK_VERSION );
+		wp_enqueue_style( 'main', plugins_url( "assets/css/main.{$type}.css", __DIR__ ), [], GOVPACK_VERSION );
 	}
 
 	/**

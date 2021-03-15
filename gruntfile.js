@@ -12,7 +12,7 @@ module.exports = function ( grunt ) {
 		concat: {
 			options: {
 				stripBanners: true,
-				sourceMap: true,
+				sourceMap: false,
 			},
 			admin: {
 				src: [ 'assets/js/src/admin.js' ],

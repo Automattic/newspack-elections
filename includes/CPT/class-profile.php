@@ -46,6 +46,7 @@ class Profile {
 	 * @return self
 	 */
 	public function __construct() {
+
 		add_action( 'after_setup_theme', [ __class__, 'hooks' ], 11, 1 );
 	}
 
@@ -323,7 +324,7 @@ class Profile {
 					'name'     => __( 'County', 'govpack' ),
 					'id'       => 'county',
 					'type'     => 'taxonomy_select',
-					'taxonomy' => County::TAX_SLUG,
+					'taxonomy' => \Newspack\Govpack\Tax\County::TAX_SLUG,
 				]
 			);
 

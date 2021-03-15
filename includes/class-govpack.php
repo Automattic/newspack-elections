@@ -9,7 +9,6 @@ namespace Newspack\Govpack;
 
 defined( 'ABSPATH' ) || exit;
 
-require_once GOVPACK_PLUGIN_FILE . '/vendor/autoload.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 
 /**
  * Main Govpack Class.
@@ -50,7 +49,7 @@ class Govpack {
 	 * WordPress Hooks
 	 */
 	public static function hooks() {
-
+		
 		\Newspack\Govpack\CPT\Profile::instance();
 	}
 }

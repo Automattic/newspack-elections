@@ -67,4 +67,4 @@ class OfficeHolderStatus extends \Newspack\Govpack\Taxonomy {
 	}
 }
 
-add_action( 'after_setup_theme', [ '\Newspack\Govpack\OfficeHolder_Status', 'hooks' ] );
+add_action( 'after_setup_theme', [ '\Newspack\Govpack\OfficeHolderStatus', 'hooks' ] );

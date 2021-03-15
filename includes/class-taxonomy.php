@@ -46,6 +46,7 @@ abstract class Taxonomy {
 			return;
 		}
 
+		$count = 0;
 		foreach ( $data as $item ) {
 			$term_exists_result = term_exists( $item, static::TAX_SLUG ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.term_exists_term_exists
 
@@ -53,7 +54,13 @@ abstract class Taxonomy {
 				continue;
 			}
 
-			wp_insert_term( $item, static::TAX_SLUG );
+			$result = wp_insert_term( $item, static::TAX_SLUG );
+
+			if ( ! is_wp_error( $result ) ) {
+				$count++;
+			}
 		}
+
+		return $count;
 	}
 }

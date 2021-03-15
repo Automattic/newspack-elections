@@ -46,6 +46,6 @@ class Hooks {
 	 * Add custom image sizes for this theme.
 	 */
 	public static function set_image_sizes() {
-		add_image_size( 'govpack-square', 200, 200, true );
+		add_image_size( 'govpack-square', 140, 140, true );
 	}
 }

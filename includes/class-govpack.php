@@ -51,6 +51,7 @@ class Govpack {
 	public static function hooks() {
 		
 		\Newspack\Govpack\CPT\Profile::instance();
+		\Newspack\Govpack\Gutenberg\Block::instance();
 	}
 }
 

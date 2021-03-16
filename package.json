@@ -96,6 +96,7 @@
     "@wordpress/api-fetch": "^3.21.5",
     "@wordpress/base-styles": "^3.3.3",
     "@wordpress/block-editor": "^5.2.9",
+    "@wordpress/blocks": "^7.0.6",
     "@wordpress/dom-ready": "^2.12.1",
     "@wordpress/edit-post": "^3.26.9",
     "@wordpress/html-entities": "^2.10.1"
@@ -125,6 +126,7 @@
     "semantic-release-version-bump": "^1.4.1",
     "stylelint": "^13.11.0",
     "stylelint-config-prettier": "^8.0.2",
-    "stylelint-prettier": "^1.2.0"
+    "stylelint-prettier": "^1.2.0",
+    "webpack": "^5.26.0"
   }
 }

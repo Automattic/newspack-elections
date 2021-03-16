@@ -107,7 +107,8 @@ class County extends \Newspack\Govpack\Taxonomy {
 			$term_exists_result = term_exists( $county_name, static::TAX_SLUG ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.term_exists_term_exists
 
 			if ( is_array( $term_exists_result ) ) {
-				echo 'Failed to create term for ' . esc_html( $county_name );
+				echo 'Term for ' . esc_html( $county_name ) . " exists; skipping.\n";
+				continue;
 			} else {
 				if ( 0 === $progress % 5 ) {
 					echo '.';
@@ -122,11 +123,12 @@ class County extends \Newspack\Govpack\Taxonomy {
 			$new_term = wp_insert_term( $county_name, static::TAX_SLUG );
 
 			if ( is_array( $new_term ) ) {
+				echo 'Adding term meta for ' . esc_html( $county_name ) . ".\n";
 				update_term_meta( $new_term['term_id'], 'state', $item['state'] );
 				update_term_meta( $new_term['term_id'], 'fips', $item['fips'] );
-				$count;
+				$count++;
 			} else {
-				echo 'Failed to add term meta for ' . esc_html( $county_name );
+				echo 'Failed to add term for ' . esc_html( $county_name ) . ".\n";
 			}
 		}
 

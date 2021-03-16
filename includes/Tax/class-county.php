@@ -188,7 +188,7 @@ class County extends \Newspack\Govpack\Taxonomy {
 			filter_input( INPUT_POST, 'fips', FILTER_SANITIZE_NUMBER_INT )
 		);
 
-		$states = Helpers::states();
+		$states = \Newspack\Govpack\Helpers::states();
 		$state  = filter_input( INPUT_POST, 'state', FILTER_SANITIZE_STRING );
 		if ( isset( $states[ $state ] ) ) {
 			update_term_meta(

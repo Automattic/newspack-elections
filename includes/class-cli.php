@@ -40,7 +40,7 @@ class CLI extends \WP_CLI_Command {
 		\WP_CLI::line( "Inserted {$count} parties." );
 
 		$count = \Newspack\Govpack\Tax\State::seed();
-		\WP_CLI::line( "Inserted {$count} states" );
+		\WP_CLI::line( "Inserted {$count} states." );
 	}
 }
 

@@ -439,9 +439,12 @@ class Profile {
 
 			$cmb_comms->add_field(
 				[
-					'name' => __( 'Facebook URL', 'govpack' ),
-					'id'   => 'facebook',
-					'type' => 'text_url',
+					'name'       => __( 'Facebook', 'govpack' ),
+					'id'         => 'facebook',
+					'type'       => 'text',
+					'attributes' => [
+						'maxlength' => 50,
+					],
 				]
 			);
 

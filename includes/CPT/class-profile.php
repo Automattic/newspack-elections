@@ -292,9 +292,7 @@ class Profile {
 					'id'         => $slug . '_zip',
 					'type'       => 'text',
 					'attributes' => [
-						'size'      => 10,
 						'maxlength' => 10,
-						'type'      => 'number',
 					],
 				]
 			);

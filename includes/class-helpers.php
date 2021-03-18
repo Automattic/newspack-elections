@@ -14,6 +14,44 @@ class Helpers {
 
 	const CACHE_GROUP = 'govpack';
 
+	const TWITTER_BASE_URL  = 'https://twitter.com/';
+	const FACEBOOK_BASE_URL = 'https://www.facebook.com/';
+
+	/**
+	 * Fetch taxonomy data and cache it in memory.
+	 *
+	 * @param string $slug  Name of the JSON file.
+	 * @return array
+	 */
+	public static function get_cached_taxonomy( $slug ) {
+		$cache_key = 'govpack_tax_' . $slug;
+
+		$items = wp_cache_get( $cache_key );
+
+		if ( false === $items ) {
+			$term_list = get_terms(
+				[
+					'taxonomy'   => $slug,
+					'hide_empty' => false,
+				] 
+			);
+			if ( is_wp_error( $term_list ) ) {
+				WP_CLI::error( "No items found in taxonomy: $slug." );
+			}
+
+			$items = array_reduce(
+				$term_list,
+				function( $carry, $item ) {
+					$carry[ $item->name ] = $item->term_taxonomy_id;
+					return $carry;
+				},
+				[]
+			);
+		}
+
+		return $items;
+	}
+
 	/**
 	 * Read JSON file and cache it in memory.
 	 *

@@ -373,7 +373,6 @@ class Profile {
 					'id'         => 'main_phone',
 					'type'       => 'text',
 					'attributes' => [
-						'size'      => 30,
 						'maxlength' => 40,
 						'type'      => 'tel',
 					],
@@ -386,7 +385,6 @@ class Profile {
 					'id'         => 'secondary_phone',
 					'type'       => 'text',
 					'attributes' => [
-						'size'      => 30,
 						'maxlength' => 40,
 						'type'      => 'tel',
 					],
@@ -407,7 +405,6 @@ class Profile {
 					'id'         => 'twitter',
 					'type'       => 'text',
 					'attributes' => [
-						'size'      => 15,
 						'maxlength' => 15,
 					],
 				]
@@ -419,7 +416,6 @@ class Profile {
 					'id'         => 'instagram',
 					'type'       => 'text',
 					'attributes' => [
-						'size'      => 30,
 						'maxlength' => 30,
 					],
 				]

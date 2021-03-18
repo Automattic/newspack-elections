@@ -74,7 +74,6 @@ class Profile {
 	 * WordPress Hooks
 	 */
 	public static function hooks() {
-
 		add_action( 'init', [ __CLASS__, 'register_post_type' ] );
 		add_action( 'cmb2_admin_init', [ __CLASS__, 'add_profile_boxes' ] );
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
@@ -467,7 +466,7 @@ class Profile {
 	 *                                   originally passed to wp_insert_post().
 	 * @return array
 	 */
-	public static function set_profile_title( $data, $postarr, $unsanitized_postarr ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public static function set_profile_title( $data, $postarr, $unsanitized_postarr = false ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$title = join( ' ', array_filter( [ $postarr['first_name'] ?? '', $postarr['last_name'] ?? '' ] ) );
 		if ( $title ) {
 			$data['post_title'] = $title;
@@ -565,6 +564,73 @@ class Profile {
 		$html = ob_get_clean();
 
 		return $html;
+	}
+
+	/**
+	 * Create a profile.
+	 *
+	 * @param array $data   Array of profile data.
+	 *
+	 * @return int|WP_Error The post ID on success. 0 or WP_Error on failure.
+	 */
+	public static function create( $data ) {
+		if ( ! $data['first_name'] || ! $data['last_name'] ) {
+			return;
+		}
+
+		$post_args = [
+			'post_type'   => self::CPT_SLUG,
+			'post_status' => 'publish',
+			'meta_input'  => [
+				'first_name' => $data['first_name'],
+				'last_name'  => $data['last_name'],
+			],
+			'tax_input'   => [],
+		];
+
+		$meta_keys = [
+			'title',
+			'main_office_address',
+			'main_office_address2',
+			'main_office_city',
+			'main_office_state',
+			'main_office_zip',
+			'leg_url',
+			'main_phone',
+			'twitter',
+			'facebook',
+		];
+
+		foreach ( $meta_keys as $key ) {
+			if ( ! empty( $data[ $key ] ) ) {
+				$post_args['meta_input'][ $key ] = $data[ $key ];
+			}
+		}
+
+		// Set the post title.
+		$post_args = self::set_profile_title( $post_args, $data );
+
+		// Insert the post and post metadata.
+		$new_post = wp_insert_post( $post_args );
+		if ( 0 === $new_post || is_wp_error( $new_post ) ) {
+			return $new_post;
+		}
+
+		// Insert the taxonomy separate. wp_insert_post() woill not insert
+		// taxonomy data when run without a logged-in user, i.e. in CLI.
+		$tax_map = [
+			'state'            => \Newspack\Govpack\Tax\State::TAX_SLUG,
+			'party'            => \Newspack\Govpack\Tax\Party::TAX_SLUG,
+			'legislative_body' => \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG,
+		];
+
+		foreach ( $tax_map as $key => $tax_slug ) {
+			if ( ! empty( $data[ $key ] ) ) {
+				wp_set_post_terms( $new_post, [ $data[ $key ] ], $tax_slug );
+			}
+		}
+
+		return $new_post;
 	}
 }
 

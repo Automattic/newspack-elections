@@ -7,6 +7,8 @@
 
 namespace Newspack\Govpack;
 
+use \WP_CLI as WP_CLI;
+
 /**
  * Manges govpack profile and seed data.
  */

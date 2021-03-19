@@ -14,8 +14,9 @@ class Helpers {
 
 	const CACHE_GROUP = 'govpack';
 
-	const TWITTER_BASE_URL  = 'https://twitter.com/';
-	const FACEBOOK_BASE_URL = 'https://www.facebook.com/';
+	const TWITTER_BASE_URL   = 'https://twitter.com/';
+	const FACEBOOK_BASE_URL  = 'https://www.facebook.com/';
+	const INSTAGRAM_BASE_URL = 'https://www.instagram.com/';
 
 	/**
 	 * Fetch taxonomy data and cache it in memory.
@@ -33,7 +34,7 @@ class Helpers {
 				[
 					'taxonomy'   => $slug,
 					'hide_empty' => false,
-				] 
+				]
 			);
 			if ( is_wp_error( $term_list ) ) {
 				WP_CLI::error( "No items found in taxonomy: $slug." );

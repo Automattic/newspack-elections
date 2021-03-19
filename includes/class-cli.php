@@ -61,7 +61,7 @@ class CLI extends \WP_CLI_Command {
 	 * Import data from CSV.
 	 *
 	 * ## OPTIONS
-	 * <file>
+	 * <file>...
 	 * : The CSV file.
 	 *
 	 * [--source=<value>]
@@ -96,17 +96,6 @@ class CLI extends \WP_CLI_Command {
 
 		$source = $assoc_args['source'] ?? 'govpack';
 
-		$file = $args[0];
-
-		if ( ! file_exists( $file ) ) {
-			WP_CLI::error( "File $file does not exist. Exiting." );
-		}
-
-		$csvfile = fopen( $file, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
-		if ( ! $csvfile ) {
-			WP_CLI::error( "File $file cannot be opened." );
-		}
-
 		$usio_title_map = [
 			'rep' => 'Representative',
 			'sen' => 'Senator',
@@ -117,62 +106,137 @@ class CLI extends \WP_CLI_Command {
 			'sen' => 'US Senate',
 		];
 
+		$openstates_party_map = [
+			'Democratic' => 'Democrat',
+			'Republican' => 'Republican',
+		];
+
+		$openstates_leg_body_to_title_map = [
+			'lower'       => 'State Representative',
+			'legislature' => 'State Representative', // Nebraska.
+			'upper'       => 'State Senator',
+		];
+
+		$openstates_leg_body_map = [
+			'lower'       => 'State House',
+			'legislature' => 'State House', // Nebraska.
+			'upper'       => 'State Senate',
+		];
+
 		$state_list    = \Newspack\Govpack\Helpers::get_cached_taxonomy( \Newspack\Govpack\Tax\State::TAX_SLUG );
 		$party_list    = \Newspack\Govpack\Helpers::get_cached_taxonomy( \Newspack\Govpack\Tax\Party::TAX_SLUG );
 		$leg_body_list = \Newspack\Govpack\Helpers::get_cached_taxonomy( \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG );
 
 		$state_abbrevations = \Newspack\Govpack\Helpers::states();
 
-		fgetcsv( $csvfile ); // Skip header row.
-		while ( true ) {
-			$data = fgetcsv( $csvfile );
-			if ( false === $data ) {
-				break;
+		foreach ( $args as $file ) {
+			if ( ! file_exists( $file ) ) {
+				WP_CLI::warning( "File $file does not exist." );
+				continue;
 			}
 
-			$data = array_map( 'trim', $data );
-
-			// USIO.
-			if ( 'usio' === $source ) {
-				$address = [];
-				preg_match( '/(?P<address>.+?) (?P<city>Washington) (?P<state>\w{2}) (?P<zip>\d{5}(?:-\d{4})?)/', $data[14], $address );
-
-				$profile = [
-					'last_name'           => $data[0],
-					'first_name'          => $data[1],
-					'title'               => $usio_title_map[ $data[8] ],
-					'state'               => $state_list[ $state_abbrevations[ $data[9] ] ],
-					'party'               => $party_list[ $data[12] ],
-					'legislative_body'    => $leg_body_list[ $usio_title_to_leg_body_map[ $data[8] ] ],
-					'main_office_address' => $address['address'],
-					'main_office_city'    => $address['city'],
-					'main_office_state'   => $address['state'],
-					'main_office_zip'     => $address['zip'],
-					'leg_url'             => $data[13],
-					'main_phone'          => $data[15],
-				];
-
-				if ( $data[18] ) {
-					$profile['twitter'] = \Newspack\Govpack\Helpers::FACEBOOK_BASE_URL . $data[18];
-				}
-
-				if ( $data[19] ) {
-					$profile['facebook'] = \Newspack\Govpack\Helpers::TWITTER_BASE_URL . $data[19];
-				}
+			$csvfile = fopen( $file, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
+			if ( ! $csvfile ) {
+				WP_CLI::error( "File $file cannot be opened." );
 			}
 
-			if ( ! $dry_run && $profile ) {
-				$result = \Newspack\Govpack\CPT\Profile::create( $profile );
-				if ( 0 === $result || is_wp_error( $result ) ) {
-					WP_CLI::error( sprintf( 'Failed to insert %s %s.', $profile['first_name'], $profile['last_name'] ) );
+			fgetcsv( $csvfile ); // Skip header row.
+			while ( true ) {
+				$data = fgetcsv( $csvfile );
+				if ( false === $data ) {
+					break;
+				}
+
+				$data = array_map( 'trim', $data );
+
+				// USIO.
+				if ( 'usio' === $source ) {
+					$address = [];
+					preg_match( '/(?P<address>.+?) (?P<city>Washington) (?P<state>\w{2}) (?P<zip>\d{5}(?:-\d{4})?)/', $data[14], $address );
+
+					$profile = [
+						'last_name'           => $data[0],
+						'first_name'          => $data[1],
+						'title'               => $usio_title_map[ $data[8] ],
+						'state'               => $state_list[ $state_abbrevations[ $data[9] ] ],
+						'party'               => $party_list[ $data[12] ],
+						'legislative_body'    => $leg_body_list[ $usio_title_to_leg_body_map[ $data[8] ] ],
+						'main_office_address' => $address['address'],
+						'main_office_city'    => $address['city'],
+						'main_office_state'   => $address['state'],
+						'main_office_zip'     => $address['zip'],
+						'leg_url'             => $data[13],
+						'main_phone'          => $data[15],
+					];
+
+					if ( $data[18] ) {
+						$profile['twitter'] = \Newspack\Govpack\Helpers::TWITTER_BASE_URL . $data[18];
+					}
+
+					if ( $data[19] ) {
+						$profile['facebook'] = \Newspack\Govpack\Helpers::FACEBOOK_BASE_URL . $data[19];
+					}
+				} elseif ( 'openstates' === $source ) {
+					$leg_address      = [];
+					$district_address = [];
+					preg_match( '/(?P<address>.+?) (?P<city>[^ ]+) (?P<state>\w{2}) (?P<zip>\d{5}(?:-\d{4})?)/', $data[15], $leg_address );
+					preg_match( '/(?P<address>.+?) (?P<city>[^ ]+) (?P<state>\w{2}) (?P<zip>\d{5}(?:-\d{4})?)/', $data[18], $district_address );
+
+					$profile = [
+						'last_name'                => $data[6],
+						'first_name'               => $data[5],
+						'title'                    => $openstates_leg_body_to_title_map[ $data[4] ],
+						'state'                    => false,
+						'party'                    => isset( $openstates_party_map[ $data[2] ] ) ? $openstates_party_map[ $data[2] ] : $data[2],
+						'legislative_body'         => $openstates_leg_body_map[ $data[4] ],
+						'email'                    => $data[8],
+						'biography'                => $data[9],
+						'image'                    => $data[12],
+
+						'main_office_address'      => $leg_address['address'],
+						'main_office_city'         => $leg_address['city'],
+						'main_office_state'        => $leg_address['state'],
+						'main_office_zip'          => $leg_address['zip'],
+						'main_phone'               => $data[16],
+						'secondary_office_address' => $district_address['address'],
+						'secondary_office_city'    => $district_address['city'],
+						'secondary_office_state'   => $district_address['state'],
+						'secondary_office_zip'     => $district_address['zip'],
+						'secondary_phone'          => $data[19],
+
+						'leg_url'                  => end( explode( ';', $data[13] ) ), // Last URL is most recent.
+						'instagram'                => $data[23],
+						'facebook'                 => $data[24],
+					];
+
+					if ( $data[21] ) {
+						$profile['twitter'] = \Newspack\Govpack\Helpers::TWITTER_BASE_URL . $data[21];
+					}
+
+					if ( $data[24] ) {
+						$profile['facebook'] = \Newspack\Govpack\Helpers::FACEBOOK_BASE_URL . $data[24];
+					}
+
+					if ( $data[23] ) {
+						$profile['instagram'] = \Newspack\Govpack\Helpers::INSTAGRAM_BASE_URL . $data[23];
+					}
+				} elseif ( 'govpack' === $source ) {
+					WP_CLI::warning( 'govpack import support coming soon' );
 				} else {
-					WP_CLI::success( sprintf( 'Inserted %s %s as profile ID %d.', $profile['first_name'], $profile['last_name'], $result ) );
+					WP_CLI::error( "Unsupported source type: $source" );
+				}
+
+				if ( ! $dry_run && $profile ) {
+					$result = \Newspack\Govpack\CPT\Profile::create( $profile );
+					if ( 0 === $result || is_wp_error( $result ) ) {
+						WP_CLI::error( sprintf( 'Failed to insert %s %s.', $profile['first_name'], $profile['last_name'] ) );
+					} else {
+						WP_CLI::success( sprintf( 'Inserted %s %s as profile ID %d.', $profile['first_name'], $profile['last_name'], $result ) );
+					}
 				}
 			}
+			fclose( $csvfile ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
 		}
-		fclose( $csvfile ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
-
-		WP_CLI::line( 'Importing...' );
 	}
 }
 

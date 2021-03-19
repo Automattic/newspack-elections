@@ -624,7 +624,11 @@ class Profile {
 
 		foreach ( $tax_map as $key => $tax_slug ) {
 			if ( ! empty( $data[ $key ] ) ) {
-				wp_set_post_terms( $new_post, [ $data[ $key ] ], $tax_slug );
+				// If using term ID, need an array of integers; if you pass in an integer,
+				// WP will create a new term with the integer as the name and slug.
+				$terms = [ $data[ $key ] ];
+
+				wp_set_post_terms( $new_post, $terms, $tax_slug );
 			}
 		}
 

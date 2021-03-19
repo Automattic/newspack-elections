@@ -1,7 +1,18 @@
 {
 	"Democrat": "Democrat",
-	"Republican": "Republican",
-	"Independent": "Independent",
+	"Democratic-Farmer-Labor": "Democratic-Farmer-Labor",
+	"Democratic/Progressive": "Democratic/Progressive",
 	"Green": "Green",
-	"Libertarian": "Libertarian"
+	"Independence": "Independence",
+	"Independent": "Independent",
+	"Libertarian": "Libertarian",
+	"Movimiento Victoria Ciudadana": "Movimiento Victoria Ciudadana",
+	"Nonpartisan": "Nonpartisan",
+	"Partido Independentista Puertorriqueño": "Partido Independentista Puertorriqueño",
+	"Partido Nuevo Progresista": "Partido Nuevo Progresista",
+	"Partido Popular Democrático": "Partido Popular Democrático",
+	"Progressive": "Progressive",
+	"Progressive/Democratic": "Progressive/Democratic",
+	"Proyecto Dignidad": "Proyecto Dignidad",
+	"Republican": "Republican"
 }

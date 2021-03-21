@@ -1,8 +1,10 @@
-.cmb2-postbox .cmb-row.cmb-type-textarea-small label, .cmb2-postbox .cmb-row.cmb-type-text-email label, .cmb2-postbox .cmb-row.cmb-type-text-url label, .cmb2-postbox .cmb-row.cmb-type-text label, .cmb2-postbox .cmb-row.cmb-type-taxonomy-select label, .cmb2-postbox .cmb-row.cmb-type-select label {
+.cmb2-postbox .cmb-row.cmb-type-wysiwyg label, .cmb2-postbox .cmb-row.cmb-type-textarea-small label, .cmb2-postbox .cmb-row.cmb-type-text-email label, .cmb2-postbox .cmb-row.cmb-type-text-url label, .cmb2-postbox .cmb-row.cmb-type-text label, .cmb2-postbox .cmb-row.cmb-type-taxonomy-select label, .cmb2-postbox .cmb-row.cmb-type-select label {
   font-weight: 600;
 }
 
-.cmb2-postbox .cmb-row.cmb-type-textarea-small textarea,
+.cmb2-postbox .cmb-row.cmb-type-wysiwyg textarea,
+.cmb2-postbox .cmb-row.cmb-type-wysiwyg input,
+.cmb2-postbox .cmb-row.cmb-type-wysiwyg select, .cmb2-postbox .cmb-row.cmb-type-textarea-small textarea,
 .cmb2-postbox .cmb-row.cmb-type-textarea-small input,
 .cmb2-postbox .cmb-row.cmb-type-textarea-small select, .cmb2-postbox .cmb-row.cmb-type-text-email textarea,
 .cmb2-postbox .cmb-row.cmb-type-text-email input,
@@ -26,10 +28,13 @@
   font-weight: 600;
 }
 
-.cmb2-postbox .cmb-type-taxonomy-multicheck-inline li {
-  display: inline;
+.cmb2-postbox .cmb-type-taxonomy-multicheck-inline ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 80%;
 }
 
-.cmb2-postbox .cmb-type-taxonomy-multicheck-inline li + li {
-  margin-left: 10px;
+.cmb2-postbox .cmb-type-taxonomy-multicheck-inline li {
+  text-indent: -1.7em;
+  margin-left: 2em;
 }

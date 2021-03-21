@@ -155,6 +155,7 @@ class CLI extends \WP_CLI_Command {
 					preg_match( '/(?P<address>.+?) (?P<city>Washington) (?P<state>\w{2}) (?P<zip>\d{5}(?:-\d{4})?)/', $data[14], $address );
 
 					$profile = [
+						'govpack_id'          => $data[22],
 						'last_name'           => $data[0],
 						'first_name'          => $data[1],
 						'title'               => $usio_title_map[ $data[8] ],
@@ -183,6 +184,7 @@ class CLI extends \WP_CLI_Command {
 					preg_match( '/(?P<address>.+?) (?P<city>[^ ]+) (?P<state>\w{2}) (?P<zip>\d{5}(?:-\d{4})?)/', $data[18], $district_address );
 
 					$profile = [
+						'govpack_id'               => $data[0],
 						'last_name'                => $data[6],
 						'first_name'               => $data[5],
 						'title'                    => $openstates_leg_body_to_title_map[ $data[4] ],

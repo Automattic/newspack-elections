@@ -190,17 +190,59 @@ class CLI extends \WP_CLI_Command {
 
 					$leg_address      = [];
 					$district_address = [];
-					preg_match( '/(?P<address>.+?) (?P<city>[^ ]+) (?P<state>\w{2}) (?P<zip>\d{5}(?:-\d{4})?)/', $data[15], $leg_address );
-					preg_match( '/(?P<address>.+?) (?P<city>[^ ]+) (?P<state>\w{2}) (?P<zip>\d{5}(?:-\d{4})?)/', $data[18], $district_address );
+
+					// AR addresses don't have the state specified.
+					// See https://github.com/openstates/openstates-scrapers/pull/3635.
+					if ( false !== strpos( $data[14], 'state.ar.us' ) ) {
+						preg_match( '/^(?P<address>.+), (?P<city>[^,]+),? (?P<zip>\d{5}(?:-\d{4})?)$/', $data[18], $district_address );
+
+						$district_address['state'] = 'AR';
+
+						if ( isset( $district_address['address'] ) ) {
+							$district_address['address'] = join( "\n", preg_split( '/; ?/', $district_address['address'], -1, PREG_SPLIT_NO_EMPTY ) );
+						}
+					} else {
+						preg_match( '/^(?P<address>.+)(;|,) ?(?P<city>[^,;]+),? (?P<state>\w{2}),? (?P<zip>\d{5}(?:-\d{4})?)$/', $data[15], $leg_address );
+						preg_match( '/^(?P<address>.+)(;|,) ?(?P<city>[^,;]+),? (?P<state>\w{2}),? (?P<zip>\d{5}(?:-\d{4})?)$/', $data[18], $district_address );
+
+						// Split address parts in to lines.
+						if ( isset( $leg_address['address'] ) ) {
+							$leg_address['address'] = join( "\n", preg_split( '/; ?/', $leg_address['address'], -1, PREG_SPLIT_NO_EMPTY ) );
+						}
+
+						if ( isset( $district_address['address'] ) ) {
+							$district_address['address'] = join( "\n", preg_split( '/; ?/', $district_address['address'], -1, PREG_SPLIT_NO_EMPTY ) );
+						}
+					}
+
+
+					// Vermont state reps can belong to multiple parties. Need to split on / and create an array of parties.
+					$parties = array_map(
+						function( $item ) use ( $openstates_party_map, $party_list ) {
+							return isset( $openstates_party_map[ $item ] ) ? $party_list[ $openstates_party_map[ $item ] ] : $party_list[ $item ];
+						},
+						explode( '/', $data[2] )
+					);
+
+					$leg_urls = explode( ';', $data[13] );
+					$leg_url  = end( $leg_urls ); // Last URL is most recent.
+
+					$state = $leg_address['state'] ?? $district_address['state'];
+					if ( ! $state ) {
+						WP_CLI::warning( "Could not determine state for profile ID {$data[0]}." );
+						continue;
+					}
 
 					$profile = [
 						'govpack_id'               => $data[0],
 						'last_name'                => $data[6],
 						'first_name'               => $data[5],
 						'title'                    => $openstates_leg_body_to_title_map[ $data[4] ],
-						'state'                    => false,
-						'party'                    => isset( $openstates_party_map[ $data[2] ] ) ? $openstates_party_map[ $data[2] ] : $data[2],
+
+						'state'                    => $state,
+						'party'                    => $parties,
 						'legislative_body'         => $openstates_leg_body_map[ $data[4] ],
+
 						'email'                    => $data[8],
 						'biography'                => $data[9],
 						'image'                    => $data[12],
@@ -216,7 +258,7 @@ class CLI extends \WP_CLI_Command {
 						'secondary_office_zip'     => $district_address['zip'] ?? '',
 						'secondary_phone'          => $data[19],
 
-						'leg_url'                  => end( explode( ';', $data[13] ) ), // Last URL is most recent.
+						'leg_url'                  => $leg_url,
 						'instagram'                => $data[23],
 						'facebook'                 => $data[24],
 					];

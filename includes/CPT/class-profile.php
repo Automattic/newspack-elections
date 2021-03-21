@@ -580,16 +580,24 @@ class Profile {
 		];
 
 		$meta_keys = [
+			'govpack_id',
 			'title',
 			'main_office_address',
-			'main_office_address2',
 			'main_office_city',
 			'main_office_state',
 			'main_office_zip',
-			'leg_url',
 			'main_phone',
+			'secondary_office_address',
+			'secondary_office_city',
+			'secondary_office_state',
+			'secondary_office_zip',
+			'secondary_phone',
+			'leg_url',
+			'email',
 			'twitter',
 			'facebook',
+			'instagram',
+			'biography',
 		];
 
 		foreach ( $meta_keys as $key ) {

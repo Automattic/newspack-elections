@@ -205,10 +205,11 @@ class Profile {
 
 		$cmb_name->add_field(
 			[
-				'name'     => __( 'Party', 'govpack' ),
-				'id'       => 'party',
-				'type'     => 'taxonomy_select',
-				'taxonomy' => \Newspack\Govpack\Tax\Party::TAX_SLUG,
+				'name'              => __( 'Party', 'govpack' ),
+				'id'                => 'party',
+				'type'              => 'taxonomy_multicheck_inline',
+				'select_all_button' => false,
+				'taxonomy'          => \Newspack\Govpack\Tax\Party::TAX_SLUG,
 			]
 		);
 

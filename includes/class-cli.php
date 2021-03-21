@@ -178,6 +178,16 @@ class CLI extends \WP_CLI_Command {
 						$profile['facebook'] = \Newspack\Govpack\Helpers::FACEBOOK_BASE_URL . $data[19];
 					}
 				} elseif ( 'openstates' === $source ) {
+
+					// Some Open States' legislators don't have first and last names.
+					// See https://github.com/openstates/issues/issues/365.
+					if ( empty( $data[5] ) || empty( $data[6] ) ) {
+						WP_CLI::warning( "No first or last name found for {$data[0]}. Deriving name." );
+						$name_parts = explode( ' ', $data[1] );
+						$data[5]    = join( ' ', array_slice( $name_parts, 0, -1 ) );
+						$data[6]    = join( ' ', array_slice( $name_parts, -1 ) );
+					}
+
 					$leg_address      = [];
 					$district_address = [];
 					preg_match( '/(?P<address>.+?) (?P<city>[^ ]+) (?P<state>\w{2}) (?P<zip>\d{5}(?:-\d{4})?)/', $data[15], $leg_address );

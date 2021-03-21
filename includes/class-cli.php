@@ -229,6 +229,9 @@ class CLI extends \WP_CLI_Command {
 				}
 
 				if ( ! $dry_run && $profile ) {
+					// Remove empty fields.
+					$profile = array_filter( $profile );
+
 					$result = \Newspack\Govpack\CPT\Profile::create( $profile );
 					if ( 0 === $result || is_wp_error( $result ) ) {
 						WP_CLI::error( sprintf( 'Failed to insert %s %s.', $profile['first_name'], $profile['last_name'] ) );

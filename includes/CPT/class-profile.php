@@ -615,6 +615,22 @@ class Profile {
 			return $new_post;
 		}
 
+		// Fetch the image.
+		if ( ! empty( $data['image'] ) ) {
+			if ( $data['image'] ) {
+				$desc     = $data['first_name'] . ' ' . $data['last_name'];
+				$image_id = media_sideload_image( $data['image'], $new_post, $desc, 'id' );
+
+				if ( $image_id ) {
+					if ( set_post_thumbnail( $new_post, $image_id ) ) {
+						WP_CLI::line( "Added image for profile $new_post." );
+					} else {
+						WP_CLI::warning( "Failed to image for profile $new_post." );
+					}
+				}
+			}
+		}
+
 		// Insert the taxonomy separate. wp_insert_post() woill not insert
 		// taxonomy data when run without a logged-in user, i.e. in CLI.
 		$tax_map = [

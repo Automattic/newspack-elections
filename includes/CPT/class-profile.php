@@ -257,15 +257,7 @@ class Profile {
 				[
 					'name' => __( 'Address', 'govpack' ),
 					'id'   => $slug . '_address',
-					'type' => 'text',
-				]
-			);
-
-			$box->add_field(
-				[
-					'name' => __( 'Address Line 2', 'govpack' ),
-					'id'   => $slug . '_address2',
-					'type' => 'text',
+					'type' => 'textarea_small',
 				]
 			);
 

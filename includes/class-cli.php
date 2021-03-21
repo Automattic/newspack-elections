@@ -196,14 +196,14 @@ class CLI extends \WP_CLI_Command {
 						'image'                    => $data[12],
 
 						'main_office_address'      => $leg_address['address'],
-						'main_office_city'         => $leg_address['city'],
-						'main_office_state'        => $leg_address['state'],
-						'main_office_zip'          => $leg_address['zip'],
+						'main_office_city'         => $leg_address['city'] ?? '',
+						'main_office_state'        => $leg_address['state'] ?? '',
+						'main_office_zip'          => $leg_address['zip'] ?? '',
 						'main_phone'               => $data[16],
-						'secondary_office_address' => $district_address['address'],
-						'secondary_office_city'    => $district_address['city'],
-						'secondary_office_state'   => $district_address['state'],
-						'secondary_office_zip'     => $district_address['zip'],
+						'secondary_office_address' => $district_address['address'] ?? '',
+						'secondary_office_city'    => $district_address['city'] ?? '',
+						'secondary_office_state'   => $district_address['state'] ?? '',
+						'secondary_office_zip'     => $district_address['zip'] ?? '',
 						'secondary_phone'          => $data[19],
 
 						'leg_url'                  => end( explode( ';', $data[13] ) ), // Last URL is most recent.

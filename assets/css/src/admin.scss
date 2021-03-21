@@ -1,5 +1,6 @@
 .cmb2-postbox {
 	.cmb-row {
+		&.cmb-type-wysiwyg,
 		&.cmb-type-textarea-small,
 		&.cmb-type-text-email,
 		&.cmb-type-text-url,
@@ -27,11 +28,15 @@
 			font-weight: 600;
 		}
 
+		ul {
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr;
+			width: 80%;
+		}
+
 		li {
-			display: inline;
-			& + li {
-				margin-left: 10px;
-			}
+			text-indent: -1.7em;
+			margin-left: 2em;
 		}
 	}
 }

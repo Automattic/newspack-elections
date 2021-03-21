@@ -643,9 +643,17 @@ class Profile {
 			if ( ! empty( $data[ $key ] ) ) {
 				// If using term ID, need an array of integers; if you pass in an integer,
 				// WP will create a new term with the integer as the name and slug.
-				$terms = [ $data[ $key ] ];
+				//
+				// With OpenStates, parties will already be an array.
+				$terms = is_array( $data[ $key ] ) ? $data[ $key ] : [ $data[ $key ] ];
 
 				wp_set_post_terms( $new_post, $terms, $tax_slug );
+
+				// If multiple parties exist, i.e. Democratic/Progressive in Vermont,
+				// store the order in postmeta.
+				if ( 'party' === $key && count( $terms ) > 1 ) {
+					update_post_meta( $new_post, 'party_order', join( ',', $terms ) );
+				}
 			}
 		}
 

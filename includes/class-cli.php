@@ -235,6 +235,8 @@ class CLI extends \WP_CLI_Command {
 					} else {
 						WP_CLI::success( sprintf( 'Inserted %s %s as profile ID %d.', $profile['first_name'], $profile['last_name'], $result ) );
 					}
+				} else {
+					WP_CLI::line( sprintf( 'Found data for %s %s.', $profile['first_name'], $profile['last_name'] ) );
 				}
 			}
 			fclose( $csvfile ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose

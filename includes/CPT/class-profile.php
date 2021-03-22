@@ -14,6 +14,21 @@ use \Newspack\Govpack\Helpers;
  */
 class Profile {
 
+
+	/**
+	 * Valid profile formats.
+	 *
+	 * @var array
+	 */
+	public static $profile_formats = [ 'full', 'mini', 'wiki' ];
+
+	/**
+	 * Default profile format.
+	 *
+	 * @var string
+	 */
+	public static $default_profile_format = 'full';
+
 	/**
 	 * Stores static instance of class.
 	 *
@@ -39,6 +54,11 @@ class Profile {
 	 */
 	const CPT_SLUG = 'govpack_profile';
 
+	/**
+	 * Shortcode.
+	 */
+	const SHORTCODE = 'govpack';
+
 
 	/**
 	 * Inits the class and registeres the hooks call
@@ -46,7 +66,6 @@ class Profile {
 	 * @return self
 	 */
 	public function __construct() {
-
 		add_action( 'after_setup_theme', [ __class__, 'hooks' ], 11, 1 );
 	}
 
@@ -55,12 +74,13 @@ class Profile {
 	 * WordPress Hooks
 	 */
 	public static function hooks() {
-		
+
 		add_action( 'init', [ __CLASS__, 'register_post_type' ] );
 		add_action( 'cmb2_init', [ __CLASS__, 'add_profile_boxes' ] );
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
 		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
-		add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ get_called_class(), 'sortable_columns' ] );
+		add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
+		add_shortcode( self::SHORTCODE, [ __CLASS__, 'shortcode_handler' ] );
 	}
 
 	/**
@@ -133,9 +153,9 @@ class Profile {
 	 * @param array $sortable_columns An array of sortable columns.
 	 */
 	public static function sortable_columns( $sortable_columns ) {
-		$sortable_columns[ 'taxonomy-' . State::TAX_SLUG ]            = 'State';
-		$sortable_columns[ 'taxonomy-' . Party::TAX_SLUG ]            = 'Party';
-		$sortable_columns[ 'taxonomy-' . Legislative_Body::TAX_SLUG ] = 'Legislative Body';
+		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\State::TAX_SLUG ]           = 'State';
+		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\Party::TAX_SLUG ]           = 'Party';
+		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] = 'Legislative Body';
 		return $sortable_columns;
 	}
 
@@ -155,6 +175,7 @@ class Profile {
 				'priority'     => 'high',
 				'show_names'   => true,
 				'cmb_styles'   => false,
+				'show_in_rest' => \WP_REST_Server::READABLE,
 			]
 		);
 
@@ -228,11 +249,15 @@ class Profile {
 		/**
 		 * Office address metaboxes.
 		 */
-		foreach ( [ $cmb_address, $cmb_address2 ] as $box ) {
+		$address_boxes = [
+			'main_office'      => $cmb_address,
+			'secondary_office' => $cmb_address2,
+		];
+		foreach ( $address_boxes as $slug => $box ) {
 			$box->add_field(
 				[
 					'name' => __( 'Address', 'govpack' ),
-					'id'   => 'address',
+					'id'   => $slug . '_address',
 					'type' => 'text',
 				]
 			);
@@ -240,7 +265,7 @@ class Profile {
 			$box->add_field(
 				[
 					'name' => __( 'Address Line 2', 'govpack' ),
-					'id'   => 'address2',
+					'id'   => $slug . '_address2',
 					'type' => 'text',
 				]
 			);
@@ -248,7 +273,7 @@ class Profile {
 			$box->add_field(
 				[
 					'name' => __( 'City', 'govpack' ),
-					'id'   => 'city',
+					'id'   => $slug . '_city',
 					'type' => 'text',
 				]
 			);
@@ -256,7 +281,7 @@ class Profile {
 			$box->add_field(
 				[
 					'name'             => __( 'State', 'govpack' ),
-					'id'               => 'state',
+					'id'               => $slug . '_state',
 					'type'             => 'select',
 					'show_option_none' => true,
 					'options'          => Helpers::states(),
@@ -266,7 +291,7 @@ class Profile {
 			$box->add_field(
 				[
 					'name'       => __( 'Zip', 'govpack' ),
-					'id'         => 'zip',
+					'id'         => $slug . '_zip',
 					'type'       => 'text',
 					'attributes' => [
 						'size'      => 10,
@@ -383,7 +408,6 @@ class Profile {
 					'id'         => 'twitter',
 					'type'       => 'text',
 					'attributes' => [
-						'type'      => 'text',
 						'size'      => 15,
 						'maxlength' => 15,
 					],
@@ -396,10 +420,25 @@ class Profile {
 					'id'         => 'instagram',
 					'type'       => 'text',
 					'attributes' => [
-						'type'      => 'text',
 						'size'      => 30,
 						'maxlength' => 30,
 					],
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name' => __( 'Lesgislative website', 'govpack' ),
+					'id'   => 'leg_url',
+					'type' => 'text_url',
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name' => __( 'Campaign website', 'govpack' ),
+					'id'   => 'campaign_url',
+					'type' => 'text_url',
 				]
 			);
 
@@ -438,5 +477,95 @@ class Profile {
 		}
 		return $data;
 	}
-}
 
+	/**
+	 * Fetch profile data into an array. Used for shortcode and Gutenberg block.
+	 *
+	 * @param int $profile_id    Array of shortcode attributes.
+	 *
+	 * @return array Profile data
+	 */
+	public static function get_data( $profile_id ) {
+		$profile_id = absint( $profile_id );
+		if ( ! $profile_id ) {
+			return;
+		}
+
+		$profile_raw_data = get_post_meta( $profile_id );
+		if ( ! $profile_raw_data ) {
+			return;
+		}
+
+		if ( empty( $profile_raw_data['first_name'][0] ) || empty( $profile_raw_data['last_name'][0] ) ) {
+			return;
+		}
+
+		$term_objects = wp_get_post_terms( $profile_id, [ \Newspack\Govpack\Tax\Party::TAX_SLUG, \Newspack\Govpack\Tax\State::TAX_SLUG, \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] );
+		$term_data    = array_reduce(
+			$term_objects,
+			function( $carry, $item ) {
+				$carry[ $item->taxonomy ] = $item->name;
+				return $carry;
+			},
+			[]
+		);
+
+		$profile_data = [ // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+			'id'               => $profile_id,
+			'first_name'       => $profile_raw_data['first_name'][0] ?? '',
+			'last_name'        => $profile_raw_data['last_name'][0] ?? '',
+			'title'            => $profile_raw_data['title'][0] ?? '',
+			'phone'            => $profile_raw_data['main_phone'][0] ?? '',
+			'twitter'          => $profile_raw_data['twitter'][0] ?? '',
+			'instagram'        => $profile_raw_data['instagram'][0] ?? '',
+			'email'            => $profile_raw_data['email'][0] ?? '',
+			'facebook'         => $profile_raw_data['facebook'][0] ?? '',
+			'website'          => $profile_raw_data['leg_url'][0] ?? '',
+			'biography'        => $profile_raw_data['biography'][0] ?? '',
+			'party'            => $term_data[ \Newspack\Govpack\Tax\Party::TAX_SLUG ] ?? '',
+			'state'            => $term_data[ \Newspack\Govpack\Tax\State::TAX_SLUG ] ?? '',
+			'legislative_body' => $term_data[ \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] ?? '',
+		];
+
+		return $profile_data;
+	}
+
+	/**
+	 * Shortcode handler for [govpack].
+	 *
+	 * @param array  $atts    Array of shortcode attributes.
+	 * @param string $content Post content.
+	 *
+	 * @return string HTML for recipe shortcode.
+	 */
+	public static function shortcode_handler( $atts, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		if ( ! isset( $atts['id'] ) ) {
+			return;
+		}
+
+		$profile_data = self::get_data( $atts['id'] );
+
+		if ( ! $profile_data ) {
+			return;
+		}
+
+		$atts = shortcode_atts(
+			[
+				'format' => self::$default_profile_format,
+			],
+			$atts
+		);
+
+		if ( ! in_array( $atts['format'], self::$profile_formats, true ) ) {
+			$atts['format'] = self::$default_profile_format;
+		}
+
+		$profile_data['format'] = $atts['format'];
+
+		ob_start();
+		require_once GOVPACK_PLUGIN_FILE . 'template-parts/profile.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+		$html = ob_get_clean();
+
+		return $html;
+	}
+}

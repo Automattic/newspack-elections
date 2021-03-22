@@ -97,9 +97,12 @@
     "@wordpress/base-styles": "^3.3.3",
     "@wordpress/block-editor": "^5.2.9",
     "@wordpress/blocks": "^7.0.6",
+    "@wordpress/components": "^13.0.0",
+    "@wordpress/data": "^4.27.0",
     "@wordpress/dom-ready": "^2.12.1",
     "@wordpress/edit-post": "^3.26.9",
-    "@wordpress/html-entities": "^2.10.1"
+    "@wordpress/html-entities": "^2.10.1",
+    "@wordpress/i18n": "^3.19.0"
   },
   "devDependencies": {
     "@automattic/calypso-build": "^5.1.0",

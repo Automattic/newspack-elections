@@ -94,7 +94,18 @@ abstract class Importer {
 			$data    = array_map( 'trim', $data );
 			$profile = static::parse( $data );
 
-			if ( ! $dry_run && $profile ) {
+			if ( ! $profile ) {
+				if ( defined( 'WP_CLI' ) && WP_CLI ) {
+					\WP_CLI::line( sprintf( 'Failed to parse data [%s]', wp_json_encode( $data ) ) );
+				}
+				continue;
+			}
+
+			if ( $dry_run ) {
+				if ( defined( 'WP_CLI' ) && WP_CLI ) {
+					\WP_CLI::line( sprintf( 'Found data for %s %s.', $profile['first_name'], $profile['last_name'] ) );
+				}
+			} else {
 				$result = \Newspack\Govpack\CPT\Profile::create( $profile );
 				if ( defined( 'WP_CLI' ) && WP_CLI ) {
 					if ( 0 === $result || is_wp_error( $result ) ) {
@@ -103,8 +114,6 @@ abstract class Importer {
 						\WP_CLI::success( sprintf( 'Inserted %s %s as profile ID %d.', $profile['first_name'], $profile['last_name'], $result ) );
 					}
 				}
-			} elseif ( defined( 'WP_CLI' ) && WP_CLI ) {
-				\WP_CLI::line( sprintf( 'Found data for %s %s.', $profile['first_name'], $profile['last_name'] ) );
 			}
 		}
 		fclose( $csvfile ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose

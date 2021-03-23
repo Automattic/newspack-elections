@@ -142,6 +142,8 @@ class OpenStates extends \Newspack\Govpack\Importer {
 				$leg_address['state'] = 'VA';
 			} elseif ( preg_match( '/wa\.gov|wastateleg\.org/', $data[ self::SOURCE ] ) ) {
 				$leg_address['state'] = 'WA';
+			} elseif ( preg_match( '/sdlegislature\.gov|legis\.sd\.gov/', $data[ self::SOURCE ] ) ) {
+				$leg_address['state'] = 'SD';
 			}
 		}
 

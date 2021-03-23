@@ -101,21 +101,21 @@ class Helpers {
 	public static function titles() {
 		return self::get_cached_list( 'title' );
 	}
-}
 
-/**
- * Log data to file.
- *
- * @param string $data Data to log.
- */
-function gp_log( $data ) {
-	if ( defined( 'WP_ENVIRONMENT_TYPE' ) && 'production' === 'WP_ENVIRONMENT_TYPE' ) {
-		return;
+	/**
+	 * Log data to file.
+	 *
+	 * @param string $data Data to log.
+	 */
+	public static function log( $data ) {
+		if ( defined( 'WP_ENVIRONMENT_TYPE' ) && 'production' === 'WP_ENVIRONMENT_TYPE' ) {
+			return;
+		}
+
+		if ( ! is_string( $data ) ) {
+			$data = var_export( $data, true ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
+		}
+
+		file_put_contents( WP_DEBUG_LOG, $data . "\n", FILE_APPEND ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_file_put_contents
 	}
-
-	if ( ! is_string( $data ) ) {
-		$data = var_export( $data, true ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
-	}
-
-	file_put_contents( ABSPATH . WP_DEBUG_LOG, $data . "\n", FILE_APPEND ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_file_put_contents
 }

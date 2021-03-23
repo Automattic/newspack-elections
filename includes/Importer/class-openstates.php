@@ -74,12 +74,15 @@ class OpenStates extends \Newspack\Govpack\Importer {
 		// Some Open States' legislators don't have first and last names.
 		// See https://github.com/openstates/issues/issues/365.
 		if ( empty( $data[ self::FIRST_NAME ] ) || empty( $data[ self::LAST_NAME ] ) ) {
-			if ( defined( 'WP_CLI' ) && WP_CLI ) {
-				\WP_CLI::warning( "No first or last name found for {$data[self::GOVPACK_ID]}. Deriving name." );
-			}
 			$name_parts               = explode( ' ', $data[ self::FULL_NAME ] );
-			$data[ self::FIRST_NAME ] = join( ' ', array_slice( $name_parts, 0, -1 ) );
-			$data[ self::LAST_NAME ]  = join( ' ', array_slice( $name_parts, -1 ) );
+			$first_name               = join( ' ', array_slice( $name_parts, 0, -1 ) );
+			$last_name                = join( ' ', array_slice( $name_parts, -1 ) );
+			$data[ self::FIRST_NAME ] = $first_name;
+			$data[ self::LAST_NAME ]  = $last_name;
+
+			if ( defined( 'WP_CLI' ) && WP_CLI ) {
+				\WP_CLI::warning( "No first or last name found for {$data[self::GOVPACK_ID]}. Deriving name [$first_name] [$last_name]." );
+			}
 		}
 
 		$leg_address      = [];

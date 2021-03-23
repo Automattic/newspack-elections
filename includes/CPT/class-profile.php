@@ -79,6 +79,7 @@ class Profile {
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
 		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
 		add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
+		add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', [ __CLASS__, 'manage_columns' ] );
 		add_shortcode( self::SHORTCODE, [ __CLASS__, 'shortcode_handler' ] );
 	}
 
@@ -156,6 +157,17 @@ class Profile {
 		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\Party::TAX_SLUG ]           = 'Party';
 		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] = 'Legislative Body';
 		return $sortable_columns;
+	}
+
+	/**
+	 * Remove tags column from profile admin screen.
+	 *
+	 * @param string[] $columns The column header labels keyed by column ID.
+	 * @return array
+	 */
+	public static function manage_columns( $columns ) {
+		unset( $columns['tags'] );
+		return $columns;
 	}
 
 	/**

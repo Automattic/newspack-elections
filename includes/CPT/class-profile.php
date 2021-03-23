@@ -52,7 +52,7 @@ class Profile {
 	/**
 	 * Post Type slug. Used when registering and referencing
 	 */
-	const CPT_SLUG = 'govpack_profile';
+	const CPT_SLUG = 'govpack_profiles';
 
 	/**
 	 * Shortcode.

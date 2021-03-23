@@ -129,6 +129,11 @@ class OpenStates extends \Newspack\Govpack\Importer {
 			$district_address['state'] = 'VA';
 		}
 
+		// Some UT are missing states or have "Utah" instead of "UT".
+		if ( empty( $leg_address['state'] ) && empty( $district_address['state'] ) && preg_match( '/utah\.gov/', $data[ self::SOURCE ] ) ) {
+			$leg_address['state'] = 'UT';
+		}
+
 		// Some VA legislators still lack addresses.
 		if ( empty( $leg_address['state'] ) && empty( $district_address['state'] ) && preg_match( '/virginia\.gov|virginiageneralassembly\.gov/', $data[ self::SOURCE ] ) ) {
 			$leg_address['state'] = 'VA';

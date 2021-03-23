@@ -139,6 +139,7 @@ class County extends \Newspack\Govpack\Taxonomy {
 	 * Add state and fips columns to table. Rename 'Name' to 'County'.
 	 *
 	 * @param string[] $columns The column header labels keyed by column ID.
+	 * @return array
 	 */
 	public static function table_columns( $columns ) {
 		unset( $columns['description'] );

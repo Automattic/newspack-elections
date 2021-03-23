@@ -112,7 +112,6 @@ class OpenStates extends \Newspack\Govpack\Importer {
 			}
 		}
 
-
 		// Vermont state reps can belong to multiple parties. Need to split on / and create an array of parties.
 		$parties = array_map(
 			function( $item ) {
@@ -121,14 +120,39 @@ class OpenStates extends \Newspack\Govpack\Importer {
 			explode( '/', $data[ self::PARTY ] )
 		);
 
-		$leg_urls = explode( ';', $data[ self::LEG_URL ] );
-		$leg_url  = end( $leg_urls ); // Last URL is most recent.
+		// Many VA legislators have "Virginia" as state instead of "VA".
+		if ( isset( $leg_address['state'] ) && 'Virginia' === $leg_address['state'] ) {
+			$leg_address['state'] = 'VA';
+		}
 
-		$state = $leg_address['state'] ?? $district_address['state'];
+		if ( isset( $district_address['state'] ) && 'Virginia' === $district_address['state'] ) {
+			$district_address['state'] = 'VA';
+		}
+
+		// Some VA legislators still lack addresses.
+		if ( empty( $leg_address['state'] ) && empty( $district_address['state'] ) && preg_match( '/virginia\.gov|virginiageneralassembly\.gov/', $data[ self::SOURCE ] ) ) {
+			$leg_address['state'] = 'VA';
+		}
+
+		// Some WA legislators lack addresses.
+		if ( empty( $leg_address['address'] ) && preg_match( '/wa\.gov|wastateleg\.org/', $data[ self::SOURCE ] ) ) {
+			if ( defined( 'WP_CLI' ) && WP_CLI ) {
+				\WP_CLI::warning( "No address found for {$data[ self::FIRST_NAME ]} {$data[ self::LAST_NAME ]}." );
+			}
+			$leg_address['state'] = 'WA';
+		}
+
+		$state = $leg_address['state'] ?? $district_address['state'] ?? '';
 		if ( ! $state ) {
-			\WP_CLI::warning( "Could not determine state for profile ID {$data[self::GOVPACK_ID]}." );
+			if ( defined( 'WP_CLI' ) && WP_CLI ) {
+				\WP_CLI::warning( "Could not determine state for profile ID {$data[self::GOVPACK_ID]}." );
+			}
 			return [];
 		}
+
+		// When multiple URLs are found, last URL is most recent.
+		$leg_urls = explode( ';', $data[ self::LEG_URL ] );
+		$leg_url  = end( $leg_urls );
 
 		$profile = [
 			'govpack_id'               => $data[ self::GOVPACK_ID ],

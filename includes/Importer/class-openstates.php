@@ -99,8 +99,8 @@ class OpenStates extends \Newspack\Govpack\Importer {
 				$district_address['address'] = join( "\n", preg_split( '/; ?/', $district_address['address'], -1, PREG_SPLIT_NO_EMPTY ) );
 			}
 		} else {
-			preg_match( '/^(?P<address>.+)(;|,) ?(?P<city>[^,;]+),? (?P<state>\w{2}),? (?P<zip>\d{5}(?:-\d{4})?)$/', $data[ self::LEG_ADDRESS ], $leg_address );
-			preg_match( '/^(?P<address>.+)(;|,) ?(?P<city>[^,;]+),? (?P<state>\w{2}),? (?P<zip>\d{5}(?:-\d{4})?)$/', $data[ self::DISTRICT_ADDRESS ], $district_address );
+			preg_match( '/^(?P<address>.+)(;|,) ?(?P<city>[^,;]+),? (?P<state>(?:\w{2}|Virginia)),? (?P<zip>\d{5}(?:-\d{4})?)$/', $data[ self::LEG_ADDRESS ], $leg_address );
+			preg_match( '/^(?P<address>.+)(;|,) ?(?P<city>[^,;]+),? (?P<state>(?:\w{2}|Virginia)),? (?P<zip>\d{5}(?:-\d{4})?)$/', $data[ self::DISTRICT_ADDRESS ], $district_address );
 
 			// Split address parts in to lines.
 			if ( isset( $leg_address['address'] ) ) {

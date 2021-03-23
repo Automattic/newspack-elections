@@ -129,22 +129,20 @@ class OpenStates extends \Newspack\Govpack\Importer {
 			$district_address['state'] = 'VA';
 		}
 
-		// Some UT are missing states or have "Utah" instead of "UT".
-		if ( empty( $leg_address['state'] ) && empty( $district_address['state'] ) && preg_match( '/utah\.gov/', $data[ self::SOURCE ] ) ) {
-			$leg_address['state'] = 'UT';
-		}
-
+		// Some TX legislators' addresses don't parse.
+		// Some UT legislators are missing states or have "Utah" instead of "UT".
 		// Some VA legislators still lack addresses.
-		if ( empty( $leg_address['state'] ) && empty( $district_address['state'] ) && preg_match( '/virginia\.gov|virginiageneralassembly\.gov/', $data[ self::SOURCE ] ) ) {
-			$leg_address['state'] = 'VA';
-		}
-
 		// Some WA legislators lack addresses.
-		if ( empty( $leg_address['address'] ) && preg_match( '/wa\.gov|wastateleg\.org/', $data[ self::SOURCE ] ) ) {
-			if ( defined( 'WP_CLI' ) && WP_CLI ) {
-				\WP_CLI::warning( "No address found for {$data[ self::FIRST_NAME ]} {$data[ self::LAST_NAME ]}." );
+		if ( empty( $leg_address['state'] ) && empty( $district_address['state'] ) ) {
+			if ( preg_match( '/texas\.gov/', $data[ self::SOURCE ] ) ) {
+				$leg_address['state'] = 'TX';
+			} elseif ( preg_match( '/utah\.gov/', $data[ self::SOURCE ] ) ) {
+				$leg_address['state'] = 'UT';
+			} elseif ( preg_match( '/virginia\.gov|virginiageneralassembly\.gov/', $data[ self::SOURCE ] ) ) {
+				$leg_address['state'] = 'VA';
+			} elseif ( preg_match( '/wa\.gov|wastateleg\.org/', $data[ self::SOURCE ] ) ) {
+				$leg_address['state'] = 'WA';
 			}
-			$leg_address['state'] = 'WA';
 		}
 
 		$state = $leg_address['state'] ?? $district_address['state'] ?? '';

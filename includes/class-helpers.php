@@ -37,7 +37,7 @@ class Helpers {
 				]
 			);
 			if ( is_wp_error( $term_list ) ) {
-				WP_CLI::error( "No items found in taxonomy: $slug." );
+				return $term_list;
 			}
 
 			$items = array_reduce(

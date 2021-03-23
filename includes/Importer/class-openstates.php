@@ -141,7 +141,7 @@ class OpenStates extends \Newspack\Govpack\Importer {
 			'biography'                => $data[ self::BIOGRAPHY ],
 			'image'                    => $data[ self::IMAGE_URL ],
 
-			'main_office_address'      => $leg_address['address'],
+			'main_office_address'      => $leg_address['address'] ?? '',
 			'main_office_city'         => $leg_address['city'] ?? '',
 			'main_office_state'        => $leg_address['state'] ?? '',
 			'main_office_zip'          => $leg_address['zip'] ?? '',

@@ -103,6 +103,76 @@ class Helpers {
 	}
 
 	/**
+	 * Upload an image and attach it to a post.
+	 *
+	 * @param string  $url        URL to the image.
+	 * @param integer $post_id    Post ID to attach to.
+	 * @param string  $description  Description of the image.
+	 * @return int|WP_Error|false
+	 */
+	public static function upload_image( $url, $post_id, $description ) {
+		// In Virginia, many of the images are of the form
+		// http://memdata.virginiageneralassembly.gov/images/display_image/H0321
+		//
+		// If the image doesn't have a file extension, media_sideload_image() will fail
+		// with this error: Invalid image URL.
+		//
+		// Using the `image_sideload_extensions` filter to allow empty extensions
+		// won't work, as that will result in another error:
+		// Sorry, this file type is not permitted for security reasons
+		//
+		// Workaround is to download it locally and use media_handle_sideload().
+
+		if ( ! $url ) {
+			return;
+		}
+
+		// This is the easy case, where we have an extension.
+		// WordPress can do the work for us.
+		if ( '' !== pathinfo( $url, PATHINFO_EXTENSION ) ) {
+			return media_sideload_image( $url, $post_id, $description, 'id' );
+		}
+
+		$file_array = [
+			'name'     => wp_basename( $url ),
+			'tmp_name' => download_url( $url ),
+		];
+
+		// If error storing temporarily, return the error.
+		if ( is_wp_error( $file_array['tmp_name'] ) ) {
+			return $file_array['tmp_name'];
+		}
+
+		$mime_type = mime_content_type( $file_array['tmp_name'] );
+		if ( ! $mime_type ) {
+			return new \WP_Error( 'upload', "Cannot determine MIME type for [$url]" );
+		}
+
+		if ( 'image/jpeg' === $mime_type ) {
+			$file_array['name'] .= '.jpg';
+		} elseif ( in_array( $mime_type, [ 'image/png', 'image/x-ms-bmp' ], true ) ) {
+			if ( 'image/png' === $mime_type ) {
+				$image_data = imagecreatefrompng( $file_array['tmp_name'] );
+			} elseif ( 'image/x-ms-bmp' === $mime_type ) {
+				$image_data = imagecreatefrombmp( $file_array['tmp_name'] );
+			}
+
+			if ( ! $image_data ) {
+				return new \WP_Error( 'upload', "Cannot create image of [$mime_type] from [$url]" );
+			}
+
+			if ( ! imagejpeg( $image_data, $file_array['tmp_name'] . '.jpg' ) ) {
+				return new \WP_Error( 'upload', "Cannot convert [$url] to JPEG" );
+			}
+			$file_array['name'] .= '.jpg';
+		} else {
+			return new \WP_Error( 'upload', "Cannot determine file extension for [$url] with MIME type [$mime_type]" );
+		}
+
+		return media_handle_sideload( $file_array, $post_id, $description );
+	}
+
+	/**
 	 * Log data to file.
 	 *
 	 * @param string $data Data to log.

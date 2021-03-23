@@ -123,7 +123,7 @@ class OpenStates extends \Newspack\Govpack\Importer {
 
 		$state = $leg_address['state'] ?? $district_address['state'];
 		if ( ! $state ) {
-			WP_CLI::warning( "Could not determine state for profile ID {$data[self::GOVPACK_ID]}." );
+			\WP_CLI::warning( "Could not determine state for profile ID {$data[self::GOVPACK_ID]}." );
 			return [];
 		}
 

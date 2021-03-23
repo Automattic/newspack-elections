@@ -634,10 +634,13 @@ class Profile {
 				$image_id = media_sideload_image( $data['image'], $new_post, $desc, 'id' );
 
 				if ( $image_id ) {
-					if ( set_post_thumbnail( $new_post, $image_id ) ) {
-						WP_CLI::line( "Added image for profile $new_post." );
-					} else {
-						WP_CLI::warning( "Failed to image for profile $new_post." );
+					$result = set_post_thumbnail( $new_post, $image_id );
+					if ( defined( 'WP_CLI' ) && WP_CLI ) {
+						if ( $result ) {
+							\WP_CLI::line( "Added image for profile $new_post." );
+						} else {
+							\WP_CLI::warning( "Failed to add image for profile $new_post." );
+						}
 					}
 				}
 			}

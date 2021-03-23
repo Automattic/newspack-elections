@@ -74,7 +74,11 @@ class OpenStates extends \Newspack\Govpack\Importer {
 		// Some Open States' legislators don't have first and last names.
 		// See https://github.com/openstates/issues/issues/365.
 		if ( empty( $data[ self::FIRST_NAME ] ) || empty( $data[ self::LAST_NAME ] ) ) {
-			$name_parts               = explode( ' ', $data[ self::FULL_NAME ] );
+
+			// Remove suffixes from names.
+			$full_name = explode( ', ', $data[ self::FULL_NAME ] )[0];
+
+			$name_parts               = explode( ' ', $full_name );
 			$first_name               = join( ' ', array_slice( $name_parts, 0, -1 ) );
 			$last_name                = join( ' ', array_slice( $name_parts, -1 ) );
 			$data[ self::FIRST_NAME ] = $first_name;
@@ -82,6 +86,18 @@ class OpenStates extends \Newspack\Govpack\Importer {
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				\WP_CLI::warning( "No first or last name found for {$data[self::GOVPACK_ID]}. Deriving name [$first_name] [$last_name]." );
+			}
+		}
+
+		$first_name_parts = explode( ' ', $data[ self::FIRST_NAME ] );
+		if ( 2 === count( $first_name_parts ) ) {
+			// If of the format "First M.", remove middle initial.
+			if ( 2 === strlen( $first_name_parts[1] ) && '.' === $first_name_parts[1][1] ) {
+				$data[ self::FIRST_NAME ] = $first_name_parts[0];
+
+				// If of the format "F. Middle", remove first initial.
+			} elseif ( 2 === strlen( $first_name_parts[0] ) && '.' === $first_name_parts[0][1] ) {
+				$data[ self::FIRST_NAME ] = $first_name_parts[1];
 			}
 		}
 

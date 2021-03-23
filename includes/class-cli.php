@@ -107,7 +107,14 @@ class CLI extends \WP_CLI_Command {
 		}
 
 		foreach ( $args as $file ) {
-			$importer::import( $file, $dry_run );
+			$result = $importer::import( $file, $dry_run );
+			if ( is_wp_error( $result ) ) {
+				foreach ( $result->errors as $error_info ) {
+					foreach ( $error_info as $message ) {
+						WP_CLI::error( $message );
+					}
+				}
+			}
 		}
 	}
 }

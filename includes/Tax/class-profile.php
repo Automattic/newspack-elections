@@ -49,8 +49,8 @@ class Profile extends \Newspack\Govpack\Taxonomy {
 					'search_items'               => __( 'Search Profiles', 'govpack' ),
 					'not_found'                  => __( 'Not Found', 'govpack' ),
 					'no_terms'                   => __( 'No profiles', 'govpack' ),
-					'items_list'                 => __( 'Legislative Bodies list', 'govpack' ),
-					'items_list_navigation'      => __( 'Legislative Bodies list navigation', 'govpack' ),
+					'items_list'                 => __( 'Profiles list', 'govpack' ),
+					'items_list_navigation'      => __( 'Profiles list navigation', 'govpack' ),
 				],
 				'public'            => true,
 				'hierarchical'      => false,
@@ -70,7 +70,7 @@ class Profile extends \Newspack\Govpack\Taxonomy {
 	/**
 	 * Get all post types and filter out ones that are not used for posts.
 	 */
-	public static function filtered_post_types() {
+	private static function filtered_post_types() {
 		$post_types = array_keys( get_post_types() );
 
 		$exclude = [

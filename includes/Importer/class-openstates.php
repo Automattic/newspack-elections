@@ -162,22 +162,52 @@ class OpenStates extends \Newspack\Govpack\Importer {
 					$leg_address['state'] = 'UT';
 				} elseif ( preg_match( '/virginia\.gov|virginiageneralassembly\.gov/', $data[ self::SOURCE ] ) ) {
 					$leg_address['state'] = 'VA';
-				} elseif ( preg_match( '/wa\.gov|wastateleg\.org/', $data[ self::SOURCE ] ) ) {
+				} elseif ( preg_match( '/\.wa\.gov|wastateleg\.org/', $data[ self::SOURCE ] ) ) {
 					$leg_address['state'] = 'WA';
 				} elseif ( preg_match( '/scstatehouse\.gov/', $data[ self::SOURCE ] ) ) {
 					$leg_address['state'] = 'SC';
 				} elseif ( preg_match( '/sdlegislature\.gov|legis\.sd\.gov/', $data[ self::SOURCE ] ) ) {
 					$leg_address['state'] = 'SD';
-				} elseif ( preg_match( '/rilegislature\.gov|ri\.us/', $data[ self::SOURCE ] ) ) {
+				} elseif ( preg_match( '/rilegislature\.gov|state\.ri\.us/', $data[ self::SOURCE ] ) ) {
 					$leg_address['state'] = 'RI';
 				} elseif ( preg_match( '/tucamarapr\.org|pr\.gov/', $data[ self::SOURCE ] ) ) {
 					$leg_address['state'] = 'PR';
-				} elseif ( preg_match( '/legis\.state\.pa\.us/', $data[ self::SOURCE ] ) ) {
+				} elseif ( preg_match( '/state\.pa\.us/', $data[ self::SOURCE ] ) ) {
 					$leg_address['state'] = 'PA';
 				} elseif ( preg_match( '/oregonlegislature\.gov/', $data[ self::SOURCE ] ) ) {
 					$leg_address['state'] = 'OR';
 				} elseif ( preg_match( '/nysenate\.gov/', $data[ self::SOURCE ] ) ) {
 					$leg_address['state'] = 'NY';
+				} elseif ( preg_match( '/state\.nv\.us/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'NV';
+				} elseif ( preg_match( '/nmlegis\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'NM';
+				} elseif ( preg_match( '/state\.nj\.us/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'NJ';
+				} elseif ( preg_match( '/state\.nh\.us/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'NH';
+				} elseif ( preg_match( '/legis\.nd\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'ND';
+				} elseif ( preg_match( '/leg\.mt\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'MT';
+				} elseif ( preg_match( '/state\.ms\.us|ms\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'MS';
+				} elseif ( preg_match( '/\.mo\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'MO';
+				} elseif ( preg_match( '/michigan\.gov|mi\.gov|senatorpetelucido\.com/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'MI';
+				} elseif ( preg_match( '/maryland\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'MD';
+				} elseif ( preg_match( '/\.la\.gov|louisiana\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'LA';
+				} elseif ( preg_match( '/ilga\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'IL';
+				} elseif ( preg_match( '/hawaii\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'HI';
+				} elseif ( preg_match( '/legis\.ga\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'GA';
+				} elseif ( preg_match( '/myfloridahouse\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'FL';
 				}
 			}
 

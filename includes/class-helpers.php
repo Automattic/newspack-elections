@@ -127,9 +127,9 @@ class Helpers {
 			return;
 		}
 
-		// This is the easy case, where we have an extension.
+		// This is the easy case, where we have an known extension.
 		// WordPress can do the work for us.
-		if ( '' !== pathinfo( $url, PATHINFO_EXTENSION ) ) {
+		if ( in_array( pathinfo( $url, PATHINFO_EXTENSION ), [ 'jpg', 'jpeg', 'jpe', 'png', 'gif' ], true ) ) {
 			return media_sideload_image( $url, $post_id, $description, 'id' );
 		}
 

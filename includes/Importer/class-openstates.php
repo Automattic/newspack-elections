@@ -81,7 +81,7 @@ class OpenStates extends \Newspack\Govpack\Importer {
 		if ( empty( $data[ self::FIRST_NAME ] ) || empty( $data[ self::LAST_NAME ] ) ) {
 
 			// Remove suffixes from names.
-			$full_name = explode( ', ', $data[ self::FULL_NAME ] )[0];
+			$full_name = trim( explode( ', ', $data[ self::FULL_NAME ] )[0] );
 
 			$name_parts               = explode( ' ', $full_name );
 			$first_name               = join( ' ', array_slice( $name_parts, 0, -1 ) );

@@ -71,10 +71,11 @@ abstract class Importer {
 	 * Import CSV data. Parsing is done in ::parse(), defined in subclasses.
 	 *
 	 * @param string  $file     CSV file to import.
+	 * @param string  $state    State to assign to profiles.
 	 * @param boolean $dry_run  Whether to actually import the data (or just print it out).
 	 * @return Importer
 	 */
-	public static function import( $file, $dry_run = true ) {
+	public static function import( $file, $state = false, $dry_run = true ) {
 		if ( ! file_exists( $file ) ) {
 			return new \WP_Error( 'import', "File $file does not exist." );
 		}
@@ -92,7 +93,7 @@ abstract class Importer {
 			}
 
 			$data    = array_map( 'trim', $data );
-			$profile = static::parse( $data );
+			$profile = static::parse( $data, $state );
 
 			if ( ! $profile ) {
 				if ( defined( 'WP_CLI' ) && WP_CLI ) {

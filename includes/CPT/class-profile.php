@@ -646,7 +646,7 @@ class Profile {
 					$result = set_post_thumbnail( $new_post, $image_id );
 					if ( defined( 'WP_CLI' ) && WP_CLI ) {
 						if ( $result ) {
-							\WP_CLI::line( "Added image for profile $new_post." );
+							\WP_CLI::success( "Added image for profile $new_post." );
 						} else {
 							\WP_CLI::warning( "Failed to set post thumnbnail for profile $new_post." );
 						}

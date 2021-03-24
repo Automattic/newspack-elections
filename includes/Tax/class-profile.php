@@ -28,7 +28,7 @@ class Profile extends \Newspack\Govpack\Taxonomy {
 	public static function register_taxonomy() {
 		register_taxonomy(
 			self::TAX_SLUG,
-			array_keys( get_post_types() ),
+			self::filtered_post_types(),
 			[
 				'labels'            => [
 					'name'                       => _x( 'Profiles', 'Taxonomy General Name', 'govpack' ),
@@ -60,10 +60,36 @@ class Profile extends \Newspack\Govpack\Taxonomy {
 					'hierarchical' => false,
 				],
 				'meta_box_cb'       => false,
-				'show_admin_column' => false,
+				'show_admin_column' => true,
 				'show_in_rest'      => true,
-				'show_in_menu'      => false,
+				'show_in_menu'      => true,
 			]
+		);
+	}
+
+	/**
+	 * Get all post types and filter out ones that are not used for posts.
+	 */
+	public static function filtered_post_types() {
+		$post_types = array_keys( get_post_types() );
+
+		$exclude = [
+			'attachment',
+			'custom_css',
+			'customize_changeset',
+			'nav_menu_item',
+			'revision',
+		];
+
+		return array_filter(
+			$post_types,
+			function( $post_type ) use ( $exclude ) {
+				return in_array(
+					$post_type,
+					$exclude,
+					true
+				) ? false : true;
+			}
 		);
 	}
 }

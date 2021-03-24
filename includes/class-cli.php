@@ -64,6 +64,9 @@ class CLI extends \WP_CLI_Command {
 	 * <file>...
 	 * : The CSV file.
 	 *
+	 * [--state=<abbrev>]
+	 * : State profiles belong to.
+	 *
 	 * [--source=<value>]
 	 * : CSV source.
 	 * ---
@@ -95,6 +98,7 @@ class CLI extends \WP_CLI_Command {
 		}
 
 		$source = $assoc_args['source'] ?? 'govpack';
+		$state  = $assoc_args['state'] ?? '';
 
 		if ( 'usio' === $source ) {
 			$importer = \Newspack\Govpack\Importer\UnitedStatesIO::make();
@@ -107,7 +111,7 @@ class CLI extends \WP_CLI_Command {
 		}
 
 		foreach ( $args as $file ) {
-			$result = $importer::import( $file, $dry_run );
+			$result = $importer::import( $file, $state, $dry_run );
 			if ( is_wp_error( $result ) ) {
 				foreach ( $result->errors as $error_info ) {
 					foreach ( $error_info as $message ) {

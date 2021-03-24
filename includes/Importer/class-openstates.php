@@ -66,11 +66,16 @@ class OpenStates extends \Newspack\Govpack\Importer {
 	/**
 	 * Parse a line of CSV dara..
 	 *
-	 * @param array $data   Array of raw profile data.
+	 * @param array  $data    Array of raw profile data.
+	 * @param string $state   State to assign to profile.
 	 *
 	 * @return array Array of profile data.
 	 */
-	public static function parse( $data ) {
+	public static function parse( $data, $state = false ) {
+		if ( $state && ! isset( static::$state_abbrevations[ $state ] ) ) {
+			\WP_CLI::Error( "$state is not a valid state abbreviation." );
+		}
+
 		// Some Open States' legislators don't have first and last names.
 		// See https://github.com/openstates/issues/issues/365.
 		if ( empty( $data[ self::FIRST_NAME ] ) || empty( $data[ self::LAST_NAME ] ) ) {
@@ -136,38 +141,41 @@ class OpenStates extends \Newspack\Govpack\Importer {
 			explode( '/', $data[ self::PARTY ] )
 		);
 
-		// Many VA legislators have "Virginia" as state instead of "VA".
-		if ( isset( $leg_address['state'] ) && 'Virginia' === $leg_address['state'] ) {
-			$leg_address['state'] = 'VA';
-		}
-
-		if ( isset( $district_address['state'] ) && 'Virginia' === $district_address['state'] ) {
-			$district_address['state'] = 'VA';
-		}
-
-		// Some TX legislators' addresses don't parse.
-		// Some UT legislators are missing states or have "Utah" instead of "UT".
-		// Some VA legislators still lack addresses.
-		// Some WA legislators lack addresses.
-		if ( empty( $leg_address['state'] ) && empty( $district_address['state'] ) ) {
-			if ( preg_match( '/texas\.gov/', $data[ self::SOURCE ] ) ) {
-				$leg_address['state'] = 'TX';
-			} elseif ( preg_match( '/utah\.gov/', $data[ self::SOURCE ] ) ) {
-				$leg_address['state'] = 'UT';
-			} elseif ( preg_match( '/virginia\.gov|virginiageneralassembly\.gov/', $data[ self::SOURCE ] ) ) {
+		if ( ! $state ) {
+			// Many VA legislators have "Virginia" as state instead of "VA".
+			if ( isset( $leg_address['state'] ) && 'Virginia' === $leg_address['state'] ) {
 				$leg_address['state'] = 'VA';
-			} elseif ( preg_match( '/wa\.gov|wastateleg\.org/', $data[ self::SOURCE ] ) ) {
-				$leg_address['state'] = 'WA';
-			} elseif ( preg_match( '/scstatehouse\.gov/', $data[ self::SOURCE ] ) ) {
-				$leg_address['state'] = 'SC';
-			} elseif ( preg_match( '/sdlegislature\.gov|legis\.sd\.gov/', $data[ self::SOURCE ] ) ) {
-				$leg_address['state'] = 'SD';
-			} elseif ( preg_match( '/rilegislature\.gov|ri\.us/', $data[ self::SOURCE ] ) ) {
-				$leg_address['state'] = 'RI';
 			}
+
+			if ( isset( $district_address['state'] ) && 'Virginia' === $district_address['state'] ) {
+				$district_address['state'] = 'VA';
+			}
+
+			// Some TX legislators' addresses don't parse.
+			// Some UT legislators are missing states or have "Utah" instead of "UT".
+			// Some VA legislators still lack addresses.
+			// Some WA legislators lack addresses.
+			if ( empty( $leg_address['state'] ) && empty( $district_address['state'] ) ) {
+				if ( preg_match( '/texas\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'TX';
+				} elseif ( preg_match( '/utah\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'UT';
+				} elseif ( preg_match( '/virginia\.gov|virginiageneralassembly\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'VA';
+				} elseif ( preg_match( '/wa\.gov|wastateleg\.org/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'WA';
+				} elseif ( preg_match( '/scstatehouse\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'SC';
+				} elseif ( preg_match( '/sdlegislature\.gov|legis\.sd\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'SD';
+				} elseif ( preg_match( '/rilegislature\.gov|ri\.us/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'RI';
+				}
+			}
+
+			$state = $leg_address['state'] ?? $district_address['state'] ?? '';
 		}
 
-		$state = $leg_address['state'] ?? $district_address['state'] ?? '';
 		if ( ! $state ) {
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				\WP_CLI::warning( "Could not determine state for profile ID {$data[self::GOVPACK_ID]}." );

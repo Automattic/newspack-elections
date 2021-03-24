@@ -425,22 +425,6 @@ class Profile {
 
 			$cmb_comms->add_field(
 				[
-					'name' => __( 'Lesgislative website', 'govpack' ),
-					'id'   => 'leg_url',
-					'type' => 'text_url',
-				]
-			);
-
-			$cmb_comms->add_field(
-				[
-					'name' => __( 'Campaign website', 'govpack' ),
-					'id'   => 'campaign_url',
-					'type' => 'text_url',
-				]
-			);
-
-			$cmb_comms->add_field(
-				[
 					'name'       => __( 'Facebook', 'govpack' ),
 					'id'         => 'facebook',
 					'type'       => 'text',
@@ -454,6 +438,22 @@ class Profile {
 				[
 					'name' => __( 'LinkedIn URL', 'govpack' ),
 					'id'   => 'linkedin',
+					'type' => 'text_url',
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name' => __( 'Lesgislative website', 'govpack' ),
+					'id'   => 'leg_url',
+					'type' => 'text_url',
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name' => __( 'Campaign website', 'govpack' ),
+					'id'   => 'campaign_url',
 					'type' => 'text_url',
 				]
 			);

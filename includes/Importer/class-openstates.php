@@ -174,6 +174,10 @@ class OpenStates extends \Newspack\Govpack\Importer {
 					$leg_address['state'] = 'PR';
 				} elseif ( preg_match( '/legis\.state\.pa\.us/', $data[ self::SOURCE ] ) ) {
 					$leg_address['state'] = 'PA';
+				} elseif ( preg_match( '/oregonlegislature\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'OR';
+				} elseif ( preg_match( '/nysenate\.gov/', $data[ self::SOURCE ] ) ) {
+					$leg_address['state'] = 'NY';
 				}
 			}
 

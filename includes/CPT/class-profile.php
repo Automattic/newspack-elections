@@ -113,7 +113,7 @@ class Profile {
 				'show_ui'      => true,
 				'supports'     => [ 'revisions', 'thumbnail' ],
 				'taxonomies'   => [ 'post_tag' ],
-				'as_taxonomy'  => 'govpack_profile_tax',
+				'as_taxonomy'  => \Newspack\Govpack\Tax\Profile::TAX_SLUG,
 				'menu_icon'    => 'dashicons-groups',
 				'rewrite'      => [
 					'slug'       => apply_filters( 'govpack_profile_filter_slug', 'profile' ),

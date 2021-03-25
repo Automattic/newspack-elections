@@ -83,53 +83,53 @@ class AsTaxonomy {
 			return;
 		}
 
-		if ( ! wp_is_post_revision( $post_id ) && ! wp_is_post_autosave( $post_id ) ) {
-			$post = get_post( $post_id );
+		if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
+			return;
+		}
 
-			if ( 'auto-draft' === $post->post_status ) {
-				return;
-			}
+		$post = get_post( $post_id );
+		if ( ! $post ) {
+			return;
+		}
 
-			if ( isset( $this->post_types[ $post->post_type ] ) ) {
-				$taxonomy = $this->post_types[ $post->post_type ];
+		if ( 'auto-draft' === $post->post_status ) {
+			return;
+		}
 
-				$term_id = get_post_meta( $post->ID, 'term_id', true );
+		if ( ! isset( $this->post_types[ $post->post_type ] ) ) {
+			return;
+		}
 
-				if ( $term_id ) {
+		$taxonomy = $this->post_types[ $post->post_type ];
 
-					// This post is already linked to a term, let's see if it still exists.
-					$term = get_term( $term_id, $taxonomy );
+		$term_id = get_post_meta( $post->ID, 'term_id', true );
+		if ( $term_id ) {
 
-					if ( $term ) {
-						// It exists, update optional changes.
-						wp_update_term(
-							$term_id,
-							$taxonomy,
-							[
-								'name' => $post->post_title,
-								'slug' => $post->post_name,
-							]
-						);
-						return;
-					}
-				}
+			// This post is already linked to a term, let's see if it still exists.
+			$term = get_term( $term_id, $taxonomy );
 
-				// If the code made it here, either the term link didn't exist or still has to be created.
-				// Either way, create a new term link!
-				$term = wp_insert_term(
-					$post->post_title,
+			if ( $term ) {
+				// It exists, update optional changes.
+				wp_update_term(
+					$term_id,
 					$taxonomy,
 					[
+						'name' => $post->post_title,
 						'slug' => $post->post_name,
 					]
 				);
-
-				if ( ! is_wp_error( $term ) ) {
-					update_post_meta( $post->ID, 'term_id', $term['term_id'] );
-				} elseif ( isset( $term->error_data['term_exists'] ) ) {
-					update_post_meta( $post->ID, 'term_id', $term->error_data['term_exists'] );
-				}
+				return;
 			}
+		}
+
+		// If the code made it here, either the term link didn't exist or still has to be created.
+		// Either way, create a new term link!
+		$term = wp_insert_term( $post->post_title, $taxonomy, [ 'slug' => $post->post_name ] );
+
+		if ( ! is_wp_error( $term ) ) {
+			update_post_meta( $post->ID, 'term_id', $term['term_id'] );
+		} elseif ( isset( $term->error_data['term_exists'] ) ) {
+			update_post_meta( $post->ID, 'term_id', $term->error_data['term_exists'] );
 		}
 	}
 
@@ -143,26 +143,35 @@ class AsTaxonomy {
 			return;
 		}
 
-		if ( ! wp_is_post_revision( $post_id ) ) {
-			$post = get_post( $post_id );
-
-			if ( isset( $this->post_types[ $post->post_type ] ) ) {
-				$taxonomy = $this->post_types[ $post->post_type ];
-
-				$term_id = get_post_meta( $post->ID, 'term_id', true );
-
-				if ( $term_id ) {
-
-					// The post is linked to a term, delete it!
-					$term = get_term( $term_id, $taxonomy );
-
-					if ( $term ) {
-						// The linked term still exists, now really delete.
-						wp_delete_term( $term_id, $taxonomy );
-					}
-				}
-			}
+		if ( wp_is_post_revision( $post_id ) ) {
+			return;
 		}
+
+		$post = get_post( $post_id );
+		if ( ! $post ) {
+			return;
+		}
+
+		if ( ! isset( $this->post_types[ $post->post_type ] ) ) {
+			return;
+		}
+
+		$term_id = get_post_meta( $post->ID, 'term_id', true );
+		if ( ! $term_id ) {
+			return;
+		}
+
+		$taxonomy = $this->post_types[ $post->post_type ];
+
+		// The post is linked to a term, delete it!
+		$term = get_term( $term_id, $taxonomy );
+
+		if ( ! $term ) {
+			return;
+		}
+
+		// The linked term still exists, now really delete.
+		wp_delete_term( $term_id, $taxonomy );
 	}
 
 	/**
@@ -176,16 +185,24 @@ class AsTaxonomy {
 	 * @param string $part Optional. The part of the term to return.
 	 */
 	public function get_term( $post_id, $taxonomy, $part = '' ) {
-		if ( $post_id && $taxonomy ) {
-			$term = get_term( get_post_meta( $post_id, 'term_id', true ), $taxonomy );
-
-			if ( $term && ! is_wp_error( $term ) ) {
-				if ( $part ) {
-					return $term->$part;
-				}
-				return $term;
-			}
+		if ( ! $post_id || ! $taxonomy ) {
+			return;
 		}
+
+		$term = get_term( get_post_meta( $post_id, 'term_id', true ), $taxonomy );
+		if ( is_wp_error( $term ) ) {
+			return $term;
+		}
+
+		if ( ! $term ) {
+			return;
+		}
+
+		if ( $part ) {
+			return $term->$part;
+		}
+
+		return $term;
 	}
 
 	/**
@@ -198,24 +215,27 @@ class AsTaxonomy {
 	 * @param string $part Optional. The part of the terms to return.
 	 */
 	public function get_terms( $post_id, $taxonomy, $part = '' ) {
-		if ( $post_id && $taxonomy ) {
-			$terms = wp_get_post_terms( $post_id, $taxonomy );
-
-			if ( $terms ) {
-				// Return complete objects.
-				if ( ! $part ) {
-					return $terms;
-				}
-
-				// Return part of the terms.
-				$terms_part = [];
-				foreach ( $terms as $term ) {
-					$terms_part[] = $term->$part;
-				}
-
-				return $terms_part;
-			}
+		if ( ! $post_id || ! $taxonomy ) {
+			return;
 		}
+
+		$terms = wp_get_post_terms( $post_id, $taxonomy );
+		if ( ! $terms ) {
+			return;
+		}
+
+		// Return complete objects.
+		if ( ! $part ) {
+			return $terms;
+		}
+
+		// Return part of the terms.
+		$terms_part = [];
+		foreach ( $terms as $term ) {
+			$terms_part[] = $term->$part;
+		}
+
+		return $terms_part;
 	}
 
 	/**
@@ -224,7 +244,7 @@ class AsTaxonomy {
 	 * @param object $term The linked term.
 	 */
 	public function get_post( $term ) {
-		$posts = get_posts( // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.get_posts_get_posts
+		$query = new WP_Query(
 			[
 				'post_type'   => 'any',
 				'meta_key'    => 'term_id',
@@ -233,6 +253,7 @@ class AsTaxonomy {
 			]
 		);
 
+		$posts = $query->posts;
 		if ( is_object( $posts[0] ) ) {
 			return $posts[0];
 		}

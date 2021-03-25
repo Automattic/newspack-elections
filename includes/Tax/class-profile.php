@@ -84,11 +84,7 @@ class Profile extends \Newspack\Govpack\Taxonomy {
 		return array_filter(
 			$post_types,
 			function( $post_type ) use ( $exclude ) {
-				return in_array(
-					$post_type,
-					$exclude,
-					true
-				) ? false : true;
+				return ! in_array( $post_type, $exclude, true );
 			}
 		);
 	}

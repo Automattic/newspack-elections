@@ -18,6 +18,7 @@ class Hooks {
 		// Enqueue CSS and JS.
 		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'wp_enqueue_scripts' ] );
 		add_action( 'admin_enqueue_scripts', [ __CLASS__, 'admin_enqueue_scripts' ] );
+		add_filter( 'single_template', [ __CLASS__, 'single_template' ] );
 	}
 
 	/**
@@ -47,5 +48,20 @@ class Hooks {
 	 */
 	public static function set_image_sizes() {
 		add_image_size( 'govpack-square', 140, 140, true );
+	}
+
+	/**
+	 * Set template for profile page.
+	 *
+	 * @param string $template The current template path.
+	 */
+	public static function single_template( $template ) {
+		global $post;
+
+		if ( \Newspack\Govpack\CPT\Profile::CPT_SLUG === $post->post_type && locate_template( [ 'single-' . \Newspack\Govpack\CPT\Profile::CPT_SLUG . '.php' ] ) !== $template ) {
+			return plugin_dir_path( __DIR__ ) . 'template-parts/single-' . \Newspack\Govpack\CPT\Profile::CPT_SLUG . '.php';
+		}
+
+		return $template;
 	}
 }

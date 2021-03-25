@@ -115,7 +115,7 @@ class Profile {
 				'taxonomies'   => [ 'post_tag' ],
 				'menu_icon'    => 'dashicons-groups',
 				'rewrite'      => [
-					'slug'       => 'people',
+					'slug'       => apply_filters( 'govpack_profile_filter_slug', 'profile' ),
 					'with_front' => 'false',
 				],
 			]
@@ -544,7 +544,6 @@ class Profile {
 		}
 
 		$profile_data = self::get_data( $atts['id'] );
-
 		if ( ! $profile_data ) {
 			return;
 		}

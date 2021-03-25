@@ -50,12 +50,14 @@ class Govpack {
 	 */
 	public static function hooks() {
 		\Newspack\Govpack\CPT\Profile::instance();
+		\Newspack\Govpack\CPT\AsTaxonomy::instance();
 		\Newspack\Govpack\Tax\City::hooks();
 		\Newspack\Govpack\Tax\County::hooks();
 		\Newspack\Govpack\Tax\Installation::hooks();
 		\Newspack\Govpack\Tax\LegislativeBody::hooks();
 		\Newspack\Govpack\Tax\OfficeHolderStatus::hooks();
 		\Newspack\Govpack\Tax\Party::hooks();
+		\Newspack\Govpack\Tax\Profile::hooks();
 		\Newspack\Govpack\Tax\State::hooks();
 	}
 }

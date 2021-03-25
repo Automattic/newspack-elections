@@ -259,5 +259,3 @@ class County extends \Newspack\Govpack\Taxonomy {
 		<?php
 	}
 }
-
-add_action( 'after_setup_theme', [ '\Newspack\Govpack\County', 'hooks' ] );

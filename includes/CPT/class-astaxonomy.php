@@ -41,8 +41,6 @@ class AsTaxonomy {
 
 	/**
 	 * Inits the class and registers the init call.
-	 *
-	 * @return self
 	 */
 	public function __construct() {
 		add_action( 'init', [ $this, 'init' ], 11 );
@@ -54,29 +52,29 @@ class AsTaxonomy {
 
 	/**
 	 * Which post types want to be ordered
-	 *
-	 * @return void
 	 */
 	public function init() {
 
 		$post_types = get_post_types();
-
-		if ( $post_types ) {
-			foreach ( $post_types as $post_type ) {
-				$post_type = get_post_type_object( $post_type );
-
-				if ( isset( $post_type->as_taxonomy ) ) {
-					$this->post_types[ $post_type->name ] = $post_type->as_taxonomy;
-				}
-			}
+		if ( ! $post_types ) {
+			return;
 		}
 
+		foreach ( $post_types as $post_type ) {
+			$post_type = get_post_type_object( $post_type );
+
+			if ( isset( $post_type->as_taxonomy ) ) {
+				$this->post_types[ $post_type->name ] = $post_type->as_taxonomy;
+			}
+		}
 	}
 
 	/**
 	 * Add or update a term in our taxonomy
 	 *
 	 * @param int $post_id The posts ID that has to be linked to our taxonomy.
+	 *
+	 * @return boolean
 	 */
 	public function update( $post_id ) {
 		if ( ! is_array( $this->post_types ) ) {
@@ -127,9 +125,9 @@ class AsTaxonomy {
 		$term = wp_insert_term( $post->post_title, $taxonomy, [ 'slug' => $post->post_name ] );
 
 		if ( ! is_wp_error( $term ) ) {
-			update_post_meta( $post->ID, 'term_id', $term['term_id'] );
+			return update_post_meta( $post->ID, 'term_id', $term['term_id'] );
 		} elseif ( isset( $term->error_data['term_exists'] ) ) {
-			update_post_meta( $post->ID, 'term_id', $term->error_data['term_exists'] );
+			return update_post_meta( $post->ID, 'term_id', $term->error_data['term_exists'] );
 		}
 	}
 
@@ -137,6 +135,8 @@ class AsTaxonomy {
 	 * Delete a term
 	 *
 	 * @param int $post_id The posts ID which taxonomy term has to be removed.
+	 *
+	 * @return bool|int|WP_Error
 	 */
 	public function delete( $post_id ) {
 		if ( ! is_array( $this->post_types ) ) {
@@ -171,7 +171,7 @@ class AsTaxonomy {
 		}
 
 		// The linked term still exists, now really delete.
-		wp_delete_term( $term_id, $taxonomy );
+		return wp_delete_term( $term_id, $taxonomy );
 	}
 
 	/**
@@ -183,6 +183,8 @@ class AsTaxonomy {
 	 * @param int    $post_id The ID of the post.
 	 * @param string $taxonomy The taxonomy where the term should be in.
 	 * @param string $part Optional. The part of the term to return.
+	 *
+	 * @return WP_Term|string|WP_Error
 	 */
 	public function get_term( $post_id, $taxonomy, $part = '' ) {
 		if ( ! $post_id || ! $taxonomy ) {
@@ -213,6 +215,8 @@ class AsTaxonomy {
 	 * @param int    $post_id The ID of the post.
 	 * @param string $taxonomy The taxonomy of which to collect the.
 	 * @param string $part Optional. The part of the terms to return.
+	 *
+	 * @return null|array
 	 */
 	public function get_terms( $post_id, $taxonomy, $part = '' ) {
 		if ( ! $post_id || ! $taxonomy ) {
@@ -242,6 +246,8 @@ class AsTaxonomy {
 	 * Retrieve the post that is linked to a term
 	 *
 	 * @param object $term The linked term.
+	 *
+	 * @return WP_Post|null
 	 */
 	public function get_post( $term ) {
 		$query = new WP_Query(

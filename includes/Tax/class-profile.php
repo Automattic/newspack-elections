@@ -18,7 +18,7 @@ class Profile extends \Newspack\Govpack\Taxonomy {
 	const TAX_SLUG = 'govpack_profile';
 
 	/**
-	 * URL slug. Also used for fixtures.
+	 * URL slug.
 	 */
 	const SLUG = 'profile';
 

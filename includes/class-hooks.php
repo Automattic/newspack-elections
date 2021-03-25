@@ -19,6 +19,7 @@ class Hooks {
 		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'wp_enqueue_scripts' ] );
 		add_action( 'admin_enqueue_scripts', [ __CLASS__, 'admin_enqueue_scripts' ] );
 		add_filter( 'single_template', [ __CLASS__, 'single_template' ] );
+		add_action( 'init', [ __CLASS__, 'register_sidebars' ] );
 	}
 
 	/**
@@ -63,5 +64,27 @@ class Hooks {
 		}
 
 		return $template;
+	}
+
+	/**
+	 * Register Sidebars
+	 */
+	public static function register_sidebars() {
+		$sidebars = [
+			\Newspack\Govpack\CPT\Profile::CPT_SLUG => 'Govpack Profile',
+		];
+
+		foreach ( $sidebars as $slug => $name ) {
+			register_sidebar(
+				[
+					'name'          => $name,
+					'id'            => $slug,
+					'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+					'after_widget'  => '</aside>',
+					'before_title'  => '<h2 class="widget-title">',
+					'after_title'   => '</h2>',
+				]
+			);
+		}
 	}
 }

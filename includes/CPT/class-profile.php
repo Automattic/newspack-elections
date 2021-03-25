@@ -52,7 +52,7 @@ class Profile {
 	/**
 	 * Post Type slug. Used when registering and referencing
 	 */
-	const CPT_SLUG = 'govpack_profile';
+	const CPT_SLUG = 'govpack_profiles';
 
 	/**
 	 * Shortcode.
@@ -74,12 +74,12 @@ class Profile {
 	 * WordPress Hooks
 	 */
 	public static function hooks() {
-
 		add_action( 'init', [ __CLASS__, 'register_post_type' ] );
 		add_action( 'cmb2_admin_init', [ __CLASS__, 'add_profile_boxes' ] );
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
 		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
 		add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
+		add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', [ __CLASS__, 'manage_columns' ] );
 		add_shortcode( self::SHORTCODE, [ __CLASS__, 'shortcode_handler' ] );
 	}
 
@@ -160,6 +160,17 @@ class Profile {
 	}
 
 	/**
+	 * Remove tags column from profile admin screen.
+	 *
+	 * @param string[] $columns The column header labels keyed by column ID.
+	 * @return array
+	 */
+	public static function manage_columns( $columns ) {
+		unset( $columns['tags'] );
+		return $columns;
+	}
+
+	/**
 	 * Using CMB2, add custom fields to profile.
 	 */
 	public static function add_profile_boxes() {
@@ -206,10 +217,11 @@ class Profile {
 
 		$cmb_name->add_field(
 			[
-				'name'     => __( 'Party', 'govpack' ),
-				'id'       => 'party',
-				'type'     => 'taxonomy_select',
-				'taxonomy' => \Newspack\Govpack\Tax\Party::TAX_SLUG,
+				'name'              => __( 'Party', 'govpack' ),
+				'id'                => 'party',
+				'type'              => 'taxonomy_multicheck_inline',
+				'select_all_button' => false,
+				'taxonomy'          => \Newspack\Govpack\Tax\Party::TAX_SLUG,
 			]
 		);
 
@@ -257,15 +269,7 @@ class Profile {
 				[
 					'name' => __( 'Address', 'govpack' ),
 					'id'   => $slug . '_address',
-					'type' => 'text',
-				]
-			);
-
-			$box->add_field(
-				[
-					'name' => __( 'Address Line 2', 'govpack' ),
-					'id'   => $slug . '_address2',
-					'type' => 'text',
+					'type' => 'textarea_small',
 				]
 			);
 
@@ -293,9 +297,7 @@ class Profile {
 					'id'         => $slug . '_zip',
 					'type'       => 'text',
 					'attributes' => [
-						'size'      => 10,
 						'maxlength' => 10,
-						'type'      => 'number',
 					],
 				]
 			);
@@ -373,7 +375,6 @@ class Profile {
 					'id'         => 'main_phone',
 					'type'       => 'text',
 					'attributes' => [
-						'size'      => 30,
 						'maxlength' => 40,
 						'type'      => 'tel',
 					],
@@ -386,7 +387,6 @@ class Profile {
 					'id'         => 'secondary_phone',
 					'type'       => 'text',
 					'attributes' => [
-						'size'      => 30,
 						'maxlength' => 40,
 						'type'      => 'tel',
 					],
@@ -407,7 +407,6 @@ class Profile {
 					'id'         => 'twitter',
 					'type'       => 'text',
 					'attributes' => [
-						'size'      => 15,
 						'maxlength' => 15,
 					],
 				]
@@ -419,9 +418,27 @@ class Profile {
 					'id'         => 'instagram',
 					'type'       => 'text',
 					'attributes' => [
-						'size'      => 30,
 						'maxlength' => 30,
 					],
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name'       => __( 'Facebook', 'govpack' ),
+					'id'         => 'facebook',
+					'type'       => 'text',
+					'attributes' => [
+						'maxlength' => 50,
+					],
+				]
+			);
+
+			$cmb_comms->add_field(
+				[
+					'name' => __( 'LinkedIn URL', 'govpack' ),
+					'id'   => 'linkedin',
+					'type' => 'text_url',
 				]
 			);
 
@@ -440,22 +457,6 @@ class Profile {
 					'type' => 'text_url',
 				]
 			);
-
-			$cmb_comms->add_field(
-				[
-					'name' => __( 'Facebook URL', 'govpack' ),
-					'id'   => 'facebook',
-					'type' => 'text_url',
-				]
-			);
-
-			$cmb_comms->add_field(
-				[
-					'name' => __( 'LinkedIn URL', 'govpack' ),
-					'id'   => 'linkedin',
-					'type' => 'text_url',
-				]
-			);
 		}
 	}
 
@@ -468,7 +469,7 @@ class Profile {
 	 *                                   originally passed to wp_insert_post().
 	 * @return array
 	 */
-	public static function set_profile_title( $data, $postarr, $unsanitized_postarr ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public static function set_profile_title( $data, $postarr, $unsanitized_postarr = false ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$title = join( ' ', array_filter( [ $postarr['first_name'] ?? '', $postarr['last_name'] ?? '' ] ) );
 		if ( $title ) {
 			$data['post_title'] = $title;
@@ -566,6 +567,121 @@ class Profile {
 		$html = ob_get_clean();
 
 		return $html;
+	}
+
+	/**
+	 * Create a profile.
+	 *
+	 * @param array $data   Array of profile data.
+	 *
+	 * @return int|WP_Error The post ID on success. 0 or WP_Error on failure.
+	 */
+	public static function create( $data ) {
+		if ( ! $data['first_name'] || ! $data['last_name'] ) {
+			return;
+		}
+
+		$post_args = [
+			'post_type'   => self::CPT_SLUG,
+			'post_status' => 'publish',
+			'meta_input'  => [
+				'first_name' => $data['first_name'],
+				'last_name'  => $data['last_name'],
+			],
+			'tax_input'   => [],
+		];
+
+		$meta_keys = [
+			'govpack_id',
+			'title',
+			'main_office_address',
+			'main_office_city',
+			'main_office_state',
+			'main_office_zip',
+			'main_phone',
+			'secondary_office_address',
+			'secondary_office_city',
+			'secondary_office_state',
+			'secondary_office_zip',
+			'secondary_phone',
+			'leg_url',
+			'email',
+			'twitter',
+			'facebook',
+			'instagram',
+			'biography',
+		];
+
+		foreach ( $meta_keys as $key ) {
+			if ( ! empty( $data[ $key ] ) ) {
+				$post_args['meta_input'][ $key ] = $data[ $key ];
+			}
+		}
+
+		// Set the post title.
+		$post_args = self::set_profile_title( $post_args, $data );
+
+		// Insert the post and post metadata.
+		$new_post = wp_insert_post( $post_args );
+		if ( 0 === $new_post || is_wp_error( $new_post ) ) {
+			return $new_post;
+		}
+
+		// Fetch the image.
+		if ( ! empty( $data['image'] ) ) {
+			if ( $data['image'] ) {
+				$description = $data['first_name'] . ' ' . $data['last_name'];
+				$image_id    = Helpers::upload_image( $data['image'], $new_post, $description );
+
+				if ( is_wp_error( $image_id ) ) {
+					if ( defined( 'WP_CLI' ) && WP_CLI ) {
+						\WP_CLI::warning( "Failed to upload image [{$data['image']}] for profile $new_post." );
+						foreach ( $image_id->errors as $error_info ) {
+							foreach ( $error_info as $message ) {
+								\WP_CLI::warning( $message );
+							}
+						}
+					}
+				} elseif ( $image_id ) {
+					$result = set_post_thumbnail( $new_post, $image_id );
+					if ( defined( 'WP_CLI' ) && WP_CLI ) {
+						if ( $result ) {
+							\WP_CLI::success( "Added image for profile $new_post." );
+						} else {
+							\WP_CLI::warning( "Failed to set post thumnbnail for profile $new_post." );
+						}
+					}
+				}
+			}
+		}
+
+		// Insert the taxonomy separate. wp_insert_post() woill not insert
+		// taxonomy data when run without a logged-in user, i.e. in CLI.
+		$tax_map = [
+			'state'            => \Newspack\Govpack\Tax\State::TAX_SLUG,
+			'party'            => \Newspack\Govpack\Tax\Party::TAX_SLUG,
+			'legislative_body' => \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG,
+		];
+
+		foreach ( $tax_map as $key => $tax_slug ) {
+			if ( ! empty( $data[ $key ] ) ) {
+				// If using term ID, need an array of integers; if you pass in an integer,
+				// WP will create a new term with the integer as the name and slug.
+				//
+				// With OpenStates, parties will already be an array.
+				$terms = is_array( $data[ $key ] ) ? $data[ $key ] : [ $data[ $key ] ];
+
+				wp_set_post_terms( $new_post, $terms, $tax_slug );
+
+				// If multiple parties exist, i.e. Democratic/Progressive in Vermont,
+				// store the order in postmeta.
+				if ( 'party' === $key && count( $terms ) > 1 ) {
+					update_post_meta( $new_post, 'party_order', join( ',', $terms ) );
+				}
+			}
+		}
+
+		return $new_post;
 	}
 }
 

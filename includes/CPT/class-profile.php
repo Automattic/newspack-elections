@@ -81,6 +81,7 @@ class Profile {
 		add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
 		add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', [ __CLASS__, 'manage_columns' ] );
 		add_shortcode( self::SHORTCODE, [ __CLASS__, 'shortcode_handler' ] );
+		add_filter( 'body_class', [ __CLASS__, 'filter_body_class' ] );
 	}
 
 	/**
@@ -682,6 +683,27 @@ class Profile {
 		}
 
 		return $new_post;
+	}
+
+	/**
+	 * Add body classes depending on layout
+	 *
+	 * @param array $classes CSS classes.
+	 *
+	 * @return array
+	 */
+	public static function filter_body_class( $classes ) {
+		if ( is_singular( self::CPT_SLUG ) ) {
+			$classes[] = 'archive';
+			$classes[] = 'feature-latest';
+
+			$key = array_search( 'single', $classes, true );
+			if ( false !== $key ) {
+				unset( $classes[ $key ] );
+			}
+		}
+
+		return $classes;
 	}
 }
 

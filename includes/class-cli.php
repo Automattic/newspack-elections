@@ -124,4 +124,3 @@ class CLI extends \WP_CLI_Command {
 }
 
 WP_CLI::add_command( 'govpack', '\Newspack\Govpack\CLI' );
-

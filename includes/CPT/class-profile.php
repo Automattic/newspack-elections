@@ -113,7 +113,7 @@ class Profile {
 				'show_ui'      => true,
 				'supports'     => [ 'revisions', 'thumbnail' ],
 				'taxonomies'   => [ 'post_tag' ],
-				'as_taxonomy'  => 'govpack_profile',
+				'as_taxonomy'  => 'govpack_profile_tax',
 				'menu_icon'    => 'dashicons-groups',
 				'rewrite'      => [
 					'slug'       => 'people',

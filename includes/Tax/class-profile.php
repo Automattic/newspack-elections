@@ -15,7 +15,7 @@ class Profile extends \Newspack\Govpack\Taxonomy {
 	/**
 	 * Post Type slug. Used when registering and referencing
 	 */
-	const TAX_SLUG = 'govpack_profile';
+	const TAX_SLUG = 'govpack_profile_tax';
 
 	/**
 	 * URL slug. Also used for fixtures.
@@ -80,6 +80,12 @@ class Profile extends \Newspack\Govpack\Taxonomy {
 			'nav_menu_item',
 			'revision',
 		];
+
+		$exclude_external = apply_filters( 'govpack_exclude_post_types', [] );
+
+		if ( is_array( $exclude_external ) ) {
+			$exclude = array_merge( $exclude, $exclude_external );
+		}
 
 		return array_filter(
 			$post_types,

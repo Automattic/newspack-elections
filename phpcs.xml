@@ -10,6 +10,10 @@
 		<exclude name="Generic.Arrays.DisallowShortArraySyntax.Found" />
 	</rule>
 
+	<rule ref="WordPressVIPMinimum">
+		<exclude name="WordPressVIPMinimum.Classes.RestrictedExtendClasses.wp_cli" />
+	</rule>
+
 	<rule ref="PHPCompatibilityWP" />
 	<config name="testVersion" value="7.4-"/>
 	<config name="minimum_supported_wp_version" value="5.6"/>

@@ -98,7 +98,8 @@ class County extends \Newspack\Govpack\Taxonomy {
 			return;
 		}
 
-		$counter = 1;
+		$progress = 1;
+		$count    = 0;
 		foreach ( $data as $item ) {
 			$name        = preg_replace( '/ (City and Borough|Borough|County|Parish|Municipio|Census Area)$/', '', $item['name'] );
 			$county_name = sprintf( '%s (%s)', $name, $item['state'] );
@@ -106,33 +107,39 @@ class County extends \Newspack\Govpack\Taxonomy {
 			$term_exists_result = term_exists( $county_name, static::TAX_SLUG ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.term_exists_term_exists
 
 			if ( is_array( $term_exists_result ) ) {
-				echo 'Failed to create term for ' . esc_html( $county_name );
+				echo 'Term for ' . esc_html( $county_name ) . " exists; skipping.\n";
+				continue;
 			} else {
-				if ( 0 === $counter % 5 ) {
+				if ( 0 === $progress % 5 ) {
 					echo '.';
 					ob_flush();
 				}
-				if ( 0 === $counter % 100 ) {
+				if ( 0 === $progress % 100 ) {
 					echo "\n";
 				}
 			}
-			$counter++;
+			$progress++;
 
 			$new_term = wp_insert_term( $county_name, static::TAX_SLUG );
 
 			if ( is_array( $new_term ) ) {
-				add_term_meta( $new_term['term_id'], 'state', $item['state'] );
-				add_term_meta( $new_term['term_id'], 'fips', $item['fips'] );
+				echo 'Adding term meta for ' . esc_html( $county_name ) . ".\n";
+				update_term_meta( $new_term['term_id'], 'state', $item['state'] );
+				update_term_meta( $new_term['term_id'], 'fips', $item['fips'] );
+				$count++;
 			} else {
-				echo 'Failed to add term meta for ' . esc_html( $county_name );
+				echo 'Failed to add term for ' . esc_html( $county_name ) . ".\n";
 			}
 		}
+
+		return $count;
 	}
 
 	/**
 	 * Add state and fips columns to table. Rename 'Name' to 'County'.
 	 *
 	 * @param string[] $columns The column header labels keyed by column ID.
+	 * @return array
 	 */
 	public static function table_columns( $columns ) {
 		unset( $columns['description'] );
@@ -182,7 +189,7 @@ class County extends \Newspack\Govpack\Taxonomy {
 			filter_input( INPUT_POST, 'fips', FILTER_SANITIZE_NUMBER_INT )
 		);
 
-		$states = Helpers::states();
+		$states = \Newspack\Govpack\Helpers::states();
 		$state  = filter_input( INPUT_POST, 'state', FILTER_SANITIZE_STRING );
 		if ( isset( $states[ $state ] ) ) {
 			update_term_meta(
@@ -252,5 +259,3 @@ class County extends \Newspack\Govpack\Taxonomy {
 		<?php
 	}
 }
-
-add_action( 'after_setup_theme', [ '\Newspack\Govpack\County', 'hooks' ] );

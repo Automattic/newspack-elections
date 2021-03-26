@@ -1,0 +1,89 @@
+/*
+ * Profile card/block.
+ */
+.govpack-profile {
+  width: 250px;
+  display: grid;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
+}
+
+.govpack-profile.mini {
+  width: 150px;
+}
+
+.govpack-profile.mini .photo,
+.govpack-profile.mini .name {
+  margin-bottom: 10px;
+}
+
+.govpack-profile.mini .last-name {
+  display: none;
+}
+
+.govpack-profile.wiki {
+  width: 550px;
+}
+
+.govpack-profile.wiki .name-details {
+  grid-column: 2;
+  grid-row: 1 / 3;
+}
+
+.govpack-profile .name,
+.govpack-profile .photo {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.govpack-profile .name {
+  font-size: 20px;
+}
+
+.govpack-profile .info,
+.govpack-profile .biography {
+  font-size: 14px;
+  margin: 0;
+}
+
+.govpack-profile .links {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.govpack-profile .links a {
+  text-decoration: none;
+}
+
+.govpack-profile .biography {
+  margin-top: 1em;
+}
+
+.govpack-profile.wiki .links, .govpack-profile.mini .links {
+  flex-direction: column;
+}
+
+.govpack-profile.wiki .links p, .govpack-profile.mini .links p {
+  margin: 2px;
+}
+
+.govpack-profile.wiki .links a, .govpack-profile.mini .links a {
+  display: flex;
+}
+
+.govpack-profile.wiki .links a .label, .govpack-profile.mini .links a .label {
+  margin-left: 10px;
+}
+
+.govpack-profile.wiki .links img, .govpack-profile.mini .links img {
+  width: 20px;
+  height: 20px;
+}
+
+/*
+ * Single profile template.
+ */
+.single-govpack_profiles #secondary {
+  margin-top: 0;
+}

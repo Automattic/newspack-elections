@@ -1,0 +1,42 @@
+.cmb2-postbox {
+	.cmb-row {
+		&.cmb-type-wysiwyg,
+		&.cmb-type-textarea-small,
+		&.cmb-type-text-email,
+		&.cmb-type-text-url,
+		&.cmb-type-text,
+		&.cmb-type-taxonomy-select,
+		&.cmb-type-select {
+			label {
+				font-weight: 600;
+			}
+
+			textarea,
+			input,
+			select {
+				width: 75%;
+			}
+		}
+
+		& + .cmb-row {
+			margin-top: 10px;
+		}
+	}
+
+	.cmb-type-taxonomy-multicheck-inline {
+		.cmb-th label {
+			font-weight: 600;
+		}
+
+		ul {
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr;
+			width: 80%;
+		}
+
+		li {
+			text-indent: -1.7em;
+			margin-left: 2em;
+		}
+	}
+}

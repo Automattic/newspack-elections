@@ -59,13 +59,12 @@ class Govpack {
 		\Newspack\Govpack\Tax\Party::hooks();
 		\Newspack\Govpack\Tax\Profile::hooks();
 		\Newspack\Govpack\Tax\State::hooks();
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			\Newspack\Govpack\CLI::init();
+		}
 	}
 }
 
 add_action( 'after_setup_theme', [ '\Newspack\Govpack\Govpack', 'hooks' ] );
 add_action( 'after_setup_theme', [ '\Newspack\Govpack\Hooks', 'setup_hooks' ] );
 add_action( 'after_setup_theme', [ '\Newspack\Govpack\Hooks', 'set_image_sizes' ] );
-
-if ( defined( 'WP_CLI' ) && WP_CLI ) {
-	require_once __DIR__ . '/class-cli.php';
-}

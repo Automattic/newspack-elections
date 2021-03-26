@@ -10,7 +10,7 @@ namespace Newspack\Govpack;
 use \WP_CLI as WP_CLI;
 
 /**
- * Manges govpack profile and seed data.
+ * Manages govpack profile and seed data.
  */
 class CLI extends \WP_CLI_Command {
 
@@ -121,6 +121,11 @@ class CLI extends \WP_CLI_Command {
 			}
 		}
 	}
-}
 
-WP_CLI::add_command( 'govpack', '\Newspack\Govpack\CLI' );
+	/**
+	 * Add CLI command.
+	 */
+	public static function init() {
+		WP_CLI::add_command( 'govpack', '\Newspack\Govpack\CLI' );
+	}
+}

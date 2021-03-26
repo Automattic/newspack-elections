@@ -480,6 +480,96 @@ class Profile {
 	}
 
 	/**
+	 * Fetch profile data into an array. Used for shortcode and Gutenberg block.
+	 *
+	 * @param int $profile_id    Array of shortcode attributes.
+	 *
+	 * @return array Profile data
+	 */
+	public static function get_data( $profile_id ) {
+		$profile_id = absint( $profile_id );
+		if ( ! $profile_id ) {
+			return;
+		}
+
+		$profile_raw_data = get_post_meta( $profile_id );
+		if ( ! $profile_raw_data ) {
+			return;
+		}
+
+		if ( empty( $profile_raw_data['first_name'][0] ) || empty( $profile_raw_data['last_name'][0] ) ) {
+			return;
+		}
+
+		$term_objects = wp_get_post_terms( $profile_id, [ \Newspack\Govpack\Tax\Party::TAX_SLUG, \Newspack\Govpack\Tax\State::TAX_SLUG, \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] );
+		$term_data    = array_reduce(
+			$term_objects,
+			function( $carry, $item ) {
+				$carry[ $item->taxonomy ] = $item->name;
+				return $carry;
+			},
+			[]
+		);
+
+		$profile_data = [ // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+			'id'               => $profile_id,
+			'first_name'       => $profile_raw_data['first_name'][0] ?? '',
+			'last_name'        => $profile_raw_data['last_name'][0] ?? '',
+			'title'            => $profile_raw_data['title'][0] ?? '',
+			'phone'            => $profile_raw_data['main_phone'][0] ?? '',
+			'twitter'          => $profile_raw_data['twitter'][0] ?? '',
+			'instagram'        => $profile_raw_data['instagram'][0] ?? '',
+			'email'            => $profile_raw_data['email'][0] ?? '',
+			'facebook'         => $profile_raw_data['facebook'][0] ?? '',
+			'website'          => $profile_raw_data['leg_url'][0] ?? '',
+			'biography'        => $profile_raw_data['biography'][0] ?? '',
+			'party'            => $term_data[ \Newspack\Govpack\Tax\Party::TAX_SLUG ] ?? '',
+			'state'            => $term_data[ \Newspack\Govpack\Tax\State::TAX_SLUG ] ?? '',
+			'legislative_body' => $term_data[ \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] ?? '',
+		];
+
+		return $profile_data;
+	}
+
+	/**
+	 * Shortcode handler for [govpack].
+	 *
+	 * @param array  $atts    Array of shortcode attributes.
+	 * @param string $content Post content.
+	 *
+	 * @return string HTML for recipe shortcode.
+	 */
+	public static function shortcode_handler( $atts, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		if ( ! isset( $atts['id'] ) ) {
+			return;
+		}
+
+		$profile_data = self::get_data( $atts['id'] );
+		if ( ! $profile_data ) {
+			return;
+		}
+
+		$atts = shortcode_atts(
+			[
+				'format' => self::$default_profile_format,
+			],
+			$atts
+		);
+
+		if ( ! in_array( $atts['format'], self::$profile_formats, true ) ) {
+			$atts['format'] = self::$default_profile_format;
+		}
+
+		$profile_data['format'] = $atts['format'];
+
+		ob_start();
+		require_once GOVPACK_PLUGIN_FILE . 'template-parts/profile.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+		$html = ob_get_clean();
+
+		return $html;
+	}
+
+	/**
 	 * Create a profile.
 	 *
 	 * @param array $data   Array of profile data.
@@ -635,95 +725,5 @@ class Profile {
 		];
 
 		return \Newspack\Govpack\Helpers::get_cached_query( $args, 'posts_govpack_profiles_' . $term_id );
-	}
-
-	/**
-	 * Fetch profile data into an array. Used for shortcode and Gutenberg block.
-	 *
-	 * @param int $profile_id    Array of shortcode attributes.
-	 *
-	 * @return array Profile data
-	 */
-	public static function get_data( $profile_id ) {
-		$profile_id = absint( $profile_id );
-		if ( ! $profile_id ) {
-			return;
-		}
-
-		$profile_raw_data = get_post_meta( $profile_id );
-		if ( ! $profile_raw_data ) {
-			return;
-		}
-
-		if ( empty( $profile_raw_data['first_name'][0] ) || empty( $profile_raw_data['last_name'][0] ) ) {
-			return;
-		}
-
-		$term_objects = wp_get_post_terms( $profile_id, [ \Newspack\Govpack\Tax\Party::TAX_SLUG, \Newspack\Govpack\Tax\State::TAX_SLUG, \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] );
-		$term_data    = array_reduce(
-			$term_objects,
-			function( $carry, $item ) {
-				$carry[ $item->taxonomy ] = $item->name;
-				return $carry;
-			},
-			[]
-		);
-
-		$profile_data = [ // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-			'id'               => $profile_id,
-			'first_name'       => $profile_raw_data['first_name'][0] ?? '',
-			'last_name'        => $profile_raw_data['last_name'][0] ?? '',
-			'title'            => $profile_raw_data['title'][0] ?? '',
-			'phone'            => $profile_raw_data['main_phone'][0] ?? '',
-			'twitter'          => $profile_raw_data['twitter'][0] ?? '',
-			'instagram'        => $profile_raw_data['instagram'][0] ?? '',
-			'email'            => $profile_raw_data['email'][0] ?? '',
-			'facebook'         => $profile_raw_data['facebook'][0] ?? '',
-			'website'          => $profile_raw_data['leg_url'][0] ?? '',
-			'biography'        => $profile_raw_data['biography'][0] ?? '',
-			'party'            => $term_data[ \Newspack\Govpack\Tax\Party::TAX_SLUG ] ?? '',
-			'state'            => $term_data[ \Newspack\Govpack\Tax\State::TAX_SLUG ] ?? '',
-			'legislative_body' => $term_data[ \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] ?? '',
-		];
-
-		return $profile_data;
-	}
-
-	/**
-	 * Shortcode handler for [govpack].
-	 *
-	 * @param array  $atts    Array of shortcode attributes.
-	 * @param string $content Post content.
-	 *
-	 * @return string HTML for recipe shortcode.
-	 */
-	public static function shortcode_handler( $atts, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		if ( ! isset( $atts['id'] ) ) {
-			return;
-		}
-
-		$profile_data = self::get_data( $atts['id'] );
-		if ( ! $profile_data ) {
-			return;
-		}
-
-		$atts = shortcode_atts(
-			[
-				'format' => self::$default_profile_format,
-			],
-			$atts
-		);
-
-		if ( ! in_array( $atts['format'], self::$profile_formats, true ) ) {
-			$atts['format'] = self::$default_profile_format;
-		}
-
-		$profile_data['format'] = $atts['format'];
-
-		ob_start();
-		require_once GOVPACK_PLUGIN_FILE . 'template-parts/profile.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
-		$html = ob_get_clean();
-
-		return $html;
 	}
 }

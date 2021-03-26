@@ -686,7 +686,7 @@ class Profile {
 	}
 
 	/**
-	 * Add body classes depending on layout
+	 * Add body classes depending on layout.
 	 *
 	 * @param array $classes CSS classes.
 	 *
@@ -704,6 +704,28 @@ class Profile {
 		}
 
 		return $classes;
+	}
+
+	/**
+	 * Fetch stories related to a profile.
+	 *
+	 * @param integer $profile_id Profile id.
+	 *
+	 * @return WP_Query
+	 */
+	public static function get_stories( $profile_id ) {
+		$term_id = get_post_meta( $profile_id, 'term_id', true );
+		$args    = [
+			'tax_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+				[
+					'taxonomy' => \Newspack\Govpack\Tax\Profile::TAX_SLUG,
+					'field'    => 'id',
+					'terms'    => $term_id,
+				],
+			],
+		];
+
+		return \Newspack\Govpack\Helpers::get_cached_query( $args, 'posts_govpack_profiles_' . $term_id );
 	}
 }
 

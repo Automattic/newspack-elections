@@ -8,18 +8,6 @@
  */
 
 get_header();
-
-$term_id = get_post_meta( get_the_ID(), 'term_id', true );
-$args    = [
-	'tax_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-		[
-			'taxonomy' => \Newspack\Govpack\Tax\Profile::TAX_SLUG,
-			'field'    => 'id',
-			'terms'    => $term_id,
-		],
-	],
-];
-$stories = \Newspack\Govpack\Helpers::get_cached_query( $args, 'posts_govpack_profiles_' . $term_id );
 ?>
 
 	<section id="primary" class="content-area <?php echo esc_attr( newspack_get_category_tag_classes( get_the_ID() ) ); ?>">
@@ -40,6 +28,7 @@ $stories = \Newspack\Govpack\Helpers::get_cached_query( $args, 'posts_govpack_pr
 		<main id="main" class="site-main">
 			<?php
 			$post_count = 0;
+			$stories    = \Newspack\Govpack\CPT\Profile::get_stories( get_the_ID() );
 			while ( $stories->have_posts() ) :
 				$post_count++;
 				$stories->the_post();

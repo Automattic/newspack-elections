@@ -81,6 +81,7 @@ class Profile {
 		add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
 		add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', [ __CLASS__, 'manage_columns' ] );
 		add_shortcode( self::SHORTCODE, [ __CLASS__, 'shortcode_handler' ] );
+		add_filter( 'body_class', [ __CLASS__, 'filter_body_class' ] );
 	}
 
 	/**
@@ -104,8 +105,8 @@ class Profile {
 					'view_item'          => __( 'View Profile', 'govpack' ),
 					'all_items'          => __( 'Profiles', 'govpack' ),
 					'search_items'       => __( 'Search Profiles', 'govpack' ),
-					'not_found'          => __( 'No people found.', 'govpack' ),
-					'not_found_in_trash' => __( 'No people found in Trash.', 'govpack' ),
+					'not_found'          => __( 'No profiles found.', 'govpack' ),
+					'not_found_in_trash' => __( 'No profiles found in Trash.', 'govpack' ),
 				],
 				'has_archive'  => false,
 				'public'       => true,
@@ -113,9 +114,10 @@ class Profile {
 				'show_ui'      => true,
 				'supports'     => [ 'revisions', 'thumbnail' ],
 				'taxonomies'   => [ 'post_tag' ],
+				'as_taxonomy'  => \Newspack\Govpack\Tax\Profile::TAX_SLUG,
 				'menu_icon'    => 'dashicons-groups',
 				'rewrite'      => [
-					'slug'       => 'people',
+					'slug'       => apply_filters( 'govpack_profile_filter_slug', 'profile' ),
 					'with_front' => 'false',
 				],
 			]
@@ -544,7 +546,6 @@ class Profile {
 		}
 
 		$profile_data = self::get_data( $atts['id'] );
-
 		if ( ! $profile_data ) {
 			return;
 		}
@@ -682,6 +683,49 @@ class Profile {
 		}
 
 		return $new_post;
+	}
+
+	/**
+	 * Add body classes depending on layout.
+	 *
+	 * @param array $classes CSS classes.
+	 *
+	 * @return array
+	 */
+	public static function filter_body_class( $classes ) {
+		if ( is_singular( self::CPT_SLUG ) ) {
+			$classes[] = 'archive';
+			$classes[] = 'feature-latest';
+
+			$key = array_search( 'single', $classes, true );
+			if ( false !== $key ) {
+				unset( $classes[ $key ] );
+			}
+		}
+
+		return $classes;
+	}
+
+	/**
+	 * Fetch stories related to a profile.
+	 *
+	 * @param integer $profile_id Profile id.
+	 *
+	 * @return WP_Query
+	 */
+	public static function get_stories( $profile_id ) {
+		$term_id = get_post_meta( $profile_id, 'term_id', true );
+		$args    = [
+			'tax_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+				[
+					'taxonomy' => \Newspack\Govpack\Tax\Profile::TAX_SLUG,
+					'field'    => 'id',
+					'terms'    => $term_id,
+				],
+			],
+		];
+
+		return \Newspack\Govpack\Helpers::get_cached_query( $args, 'posts_govpack_profiles_' . $term_id );
 	}
 }
 

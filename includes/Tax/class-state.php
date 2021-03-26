@@ -67,5 +67,3 @@ class State extends \Newspack\Govpack\Taxonomy {
 	}
 
 }
-
-add_action( 'after_setup_theme', [ '\Newspack\Govpack\State', 'hooks' ] );

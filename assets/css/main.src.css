@@ -1,3 +1,6 @@
+/*
+ * Profile card/block.
+ */
 .govpack-profile {
   width: 250px;
   display: grid;
@@ -76,4 +79,11 @@
 .govpack-profile.wiki .links img, .govpack-profile.mini .links img {
   width: 20px;
   height: 20px;
+}
+
+/*
+ * Single profile template.
+ */
+.single-govpack_profiles #secondary {
+  margin-top: 0;
 }

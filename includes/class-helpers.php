@@ -188,4 +188,26 @@ class Helpers {
 
 		file_put_contents( WP_DEBUG_LOG, $data . "\n", FILE_APPEND ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_file_put_contents
 	}
+
+	/**
+	 * Retrieves the cached post query, if available, else performs and caches the query
+	 * Save the cache for around 1 hour as the default behavior
+	 *
+	 * @param array  $query_args      Arguments to WP_Query.
+	 * @param string $cache_name      Object cache key.
+	 * @param string $cache_group     Object cache group.
+	 * @param int    $cache_duration  Cache duration.
+	 * @return \WP_Query
+	 */
+	public static function get_cached_query( $query_args, $cache_name, $cache_group = '', $cache_duration = 3600 ) {
+		$cached_posts = wp_cache_get( $cache_name );
+
+		if ( false === $cached_posts ) {
+			$cached_posts = new \WP_Query( $query_args );
+
+			wp_cache_set( $cache_name, $cached_posts, $cache_group, $cache_duration ); // phpcs:ignore WordPressVIPMinimum.Performance.LowExpiryCacheTime.LowCacheTime
+		}
+
+		return $cached_posts;
+	}
 }

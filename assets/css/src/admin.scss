@@ -40,3 +40,19 @@
 		}
 	}
 }
+
+.govpack-banner {
+	height: 56px;
+	width: calc( 100% + 20px );
+	background-color: #5a17b2;
+	margin-left: -20px;
+	padding-left: 20px;
+
+	.logo {
+		background-repeat: no-repeat;
+		height: 32px;
+		position: absolute;
+		top: 12px;
+		width: 111px;
+	}
+}

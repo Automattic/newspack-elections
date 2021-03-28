@@ -6,7 +6,15 @@ import { Fragment } from '@wordpress/element';
 import { registerBlockType } from '@wordpress/blocks';
 import { InspectorControls } from '@wordpress/block-editor';
 import { Panel, PanelBody, PanelRow, RadioControl } from '@wordpress/components';
-import { ServerSideRender } from '@wordpress/editor';
+
+/*
+ * import { ServerSideRender } from '@wordpress/editor'
+ *    is deprecated.
+ * Use
+ *    import from @wordpress/server-side-render
+ * instead. But it only has a default export, not a named export.
+ */
+import ServerSideRender from '@wordpress/server-side-render';
 
 import ProfileSelector from './components/profile-selector';
 

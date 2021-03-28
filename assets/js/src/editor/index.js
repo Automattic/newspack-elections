@@ -10,8 +10,9 @@ import { ServerSideRender } from '@wordpress/editor';
 
 import ProfileSelector from './components/profile-selector';
 
+/* with apiVersion 2, the block is not selectable in the editor */
 registerBlockType( 'govpack/profile', {
-	apiVersion: 2,
+	apiVersion: 1,
 	title: 'Govpack',
 	icon: 'groups',
 	category: 'embed',

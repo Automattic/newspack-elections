@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { RichText } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
-import { ComboboxControl, SelectControl, Spinner } from '@wordpress/components';
+import { ComboboxControl, Spinner } from '@wordpress/components';
 
 const ProfileSelector = ( { props } ) => {
 	// prettier-ignore
@@ -37,7 +37,7 @@ const ProfileSelector = ( { props } ) => {
 	};
 
 	const OutputControl = () => {
-		const label = __( 'Pick a profile', 'govpack' );
+		const label = __( 'Select a profile', 'govpack' );
 		const options = profilesMapped();
 
 		if ( ! options ) {
@@ -50,25 +50,14 @@ const ProfileSelector = ( { props } ) => {
 			);
 		}
 
-		if ( options.length >= 25 ) {
-			return (
-				<ComboboxControl
-					label={ label }
-					options={ options }
-					value={ props.attributes.id }
-					onChange={ handleSelect }
-					isLoading={ false }
-					allowReset={ true }
-				/>
-			);
-		}
-
 		return (
-			<SelectControl
+			<ComboboxControl
 				label={ label }
 				options={ options }
-				onChange={ handleSelect }
 				value={ props.attributes.id }
+				onChange={ handleSelect }
+				isLoading={ false }
+				allowReset={ true }
 			/>
 		);
 	};

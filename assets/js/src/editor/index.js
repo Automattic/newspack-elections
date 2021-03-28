@@ -36,7 +36,7 @@ registerBlockType( 'newspack/govpack', {
 		return (
 			<InspectorControls>
 				<Panel>
-					<PanelBody title={ __( 'Govpack', 'govpack' ) }>
+					<PanelBody title={ __( 'Govpack Profile', 'govpack' ) }>
 						<PanelRow>
 							<ProfileSelector props={ props } />
 						</PanelRow>

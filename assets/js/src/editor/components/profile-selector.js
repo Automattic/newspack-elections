@@ -8,7 +8,7 @@ import { ComboboxControl, SelectControl, Spinner } from '@wordpress/components';
 
 const ProfileSelector = ( { props } ) => {
 	// prettier-ignore
-	const profiles = useSelect( select => select( 'core' ).getEntityRecords( 'postType', 'govpack_profile', { per_page: 100 } ) );
+	const profiles = useSelect( select => select( 'core' ).getEntityRecords( 'postType', 'govpack_profiles', { per_page: 100 } ) );
 
 	const profilesMapped = () => {
 		if ( profiles ) {

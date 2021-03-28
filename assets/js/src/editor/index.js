@@ -58,10 +58,7 @@ registerBlockType( 'govpack/profile', {
 						</PanelBody>
 					</Panel>
 				</InspectorControls>
-				{ false && <ServerSideRender block="govpack/profile" attributes={ props.attributes } /> }
-				<aside className={ 'govpack-profile ' + props.attributes.format }>
-					{ props.attributes.id }
-				</aside>
+				<ServerSideRender block="govpack/profile" attributes={ props.attributes } />
 			</Fragment>
 		);
 	},

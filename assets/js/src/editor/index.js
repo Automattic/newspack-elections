@@ -8,7 +8,7 @@ import { Panel, PanelBody, PanelRow, RadioControl } from '@wordpress/components'
 
 import ProfileSelector from './components/profile-selector';
 
-registerBlockType( 'newspack/govpack', {
+registerBlockType( 'govpack/profile', {
 	apiVersion: 2,
 	title: 'Govpack',
 	icon: 'groups',

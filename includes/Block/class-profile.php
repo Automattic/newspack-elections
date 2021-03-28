@@ -65,7 +65,7 @@ class Profile {
 		);
 
 		register_block_type(
-			'newspack/govpack',
+			'govpack/profile',
 			[
 				'apiVersion'      => 2,
 				'editor_script'   => 'govpack-editor',

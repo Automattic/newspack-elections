@@ -5,20 +5,20 @@
  * @package Newspack
  */
 
-namespace Newspack\Govpack\Gutenberg;
+namespace Newspack\Govpack\Block;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Register and handle the Gutenberg block
+ * Register and handle the block.
  */
-class Block {
+class Profile {
 
 	/**
 	 * Stores static instance of class.
 	 *
 	 * @access protected
-	 * @var Newspack\Govpack\Gutenberg The single instance of the class
+	 * @var Newspack\Govpack\Block The single instance of the class
 	 */
 	protected static $instance = null;
 
@@ -44,7 +44,7 @@ class Block {
 	}
 
 	/**
-	 * Registers the Gutenberg block and associated script
+	 * Registers the block and associated script
 	 *
 	 * @return void
 	 */
@@ -67,8 +67,9 @@ class Block {
 		register_block_type(
 			'newspack/govpack',
 			[
-				'apiVersion'    => 2,
-				'editor_script' => 'govpack-editor',
+				'apiVersion'      => 2,
+				'editor_script'   => 'govpack-editor',
+				'render_callback' => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler' ],
 			]
 		);
 	}

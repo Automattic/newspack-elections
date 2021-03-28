@@ -101,10 +101,10 @@
     "@wordpress/data": "^4.27.0",
     "@wordpress/dom-ready": "^2.12.1",
     "@wordpress/edit-post": "^3.26.9",
+    "@wordpress/editor": "^9.26.0",
     "@wordpress/element": "^2.20.0",
     "@wordpress/html-entities": "^2.10.1",
-    "@wordpress/i18n": "^3.19.0",
-    "@wordpress/server-side-render": "^1.21.0"
+    "@wordpress/i18n": "^3.19.0"
   },
   "devDependencies": {
     "@automattic/calypso-build": "^5.1.0",

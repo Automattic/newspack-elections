@@ -13,7 +13,7 @@
     "lint:js": "eslint --ext .js,.jsx assets/js/src",
     "lint:scss": "stylelint \"**/*.scss\" --syntax scss",
     "lint:php": "./vendor/bin/phpcs .",
-    "format:js": "prettier 'src/**/*.{js,jsx}' --write",
+    "format:js": "prettier 'assets/js/src/**/*.{js,jsx}' --write",
     "format:scss": "prettier --write 'src/**/*.scss'",
     "format:php": "./vendor/bin/phpcbf .",
     "lint:js:staged": "eslint --ext .js,.jsx",

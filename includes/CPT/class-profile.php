@@ -480,7 +480,7 @@ class Profile {
 	}
 
 	/**
-	 * Fetch profile data into an array. Used for shortcode and Gutenberg block.
+	 * Fetch profile data into an array. Used for shortcode and block.
 	 *
 	 * @param int $profile_id    Array of shortcode attributes.
 	 *

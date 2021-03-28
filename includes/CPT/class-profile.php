@@ -551,7 +551,8 @@ class Profile {
 
 		$atts = shortcode_atts(
 			[
-				'format' => self::$default_profile_format,
+				'format'    => self::$default_profile_format,
+				'className' => '',
 			],
 			$atts
 		);

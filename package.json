@@ -10,7 +10,7 @@
     "build": "calypso-build --config='./webpack.config.js'",
     "clean": "rm -rf dist/",
     "lint": "npm-run-all --parallel lint:*",
-    "lint:js": "eslint --ext .js,.jsx src",
+    "lint:js": "eslint --ext .js,.jsx assets/js/src",
     "lint:scss": "stylelint \"**/*.scss\" --syntax scss",
     "lint:php": "./vendor/bin/phpcs .",
     "format:js": "prettier 'src/**/*.{js,jsx}' --write",

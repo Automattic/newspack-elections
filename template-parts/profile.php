@@ -15,7 +15,7 @@ if ( in_array( $profile_data['format'], [ 'wiki', 'full' ], true ) ) {
 	$title_role  = false;
 	$party_state = false;
 }
-$classes = join( ' ', array_filter( [ 'govpack-profile', $profile_data['format'] ] ) );
+$classes = join( ' ', array_filter( [ 'govpack-profile', $atts['className'], $profile_data['format'] ] ) );
 ?>
 <aside class="<?php echo esc_attr( $classes ); ?>">
 	<p class="photo"><?php echo wp_kses_post( get_the_post_thumbnail( $profile_data['id'], 'govpack-square' ) ); ?></p>

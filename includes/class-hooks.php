@@ -20,6 +20,7 @@ class Hooks {
 		add_action( 'admin_enqueue_scripts', [ __CLASS__, 'admin_enqueue_scripts' ] );
 		add_filter( 'single_template', [ __CLASS__, 'single_template' ] );
 		add_action( 'init', [ __CLASS__, 'register_sidebars' ] );
+		add_action( 'admin_notices', [ __CLASS__, 'admin_notices' ] );
 	}
 
 	/**
@@ -86,5 +87,17 @@ class Hooks {
 				]
 			);
 		}
+	}
+
+	/**
+	 * Show banner above profiles.
+	 */
+	public static function admin_notices() {
+		$screen = get_current_screen();
+		if ( \Newspack\Govpack\CPT\Profile::CPT_SLUG !== $screen->post_type ) {
+			return;
+		}
+
+		require_once GOVPACK_PLUGIN_FILE . 'template-parts/banner.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 	}
 }

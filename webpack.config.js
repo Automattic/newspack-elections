@@ -12,7 +12,7 @@ const path = require( 'path' );
 /**
  * Internal variables
  */
-const editor = path.join( __dirname, 'src', 'editor' );
+const editor = path.join( __dirname, 'assets', 'js', 'src', 'editor' );
 
 const webpackConfig = getBaseWebpackConfig(
 	{ WP: true },

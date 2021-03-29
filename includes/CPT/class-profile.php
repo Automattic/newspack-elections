@@ -59,7 +59,6 @@ class Profile {
 	 */
 	const SHORTCODE = 'govpack';
 
-
 	/**
 	 * Inits the class and registeres the hooks call
 	 *
@@ -69,13 +68,12 @@ class Profile {
 		add_action( 'after_setup_theme', [ __class__, 'hooks' ], 11, 1 );
 	}
 
-
 	/**
 	 * WordPress Hooks
 	 */
 	public static function hooks() {
 		add_action( 'init', [ __CLASS__, 'register_post_type' ] );
-		add_action( 'cmb2_admin_init', [ __CLASS__, 'add_profile_boxes' ] );
+		add_action( 'cmb2_init', [ __CLASS__, 'add_profile_boxes' ] );
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
 		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
 		add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
@@ -188,6 +186,7 @@ class Profile {
 				'priority'     => 'high',
 				'show_names'   => true,
 				'cmb_styles'   => false,
+				'show_in_rest' => \WP_REST_Server::READABLE,
 			]
 		);
 
@@ -481,7 +480,7 @@ class Profile {
 	}
 
 	/**
-	 * Fetch profile data into an array. Used for shortcode and Gutenberg block.
+	 * Fetch profile data into an array. Used for shortcode and block.
 	 *
 	 * @param int $profile_id    Array of shortcode attributes.
 	 *
@@ -552,7 +551,8 @@ class Profile {
 
 		$atts = shortcode_atts(
 			[
-				'format' => self::$default_profile_format,
+				'format'    => self::$default_profile_format,
+				'className' => '',
 			],
 			$atts
 		);
@@ -728,4 +728,3 @@ class Profile {
 		return \Newspack\Govpack\Helpers::get_cached_query( $args, 'posts_govpack_profiles_' . $term_id );
 	}
 }
-

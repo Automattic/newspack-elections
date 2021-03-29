@@ -51,6 +51,8 @@
 	padding-left: 20px;
 
 	.logo {
+		background-image: svg( 'assets/images/govpack/wordmark.svg' );
+		background-size: contain;
 		background-repeat: no-repeat;
 		height: 32px;
 		position: absolute;

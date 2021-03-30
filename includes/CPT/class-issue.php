@@ -83,7 +83,7 @@ class Issue {
 	}
 
 	/**
-	 * Register the Features post type
+	 * Register the Issues post type
 	 *
 	 * @return object|WP_Error
 	 */
@@ -179,7 +179,7 @@ class Issue {
 		 */
 		$cmb_name = new_cmb2_box(
 			[
-				'id'           => 'id',
+				'id'           => 'issue_id',
 				'title'        => __( 'Name', 'govpack' ),
 				'object_types' => [ self::CPT_SLUG ],
 				'context'      => 'normal',
@@ -198,231 +198,6 @@ class Issue {
 			]
 		);
 
-		$cmb_address = new_cmb2_box(
-			[
-				'id'           => 'main_office',
-				'title'        => __( 'Main Office', 'govpack' ),
-				'object_types' => [ self::CPT_SLUG ],
-				'context'      => 'normal',
-				'priority'     => 'high',
-				'show_names'   => true,
-				'cmb_styles'   => false,
-			]
-		);
-
-		$cmb_address2 = new_cmb2_box(
-			[
-				'id'           => 'secondary_office',
-				'title'        => __( 'Secondary Office', 'govpack' ),
-				'object_types' => [ self::CPT_SLUG ],
-				'context'      => 'normal',
-				'priority'     => 'high',
-				'show_names'   => true,
-				'cmb_styles'   => false,
-			]
-		);
-
-		/**
-		 * Office address metaboxes.
-		 */
-		$address_boxes = [
-			'main_office'      => $cmb_address,
-			'secondary_office' => $cmb_address2,
-		];
-		foreach ( $address_boxes as $slug => $box ) {
-			$box->add_field(
-				[
-					'name' => __( 'Address', 'govpack' ),
-					'id'   => $slug . '_address',
-					'type' => 'textarea_small',
-				]
-			);
-
-			$box->add_field(
-				[
-					'name' => __( 'City', 'govpack' ),
-					'id'   => $slug . '_city',
-					'type' => 'text',
-				]
-			);
-
-			$box->add_field(
-				[
-					'name'             => __( 'State', 'govpack' ),
-					'id'               => $slug . '_state',
-					'type'             => 'select',
-					'show_option_none' => true,
-					'options'          => Helpers::states(),
-				]
-			);
-
-			$box->add_field(
-				[
-					'name'       => __( 'Zip', 'govpack' ),
-					'id'         => $slug . '_zip',
-					'type'       => 'text',
-					'attributes' => [
-						'maxlength' => 10,
-					],
-				]
-			);
-
-			/**
-			 * Current position metabox.
-			 */
-			$cmb_position = new_cmb2_box(
-				[
-					'id'           => 'position',
-					'title'        => __( 'Current Position', 'govpack' ),
-					'object_types' => [ self::CPT_SLUG ],
-					'context'      => 'normal',
-					'priority'     => 'high',
-					'show_names'   => true,
-					'cmb_styles'   => false,
-				]
-			);
-
-			$cmb_position->add_field(
-				[
-					'name'             => __( 'Title', 'govpack' ),
-					'id'               => 'title',
-					'type'             => 'select',
-					'show_option_none' => true,
-					'options'          => Helpers::titles(),
-				]
-			);
-
-			$cmb_position->add_field(
-				[
-					'name'     => __( 'Legislative Body', 'govpack' ),
-					'id'       => 'legislative_body',
-					'type'     => 'taxonomy_select',
-					'taxonomy' => \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG,
-				]
-			);
-
-			$cmb_position->add_field(
-				[
-					'name'     => __( 'State', 'govpack' ),
-					'id'       => 'state',
-					'type'     => 'taxonomy_select',
-					'taxonomy' => \Newspack\Govpack\Tax\State::TAX_SLUG,
-				]
-			);
-
-			$cmb_position->add_field(
-				[
-					'name'     => __( 'County', 'govpack' ),
-					'id'       => 'county',
-					'type'     => 'taxonomy_select',
-					'taxonomy' => \Newspack\Govpack\Tax\County::TAX_SLUG,
-				]
-			);
-
-			/**
-			 * Communications metabox.
-			 */
-			$cmb_comms = new_cmb2_box(
-				[
-					'id'           => 'communication',
-					'title'        => __( 'Communication channels', 'govpack' ),
-					'object_types' => [ self::CPT_SLUG ],
-					'context'      => 'normal',
-					'priority'     => 'high',
-					'show_names'   => true,
-					'cmb_styles'   => false,
-				]
-			);
-
-			$cmb_comms->add_field(
-				[
-					'name'       => __( 'Main phone number', 'govpack' ),
-					'id'         => 'main_phone',
-					'type'       => 'text',
-					'attributes' => [
-						'maxlength' => 40,
-						'type'      => 'tel',
-					],
-				]
-			);
-
-			$cmb_comms->add_field(
-				[
-					'name'       => __( 'Secondary phone number', 'govpack' ),
-					'id'         => 'secondary_phone',
-					'type'       => 'text',
-					'attributes' => [
-						'maxlength' => 40,
-						'type'      => 'tel',
-					],
-				]
-			);
-
-			$cmb_comms->add_field(
-				[
-					'name' => __( 'Email address', 'govpack' ),
-					'id'   => 'email',
-					'type' => 'text_email',
-				]
-			);
-
-			$cmb_comms->add_field(
-				[
-					'name'       => __( 'Twitter', 'govpack' ),
-					'id'         => 'twitter',
-					'type'       => 'text',
-					'attributes' => [
-						'maxlength' => 15,
-					],
-				]
-			);
-
-			$cmb_comms->add_field(
-				[
-					'name'       => __( 'Instagram', 'govpack' ),
-					'id'         => 'instagram',
-					'type'       => 'text',
-					'attributes' => [
-						'maxlength' => 30,
-					],
-				]
-			);
-
-			$cmb_comms->add_field(
-				[
-					'name'       => __( 'Facebook', 'govpack' ),
-					'id'         => 'facebook',
-					'type'       => 'text',
-					'attributes' => [
-						'maxlength' => 50,
-					],
-				]
-			);
-
-			$cmb_comms->add_field(
-				[
-					'name' => __( 'LinkedIn URL', 'govpack' ),
-					'id'   => 'linkedin',
-					'type' => 'text_url',
-				]
-			);
-
-			$cmb_comms->add_field(
-				[
-					'name' => __( 'Lesgislative website', 'govpack' ),
-					'id'   => 'leg_url',
-					'type' => 'text_url',
-				]
-			);
-
-			$cmb_comms->add_field(
-				[
-					'name' => __( 'Campaign website', 'govpack' ),
-					'id'   => 'campaign_url',
-					'type' => 'text_url',
-				]
-			);
-		}
 	}
 
 	/**
@@ -545,16 +320,6 @@ class Issue {
 		$meta_keys = [
 			'govpack_id',
 			'title',
-			'main_office_address',
-			'main_office_city',
-			'main_office_state',
-			'main_office_zip',
-			'main_phone',
-			'secondary_office_address',
-			'secondary_office_city',
-			'secondary_office_state',
-			'secondary_office_zip',
-			'secondary_phone',
 			'leg_url',
 			'email',
 			'twitter',
@@ -581,7 +346,7 @@ class Issue {
 		// Fetch the image.
 		if ( ! empty( $data['image'] ) ) {
 			if ( $data['image'] ) {
-				$description = $data['first_name'] . ' ' . $data['last_name'];
+				$description = $data['title'];
 				$image_id    = Helpers::upload_image( $data['image'], $new_post, $description );
 
 				if ( is_wp_error( $image_id ) ) {

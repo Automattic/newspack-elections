@@ -13,7 +13,7 @@ namespace Newspack\Govpack\Tax;
 class Issue extends \Newspack\Govpack\Taxonomy {
 
 	/**
-	 * Post Type slug. Used when registering and referencing
+	 * Taxonomy slug. Used when registering and referencing
 	 */
 	const TAX_SLUG = 'govpack_issue_tax';
 
@@ -23,7 +23,7 @@ class Issue extends \Newspack\Govpack\Taxonomy {
 	const SLUG = 'issue';
 
 	/**
-	 * Register this taxonomy for profiles.
+	 * Register this taxonomy for issues.
 	 */
 	public static function register_taxonomy() {
 		register_taxonomy(
@@ -62,7 +62,7 @@ class Issue extends \Newspack\Govpack\Taxonomy {
 				'meta_box_cb'       => false,
 				'show_admin_column' => true,
 				'show_in_rest'      => true,
-				'show_in_menu'      => true,
+				'show_in_menu'      => false,
 			]
 		);
 	}

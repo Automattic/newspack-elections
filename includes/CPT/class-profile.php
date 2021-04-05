@@ -630,27 +630,25 @@ class Profile {
 
 		// Fetch the image.
 		if ( ! empty( $data['image'] ) ) {
-			if ( $data['image'] ) {
-				$description = $data['first_name'] . ' ' . $data['last_name'];
-				$image_id    = Helpers::upload_image( $data['image'], $new_post, $description );
+			$description = $data['first_name'] . ' ' . $data['last_name'];
+			$image_id    = Helpers::upload_image( $data['image'], $new_post, $description );
 
-				if ( is_wp_error( $image_id ) ) {
-					if ( defined( 'WP_CLI' ) && WP_CLI ) {
-						\WP_CLI::warning( "Failed to upload image [{$data['image']}] for profile $new_post." );
-						foreach ( $image_id->errors as $error_info ) {
-							foreach ( $error_info as $message ) {
-								\WP_CLI::warning( $message );
-							}
+			if ( is_wp_error( $image_id ) ) {
+				if ( defined( 'WP_CLI' ) && WP_CLI ) {
+					\WP_CLI::warning( "Failed to upload image [{$data['image']}] for profile $new_post." );
+					foreach ( $image_id->errors as $error_info ) {
+						foreach ( $error_info as $message ) {
+							\WP_CLI::warning( $message );
 						}
 					}
-				} elseif ( $image_id ) {
-					$result = set_post_thumbnail( $new_post, $image_id );
-					if ( defined( 'WP_CLI' ) && WP_CLI ) {
-						if ( $result ) {
-							\WP_CLI::success( "Added image for profile $new_post." );
-						} else {
-							\WP_CLI::warning( "Failed to set post thumnbnail for profile $new_post." );
-						}
+				}
+			} elseif ( $image_id ) {
+				$result = set_post_thumbnail( $new_post, $image_id );
+				if ( defined( 'WP_CLI' ) && WP_CLI ) {
+					if ( $result ) {
+						\WP_CLI::success( "Added image for profile $new_post." );
+					} else {
+						\WP_CLI::warning( "Failed to set post thumnbnail for profile $new_post." );
 					}
 				}
 			}

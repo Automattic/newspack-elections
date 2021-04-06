@@ -14,7 +14,6 @@ use \Newspack\Govpack\Helpers;
  */
 class Issue {
 
-
 	/**
 	 * Valid issue formats.
 	 *
@@ -33,7 +32,7 @@ class Issue {
 	 * Stores static instance of class.
 	 *
 	 * @access protected
-	 * @var Govpack\Govpack\Issue The single instance of the class
+	 * @var Newspack\Govpack\CPT\Issue The single instance of the class
 	 */
 	protected static $instance = null;
 
@@ -80,6 +79,7 @@ class Issue {
 		add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', [ __CLASS__, 'manage_columns' ] );
 		add_shortcode( self::SHORTCODE, [ __CLASS__, 'shortcode_handler' ] );
 		add_filter( 'body_class', [ __CLASS__, 'filter_body_class' ] );
+		add_action( 'add_meta_boxes', [ __CLASS__, 'remove_yoast_metabox' ], 11 );
 	}
 
 	/**
@@ -111,7 +111,6 @@ class Issue {
 				'show_in_rest' => true,
 				'show_ui'      => true,
 				'supports'     => [ 'revisions', 'thumbnail' ],
-				'taxonomies'   => [ 'post_tag' ],
 				'as_taxonomy'  => \Newspack\Govpack\Tax\Issue::TAX_SLUG,
 				'menu_icon'    => 'dashicons-groups',
 				'rewrite'      => [
@@ -371,7 +370,7 @@ class Issue {
 			}
 		}
 
-		// Insert the taxonomy separate. wp_insert_post() woill not insert
+		// Insert the taxonomy separate. wp_insert_post() will not insert
 		// taxonomy data when run without a logged-in user, i.e. in CLI.
 		$tax_map = [
 			'state'            => \Newspack\Govpack\Tax\State::TAX_SLUG,
@@ -441,5 +440,14 @@ class Issue {
 		];
 
 		return \Newspack\Govpack\Helpers::get_cached_query( $args, 'posts_govpack_issues_' . $term_id );
+	}
+
+	/**
+	 * Hide the Yoast metabox.
+	 *
+	 * @return void
+	 */
+	public static function remove_yoast_metabox() {
+		remove_meta_box( 'wpseo_meta', self::CPT_SLUG, 'normal' );
 	}
 }

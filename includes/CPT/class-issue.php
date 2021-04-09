@@ -75,7 +75,6 @@ class Issue {
 		add_action( 'cmb2_init', [ __CLASS__, 'add_issue_boxes' ] );
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_issue_title' ], 10, 3 );
 		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_issue_title' ] );
-		add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
 		add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', [ __CLASS__, 'manage_columns' ] );
 		add_shortcode( self::SHORTCODE, [ __CLASS__, 'shortcode_handler' ] );
 		add_filter( 'body_class', [ __CLASS__, 'filter_body_class' ] );
@@ -145,19 +144,6 @@ class Issue {
 		return $post_types;
 	}
 
-
-	/**
-	 * Denote State, Party and Legislative Body columns as sortable.
-	 *
-	 * @param array $sortable_columns An array of sortable columns.
-	 */
-	public static function sortable_columns( $sortable_columns ) {
-		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\State::TAX_SLUG ]           = 'State';
-		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\Party::TAX_SLUG ]           = 'Party';
-		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] = 'Legislative Body';
-		return $sortable_columns;
-	}
-
 	/**
 	 * Remove tags column from issue admin screen.
 	 *
@@ -197,6 +183,13 @@ class Issue {
 			]
 		);
 
+		$cmb_name->add_field(
+			[
+				'name' => __( 'Description', 'govpack' ),
+				'id'   => 'description',
+				'type' => 'text',
+			]
+		);
 	}
 
 	/**
@@ -235,29 +228,10 @@ class Issue {
 			return;
 		}
 
-		$term_objects = wp_get_post_terms( $issue_id, [ \Newspack\Govpack\Tax\Party::TAX_SLUG, \Newspack\Govpack\Tax\State::TAX_SLUG, \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] );
-		$term_data    = array_reduce(
-			$term_objects,
-			function( $carry, $item ) {
-				$carry[ $item->taxonomy ] = $item->name;
-				return $carry;
-			},
-			[]
-		);
-
 		$issue_data = [ // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-			'id'               => $issue_id,
-			'title'            => $issue_raw_data['title'][0] ?? '',
-			'phone'            => $issue_raw_data['main_phone'][0] ?? '',
-			'twitter'          => $issue_raw_data['twitter'][0] ?? '',
-			'instagram'        => $issue_raw_data['instagram'][0] ?? '',
-			'email'            => $issue_raw_data['email'][0] ?? '',
-			'facebook'         => $issue_raw_data['facebook'][0] ?? '',
-			'website'          => $issue_raw_data['leg_url'][0] ?? '',
-			'biography'        => $issue_raw_data['biography'][0] ?? '',
-			'party'            => $term_data[ \Newspack\Govpack\Tax\Party::TAX_SLUG ] ?? '',
-			'state'            => $term_data[ \Newspack\Govpack\Tax\State::TAX_SLUG ] ?? '',
-			'legislative_body' => $term_data[ \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] ?? '',
+			'id'          => $issue_id,
+			'title'       => $issue_raw_data['title'][0] ?? '',
+			'description' => $issue_raw_data['description'][0] ?? '',
 		];
 
 		return $issue_data;
@@ -319,12 +293,7 @@ class Issue {
 		$meta_keys = [
 			'govpack_id',
 			'title',
-			'leg_url',
-			'email',
-			'twitter',
-			'facebook',
-			'instagram',
-			'biography',
+			'description',
 		];
 
 		foreach ( $meta_keys as $key ) {
@@ -366,32 +335,6 @@ class Issue {
 							\WP_CLI::warning( "Failed to set post thumnbnail for issue $new_post." );
 						}
 					}
-				}
-			}
-		}
-
-		// Insert the taxonomy separate. wp_insert_post() will not insert
-		// taxonomy data when run without a logged-in user, i.e. in CLI.
-		$tax_map = [
-			'state'            => \Newspack\Govpack\Tax\State::TAX_SLUG,
-			'party'            => \Newspack\Govpack\Tax\Party::TAX_SLUG,
-			'legislative_body' => \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG,
-		];
-
-		foreach ( $tax_map as $key => $tax_slug ) {
-			if ( ! empty( $data[ $key ] ) ) {
-				// If using term ID, need an array of integers; if you pass in an integer,
-				// WP will create a new term with the integer as the name and slug.
-				//
-				// With OpenStates, parties will already be an array.
-				$terms = is_array( $data[ $key ] ) ? $data[ $key ] : [ $data[ $key ] ];
-
-				wp_set_post_terms( $new_post, $terms, $tax_slug );
-
-				// If multiple parties exist, i.e. Democratic/Progressive in Vermont,
-				// store the order in postmeta.
-				if ( 'party' === $key && count( $terms ) > 1 ) {
-					update_post_meta( $new_post, 'party_order', join( ',', $terms ) );
 				}
 			}
 		}

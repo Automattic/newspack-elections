@@ -51,6 +51,7 @@ class Govpack {
 	public static function hooks() {
 		\Newspack\Govpack\CPT\Issue::instance();
 		\Newspack\Govpack\CPT\Profile::instance();
+		\Newspack\Govpack\Block\Issue::instance();
 		\Newspack\Govpack\Block\Profile::instance();
 		\Newspack\Govpack\CPT\AsTaxonomy::instance();
 		\Newspack\Govpack\Tax\City::hooks();

@@ -8,7 +8,7 @@
 namespace Newspack\Govpack\CPT;
 
 /**
- * Enable the "Profile" post type to be used as a taxonomy
+ * Enable post types to be used as a taxonomy
  */
 class AsTaxonomy {
 

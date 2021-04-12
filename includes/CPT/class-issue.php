@@ -72,13 +72,9 @@ class Issue {
 	 */
 	public static function hooks() {
 		add_action( 'init', [ __CLASS__, 'register_post_type' ] );
-		add_action( 'cmb2_init', [ __CLASS__, 'add_issue_boxes' ] );
-		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_issue_title' ], 10, 3 );
-		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_issue_title' ] );
 		add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', [ __CLASS__, 'manage_columns' ] );
 		add_shortcode( self::SHORTCODE, [ __CLASS__, 'shortcode_handler' ] );
 		add_filter( 'body_class', [ __CLASS__, 'filter_body_class' ] );
-		add_action( 'add_meta_boxes', [ __CLASS__, 'remove_yoast_metabox' ], 11 );
 	}
 
 	/**
@@ -109,7 +105,7 @@ class Issue {
 				'public'       => true,
 				'show_in_rest' => true,
 				'show_ui'      => true,
-				'supports'     => [ 'revisions', 'thumbnail' ],
+				'supports'     => [ 'editor', 'revisions', 'thumbnail', 'title' ],
 				'as_taxonomy'  => \Newspack\Govpack\Tax\Issue::TAX_SLUG,
 				'menu_icon'    => 'dashicons-groups',
 				'rewrite'      => [
@@ -118,17 +114,6 @@ class Issue {
 				],
 			]
 		);
-	}
-
-	/**
-	 * Print out the post title where the normal title field would be. This post type does not
-	 * `supports` the title field; it is constructed from the issue data.
-	 */
-	public static function show_issue_title() {
-		global $typenow, $pagenow;
-		if ( self::CPT_SLUG === $typenow && 'post.php' === $pagenow ) {
-			echo '<h1>' . esc_html( get_the_title() ) . '</h1>';
-		}
 	}
 
 	/**
@@ -156,61 +141,6 @@ class Issue {
 	}
 
 	/**
-	 * Using CMB2, add custom fields to issue.
-	 */
-	public static function add_issue_boxes() {
-		/**
-		 * Name metabox.
-		 */
-		$cmb_name = new_cmb2_box(
-			[
-				'id'           => 'issue_id',
-				'title'        => __( 'Name', 'govpack' ),
-				'object_types' => [ self::CPT_SLUG ],
-				'context'      => 'normal',
-				'priority'     => 'high',
-				'show_names'   => true,
-				'cmb_styles'   => false,
-				'show_in_rest' => \WP_REST_Server::READABLE,
-			]
-		);
-
-		$cmb_name->add_field(
-			[
-				'name' => __( 'Title', 'govpack' ),
-				'id'   => 'title',
-				'type' => 'text',
-			]
-		);
-
-		$cmb_name->add_field(
-			[
-				'name' => __( 'Description', 'govpack' ),
-				'id'   => 'description',
-				'type' => 'text',
-			]
-		);
-	}
-
-	/**
-	 * Set the post title based on the issue data (title);
-	 *
-	 * @param array $data                An array of slashed, sanitized, and processed post data.
-	 * @param array $postarr             An array of sanitized (and slashed) but otherwise unmodified post data.
-	 * @param array $unsanitized_postarr An array of slashed yet *unsanitized* and unprocessed post data as
-	 *                                   originally passed to wp_insert_post().
-	 * @return array
-	 */
-	public static function set_issue_title( $data, $postarr, $unsanitized_postarr = false ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		$title = $postarr['title'] ?? '';
-		if ( $title ) {
-			$data['post_title'] = $title;
-			$data['post_name']  = null;
-		}
-		return $data;
-	}
-
-	/**
 	 * Fetch issue data into an array. Used for shortcode and block.
 	 *
 	 * @param int $issue_id    Array of shortcode attributes.
@@ -223,15 +153,14 @@ class Issue {
 			return;
 		}
 
-		$issue_raw_data = get_post_meta( $issue_id );
+		$issue_raw_data = get_post( $issue_id );
 		if ( ! $issue_raw_data ) {
 			return;
 		}
 
 		$issue_data = [ // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-			'id'          => $issue_id,
-			'title'       => $issue_raw_data['title'][0] ?? '',
-			'description' => $issue_raw_data['description'][0] ?? '',
+			'id'    => $issue_id,
+			'title' => $issue_raw_data->post_title ?? '',
 		];
 
 		return $issue_data;
@@ -270,76 +199,10 @@ class Issue {
 		$issue_data['format'] = $atts['format'];
 
 		ob_start();
-		require_once GOVPACK_PLUGIN_FILE . 'template-parts/profile.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+		require_once GOVPACK_PLUGIN_FILE . 'template-parts/issue.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 		$html = ob_get_clean();
 
 		return $html;
-	}
-
-	/**
-	 * Create an issue.
-	 *
-	 * @param array $data   Array of issue data.
-	 *
-	 * @return int|WP_Error The post ID on success. 0 or WP_Error on failure.
-	 */
-	public static function create( $data ) {
-		$post_args = [
-			'post_type'   => self::CPT_SLUG,
-			'post_status' => 'publish',
-			'tax_input'   => [],
-		];
-
-		$meta_keys = [
-			'govpack_id',
-			'title',
-			'description',
-		];
-
-		foreach ( $meta_keys as $key ) {
-			if ( ! empty( $data[ $key ] ) ) {
-				$post_args['meta_input'][ $key ] = $data[ $key ];
-			}
-		}
-
-		// Set the post title.
-		$post_args = self::set_issue_title( $post_args, $data );
-
-		// Insert the post and post metadata.
-		$new_post = wp_insert_post( $post_args );
-		if ( 0 === $new_post || is_wp_error( $new_post ) ) {
-			return $new_post;
-		}
-
-		// Fetch the image.
-		if ( ! empty( $data['image'] ) ) {
-			if ( $data['image'] ) {
-				$description = $data['title'];
-				$image_id    = Helpers::upload_image( $data['image'], $new_post, $description );
-
-				if ( is_wp_error( $image_id ) ) {
-					if ( defined( 'WP_CLI' ) && WP_CLI ) {
-						\WP_CLI::warning( "Failed to upload image [{$data['image']}] for issue $new_post." );
-						foreach ( $image_id->errors as $error_info ) {
-							foreach ( $error_info as $message ) {
-								\WP_CLI::warning( $message );
-							}
-						}
-					}
-				} elseif ( $image_id ) {
-					$result = set_post_thumbnail( $new_post, $image_id );
-					if ( defined( 'WP_CLI' ) && WP_CLI ) {
-						if ( $result ) {
-							\WP_CLI::success( "Added image for issue $new_post." );
-						} else {
-							\WP_CLI::warning( "Failed to set post thumnbnail for issue $new_post." );
-						}
-					}
-				}
-			}
-		}
-
-		return $new_post;
 	}
 
 	/**
@@ -385,12 +248,4 @@ class Issue {
 		return \Newspack\Govpack\Helpers::get_cached_query( $args, 'posts_govpack_issues_' . $term_id );
 	}
 
-	/**
-	 * Hide the Yoast metabox.
-	 *
-	 * @return void
-	 */
-	public static function remove_yoast_metabox() {
-		remove_meta_box( 'wpseo_meta', self::CPT_SLUG, 'normal' );
-	}
 }

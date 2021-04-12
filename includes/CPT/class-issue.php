@@ -158,9 +158,10 @@ class Issue {
 			return;
 		}
 
-		$issue_data = [ // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-			'id'    => $issue_id,
-			'title' => $issue_raw_data->post_title ?? '',
+		$issue_data = [
+			'id'      => $issue_id,
+			'title'   => $issue_raw_data->post_title ?? '',
+			'content' => $issue_raw_data->post_content ?? '',
 		];
 
 		return $issue_data;

@@ -33,7 +33,7 @@ class Profile {
 	 * Stores static instance of class.
 	 *
 	 * @access protected
-	 * @var Govpack\Govpack\Profile The single instance of the class
+	 * @var Newspack\Govpack\CPT\Profile The single instance of the class
 	 */
 	protected static $instance = null;
 
@@ -60,7 +60,7 @@ class Profile {
 	const SHORTCODE = 'govpack';
 
 	/**
-	 * Inits the class and registeres the hooks call
+	 * Inits the class and registers the hooks call
 	 *
 	 * @return self
 	 */
@@ -83,7 +83,7 @@ class Profile {
 	}
 
 	/**
-	 * Register the Features post type
+	 * Register the Profiles post type
 	 *
 	 * @return object|WP_Error
 	 */

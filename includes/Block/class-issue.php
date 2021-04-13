@@ -18,7 +18,7 @@ class Issue {
 	 * Stores static instance of class.
 	 *
 	 * @access protected
-	 * @var Newspack\Govpack\Block The single instance of the class
+	 * @var Newspack\Govpack\Block\Issue The single instance of the class
 	 */
 	protected static $instance = null;
 

@@ -59,7 +59,7 @@ class Issue {
 	const SHORTCODE = 'govpack_issue';
 
 	/**
-	 * Inits the class and registeres the hooks call
+	 * Inits the class and registers the hooks call
 	 *
 	 * @return self
 	 */

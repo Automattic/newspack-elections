@@ -86,6 +86,18 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./assets/js/src/editor/blocks/issue-archive.js":
+/*!******************************************************!*\
+  !*** ./assets/js/src/editor/blocks/issue-archive.js ***!
+  \******************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ \"@wordpress/element\");\n/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/blocks */ \"@wordpress/blocks\");\n/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ \"@wordpress/block-editor\");\n/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ \"@wordpress/data\");\n/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);\n/* harmony import */ var _wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/server-side-render */ \"@wordpress/server-side-render\");\n/* harmony import */ var _wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_4__);\n\n\n/**\n * WordPress dependencies\n */\n\n\n\n\n/*\n * import { ServerSideRender } from '@wordpress/editor'\n *    is deprecated.\n * Use\n *    import ServerSideRender from @wordpress/server-side-render\n * instead. But it only has a default export, not a named export,\n * so you can't use braces.\n */\n\n\n/**\n * @param {Object} props The component properties.\n */\n\nfunction Edit(props) {\n  var ref = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__[\"useRef\"])();\n  var blockProps = Object(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__[\"useBlockProps\"])({\n    ref: ref\n  });\n\n  if (props.attributes.id === 0) {\n    props.setAttributes({\n      id: Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__[\"select\"])('core/editor').getCurrentPostId()\n    });\n  }\n\n  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"])(\"div\", blockProps, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"])(_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_4___default.a, {\n    block: \"govpack/issue-archive\",\n    attributes: props.attributes\n  }));\n}\n\nObject(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__[\"registerBlockType\"])('govpack/issue-archive', {\n  apiVersion: 2,\n  title: 'Govpack Issue Archive',\n  icon: 'groups',\n  category: 'embed',\n  keywords: ['govpack'],\n  attributes: {\n    id: {\n      type: 'number',\n      \"default\": 0\n    }\n  },\n  edit: Edit,\n  save: function save() {\n    return null;\n  }\n});\n\n//# sourceURL=webpack:///./assets/js/src/editor/blocks/issue-archive.js?");
+
+/***/ }),
+
 /***/ "./assets/js/src/editor/blocks/issue.js":
 /*!**********************************************!*\
   !*** ./assets/js/src/editor/blocks/issue.js ***!
@@ -142,7 +154,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _wor
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _blocks_issue_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./blocks/issue.js */ \"./assets/js/src/editor/blocks/issue.js\");\n/* harmony import */ var _blocks_profile_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./blocks/profile.js */ \"./assets/js/src/editor/blocks/profile.js\");\n\n\n\n//# sourceURL=webpack:///./assets/js/src/editor/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _blocks_issue_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./blocks/issue.js */ \"./assets/js/src/editor/blocks/issue.js\");\n/* harmony import */ var _blocks_issue_archive_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./blocks/issue-archive.js */ \"./assets/js/src/editor/blocks/issue-archive.js\");\n/* harmony import */ var _blocks_profile_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./blocks/profile.js */ \"./assets/js/src/editor/blocks/profile.js\");\n\n\n\n\n//# sourceURL=webpack:///./assets/js/src/editor/index.js?");
 
 /***/ }),
 

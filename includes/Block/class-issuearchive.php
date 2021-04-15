@@ -75,6 +75,10 @@ class IssueArchive {
 						'type'    => 'number',
 						'default' => 0,
 					],
+					'issue'     => [
+						'type'    => 'array',
+						'default' => [],
+					],
 					'className' => [
 						'type' => 'string',
 					],
@@ -104,6 +108,7 @@ class IssueArchive {
 
 		$atts = shortcode_atts(
 			[
+				'issue'     => $atts['issue'],
 				'className' => '',
 			],
 			$atts
@@ -120,24 +125,18 @@ class IssueArchive {
 	 * Fetch stories related to an issue.
 	 *
 	 * @param integer $issue_id Issue id.
+	 * @param array   $issue_term Issue term.
 	 *
 	 * @return WP_Query
 	 */
-	public static function get_stories( $issue_id ) {
-		$terms = get_the_terms( $issue_id, \Newspack\Govpack\Tax\Issue::TAX_SLUG );
-		$ids   = [];
-
-		if ( is_array( $terms ) ) {
-			$ids = wp_list_pluck( $terms, 'term_id' );
-		}
-
+	public static function get_stories( $issue_id, $issue_term ) {
 		$args = [
 			'post__not_in' => [ $issue_id ], // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn
 			'tax_query'    => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 				[
 					'taxonomy' => \Newspack\Govpack\Tax\Issue::TAX_SLUG,
 					'field'    => 'id',
-					'terms'    => $ids,
+					'terms'    => $issue_term,
 				],
 			],
 		];

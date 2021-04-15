@@ -27,6 +27,15 @@ function Edit( props ) {
 		props.setAttributes( { id: select( 'core/editor' ).getCurrentPostId() } );
 	}
 
+	const post = select( 'core/editor' ).getCurrentPost();
+	const unsavedChanges = select( 'core/editor' ).getPostEdits();
+
+	if ( unsavedChanges.hasOwnProperty( 'govpack_issue_tax' ) ) {
+		props.setAttributes( { issue: unsavedChanges.govpack_issue_tax } );
+	} else if ( post.hasOwnProperty( 'govpack_issue_tax' ) ) {
+		props.setAttributes( { issue: post.govpack_issue_tax } );
+	}
+
 	return (
 		<div { ...blockProps }>
 			<ServerSideRender block="govpack/issue-archive" attributes={ props.attributes } />
@@ -44,6 +53,10 @@ registerBlockType( 'govpack/issue-archive', {
 		id: {
 			type: 'number',
 			default: 0,
+		},
+		issue: {
+			type: 'array',
+			default: [],
 		},
 	},
 

@@ -9,7 +9,7 @@
 // phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 
 $post_count = 0;
-$stories    = \Newspack\Govpack\Block\IssueArchive::get_stories( $issue_data['id'] );
+$stories    = \Newspack\Govpack\Block\IssueArchive::get_stories( $issue_data['id'], $atts['issue'] );
 
 while ( $stories->have_posts() ) :
 	$post_count++;

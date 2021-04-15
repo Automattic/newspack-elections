@@ -3,7 +3,7 @@
  */
 import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps } from '@wordpress/block-editor';
-import { select } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { useRef } from '@wordpress/element';
 
 /*
@@ -23,12 +23,12 @@ function Edit( props ) {
 	const ref = useRef();
 	const blockProps = useBlockProps( { ref } );
 
-	if ( props.attributes.id === 0 ) {
-		props.setAttributes( { id: select( 'core/editor' ).getCurrentPostId() } );
-	}
+	const post = useSelect( select => select( 'core/editor' ).getCurrentPost() );
+	const unsavedChanges = useSelect( select => select( 'core/editor' ).getPostEdits() );
 
-	const post = select( 'core/editor' ).getCurrentPost();
-	const unsavedChanges = select( 'core/editor' ).getPostEdits();
+	if ( props.attributes.id === 0 ) {
+		props.setAttributes( { id: post.id } );
+	}
 
 	if ( unsavedChanges.hasOwnProperty( 'govpack_issue_tax' ) ) {
 		props.setAttributes( { issue: unsavedChanges.govpack_issue_tax } );

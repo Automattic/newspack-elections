@@ -71,19 +71,19 @@ class IssueArchive {
 				'editor_script'   => 'govpack-editor',
 				'render_callback' => [ __CLASS__, 'shortcode_handler' ],
 				'attributes'      => [
-					'id'        => [
+					'id'    => [
 						'type'    => 'number',
 						'default' => 0,
 					],
-					'issue'     => [
+					'issue' => [
 						'type'    => 'array',
 						'default' => [],
 					],
-					'className' => [
-						'type' => 'string',
-					],
 				],
-			]
+				'supports'        => [
+					'customClassName' => false,
+				],
+			],
 		);
 	}
 

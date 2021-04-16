@@ -59,7 +59,9 @@ registerBlockType( 'govpack/issue-archive', {
 			default: [],
 		},
 	},
-
+	supports: {
+		customClassName: false,
+	},
 	edit: Edit,
 	save() {
 		return null;

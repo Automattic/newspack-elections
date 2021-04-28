@@ -12,7 +12,7 @@ use \Newspack\Govpack\Helpers;
 /**
  * Register and handle the "Issue" Custom Post Type
  */
-class Issue {
+class Issue extends \Newspack\Govpack\Post_Type {
 
 	/**
 	 * Post Type slug. Used when registering and referencing
@@ -23,16 +23,6 @@ class Issue {
 	 * Shortcode.
 	 */
 	const SHORTCODE = 'govpack_issue';
-
-	/**
-	 * WordPress Hooks
-	 */
-	public static function hooks() {
-		add_action( 'init', [ __CLASS__, 'register_post_type' ] );
-		add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', [ __CLASS__, 'manage_columns' ] );
-		add_shortcode( self::SHORTCODE, [ __CLASS__, 'shortcode_handler' ] );
-		add_filter( 'body_class', [ __CLASS__, 'filter_body_class' ] );
-	}
 
 	/**
 	 * Register the Issues post type
@@ -71,30 +61,6 @@ class Issue {
 				],
 			]
 		);
-	}
-
-	/**
-	 * Adds the post_type to array of supported post types.
-	 *
-	 * @param array $post_types   Array of post types.
-	 *
-	 * @return array
-	 */
-	public static function add_post_type( $post_types ) {
-		$post_types[] = static::CPT_SLUG;
-
-		return $post_types;
-	}
-
-	/**
-	 * Remove tags column from issue admin screen.
-	 *
-	 * @param string[] $columns The column header labels keyed by column ID.
-	 * @return array
-	 */
-	public static function manage_columns( $columns ) {
-		unset( $columns['tags'] );
-		return $columns;
 	}
 
 	/**
@@ -154,27 +120,6 @@ class Issue {
 		$html = ob_get_clean();
 
 		return $html;
-	}
-
-	/**
-	 * Add body classes depending on layout.
-	 *
-	 * @param array $classes CSS classes.
-	 *
-	 * @return array
-	 */
-	public static function filter_body_class( $classes ) {
-		if ( is_singular( self::CPT_SLUG ) ) {
-			$classes[] = 'archive';
-			$classes[] = 'feature-latest';
-
-			$key = array_search( 'single', $classes, true );
-			if ( false !== $key ) {
-				unset( $classes[ $key ] );
-			}
-		}
-
-		return $classes;
 	}
 
 	/**

@@ -15,31 +15,9 @@ defined( 'ABSPATH' ) || exit;
 class Profile {
 
 	/**
-	 * Stores static instance of class.
-	 *
-	 * @access protected
-	 * @var Newspack\Govpack\Block\Profile The single instance of the class
+	 * WordPress Hooks
 	 */
-	protected static $instance = null;
-
-	/**
-	 * Returns static instance of class.
-	 *
-	 * @return self
-	 */
-	public static function instance() {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
-	/**
-	 * Inits the class and registers the register call
-	 *
-	 * @return self
-	 */
-	public function __construct() {
+	public static function hooks() {
 		add_action( 'init', [ __CLASS__, 'register' ] );
 	}
 

@@ -14,7 +14,6 @@ use \Newspack\Govpack\Helpers;
  */
 class Profile {
 
-
 	/**
 	 * Valid profile formats.
 	 *
@@ -30,26 +29,6 @@ class Profile {
 	public static $default_profile_format = 'full';
 
 	/**
-	 * Stores static instance of class.
-	 *
-	 * @access protected
-	 * @var Newspack\Govpack\CPT\Profile The single instance of the class
-	 */
-	protected static $instance = null;
-
-	/**
-	 * Returns static instance of class.
-	 *
-	 * @return self
-	 */
-	public static function instance() {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
-	/**
 	 * Post Type slug. Used when registering and referencing
 	 */
 	const CPT_SLUG = 'govpack_profiles';
@@ -58,15 +37,6 @@ class Profile {
 	 * Shortcode.
 	 */
 	const SHORTCODE = 'govpack';
-
-	/**
-	 * Inits the class and registers the hooks call
-	 *
-	 * @return self
-	 */
-	public function __construct() {
-		add_action( 'after_setup_theme', [ __class__, 'hooks' ], 11, 1 );
-	}
 
 	/**
 	 * WordPress Hooks

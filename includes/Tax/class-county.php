@@ -208,7 +208,7 @@ class County extends \Newspack\Govpack\Taxonomy {
 	 * @param string $taxonomy The taxonomy slug.
 	 */
 	public static function add_form_fields( $taxonomy ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		$states = Helpers::states();
+		$states = \Newspack\Govpack\Helpers::states();
 		?>
 		<div class="form-field state-wrap">
 			<label for="state">State</label>

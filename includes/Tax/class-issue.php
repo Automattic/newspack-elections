@@ -55,7 +55,7 @@ class Issue extends \Newspack\Govpack\Taxonomy {
 				'public'            => true,
 				'hierarchical'      => false,
 				'rewrite'           => [
-					'slug'         => self::SLUG,
+					'slug'         => self::TAX_SLUG,
 					'with_front'   => false,
 					'hierarchical' => false,
 				],

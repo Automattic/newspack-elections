@@ -43,11 +43,4 @@ abstract class Block {
 		);
 	}
 
-	/**
-	 * Registers the block.
-	 *
-	 * @return void
-	 */
-	abstract public static function register_block();
-
 }

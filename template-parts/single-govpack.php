@@ -10,7 +10,7 @@
 get_header();
 ?>
 
-	<section id="primary" class="content-area <?php echo esc_attr( newspack_get_category_tag_classes( get_the_ID() ) ); ?>">
+	<section id="primary" class="content-area">
 		<?php
 		/* Start the Loop */
 		while ( have_posts() ) :
@@ -27,22 +27,30 @@ get_header();
 
 		<main id="main" class="site-main">
 			<?php
-			$post_count = 0;
-			$stories    = \Newspack\Govpack\CPT\Profile::get_stories( get_the_ID() );
-			while ( $stories->have_posts() ) :
-				$post_count++;
-				$stories->the_post();
+			$current_post_type = get_post_type();
 
-				if ( 1 === $post_count && 0 === get_query_var( 'paged' ) ) {
-					get_template_part( 'template-parts/content/content', 'excerpt' );
-				} else {
-					get_template_part( 'template-parts/content/content', 'archive' );
-				}
-				?>
+			if ( \Newspack\Govpack\CPT\Profile::CPT_SLUG === $current_post_type ) {
+				$stories = \Newspack\Govpack\CPT\Profile::get_stories( get_the_ID() );
+			} elseif ( \Newspack\Govpack\CPT\Issue::CPT_SLUG === $current_post_type ) {
+				$stories = \Newspack\Govpack\CPT\Issue::get_stories( get_the_ID() );
+			}
 
-				<?php
+			if ( isset( $stories ) ) :
+				$post_count = 0;
+
+				while ( $stories->have_posts() ) :
+					$post_count++;
+					$stories->the_post();
+
+					if ( 1 === $post_count && 0 === get_query_var( 'paged' ) ) {
+						get_template_part( 'template-parts/content/content', 'excerpt' );
+					} else {
+						get_template_part( 'template-parts/content/content', 'archive' );
+					}
+
 				endwhile;
 				wp_reset_postdata();
+			endif;
 			?>
 		</main><!-- #main -->
 

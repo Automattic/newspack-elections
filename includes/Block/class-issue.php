@@ -56,10 +56,6 @@ class Issue {
 					'className' => [
 						'type' => 'string',
 					],
-					'format'    => [
-						'type'    => 'string',
-						'default' => \Newspack\Govpack\CPT\Issue::$default_issue_format,
-					],
 				],
 			]
 		);

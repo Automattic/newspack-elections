@@ -15,20 +15,6 @@ use \Newspack\Govpack\Helpers;
 class Issue {
 
 	/**
-	 * Valid issue formats.
-	 *
-	 * @var array
-	 */
-	public static $issue_formats = [ 'full', 'mini', 'wiki' ];
-
-	/**
-	 * Default issue format.
-	 *
-	 * @var string
-	 */
-	public static $default_issue_format = 'full';
-
-	/**
 	 * Post Type slug. Used when registering and referencing
 	 */
 	const CPT_SLUG = 'govpack_issues';
@@ -158,17 +144,10 @@ class Issue {
 
 		$atts = shortcode_atts(
 			[
-				'format'    => self::$default_issue_format,
 				'className' => '',
 			],
 			$atts
 		);
-
-		if ( ! in_array( $atts['format'], self::$issue_formats, true ) ) {
-			$atts['format'] = self::$default_issue_format;
-		}
-
-		$issue_data['format'] = $atts['format'];
 
 		ob_start();
 		require_once GOVPACK_PLUGIN_FILE . 'template-parts/issue.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant

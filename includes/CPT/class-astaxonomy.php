@@ -8,52 +8,31 @@
 namespace Newspack\Govpack\CPT;
 
 /**
- * Enable the "Profile" post type to be used as a taxonomy
+ * Enable post types to be used as a taxonomy
  */
 class AsTaxonomy {
-
-	/**
-	 * Stores static instance of class.
-	 *
-	 * @access protected
-	 * @var Newspack\Govpack\CPT\AsTaxonomy The single instance of the class
-	 */
-	protected static $instance = null;
-
-	/**
-	 * Returns static instance of class.
-	 *
-	 * @return self
-	 */
-	public static function instance() {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
 
 	/**
 	 * Post types.
 	 *
 	 * @var array
 	 */
-	public $post_types = [];
+	public static $post_types = [];
 
 	/**
-	 * Inits the class and registers the init call.
+	 * WordPress Hooks
 	 */
-	public function __construct() {
-		add_action( 'init', [ $this, 'init' ], 11 );
-
-		add_action( 'save_post', [ $this, 'update' ] );
-		add_action( 'untrashed_post', [ $this, 'update' ] );
-		add_action( 'trashed_post', [ $this, 'delete' ] );
+	public static function hooks() {
+		add_action( 'init', [ __CLASS__, 'init' ], 11 );
+		add_action( 'save_post', [ __CLASS__, 'update' ] );
+		add_action( 'untrashed_post', [ __CLASS__, 'update' ] );
+		add_action( 'trashed_post', [ __CLASS__, 'delete' ] );
 	}
 
 	/**
 	 * Which post types want to be ordered
 	 */
-	public function init() {
+	public static function init() {
 
 		$post_types = get_post_types();
 		if ( ! $post_types ) {
@@ -64,7 +43,7 @@ class AsTaxonomy {
 			$post_type = get_post_type_object( $post_type );
 
 			if ( isset( $post_type->as_taxonomy ) ) {
-				$this->post_types[ $post_type->name ] = $post_type->as_taxonomy;
+				self::$post_types[ $post_type->name ] = $post_type->as_taxonomy;
 			}
 		}
 	}
@@ -76,8 +55,8 @@ class AsTaxonomy {
 	 *
 	 * @return boolean
 	 */
-	public function update( $post_id ) {
-		if ( ! is_array( $this->post_types ) ) {
+	public static function update( $post_id ) {
+		if ( ! is_array( self::$post_types ) ) {
 			return;
 		}
 
@@ -94,11 +73,11 @@ class AsTaxonomy {
 			return;
 		}
 
-		if ( ! isset( $this->post_types[ $post->post_type ] ) ) {
+		if ( ! isset( self::$post_types[ $post->post_type ] ) ) {
 			return;
 		}
 
-		$taxonomy = $this->post_types[ $post->post_type ];
+		$taxonomy = self::$post_types[ $post->post_type ];
 
 		$term_id = get_post_meta( $post->ID, 'term_id', true );
 		if ( $term_id ) {
@@ -138,8 +117,8 @@ class AsTaxonomy {
 	 *
 	 * @return bool|int|WP_Error
 	 */
-	public function delete( $post_id ) {
-		if ( ! is_array( $this->post_types ) ) {
+	public static function delete( $post_id ) {
+		if ( ! is_array( self::$post_types ) ) {
 			return;
 		}
 
@@ -152,7 +131,7 @@ class AsTaxonomy {
 			return;
 		}
 
-		if ( ! isset( $this->post_types[ $post->post_type ] ) ) {
+		if ( ! isset( self::$post_types[ $post->post_type ] ) ) {
 			return;
 		}
 
@@ -161,7 +140,7 @@ class AsTaxonomy {
 			return;
 		}
 
-		$taxonomy = $this->post_types[ $post->post_type ];
+		$taxonomy = self::$post_types[ $post->post_type ];
 
 		// The post is linked to a term, delete it!
 		$term = get_term( $term_id, $taxonomy );

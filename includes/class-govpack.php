@@ -49,12 +49,16 @@ class Govpack {
 	 * WordPress Hooks
 	 */
 	public static function hooks() {
-		\Newspack\Govpack\CPT\Profile::instance();
-		\Newspack\Govpack\Block\Profile::instance();
-		\Newspack\Govpack\CPT\AsTaxonomy::instance();
+		\Newspack\Govpack\CPT\Issue::hooks();
+		\Newspack\Govpack\CPT\Profile::hooks();
+		\Newspack\Govpack\Block\Issue::hooks();
+		\Newspack\Govpack\Block\IssueArchive::hooks();
+		\Newspack\Govpack\Block\Profile::hooks();
+		\Newspack\Govpack\CPT\AsTaxonomy::hooks();
 		\Newspack\Govpack\Tax\City::hooks();
 		\Newspack\Govpack\Tax\County::hooks();
 		\Newspack\Govpack\Tax\Installation::hooks();
+		\Newspack\Govpack\Tax\Issue::hooks();
 		\Newspack\Govpack\Tax\LegislativeBody::hooks();
 		\Newspack\Govpack\Tax\OfficeHolderStatus::hooks();
 		\Newspack\Govpack\Tax\Party::hooks();

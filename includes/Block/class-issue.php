@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Register and handle the block.
  */
-class Profile extends \Newspack\Govpack\Block {
+class Issue extends \Newspack\Govpack\Block {
 
 	/**
 	 * Registers the block.
@@ -21,11 +21,11 @@ class Profile extends \Newspack\Govpack\Block {
 	 */
 	public static function register_block() {
 		register_block_type(
-			'govpack/profile',
+			'govpack/issue',
 			[
 				'apiVersion'      => 2,
 				'editor_script'   => 'govpack-editor',
-				'render_callback' => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler' ],
+				'render_callback' => [ '\Newspack\Govpack\CPT\Issue', 'shortcode_handler' ],
 				'attributes'      => [
 					'id'        => [
 						'type'    => 'number',
@@ -33,10 +33,6 @@ class Profile extends \Newspack\Govpack\Block {
 					],
 					'className' => [
 						'type' => 'string',
-					],
-					'format'    => [
-						'type'    => 'string',
-						'default' => \Newspack\Govpack\CPT\Profile::$default_profile_format,
 					],
 				],
 			]

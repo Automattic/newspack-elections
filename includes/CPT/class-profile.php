@@ -12,8 +12,7 @@ use \Newspack\Govpack\Helpers;
 /**
  * Register and handle the "Profile" Custom Post Type
  */
-class Profile {
-
+class Profile extends \Newspack\Govpack\Post_Type {
 
 	/**
 	 * Valid profile formats.
@@ -30,26 +29,6 @@ class Profile {
 	public static $default_profile_format = 'full';
 
 	/**
-	 * Stores static instance of class.
-	 *
-	 * @access protected
-	 * @var Govpack\Govpack\Profile The single instance of the class
-	 */
-	protected static $instance = null;
-
-	/**
-	 * Returns static instance of class.
-	 *
-	 * @return self
-	 */
-	public static function instance() {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
-	/**
 	 * Post Type slug. Used when registering and referencing
 	 */
 	const CPT_SLUG = 'govpack_profiles';
@@ -60,30 +39,18 @@ class Profile {
 	const SHORTCODE = 'govpack';
 
 	/**
-	 * Inits the class and registeres the hooks call
-	 *
-	 * @return self
-	 */
-	public function __construct() {
-		add_action( 'after_setup_theme', [ __class__, 'hooks' ], 11, 1 );
-	}
-
-	/**
 	 * WordPress Hooks
 	 */
 	public static function hooks() {
-		add_action( 'init', [ __CLASS__, 'register_post_type' ] );
+		parent::hooks();
 		add_action( 'cmb2_init', [ __CLASS__, 'add_profile_boxes' ] );
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
 		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
 		add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
-		add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', [ __CLASS__, 'manage_columns' ] );
-		add_shortcode( self::SHORTCODE, [ __CLASS__, 'shortcode_handler' ] );
-		add_filter( 'body_class', [ __CLASS__, 'filter_body_class' ] );
 	}
 
 	/**
-	 * Register the Features post type
+	 * Register the Profiles post type
 	 *
 	 * @return object|WP_Error
 	 */
@@ -134,20 +101,6 @@ class Profile {
 	}
 
 	/**
-	 * Adds the post_type to array of supported post types.
-	 *
-	 * @param array $post_types   Array of post types.
-	 *
-	 * @return array
-	 */
-	public static function add_post_type( $post_types ) {
-		$post_types[] = static::CPT_SLUG;
-
-		return $post_types;
-	}
-
-
-	/**
 	 * Denote State, Party and Legislative Body columns as sortable.
 	 *
 	 * @param array $sortable_columns An array of sortable columns.
@@ -157,17 +110,6 @@ class Profile {
 		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\Party::TAX_SLUG ]           = 'Party';
 		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] = 'Legislative Body';
 		return $sortable_columns;
-	}
-
-	/**
-	 * Remove tags column from profile admin screen.
-	 *
-	 * @param string[] $columns The column header labels keyed by column ID.
-	 * @return array
-	 */
-	public static function manage_columns( $columns ) {
-		unset( $columns['tags'] );
-		return $columns;
 	}
 
 	/**
@@ -681,27 +623,6 @@ class Profile {
 		}
 
 		return $new_post;
-	}
-
-	/**
-	 * Add body classes depending on layout.
-	 *
-	 * @param array $classes CSS classes.
-	 *
-	 * @return array
-	 */
-	public static function filter_body_class( $classes ) {
-		if ( is_singular( self::CPT_SLUG ) ) {
-			$classes[] = 'archive';
-			$classes[] = 'feature-latest';
-
-			$key = array_search( 'single', $classes, true );
-			if ( false !== $key ) {
-				unset( $classes[ $key ] );
-			}
-		}
-
-		return $classes;
 	}
 
 	/**

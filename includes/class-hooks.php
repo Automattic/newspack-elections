@@ -60,8 +60,13 @@ class Hooks {
 	public static function single_template( $template ) {
 		global $post;
 
-		if ( \Newspack\Govpack\CPT\Profile::CPT_SLUG === $post->post_type && locate_template( [ 'single-' . \Newspack\Govpack\CPT\Profile::CPT_SLUG . '.php' ] ) !== $template ) {
-			return plugin_dir_path( __DIR__ ) . 'template-parts/single-' . \Newspack\Govpack\CPT\Profile::CPT_SLUG . '.php';
+		$slugs = [
+			\Newspack\Govpack\CPT\Issue::CPT_SLUG,
+			\Newspack\Govpack\CPT\Profile::CPT_SLUG,
+		];
+
+		if ( in_array( $post->post_type, $slugs, true ) && locate_template( [ 'single-govpack.php' ] ) !== $template ) {
+			return plugin_dir_path( __DIR__ ) . 'template-parts/single-govpack.php';
 		}
 
 		return $template;

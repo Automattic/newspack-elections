@@ -39,7 +39,7 @@ class IssueArchive extends \Newspack\Govpack\Block {
 				'supports'        => [
 					'customClassName' => false,
 				],
-			],
+			]
 		);
 	}
 

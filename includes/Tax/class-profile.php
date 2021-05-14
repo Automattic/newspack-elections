@@ -52,7 +52,7 @@ class Profile extends \Newspack\Govpack\Taxonomy {
 					'items_list'                 => __( 'Profiles list', 'govpack' ),
 					'items_list_navigation'      => __( 'Profiles list navigation', 'govpack' ),
 				],
-				'public'            => true,
+				'public'            => false,
 				'hierarchical'      => false,
 				'rewrite'           => [
 					'slug'         => self::TAX_SLUG,

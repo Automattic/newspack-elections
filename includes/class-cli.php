@@ -115,7 +115,7 @@ class CLI extends \WP_CLI_Command {
 			if ( is_wp_error( $result ) ) {
 				foreach ( $result->errors as $error_info ) {
 					foreach ( $error_info as $message ) {
-						WP_CLI::error( $message );
+						WP_CLI::warning( $message );
 					}
 				}
 			}

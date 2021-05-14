@@ -99,7 +99,7 @@ class Hooks {
 	 */
 	public static function admin_notices() {
 		$screen = get_current_screen();
-		if ( \Newspack\Govpack\CPT\Profile::CPT_SLUG !== $screen->post_type ) {
+		if ( ! in_array( $screen->post_type, [ \Newspack\Govpack\CPT\Profile::CPT_SLUG, \Newspack\Govpack\CPT\Issue::CPT_SLUG ], true ) ) {
 			return;
 		}
 

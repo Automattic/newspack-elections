@@ -112,7 +112,6 @@ class County extends \Newspack\Govpack\Taxonomy {
 			} else {
 				if ( 0 === $progress % 5 ) {
 					echo '.';
-					ob_flush();
 				}
 				if ( 0 === $progress % 100 ) {
 					echo "\n";

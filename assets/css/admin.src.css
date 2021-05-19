@@ -103,6 +103,10 @@
   width: 75%;
 }
 
+.cmb2-postbox .cmb-row.cmb-type-wysiwyg input[type='button'] {
+  width: inherit;
+}
+
 .cmb2-postbox .cmb-row + .cmb-row {
   margin-top: 10px;
 }

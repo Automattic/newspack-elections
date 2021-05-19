@@ -15,10 +15,10 @@ class Hooks {
 	 * Set up actions and filters.
 	 */
 	public static function setup_hooks() {
-		// Enqueue CSS and JS.
 		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'wp_enqueue_scripts' ] );
 		add_action( 'admin_enqueue_scripts', [ __CLASS__, 'admin_enqueue_scripts' ] );
 		add_filter( 'single_template', [ __CLASS__, 'single_template' ] );
+		add_filter( 'wpseo_accessible_post_types', [ __CLASS__, 'wpseo_accessible_post_types' ] );
 		add_action( 'init', [ __CLASS__, 'register_sidebars' ] );
 		add_action( 'admin_notices', [ __CLASS__, 'admin_notices' ] );
 	}
@@ -70,6 +70,18 @@ class Hooks {
 		}
 
 		return $template;
+	}
+
+	/**
+	 * Disable the Yoast SEO metabox on Govpack Profiles and Issues.
+	 *
+	 * @param array $post_types Post types registered with Yoast SEO.
+	 */
+	public static function wpseo_accessible_post_types( $post_types ) {
+		unset( $post_types[ \Newspack\Govpack\CPT\Profile::CPT_SLUG ] );
+		unset( $post_types[ \Newspack\Govpack\CPT\Issue::CPT_SLUG ] );
+
+		return $post_types;
 	}
 
 	/**

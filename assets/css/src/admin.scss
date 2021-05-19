@@ -20,6 +20,12 @@
 			}
 		}
 
+		&.cmb-type-wysiwyg {
+			input[type='button'] {
+				width: inherit;
+			}
+		}
+
 		& + .cmb-row {
 			margin-top: 10px;
 		}

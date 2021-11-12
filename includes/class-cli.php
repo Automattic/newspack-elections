@@ -89,7 +89,7 @@ class CLI extends \WP_CLI_Command {
 	 * @param array $args        Array of command-line arguments.
 	 * @param array $assoc_args  Associative array of arguments.
 	 */
-	public function import( $args, $assoc_args ) {
+	public function import_old( $args, $assoc_args ) {
 		if ( isset( $assoc_args['dry-run'] ) && 'false' === $assoc_args['dry-run'] ) {
 			$dry_run = false;
 		} else {
@@ -120,6 +120,55 @@ class CLI extends \WP_CLI_Command {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Import data from WXR.
+	 *
+	 * ## OPTIONS
+	 * <file>...
+	 * : The WXR file.
+	 *
+	 * [--dry-run]
+	 * : Set to false to actually run the command
+	 *
+	 * ## EXAMPLES
+	 * wp govpack import --source=openstates ak.csv --dry-run
+	 * wp govpack import --source=usio usa.csv
+	 *
+	 * @subcommand import
+	 *
+	 * @param array $args        Array of command-line arguments.
+	 * @param array $assoc_args  Associative array of arguments.
+	 */
+	public function import( $args, $assoc_args ) {
+
+		if ( isset( $assoc_args['dry-run'] ) && 'false' === $assoc_args['dry-run'] ) {
+			$dry_run = false;
+		} else {
+			$dry_run = true;
+			WP_CLI::line( '!!! Doing a dry-run, no profiles will be imported.' );
+		}
+
+		foreach ( $args as $file ) {
+			
+			try {
+				$importer = \Newspack\Govpack\Importer\WXR::make();
+				$importer::import( $file, $dry_run );
+			} catch ( \Exception $e ) {
+				WP_CLI::error( $e->getMessage() );
+			}
+		}
+	}
+
+	/**
+	 * Gets Proress from ongoing import
+	 *
+	 * @subcommand import
+	 */
+	public function progress() {
+		$importer = \Newspack\Govpack\Importer\WXR::make();
+		WP_CLI::line( $importer::progress() );
 	}
 
 	/**

@@ -19,7 +19,10 @@ if ( ! defined( 'GOVPACK_PLUGIN_FILE' ) ) {
 	define( 'GOVPACK_PLUGIN_FILE', plugin_dir_path( __FILE__ ) );
 }
 
-require_once GOVPACK_PLUGIN_FILE . '/vendor/autoload.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+require_once GOVPACK_PLUGIN_FILE . 'vendor/autoload.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+require_once GOVPACK_PLUGIN_FILE . 'vendor/woocommerce/action-scheduler/action-scheduler.php';// phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+
+
 
 use Pablo_Pacheco\WP_Namespace_Autoloader\WP_Namespace_Autoloader;
 $autoloader = new WP_Namespace_Autoloader(
@@ -34,5 +37,6 @@ $autoloader->init();
 
 // Include the main Govpack class.
 if ( class_exists( '\Newspack\Govpack\Govpack' ) ) {
-	\Newspack\Govpack\Govpack::instance();
+	$GLOBALS['govpack'] = \Newspack\Govpack\Govpack::instance();
 }
+

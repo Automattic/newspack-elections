@@ -4,7 +4,8 @@
   "type": "wordpress-plugin",
   "require": {
     "cmb2/cmb2": "2.9.*",
-    "pablo-sg-pacheco/wp-namespace-autoloader": "dev-master"
+    "pablo-sg-pacheco/wp-namespace-autoloader": "dev-master",
+    "woocommerce/action-scheduler": "^3.4"
   },
   "require-dev": {
     "automattic/vipwpcs": "^2.2",

@@ -7,6 +7,9 @@
 
 namespace Newspack\Govpack\ActionScheduler;
 
+/**
+ * Extends the ActionScheduler_StoreSchema so we can reused it for out overrides
+ */
 class StoreSchema extends \ActionScheduler_StoreSchema {
 	
 	/**
@@ -19,14 +22,15 @@ class StoreSchema extends \ActionScheduler_StoreSchema {
 
 	}
 
-	 /**
-	  * When called, get the original schema and modify the extended args column
-	  */
-
+	/**
+	 * When called, get the original schema and modify the extended args column
+	 *
+	 * @param string $table what table definition to get.
+	 */
 	protected function get_table_definition( $table ) {
 		$definition = parent::get_table_definition( $table );
 
-		if ( $table !== self::ACTIONS_TABLE ) {
+		if ( self::ACTIONS_TABLE !== $table ) {
 			return $definition;
 		}
 

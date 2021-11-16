@@ -75,38 +75,38 @@ class Govpack {
 		
 		
 		$menu = new \Newspack\Govpack\Admin\Menu();
-		$menu->setPageTitle( 'GovPack' )
-			->setMenuTitle( 'GovPack' )
-			->setMenuSlug( 'govpack' )
-			->setCallback(
+		$menu->set_page_title( 'GovPack' )
+			->set_menu_title( 'GovPack' )
+			->set_menu_slug( 'govpack' )
+			->set_callback(
 				function() {
 				
 				}
 			);
 
-		$item = new \Newspack\Govpack\Admin\MenuItem();
-		$menu->addItem(
-			$item->setPageTitle( 'Import' )
-				->setMenuTitle( 'Import' )
-				->setMenuSlug( 'govpack_import' )
-				->setCallback( [ '\Newspack\Govpack\Admin\Pages\Import', 'view' ] ) 
+		$item = new \Newspack\Govpack\Admin\Menu_Item();
+		$menu->add_item(
+			$item->set_page_title( 'Import' )
+				->set_menu_title( 'Import' )
+				->set_menu_slug( 'govpack_import' )
+				->set_callback( [ '\Newspack\Govpack\Admin\Pages\Import', 'view' ] ) 
 		);
 
-		$item = new \Newspack\Govpack\Admin\MenuItem();
-		$menu->addItem(
-			$item->setPageTitle( 'Profiles' )->setMenuTitle( 'Profiles' )->setMenuSlug( 'govpack_profiles' )->setCallback(
+		$item = new \Newspack\Govpack\Admin\Menu_Item();
+		$menu->add_item(
+			$item->set_page_title( 'Profiles' )->set_menu_title( 'Profiles' )->set_menu_slug( 'govpack_profiles' )->set_callback(
 				function() {
 					
 				} 
 			) 
 		);
 
-		$item = new \Newspack\Govpack\Admin\MenuItem();
-		$menu->addItem(
-			$item->setPageTitle( 'Issues' )
-				->setMenuTitle( 'Issues' )
-				->setMenuSlug( '/edit.php?post_type=govpack_issues' )
-				->setCallback(
+		$item = new \Newspack\Govpack\Admin\Menu_Item();
+		$menu->add_item(
+			$item->set_page_title( 'Issues' )
+				->set_menu_title( 'Issues' )
+				->set_menu_slug( '/edit.php?post_type=govpack_issues' )
+				->set_callback(
 					function() {
 						
 					}

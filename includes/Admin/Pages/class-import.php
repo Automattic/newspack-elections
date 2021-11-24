@@ -18,11 +18,13 @@ class Import {
 	 */
 	public static function view() {
 
+		wp_enqueue_script("govpack-importer");
+		wp_enqueue_style("wp-components");
+		
 		$context = [
 			'stage' => 'upload',
 		];
 
-		\check_admin_referer( 'import-upload' );
 
 		if ( isset( $_POST ) && 
 			( ( ! empty( $_POST ) && \check_admin_referer( 'import-upload' ) ) ) &&

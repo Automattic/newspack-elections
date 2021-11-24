@@ -13,13 +13,32 @@ const path = require( 'path' );
  * Internal variables
  */
 const editor = path.join( __dirname, 'assets', 'js', 'src', 'editor' );
+const importer = path.join( __dirname, 'assets', 'js', 'src', 'importer' );
 
-const webpackConfig = getBaseWebpackConfig(
-	{ WP: true },
-	{
-		entry: { editor },
-		'output-path': path.join( __dirname, 'dist' ),
+const parentConfig = getBaseWebpackConfig()
+
+const webpackConfig = {
+	...parentConfig,
+	...{
+		entry: { editor, importer },
+		'output': {
+			...parentConfig.output,
+			...{"path" : path.join( __dirname, 'dist' )}
+		},
+		"resolve" : {
+			...parentConfig.resolve,
+			fallback: { 
+				"path": require.resolve("path-browserify"),
+				"util": require.resolve("util/")
+			}
+		},
+		externals: {
+			"react": "React",
+			"react-dom": "ReactDOM"
+		}
+
 	}
-);
+}
 
+console.log(webpackConfig)
 module.exports = webpackConfig;

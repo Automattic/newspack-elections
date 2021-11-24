@@ -17,6 +17,14 @@ define( 'GOVPACK_VERSION', '0.0.1' );
 class Govpack {
 
 	/**
+	 * Reference to REST API Prefix for consistency.
+	 *
+	 * @access public
+	 * @var string REST API Prefix
+	 */
+	const REST_PREFIX = "govpack/v1";
+
+	/**
 	 * Stores static instance of class.
 	 *
 	 * @access protected
@@ -44,6 +52,7 @@ class Govpack {
 	public function __construct() {
 		add_action( 'after_setup_theme', [ __class__, 'hooks' ] );
 		add_action( 'plugins_loaded', [ '\Newspack\Govpack\ActionScheduler\ActionScheduler', 'hooks' ], 0 );
+	
 	}
 
 	/**
@@ -72,6 +81,7 @@ class Govpack {
 		}
 
 		\Newspack\Govpack\Importer\Actions::hooks();
+		\Newspack\Govpack\Importer\Chunked_Upload::hooks();
 		
 		
 		$menu = new \Newspack\Govpack\Admin\Menu();

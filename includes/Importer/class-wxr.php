@@ -33,21 +33,30 @@ class WXR {
 	 */
 	public static function import( $file ) {
 
+		define('IMPORT_NOT_RUNNING', 0);
+		define('IMPORT_RUNNING', 1);
+		define('IMPORT_DONE', 2);
+
 		$test_key = "govpack_import_processing";
-		$import_processing_running = get_option($test_key, false);
-		if($import_processing_running){
-			return false;
+		$import_processing_running = get_option($test_key, IMPORT_NOT_RUNNING);
+
+		if($import_processing_running == IMPORT_RUNNING){
+			return ["status" => "running"];
 		}
 
-		update_option($test_key, true);
+		if($import_processing_running == IMPORT_DONE){
+			return ["status" => "done"];
+		}
 
-		$file   = self::checkFile( $file );
-		$reader = self::createReader( $file );
+		update_option($test_key, IMPORT_RUNNING);
+
+		$file   = self::check_file( $file );
+		$reader = self::create_reader( $file );
 		self::process( $reader );
 
-		update_option($test_key, false);
+		update_option($test_key, IMPORT_DONE);
 
-		return true;
+		return ["status" => "running"];
 	}
 
 	/**
@@ -57,6 +66,11 @@ class WXR {
 	 * @throws \Exception File Not Found.
 	 */
 	public static function check_file( $file ) {
+
+		if ( file_exists( $file ) ) {
+			return $file;
+		}
+
 		$path = wp_get_upload_dir();
 		$path = $path['basedir'] . '/govpack/' . $file;
 

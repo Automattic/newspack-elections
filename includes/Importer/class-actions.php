@@ -40,7 +40,7 @@ class Actions {
 		add_action( 'govpack_import_category', [ self::instance(), 'make_term' ] );
 		add_action( 'govpack_import_tag', [ self::instance(), 'make_term' ] );
 		add_action( 'govpack_import_term', [ self::instance(), 'make_term' ] );
-		add_action( 'govpack_import_post', [ self::instance(), 'make_post' ] );
+	//	add_action( 'govpack_import_post', [ self::instance(), 'make_post' ] );
 	}
 
 	/**

@@ -40,5 +40,4 @@ const webpackConfig = {
 	}
 }
 
-console.log(webpackConfig)
 module.exports = webpackConfig;

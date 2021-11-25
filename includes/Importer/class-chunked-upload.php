@@ -95,16 +95,26 @@ class Chunked_Upload {
 			return new WP_Error("500", "No File For Import");
 		}
 		
-		/*
-		if(WXR::import($file)){
-			return [ "status" => "started" ];
-		} else {
-			return [ "status" => "running" ];
-		}
-		*/
+		return WXR::import($file);
+			
 	}
 
     public static function upload(\WP_REST_Request $request){
-        var_dump($request);
+
+      
+        $factory = new \FileUpload\FileUploadFactory(
+            new \FileUpload\PathResolver\Simple(\Newspack\Govpack\Admin\Pages\Import::get_upload_path("govpack")), 
+            new \FileUpload\FileSystem\Simple(), 
+            []
+        );
+        
+        $instance = $factory->create($_FILES['blob'], $_SERVER);
+
+        $resp = $instance->processAll();
+        $path = $instance->getFiles()[0]->getPathname();
+
+        \update_option("govpack_import_path", $path);
+        return $resp;
+        
     }
 }

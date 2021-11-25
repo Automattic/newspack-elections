@@ -32,10 +32,22 @@ class WXR {
 	 * @param string $file  Name of the JSON file.
 	 */
 	public static function import( $file ) {
+
+		$test_key = "govpack_import_processing";
+		$import_processing_running = get_option($test_key, false);
+		if($import_processing_running){
+			return false;
+		}
+
+		update_option($test_key, true);
+
 		$file   = self::checkFile( $file );
 		$reader = self::createReader( $file );
 		self::process( $reader );
 
+		update_option($test_key, false);
+
+		return true;
 	}
 
 	/**

@@ -106,7 +106,7 @@ const Uploader = (props) => {
                 justify="flex-start"
             >
                 <FormFileUpload
-		            accept="image/*"
+		            accept="text/xml, text/csv"
                     variant="secondary"
 		            onChange={ onFileChosen }
 	            >

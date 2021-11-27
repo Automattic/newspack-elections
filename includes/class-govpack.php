@@ -63,10 +63,13 @@ class Govpack {
 		
 		\Newspack\Govpack\CPT\Issue::hooks();
 		\Newspack\Govpack\CPT\Profile::hooks();
-		\Newspack\Govpack\Block\Issue::hooks();
-		\Newspack\Govpack\Block\IssueArchive::hooks();
+
+		//\Newspack\Govpack\Block\Issue::hooks();
+		//\Newspack\Govpack\Block\IssueArchive::hooks();
 		\Newspack\Govpack\Block\Profile::hooks();
+
 		\Newspack\Govpack\CPT\AsTaxonomy::hooks();
+
 		\Newspack\Govpack\Tax\City::hooks();
 		\Newspack\Govpack\Tax\County::hooks();
 		\Newspack\Govpack\Tax\Installation::hooks();
@@ -76,6 +79,7 @@ class Govpack {
 		\Newspack\Govpack\Tax\Party::hooks();
 		\Newspack\Govpack\Tax\Profile::hooks();
 		\Newspack\Govpack\Tax\State::hooks();
+
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			\Newspack\Govpack\CLI::init();
 		}

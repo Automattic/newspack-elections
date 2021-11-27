@@ -44,6 +44,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	public static function hooks() {
 		parent::hooks();
 		add_action( 'cmb2_init', [ __CLASS__, 'add_profile_boxes' ] );
+		add_action( 'init', [ __CLASS__, 'register_post_meta' ] );
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
 		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
 		add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
@@ -87,6 +88,54 @@ class Profile extends \Newspack\Govpack\Post_Type {
 				],
 			]
 		);
+	}
+
+	/**
+	 * Register Meta data for the post in the REST API 
+	 */
+	public static function register_post_meta() {
+
+		self::register_meta("prefix");
+		self::register_meta("first_name");
+		self::register_meta("last_name");
+
+		$address_fields = ["address", "city", "state", "county"];
+		$address_types = ["main_office", "secondary_office"];
+
+		foreach($address_types as $type){
+			foreach($address_fields as $field){
+				$slug = sprintf("%s_%s", $type, $field);
+				self::register_meta($slug);
+			}
+		}
+
+		self::register_meta("position");
+		self::register_meta("title");
+
+		self::register_meta("main_phone");
+		self::register_meta("secondary_phone");
+		self::register_meta("text_email");
+		self::register_meta("twitter");
+		self::register_meta("instagram");
+		self::register_meta("facebook");
+		self::register_meta("linkedin");
+		self::register_meta("leg_url");
+		self::register_meta("campaign_url");
+		
+	}
+
+	/**
+	 * Register single Meta data for the post in the REST API 
+	 */
+	public static function register_meta(string $slug, array $args = []) {
+
+		$args = array_merge([
+			'show_in_rest' => true,
+			'single' => true,
+			'type' => 'string'
+		], $args);
+
+		register_post_meta( self::CPT_SLUG, $slug, $args);
 	}
 
 	/**
@@ -244,6 +293,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 					],
 				]
 			);
+		}
 
 			/**
 			 * Current position metabox.
@@ -400,7 +450,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 					'type' => 'text_url',
 				]
 			);
-		}
+		
 	}
 
 	/**

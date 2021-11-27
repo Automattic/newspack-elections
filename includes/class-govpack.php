@@ -22,7 +22,7 @@ class Govpack {
 	 * @access public
 	 * @var string REST API Prefix
 	 */
-	const REST_PREFIX = "govpack/v1";
+	const REST_PREFIX = 'govpack/v1';
 
 	/**
 	 * Stores static instance of class.
@@ -80,8 +80,7 @@ class Govpack {
 			\Newspack\Govpack\CLI::init();
 		}
 
-		\Newspack\Govpack\Importer\Actions::hooks();
-		\Newspack\Govpack\Importer\Chunked_Upload::hooks();
+		\Newspack\Govpack\Importer\Importer::hooks();
 		
 		
 		$menu = new \Newspack\Govpack\Admin\Menu();

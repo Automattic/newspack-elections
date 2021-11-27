@@ -45,8 +45,8 @@ abstract class Block {
 		wp_register_script(
 			'govpack-importer',
 			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/importer.js',
-			['wp-element'],
-			'',
+			[ 'wp-element' ],
+			'1',
 			true
 		);
 	}

@@ -20,79 +20,93 @@ class Importer {
 	 */
 	public static function hooks() {
 
-        add_action("rest_api_init", [__class__, "register_rest_endpoints"]);
+		add_action( 'rest_api_init', [ __class__, 'register_rest_endpoints' ] );
 		
 		Chunked_Upload::hooks();
 		Actions::hooks();
 
-    }
-
-	public static function register_rest_endpoints(){
-
-		\register_rest_route( Govpack::REST_PREFIX, "/import", array(
-            'methods' => 'GET',
-            'callback' => [
-                __class__,
-                "import"
-            ],
-            'permission_callback' => function () {
-                return true;
-                return \current_user_can( 'edit_others_posts' );
-
-            }) 
-        );
-
-		\register_rest_route( Govpack::REST_PREFIX, "/import/progress", array(
-            'methods' => 'GET',
-            'callback' => [
-                __class__,
-                "progress"
-            ],
-            'permission_callback' => function () {
-                return true;
-                return \current_user_can( 'edit_others_posts' );
-
-            }) 
-        );
 	}
 
-	public static function progress(\WP_REST_Request $request){
+	/**
+	 * Adds rest endpoints for Importer Upload a file and combine
+	 */
+	public static function register_rest_endpoints() {
+
+		\register_rest_route(
+			Govpack::REST_PREFIX,
+			'/import',
+			[
+				'methods'             => 'GET',
+				'callback'            => [
+					__class__,
+					'import',
+				],
+				'permission_callback' => function () {
+					return \current_user_can( 'edit_others_posts' );
+
+				},
+			] 
+		);
+
+		\register_rest_route(
+			Govpack::REST_PREFIX,
+			'/import/progress',
+			[
+				'methods'             => 'GET',
+				'callback'            => [
+					__class__,
+					'progress',
+				],
+				'permission_callback' => function () {
+					return \current_user_can( 'edit_others_posts' );
+				},
+			] 
+		);
+	}
+
+	/**
+	 * Called By The REST API to Check the progress of an ongoing import
+	 */
+	public static function progress() {
 		return self::progress_check();
 	}
 
-	public static function import(\WP_REST_Request $request){
+	/**
+	 * Called By The REST API to Kickoff an Import and check its process
+	 */
+	public static function import() {
 
-		$file = get_option("govpack_import_path", false);
+		$file = get_option( 'govpack_import_path', false );
 
-		if(!$file){
-			return new \WP_Error("500", "No File For Import");
+		if ( ! $file ) {
+			return new \WP_Error( '500', 'No File For Import' );
 		}
 		
-		return self::import($file);
+		return self::import( $file );
 			
 	}
 
-    /**
-     * Custom function that gets counts of Action Scheduler actions
-     *
-     * @param array $args XML node being processed.
-     */
-    public static function as_count_scheduled_actions( $args = [] ) {
-        if ( ! \ActionScheduler::is_initialized( __FUNCTION__ ) ) {
-            return [];
-        }
-        $store = \ActionScheduler::store();
-        foreach ( [ 'date', 'modified' ] as $key ) {
-            if ( isset( $args[ $key ] ) ) {
-                $args[ $key ] = as_get_datetime_object( $args[ $key ] );
-            }
-        }
+	/**
+	 * Custom function that gets counts of Action Scheduler actions
+	 *
+	 * @param array $args XML node being processed.
+	 */
+	public static function as_count_scheduled_actions( $args = [] ) {
+		if ( ! \ActionScheduler::is_initialized( __FUNCTION__ ) ) {
+			return [];
+		}
+		$store = \ActionScheduler::store();
+		foreach ( [ 'date', 'modified' ] as $key ) {
+			if ( isset( $args[ $key ] ) ) {
+				$args[ $key ] = as_get_datetime_object( $args[ $key ] );
+			}
+		}
 
-        return $store->query_actions( $args, 'count' );
+		return $store->query_actions( $args, 'count' );
 
-    }
+	}
 
-    /**
+	/**
 	 * Call the Import/Action Scheduler backend and see progress
 	 */
 	public static function progress_check() {
@@ -117,13 +131,13 @@ class Importer {
 		];
 	}
 
-    	/**
+	/**
 	 * Check the uplaods will work and create a govpack specific directory
 	 * 
 	 * @param string $slug path of the uploads older to create.
 	 */
-	public static function create_upload_directory( $slug = "govpack" ) {
-        
+	public static function create_upload_directory( $slug = 'govpack' ) {
+		
 		$upload     = wp_upload_dir();
 		$upload_dir = $upload['basedir'];
 		$upload_dir = $upload_dir . '/' . $slug;

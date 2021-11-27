@@ -40,7 +40,7 @@ class Actions {
 		add_action( 'govpack_import_category', [ self::instance(), 'make_term' ] );
 		add_action( 'govpack_import_tag', [ self::instance(), 'make_term' ] );
 		add_action( 'govpack_import_term', [ self::instance(), 'make_term' ] );
-	//	add_action( 'govpack_import_post', [ self::instance(), 'make_post' ] );
+		add_action( 'govpack_import_post', [ self::instance(), 'make_post' ] );
 	}
 
 	/**
@@ -50,6 +50,15 @@ class Actions {
 	 */
 	public function make_term( $args ) {
 		$this->process_term( $args, null );
+	}
+
+	/**
+	 * Action that fires from the importer to make the terms
+	 * 
+	 * @param array $args Args passed from Action Scheduler.
+	 */
+	public function make_post( $args ) {
+		$this->process_post( $args, null );
 	}
 
 	/**
@@ -117,6 +126,16 @@ class Actions {
 
 		do_action( 'wp_import_insert_term', $term_id, $data );
 
-
 	}
+
+	/**
+	 * Pre-process post data.
+	 *
+	 * @param array $data Post data. (Return empty to skip.).
+	 */
+	protected function process_post( $data ) {
+		// this is a [placeholder.].
+		return $data;
+	}
+
 }

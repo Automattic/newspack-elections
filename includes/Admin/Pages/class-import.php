@@ -68,11 +68,16 @@ class Import {
 	 * @param string $slug path of the uploads older to create.
 	 */
 	public static function create_upload_directory( $slug ) {
-		$upload     = wp_upload_dir();
-		$upload_dir = $upload['basedir'];
-		$upload_dir = $upload_dir . '/' . $slug;
-		if ( ! is_dir( $upload_dir ) ) {
+
+		if ( ! is_dir( self::get_upload_path($slug) ) ) {
 			wp_mkdir_p( $upload_dir );
 		}
 	}
+
+	public static function get_upload_path($slug){
+		$upload     = wp_upload_dir();
+		$upload_dir = $upload['basedir'];
+		$upload_dir = $upload_dir . '/' . $slug;
+		return $upload_dir;
+	} 
 }

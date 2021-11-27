@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import axios from 'axios';
 
 import { 
@@ -11,17 +11,25 @@ import {
 } from '@wordpress/components';
 
 import apiFetch from '@wordpress/api-fetch';
+import {isUndefined} from "lodash"
 
+const STAGE_UPLOADER = 0
+const STAGE_UPLOADING = 1
+const STAGE_PROCESSING = 2
+const STAGE_IMPORTING = 3
+const STAGE_DONE = 4
  
 apiFetch.setFetchHandler( ( options ) => {
-    const { url, path, data, method } = options;
+
+    const { url, path, data, method, headers } = options;
 
     return axios( {
         url: url || path,
         method,
         data,
+        headers,
         onUploadProgress: function (progressEvent) {
-            console.log(progressEvent)
+           // console.log(progressEvent)
         }
     } );
     
@@ -41,7 +49,7 @@ const Uploader = (props) => {
 
     const onFilesUpload = (  ) => {
 
-        props.updateStep(1)
+        props.updateStep(STAGE_UPLOADING)
 
         console.log(file)
 
@@ -62,35 +70,41 @@ const Uploader = (props) => {
             current_chunk++
         }
 
+        const uploadChunk = (index = 0) => {
+
+            if(isUndefined(chunks[index])){
+                return false
+            }
+
+            let data = new FormData()
+            data.append(
+                "blob", chunks[index], file.name
+            )
+
+            apiFetch( {
+                path: '/wp-json/govpack/v1/upload',
+                method: 'POST',
+                headers:  {
+                    'content-type': 'multipart/form-data',
+                    'Content-Range': "bytes "+ (index * CHUNK_SIZE) +"-"+ ((index + 1) * CHUNK_SIZE) + "/"+ file.size
+                },
+                data: data
+            } ).then( ( res ) => {
+                upload_progress = upload_progress + upload_progress_per_chunk
+                props.onUploadProgress( upload_progress )
+                uploadChunk(index + 1)
+            } );
+
+        }
+
         let start = 0
         while(start <= file.size){
             createChunk(start)
             start = (start + CHUNK_SIZE)
         }
         
-        console.log("chunks: ", chunks)
-
-        let promises = chunks.map( (chunk, index) => {
-            // POST
-            return apiFetch( {
-                path: '/wp-json/govpack/v1/upload',
-                method: 'POST',
-                data: { 
-                    blob : chunk,
-                    file_name : file.name
-                },
-            } ).then( ( res ) => {
-                
-                upload_progress = upload_progress + upload_progress_per_chunk
-                console.log(upload_progress)
-                props.onUploadProgress( upload_progress )
-            } );
-        })
-
-        Promise.all(promises).then( (res) => {
-            props.updateStep(2)
-        } )
-
+        uploadChunk()
+        props.updateStep(STAGE_PROCESSING)
         
 	};
 
@@ -153,6 +167,50 @@ const Uploading = (props) => {
 }
 
 const Processing = (props) => {
+
+    const Tick = async () => {
+        await apiFetch( {
+            path: '/wp-json/govpack/v1/import',
+            method: 'GET',
+        } ).then( ( res ) => {
+            
+            if(res.data.status === "done"){
+                props.updateStep(STAGE_IMPORTING)
+            }
+        } );
+    }
+
+    const Tock = (timeout) => {
+        Tick()
+        timeout = setTimeout( () => {
+            Tock();
+        }, 3000)
+    }
+
+    let timeout = null
+    useEffect(() => {
+
+        if(timeout){
+            return;
+        }
+
+        console.log("useEffect")
+        
+        Tick()
+
+        timeout = setTimeout( () => {
+            Tock(timeout)
+        }, 3000)
+
+        return () => { clearTimeout(timeout) }
+    }, [timeout] )
+
+
+
+   
+
+
+
     return (
         <div>
             <InfoPanel heading="Processing">
@@ -164,12 +222,59 @@ const Processing = (props) => {
 
 const Importing = (props) => {
 
-    let [importProgress, setImportProgress] = useState(50)
+    let [importProgress, setImportProgress] = useState(0)
+    let [total, setTotal] = useState(0)
+    let [done, setDone] = useState(0)
+
+    const Tick = async () => {
+        await apiFetch( {
+            path: '/wp-json/govpack/v1/import/progress',
+            method: 'GET',
+        } ).then( ( res ) => {
+            
+            console.log(res.data)
+            setImportProgress( 100 / res.data.total * res.data.done)
+            setTotal(res.data.total)
+            setDone(res.data.done)
+        } );
+    }
+
+    const Tock = (timeout) => {
+        Tick()
+        timeout = setTimeout( () => {
+            Tock();
+        }, 5000)
+    }
+
+    let timeout = null
+    useEffect(() => {
+
+        if(timeout){
+            return;
+        }
+
+        console.log("UseEffectCalled")
+        Tick();
+        timeout = setTimeout( () => {
+            Tock(timeout)
+        }, 5000)
+
+        return () => { clearTimeout(timeout) }
+    }, [timeout] )
+
+
+    
+    
+   
+
 
     return (
         <div>
             <InfoPanel heading="Importing">
                 <progress style={{width:"100%"}} id="import_progress" max="100" value={importProgress}> {importProgress}% </progress>
+                <div>
+                    <strong>{importProgress}%</strong> : <em>{done}</em> /<span>{total}</span>
+                </div>
             </InfoPanel>
         </div>
     )
@@ -186,35 +291,35 @@ const Done = () => {
 
 const Importer = () => {
 
-    let [step, setStep] = useState(3)
+    let [step, setStep] = useState(STAGE_PROCESSING)
     let [uploadProgress, setUploadProgress] = useState(0)
 
-    if(step === 0){
+    if(step === STAGE_UPLOADER){
         return (<Uploader 
             updateStep = {setStep}
             onUploadProgress = {setUploadProgress}
         />)
     }
 
-    if(step === 1){
+    if(step === STAGE_UPLOADING){
         return (<Uploading 
             progress = {uploadProgress}
         />)
     }
 
-    if(step === 2){
+    if(step === STAGE_PROCESSING){
         return (<Processing 
             updateStep = {setStep}
         />)
     }
 
-    if(step === 3){
+    if(step === STAGE_IMPORTING){
         return (<Importing 
            
         />)
     }
 
-    if(step === 4){
+    if(step === STAGE_DONE){
         return (<Done />)
     }
     

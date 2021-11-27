@@ -56,55 +56,25 @@ class Chunked_Upload {
             }) 
         );
 
-		\register_rest_route( Govpack::REST_PREFIX, "/import", array(
-            'methods' => 'GET',
-            'callback' => [
-                __class__,
-                "import"
-            ],
-            'permission_callback' => function () {
-                return true;
-                return \current_user_can( 'edit_others_posts' );
-
-            }) 
-        );
-
-		\register_rest_route( Govpack::REST_PREFIX, "/import/progress", array(
-            'methods' => 'GET',
-            'callback' => [
-                __class__,
-                "progress"
-            ],
-            'permission_callback' => function () {
-                return true;
-                return \current_user_can( 'edit_others_posts' );
-
-            }) 
-        );
+		
     }
 
-	public static function progress(\WP_REST_Request $request){
-		return WXR::progress();
-	}
-
-	public static function import(\WP_REST_Request $request){
-
-		$file = get_option("govpack_import_path", false);
-
-		if(!$file){
-			return new WP_Error("500", "No File For Import");
-		}
-		
-		/*
-		if(WXR::import($file)){
-			return [ "status" => "started" ];
-		} else {
-			return [ "status" => "running" ];
-		}
-		*/
-	}
-
     public static function upload(\WP_REST_Request $request){
-        var_dump($request);
+
+      
+        $factory = new \FileUpload\FileUploadFactory(
+            new \FileUpload\PathResolver\Simple(\Newspack\Govpack\Admin\Pages\Import::get_upload_path("govpack")), 
+            new \FileUpload\FileSystem\Simple(), 
+            []
+        );
+        
+        $instance = $factory->create($_FILES['blob'], $_SERVER);
+
+        $resp = $instance->processAll();
+        $path = $instance->getFiles()[0]->getPathname();
+
+        \update_option("govpack_import_path", $path);
+        return $resp;
+        
     }
 }

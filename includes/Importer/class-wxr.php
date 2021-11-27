@@ -7,79 +7,27 @@
 
 namespace Newspack\Govpack\Importer;
 
-use Exception;
-
+use Exception, XMLReader, DOMNode;
+use Newspack\Govpack\Govpack;
 /**
  * Register and handle the "USIO" Importer
  */
-class WXR {
+class WXR extends Abstracts\AbstrtactImporter{
 
-	/**
-	 * How Does the importer work?
-	 * 1. Upload the file to the server
-	 * 2. Check the file is a valid wxr
-	 * 3. Split the file up into actions in action scheduler
-	 * 4. request to see how many actions to do
-	 * 5. action scheduker runs
-	 */
-	public static function make() {
-		return new static();
-	}
-
-	/**
-	 * Main Import Process Runner
-	 *
-	 * @param string $file  Name of the JSON file.
-	 */
-	public static function import( $file ) {
-
-		$test_key = "govpack_import_processing";
-		$import_processing_running = get_option($test_key, false);
-		if($import_processing_running){
-			return false;
-		}
-
-		update_option($test_key, true);
-
-		$file   = self::checkFile( $file );
-		$reader = self::createReader( $file );
-		self::process( $reader );
-
-		update_option($test_key, false);
-
-		return true;
-	}
-
-	/**
-	 * Checks the file exists in the Govpack uploads folder
-	 *
-	 * @param string $file  Name of the JSON file.
-	 * @throws \Exception File Not Found.
-	 */
-	public static function check_file( $file ) {
-		$path = wp_get_upload_dir();
-		$path = $path['basedir'] . '/govpack/' . $file;
-
-		if ( file_exists( $path ) ) {
-			return $path;
-		}
-
-		throw new \Exception( 'File Not Found' );
-	} 
 
 	/**
 	 * Creates and returns the XML reader for the Import File
 	 *
 	 * @param string $file  path of the JSON file.
-	 * @throws \Exception Could Not Open File to Parse.
+	 * @throws Exception Could Not Open File to Parse.
 	 */
 	public static function create_reader( $file ) {
 
-		$reader = new \XMLReader();
+		$reader = new XMLReader();
 		$status = $reader->open( $file );
 
 		if ( ! $status ) {
-			throw new \Exception( 'Could Not Open File to Parse' );
+			throw new Exception( 'Could Not Open File to Parse' );
 		}
 
 		return $reader;
@@ -88,7 +36,7 @@ class WXR {
 	/**
 	 * Parses a term found in WXR
 	 *
-	 * @param string $reader  path of the JSON file.
+	 * @param XMLReader $reader  path of the JSON file.
 	 * @param string $type  Type of node being processed.
 	 */
 	public static function read_term( $reader, $type ) {
@@ -105,7 +53,7 @@ class WXR {
 	/**
 	 * Parses a post/entity found in WXR
 	 *
-	 * @param string $reader  path of the JSON file.
+	 * @param XMLReader $reader  path of the JSON file.
 	 * @param string $type  Type of node being processed.
 	 */
 	public static function read_item( $reader, $type ) {
@@ -123,7 +71,7 @@ class WXR {
 	 * Process Loop over WML file
 	 * calls  read_x functions for elements it finds
 	 *
-	 * @param string $reader  path of the JSON file.
+	 * @param XMLReader $reader  path of the JSON file.
 	 */
 	public static function process( $reader ) {
 
@@ -164,7 +112,7 @@ class WXR {
 	 * Parse a Term found in the WXR
 	 * See https://github.com/humanmade/WordPress-Importer/blob/master/class-wxr-importer.php#L1581
 	 * 
-	 * @param string $node  path of the JSON file.
+	 * @param DOMNode $node  path of the JSON file.
 	 * @param string $type  type being processed.
 	 */
 	protected static function parse_term_node( $node, $type = 'term' ) {
@@ -232,7 +180,7 @@ class WXR {
 	 * Parse a Post found in the WXR
 	 * See https://github.com/humanmade/WordPress-Importer/blob/master/class-wxr-importer.php#L597
 	 *
-	 * @param string $node XML node being processed.
+	 * @param DOMNode $node XML node being processed.
 	 */
 	protected static function parse_post_node( $node ) {
 		$data     = [];
@@ -352,7 +300,7 @@ class WXR {
 	 * Parse a Meta Item found in the WXR
 	 * See https://github.com/humanmade/WordPress-Importer/blob/master/class-wxr-importer.php#L1101
 	 *
-	 * @param string $node XML node being processed.
+	 * @param DOMNode $node XML node being processed.
 	 */
 	protected static function parse_meta_node( $node ) {
 		foreach ( $node->childNodes as $child ) { //phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
@@ -378,49 +326,4 @@ class WXR {
 
 		return compact( 'key', 'value' );
 	}
-
-	/**
-	 * Call the Import/Action Scheduler backend and see progress
-	 */
-	public static function progress() {
-		return [
-			'total' => as_count_scheduled_actions(
-				[
-					'group' => 'govpack',
-				]
-			),
-			'done'  => as_count_scheduled_actions(
-				[
-					'group'  => 'govpack',
-					'status' => \ActionScheduler_Store::STATUS_COMPLETE,
-				]
-			),
-			'todo'  => as_count_scheduled_actions(
-				[
-					'group'  => 'govpack',
-					'status' => \ActionScheduler_Store::STATUS_PENDING,
-				]
-			),
-		];
-	}
-}
-
-/**
- * Custom function that gets counts of Action Scheduler actions
- *
- * @param array $args XML node being processed.
- */
-function as_count_scheduled_actions( $args = [] ) {
-	if ( ! \ActionScheduler::is_initialized( __FUNCTION__ ) ) {
-		return [];
-	}
-	$store = \ActionScheduler::store();
-	foreach ( [ 'date', 'modified' ] as $key ) {
-		if ( isset( $args[ $key ] ) ) {
-			$args[ $key ] = as_get_datetime_object( $args[ $key ] );
-		}
-	}
-
-	return $store->query_actions( $args, 'count' );
-
 }

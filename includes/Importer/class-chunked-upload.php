@@ -7,9 +7,15 @@
 
 namespace Newspack\Govpack\Importer;
 
+//php
 use Exception;
-use Newspack\Govpack\Govpack;
+
+// WordPress
 use WP_Error;
+
+// Lib
+use Newspack\Govpack\Govpack;
+
 
 /**
  * handles Chunked Uploading via a REST Endpoint

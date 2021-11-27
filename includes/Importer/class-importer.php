@@ -21,6 +21,7 @@ class Importer {
 	public static function hooks() {
 
         add_action("rest_api_init", [__class__, "register_rest_endpoints"]);
+		
 		Chunked_Upload::hooks();
 		Actions::hooks();
 

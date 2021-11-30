@@ -43,7 +43,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 */
 	public static function hooks() {
 		parent::hooks();
-		add_action( 'cmb2_init', [ __CLASS__, 'add_profile_boxes' ] );
+		//add_action( 'cmb2_init', [ __CLASS__, 'add_profile_boxes' ] );
 		add_action( 'init', [ __CLASS__, 'register_post_meta' ] );
 		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
 		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );

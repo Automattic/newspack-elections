@@ -63,6 +63,7 @@ class Issue extends \Newspack\Govpack\Taxonomy {
 				'show_admin_column' => true,
 				'show_in_rest'      => true,
 				'show_in_menu'      => false,
+				'show_ui'      		=> false,
 			]
 		);
 	}

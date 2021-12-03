@@ -75,31 +75,40 @@ class GitHub_Sources {
 
         $data = [
             "all" => [
-                "collected" => [
-                    "label" => "Al data"
-                ],
-            ],
-            "us-federal" => [
-                "us-house" => [
-                    "label" => "US House"
-                ],
-                "us-senate"  => [
-                    "label" => "US Senate"
+                "label" => "All",
+                "items" => [
+                    "collected" => [
+                        "label" => "Al data"
+                    ],
                 ]
             ],
-            "us-states" => [],
+            "us-federal" => [
+                "label" => "Federal",
+                "items" => [
+                    "us-house" => [
+                        "label" => "US House"
+                    ],
+                    "us-senate"  => [
+                        "label" => "US Senate"
+                    ]
+                ]
+            ],
+            "us-states" => [
+                "label" => "States",
+                "items" => []
+            ],
         ];
 
        foreach(self::states as $abbr => $label){
-           $data["us-states"][strtolower($abbr)] = [
+           $data["us-states"]["items"][strtolower($abbr)] = [
                "label" => $label
            ];
        }
 
         foreach($data as $group => $items){
             foreach($items as $item => $info){
-                $data[$group][$item]["key"] = sprintf("%s----%s", $group, $item);
-                $data[$group][$item]["url"] = sprintf("https://github.com/govpack-wp/data/raw/main/%s/%s.xml", $group, $item);
+                $data[$group]["items"][$item]["key"] = sprintf("%s----%s", $group, $item);
+                $data[$group]["items"][$item]["url"] = sprintf("https://github.com/govpack-wp/data/raw/main/%s/%s.xml", $group, $item);
             }
         }
 

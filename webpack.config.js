@@ -6,16 +6,41 @@
 /**
  * External dependencies
  */
+const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 const getBaseWebpackConfig = require( '@automattic/calypso-build/webpack.config.js' );
 const path = require( 'path' );
 
+function getWebpackConfig( env, argv ) {
+	const webpackConfig = getBaseWebpackConfig( env, argv );
+
+	console.log("called")
+	
+	return {
+		...webpackConfig,
+		plugins: [
+			...webpackConfig.plugins,
+			new CopyWebpackPlugin( [
+				{
+					from: 'src/index.json',
+					to: 'index.json',
+				},
+			] ),
+		],
+	};
+}
+
+console.log("asfas")
 /**
  * Internal variables
  */
+
+/*
 const editor = path.join( __dirname, 'assets', 'js', 'src', 'editor' );
 const importer = path.join( __dirname, 'assets', 'js', 'src', 'importer' );
 
-const parentConfig = getBaseWebpackConfig()
+const parentConfig = getWebpackConfig()
+
+console.log(parentConfig)
 
 const webpackConfig = {
 	...parentConfig,
@@ -41,3 +66,7 @@ const webpackConfig = {
 }
 
 module.exports = webpackConfig;
+*/
+
+module.exports = getWebpackConfig;
+

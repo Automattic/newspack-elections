@@ -7,11 +7,13 @@ import {
     __experimentalHStack as HStack,
     __experimentalSurface as Surface,
     __experimentalSpacer as Spacer,
-    __experimentalHeading as Heading
+    __experimentalHeading as Heading,
+    Spinner,
+    SelectControl
 } from '@wordpress/components';
 
 import apiFetch from '@wordpress/api-fetch';
-import { SelectControl } from '@wordpress/components';
+
 
 import {isUndefined} from "lodash"
 
@@ -45,6 +47,29 @@ const Uploader = (props) => {
 
     let [file, setFile] = useState()
     let [importData, setImportData] = useState()
+    let [dataSources, setDataSources] = useState({})
+    let [loadedSources, setLoadedSources] = useState(0)
+
+    const sourceKeys = Object.keys(dataSources)
+
+    useEffect( () => {
+
+        // if datasources has already been set, kill this call - only do once
+        if(loadedSources !== 0){
+            return
+        }
+        setLoadedSources(2)
+
+        apiFetch( {
+            path: '/wp-json/govpack/v1/import/sources',
+            method: 'GET',
+
+        } ).then( ( res ) => {
+            setDataSources(res.data)
+            setLoadedSources(1)
+        } );
+
+    }, [loadedSources] )
 
     const onFileChosen = ( event ) => {
         setFile(event.target.files[0])
@@ -156,41 +181,25 @@ const Uploader = (props) => {
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. In faucibus elit nec urna imperdiet, ut molestie orci viverra. Fusce interdum rutrum leo. Praesent non pretium purus, vel molestie orci. Cras hendrerit enim non dolor sollicitudin ultricies. 
                 </p>
 
+                <>
+                    {sourceKeys.map( (key) => (<Heading>key</Heading>) ) }
+                </>
+
                 <HStack
                     spacing="4"
                     justify="flex-start"
                 >
-                  <SelectControl
-                   label={ 'Select a GovPack Dataset:' }
-                   value={ importData } // e.g: value = 'a'
-                   onChange={ ( selection ) => { 
-                       console.log("onChange") 
-                       setImportData( selection ) 
-                    }}
-                  >
-                    <optgroup label="Every Thing">
-                        <option value="Tyrannosaurus">Tyrannosaurus</option>
-                        <option value="Velociraptor">Velociraptor</option>
-                        <option value="Deinonychus">Deinonychus</option>
-                    </optgroup>
-                    <optgroup label="Legislative Body">
-                        <option value="Diplodocus">Diplodocus</option>
-                        <option value="Saltasaurus">Saltasaurus</option>
-                        <option value="Apatosaurus">Apatosaurus</option>
-                    </optgroup>
-                    <optgroup label="State">
-                        <option value="Diplodocus">Diplodocus</option>
-                        <option value="Saltasaurus">Saltasaurus</option>
-                        <option value="Apatosaurus">Apatosaurus</option>
-                    </optgroup>
-                  </SelectControl>
-                  <Button 
-                    variant="primary"
-                    onClick = {onImport}
-                    disabled = {importData ? false : true}
-                >
-                    Import
-                </Button>
+                  
+
+
+                    <Button 
+                        variant="primary"
+                        onClick = {onImport}
+                        disabled = {importData ? false : true}
+                    >
+                        Import
+                    </Button>
+                   
                 </HStack>
 
             </InfoPanel>

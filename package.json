@@ -6,7 +6,7 @@
     "cm": "git-cz",
     "semantic-release": "semantic-release",
     "start": "npm run dev",
-    "dev": "calypso-build --watch --config='./webpack.config.js'",
+    "dev": "calypso-build --watch",
     "build": "calypso-build --config='./webpack.config.js'",
     "clean": "rm -rf dist/",
     "lint": "npm-run-all --parallel lint:*",
@@ -93,22 +93,21 @@
     "url": "https://github.com/Automattic/govpack/issues"
   },
   "dependencies": {
-    "@wordpress/api-fetch": "^3.21.5",
+    "@wordpress/api-fetch": "^5.1.2",
     "@wordpress/base-styles": "^3.3.3",
-    "@wordpress/block-editor": "^5.2.9",
-    "@wordpress/blocks": "^7.0.6",
-    "@wordpress/components": "^19.0.0",
-    "@wordpress/data": "^4.27.0",
-    "@wordpress/dom-ready": "^2.12.1",
-    "@wordpress/edit-post": "^3.26.9",
-    "@wordpress/element": "^2.20.0",
-    "@wordpress/html-entities": "^2.10.1",
-    "@wordpress/i18n": "^3.19.0",
-    "@wordpress/server-side-render": "^1.21.0",
+    "@wordpress/block-editor": "^6.1.14",
+    "@wordpress/blocks": "^9.1.8",
+    "@wordpress/components": "^14.1.11",
+    "@wordpress/dom-ready": "^3.1.12",
+    "@wordpress/edit-post": "^4.1.21",
+    "@wordpress/element": "^3.1.2",
+    "@wordpress/html-entities": "^3.1.2",
+    "@wordpress/i18n": "^4.1.2",
+    "@wordpress/server-side-render": "^2.1.2",
     "axios": "^0.24.0"
   },
   "devDependencies": {
-    "@automattic/calypso-build": "^10.0.0",
+    "@automattic/calypso-build": "^9.0.0",
     "@babel/core": "^7.13.8",
     "@commitlint/cli": "^12.0.1",
     "@commitlint/config-conventional": "^12.0.1",
@@ -118,6 +117,7 @@
     "@wordpress/eslint-plugin": "^8.0.2",
     "@wordpress/stylelint-config": "^19.0.3",
     "autoprefixer": "^10.2.4",
+    "copy-webpack-plugin": "^10.0.0",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
@@ -149,6 +149,7 @@
     "stylelint-prettier": "^1.2.0",
     "url-regex": "^5.0.0",
     "util": "^0.12.4",
-    "webpack": "^5.62.1"
+    "webpack-cli": "^4.7.2",
+    "webpack": "^5.46.0"
   }
 }

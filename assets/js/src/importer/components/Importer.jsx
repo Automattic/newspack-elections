@@ -11,6 +11,8 @@ import {
 } from '@wordpress/components';
 
 import apiFetch from '@wordpress/api-fetch';
+import { SelectControl } from '@wordpress/components';
+
 import {isUndefined} from "lodash"
 
 const STAGE_UPLOADER = 0
@@ -42,6 +44,7 @@ const CHUNK_SIZE = 0.5 * 1024 * 1024;
 const Uploader = (props) => {
 
     let [file, setFile] = useState()
+    let [importData, setImportData] = useState()
 
     const onFileChosen = ( event ) => {
         setFile(event.target.files[0])
@@ -108,39 +111,90 @@ const Uploader = (props) => {
         
 	};
 
+    const onImport = () => {
+        console.log("Import Clicked")
+    }
 
     return (
-        <div>
-            <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In faucibus elit nec urna imperdiet, ut molestie orci viverra. Fusce interdum rutrum leo. Praesent non pretium purus, vel molestie orci. Cras hendrerit enim non dolor sollicitudin ultricies. 
-            </p>
-
-            <HStack
-                spacing="4"
-                justify="flex-start"
+        <>
+            <InfoPanel
+                heading="Upload Data"
             >
-                <FormFileUpload
-		            accept="image/*"
-                    variant="secondary"
-		            onChange={ onFileChosen }
-	            >
-		            Choose File
-	            </FormFileUpload>
+                <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In faucibus elit nec urna imperdiet, ut molestie orci viverra. Fusce interdum rutrum leo. Praesent non pretium purus, vel molestie orci. Cras hendrerit enim non dolor sollicitudin ultricies. 
+                </p>
 
-                { file && (
-                    <>
-                        <span>{file.name}</span>
-                        <Button 
-                            variant="primary"
-                            onClick = {onFilesUpload}
-                        >
-                        Upload
-                        </Button>
-                    </>
-                )}
+                <HStack
+                    spacing="4"
+                    justify="flex-start"
+                >
+                    <FormFileUpload
+                        accept="image/*"
+                        variant="primary"
+                        onChange={ onFileChosen }
+                    >
+                        Choose File
+                    </FormFileUpload>
 
-            </HStack>
-        </div>
+                    { file && (
+                        <>
+                            <span>{file.name}</span>
+                            <Button 
+                                variant="primary"
+                                onClick = {onFilesUpload}
+                            >
+                            Upload
+                            </Button>
+                        </>
+                    )}
+                </HStack>
+            </InfoPanel>
+            <InfoPanel
+                heading = "From GovPack"
+            >
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In faucibus elit nec urna imperdiet, ut molestie orci viverra. Fusce interdum rutrum leo. Praesent non pretium purus, vel molestie orci. Cras hendrerit enim non dolor sollicitudin ultricies. 
+                </p>
+
+                <HStack
+                    spacing="4"
+                    justify="flex-start"
+                >
+                  <SelectControl
+                   label={ 'Select a GovPack Dataset:' }
+                   value={ importData } // e.g: value = 'a'
+                   onChange={ ( selection ) => { 
+                       console.log("onChange") 
+                       setImportData( selection ) 
+                    }}
+                  >
+                    <optgroup label="Every Thing">
+                        <option value="Tyrannosaurus">Tyrannosaurus</option>
+                        <option value="Velociraptor">Velociraptor</option>
+                        <option value="Deinonychus">Deinonychus</option>
+                    </optgroup>
+                    <optgroup label="Legislative Body">
+                        <option value="Diplodocus">Diplodocus</option>
+                        <option value="Saltasaurus">Saltasaurus</option>
+                        <option value="Apatosaurus">Apatosaurus</option>
+                    </optgroup>
+                    <optgroup label="State">
+                        <option value="Diplodocus">Diplodocus</option>
+                        <option value="Saltasaurus">Saltasaurus</option>
+                        <option value="Apatosaurus">Apatosaurus</option>
+                    </optgroup>
+                  </SelectControl>
+                  <Button 
+                    variant="primary"
+                    onClick = {onImport}
+                    disabled = {importData ? false : true}
+                >
+                    Import
+                </Button>
+                </HStack>
+
+            </InfoPanel>
+        </>
     )
 }
 
@@ -291,7 +345,7 @@ const Done = () => {
 
 const Importer = () => {
 
-    let [step, setStep] = useState(STAGE_PROCESSING)
+    let [step, setStep] = useState(STAGE_UPLOADER)
     let [uploadProgress, setUploadProgress] = useState(0)
 
     if(step === STAGE_UPLOADER){

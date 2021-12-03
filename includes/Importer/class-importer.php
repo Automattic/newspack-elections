@@ -53,6 +53,16 @@ class Importer {
 
             }) 
         );
+
+		\register_rest_route( Govpack::REST_PREFIX, "/import/sources", array(
+            'methods' => 'GET',
+            'callback' => ["\Newspack\Govpack\Importer\GitHub_Sources", "urls"],
+            'permission_callback' => function () {
+                return true;
+                return \current_user_can( 'edit_others_posts' );
+
+            }) 
+        );
 	}
 
 	public static function progress(\WP_REST_Request $request){

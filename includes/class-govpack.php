@@ -80,8 +80,8 @@ class Govpack {
 			\Newspack\Govpack\CLI::init();
 		}
 
-		\Newspack\Govpack\Importer\Actions::hooks();
-		\Newspack\Govpack\Importer\Chunked_Upload::hooks();
+		\Newspack\Govpack\Importer\Importer::hooks();
+		
 		
 		
 		$menu = new \Newspack\Govpack\Admin\Menu();

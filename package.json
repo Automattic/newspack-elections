@@ -6,8 +6,8 @@
     "cm": "git-cz",
     "semantic-release": "semantic-release",
     "start": "npm run dev",
-    "dev": "calypso-build --watch",
-    "build": "calypso-build --config='./webpack.config.js'",
+    "dev": "calypso-build --watch --env WP",
+    "build": "calypso-build --config='./webpack.config.js' --env WP",
     "clean": "rm -rf dist/",
     "lint": "npm-run-all --parallel lint:*",
     "lint:js": "eslint --ext .js,.jsx assets/js/src",
@@ -93,17 +93,6 @@
     "url": "https://github.com/Automattic/govpack/issues"
   },
   "dependencies": {
-    "@wordpress/api-fetch": "^5.1.2",
-    "@wordpress/base-styles": "^3.3.3",
-    "@wordpress/block-editor": "^6.1.14",
-    "@wordpress/blocks": "^9.1.8",
-    "@wordpress/components": "^14.1.11",
-    "@wordpress/dom-ready": "^3.1.12",
-    "@wordpress/edit-post": "^4.1.21",
-    "@wordpress/element": "^3.1.2",
-    "@wordpress/html-entities": "^3.1.2",
-    "@wordpress/i18n": "^4.1.2",
-    "@wordpress/server-side-render": "^2.1.2",
     "axios": "^0.24.0"
   },
   "devDependencies": {

@@ -162,19 +162,34 @@ class CLI extends \WP_CLI_Command {
 	}
 
 	/**
-	 * Gets Proress from ongoing import
+	 * Gets Progess from ongoing import
+     * 
+	 * @subcommand progress
 	 *
-	 * @subcommand import
+	 * @param array $args        Array of command-line arguments.
+	 * @param array $assoc_args  Associative array of arguments.
 	 */
-	public function progress() {
+	public function progress( $args, $assoc_args) {
 		$importer = \Newspack\Govpack\Importer\WXR::make();
 		WP_CLI::line( $importer::progress() );
+	}
+
+    /**
+	 * Stops a Currently running import
+	 *
+     * @subcommand clear
+	 *
+	 * @param array $args        Array of command-line arguments.
+	 * @param array $assoc_args  Associative array of arguments.
+     */
+    public function clear( $args, $assoc_args) {
+		WP_CLI::line( \Newspack\Govpack\Importer\Importer::clear() );
 	}
 
 	/**
 	 * Add CLI command.
 	 */
 	public static function init() {
-		WP_CLI::add_command( 'govpack', '\Newspack\Govpack\CLI' );
+		WP_CLI::add_command( 'govpack import', '\Newspack\Govpack\CLI' );
 	}
 }

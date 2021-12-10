@@ -53,7 +53,7 @@ class Menu {
 	 * 
 	 * @var position 
 	 */ 
-	protected $position = null; 
+	protected $position = 2; 
 
 	/** 
 	 *  URL for icon placement

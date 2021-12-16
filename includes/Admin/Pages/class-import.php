@@ -18,8 +18,8 @@ class Import {
 	 */
 	public static function view() {
 
-		wp_enqueue_script("govpack-importer");
-		wp_enqueue_style("wp-components");
+		wp_enqueue_script( 'govpack-importer' );
+		wp_enqueue_style( 'wp-components' );
 		
 		$context = [
 			'stage' => 'upload',
@@ -68,13 +68,18 @@ class Import {
 	 * @param string $slug path of the uploads older to create.
 	 */
 	public static function create_upload_directory( $slug ) {
-
-		if ( ! is_dir( self::get_upload_path($slug) ) ) {
+		$upload_dir = self::get_upload_path( $slug );
+		if ( ! is_dir( $upload_dir ) ) {
 			wp_mkdir_p( $upload_dir );
 		}
 	}
 
-	public static function get_upload_path($slug){
+	/**
+	 * Get the path we want to use as uploads for GovPack
+	 * 
+	 * @param string $slug path of the uploads older to create.
+	 */
+	public static function get_upload_path( $slug ) {
 		$upload     = wp_upload_dir();
 		$upload_dir = $upload['basedir'];
 		$upload_dir = $upload_dir . '/' . $slug;

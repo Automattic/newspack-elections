@@ -8,7 +8,10 @@
  */
 const getBaseWebpackConfig = require( '@automattic/calypso-build/webpack.config.js' );
 const path = require( 'path' );
+const webpack = require( 'webpack' );
+const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
 
+process.env.NODE_ENV = "development"
 /**
  * Internal variables
  */
@@ -35,9 +38,15 @@ const webpackConfig = {
 		externals: {
 			"react": "React",
 			"react-dom": "ReactDOM"
-		}
+		},
+		plugins: [
+			...parentConfig.plugins,
+			new DependencyExtractionWebpackPlugin()
+		]
 
 	}
 }
+
+//console.log(webpackConfig)
 
 module.exports = webpackConfig;

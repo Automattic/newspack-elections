@@ -1,11 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/blocks';
-import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { Panel, PanelBody, PanelRow, RadioControl } from '@wordpress/components';
-import { useRef } from '@wordpress/element';
+//import { __ } from '@wordpress/i18n';
+//import { registerBlockType } from '@wordpress/blocks';
+//import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+//import { Panel, PanelBody, PanelRow, RadioControl } from '@wordpress/components';
+//import { useRef } from '@wordpress/element';
 
 /*
  * import { ServerSideRender } from '@wordpress/editor'
@@ -15,13 +15,16 @@ import { useRef } from '@wordpress/element';
  * instead. But it only has a default export, not a named export,
  * so you can't use braces.
  */
-import ServerSideRender from '@wordpress/server-side-render';
 
-import ProfileSelector from '../components/profile-selector';
+
+//import ServerSideRender from '@wordpress/server-side-render';
+//import ProfileSelector from '../components/profile-selector';
 
 /**
  * @param {Object} props The component properties.
  */
+
+
 function Edit( props ) {
 	/**
 	 * @param {string} value The selected format.
@@ -61,6 +64,7 @@ function Edit( props ) {
 	);
 }
 
+/*
 registerBlockType( 'govpack/profile', {
 	apiVersion: 2,
 	title: 'Govpack',
@@ -83,3 +87,5 @@ registerBlockType( 'govpack/profile', {
 		return null;
 	},
 } );
+
+*/

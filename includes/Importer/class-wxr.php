@@ -12,7 +12,7 @@ use Newspack\Govpack\Govpack;
 /**
  * Register and handle the "USIO" Importer
  */
-class WXR extends Abstracts\AbstrtactImporter{
+class WXR extends Abstracts\Abstract_Importer {
 
 
 	/**
@@ -37,7 +37,7 @@ class WXR extends Abstracts\AbstrtactImporter{
 	 * Parses a term found in WXR
 	 *
 	 * @param XMLReader $reader  path of the JSON file.
-	 * @param string $type  Type of node being processed.
+	 * @param string    $type  Type of node being processed.
 	 */
 	public static function read_term( $reader, $type ) {
 		$node   = $reader->expand();
@@ -54,7 +54,7 @@ class WXR extends Abstracts\AbstrtactImporter{
 	 * Parses a post/entity found in WXR
 	 *
 	 * @param XMLReader $reader  path of the JSON file.
-	 * @param string $type  Type of node being processed.
+	 * @param string    $type  Type of node being processed.
 	 */
 	public static function read_item( $reader, $type ) {
 		$node   = $reader->expand();
@@ -113,7 +113,7 @@ class WXR extends Abstracts\AbstrtactImporter{
 	 * See https://github.com/humanmade/WordPress-Importer/blob/master/class-wxr-importer.php#L1581
 	 * 
 	 * @param DOMNode $node  path of the JSON file.
-	 * @param string $type  type being processed.
+	 * @param string  $type  type being processed.
 	 */
 	protected static function parse_term_node( $node, $type = 'term' ) {
 		$data = [];

@@ -109,6 +109,73 @@ class Importer {
 	}
 
     /**
+	 * Checks the file exists in the Govpack uploads folder
+	 *
+	 * @param string $file  Name of the JSON file.
+	 * @throws \Exception File Not Found.
+	 */
+	public static function check_file( $file ) {
+
+		if ( file_exists( $file ) ) {
+			return $file;
+		}
+
+		$path = wp_get_upload_dir();
+		$path = $path['basedir'] . '/govpack/' . $file;
+
+		if ( file_exists( $path ) ) {
+			return $path;
+		}
+
+		throw new \Exception( 'File Not Found' );
+	} 
+
+     /**
+	 * Checks the file exists in the Govpack uploads folder
+	 *
+	 * @param string $file  Name of the JSON file.
+	 * @throws \Exception File Not Found.
+	 */
+	public static function filetype( $file ) {
+
+    
+		if ( file_exists( $file ) ) {
+			return pathinfo($file, PATHINFO_EXTENSION);
+		}
+
+		$path = wp_get_upload_dir();
+		$path = $path['basedir'] . '/govpack/' . $file;
+
+
+		if ( file_exists( $path ) ) {
+
+			return pathinfo($path, PATHINFO_EXTENSION);
+		}
+
+		throw new \Exception( 'File Not Found' );
+	} 
+
+    public static function make($file){
+		
+        try{
+            self::check_file($file);
+            $file_type = self::filetype($file);
+    
+            if($file_type === "csv"){
+                return CSV::make();
+            } elseif($file_type === "xml"){
+                return XML::make();
+            } else {
+                return false;
+           }
+
+        } catch(Exception $e) {
+            return false;
+        }
+        
+	}
+
+    /**
      * Custom function that gets counts of Action Scheduler actions
      *
      * @param array $args XML node being processed.

@@ -66,11 +66,15 @@ abstract class Abstract_Importer {
 	 *
 	 * @param string $file  Name of the JSON file.
 	 */
-	public static function import( $file ) {
+	public static function import( $file, $dry_run ) {
 
-
+        var_dump("import method");
+       
+     
+        /*
 		$import_processing_running = get_option(self::IMPORT_TEST_KEY, self::IMPORT_NOT_RUNNING);
 
+        
 		if($import_processing_running == self::IMPORT_RUNNING){
 			return ["status" => "running"];
 		}
@@ -80,37 +84,20 @@ abstract class Abstract_Importer {
 		}
 
 		update_option(self::IMPORT_TEST_KEY, self::IMPORT_RUNNING);
+        */
 
-		$file   = self::check_file( $file );
-		$reader = self::create_reader( $file );
-		self::process( $reader );
+       
+		$file   = \Newspack\Govpack\Importer\Importer::check_file( $file );
 
-		update_option(self::IMPORT_TEST_KEY, self::IMPORT_DONE);
+		$reader = static::create_reader( $file );
+		static::process( $reader );
+
+		//update_option(self::IMPORT_TEST_KEY, self::IMPORT_DONE);
 
 		return ["status" => "running"];
 	}
 
-	/**
-	 * Checks the file exists in the Govpack uploads folder
-	 *
-	 * @param string $file  Name of the JSON file.
-	 * @throws \Exception File Not Found.
-	 */
-	public static function check_file( $file ) {
-
-		if ( file_exists( $file ) ) {
-			return $file;
-		}
-
-		$path = wp_get_upload_dir();
-		$path = $path['basedir'] . '/govpack/' . $file;
-
-		if ( file_exists( $path ) ) {
-			return $path;
-		}
-
-		throw new \Exception( 'File Not Found' );
-	} 
+	
 
     static function create_reader($file){}
     static function process($file){}

@@ -41,6 +41,7 @@ class Actions {
 		add_action( 'govpack_import_tag', [ self::instance(), 'make_term' ] );
 		add_action( 'govpack_import_term', [ self::instance(), 'make_term' ] );
 		add_action( 'govpack_import_post', [ self::instance(), 'make_post' ] );
+        add_action( 'govpack_import_csv_profile', [ self::instance(), 'make_profile_from_csv' ] );
 	}
 
 	/**
@@ -346,4 +347,89 @@ class Actions {
 
 		return true;
 	}
+
+
+    public static function get_address_from_open_states_data($address){
+
+        error_log($address);
+        if(!$address){
+            return [];
+        }
+
+        $new_address = [];
+        // First we need to split the address string on the ; so we get the street address and the state/zip in the second
+        $re = '/([^;]+)/m';
+        preg_match_all($re, $address, $matches, PREG_SET_ORDER, 0);
+
+        $new_address["address"] = $matches[0][0];
+        $the_rest = $matches[1][0] ?? null; 
+
+        if($the_rest){
+            preg_match_all('/([^,]+), ([A-Z]+) ([0-9-]+)/m', $the_rest, $new_matches, PREG_SET_ORDER, 0);
+
+            if($new_matches){
+            
+                $new_address["city"] = $new_matches[0][1] ?? "";
+                $new_address["state"] = $new_matches[0][2] ?? "";
+                $new_address["zip"] = $new_matches[0][3] ?? "";
+            }
+        }
+    
+        return $new_address;
+
+    }
+
+    public static function make_profile_from_csv($data){
+       
+       
+        $main_office = self::get_address_from_open_states_data($data["district_address"]);
+        $secondary_office = self::get_address_from_open_states_data($data["capitol_address"]);
+
+        
+        $resp = \wp_insert_post([
+            "post_author" => 0,
+            "post_content" => $data["biography"],
+            "post_title" => $data["name"],
+            "post_status" => "draft",
+            "post_type" => "govpack_profiles",
+            "comment_status" => "closed",
+            "tax_input" => [
+                "govpack_party" => $data["current_party"],
+                "govpack_officeholder_status" => "Active",
+            ],
+            "meta_input" => [
+                "open_state_id" => $data["id"],
+
+                "first_name"       => $data["given_name"],
+                "last_name"       => $data["family_name"],
+
+                "current_district" => $data["current_district"],
+                "current_chamber" => $data["current_chamber"],
+               
+                "email"       => $data["email"],
+                "twitter"       => $data["twitter"],
+                "youtube"       => $data["youtube"],
+                "instagram"       => $data["instagram"],
+                "facebook"       => $data["facebook"],
+                
+                "main_phone" => $data["district_voice"],
+                "secondary_phone" => $data["capitol_voice"],
+
+                "main_fax" => $data["district_fax"],
+                "secondary_fax" => $data["capitol_fax"],
+
+                "main_office_address" => $main_office["address"],
+                "main_office_city"  => $main_office["city"],
+                "main_office_state" => $main_office["state"],
+                "main_office_zip"   => $main_office["zip"],
+
+                "secondary_office_address" => $secondary_office["address"] ?? "",
+                "secondary_office_city" => $secondary_office["city"] ?? "",
+                "secondary_office_state"    => $secondary_office["state"] ?? "",
+                "secondary_office_zip"  => $secondary_office["zip"] ?? "",
+            ]   
+        ]);
+        
+        error_log(print_r($resp, true));
+    }
 }

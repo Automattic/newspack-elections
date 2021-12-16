@@ -151,7 +151,8 @@ const cachePath = path.resolve( '.cache' );
             "@wordpress/data" : "wp.data",
             "wp.element" : "@wordpress/element",
             "@wordpress/i18n"   : "wp.i18n",
-            "@wordpress/server-side-render" : "wp.serverSiderender"
+            "@wordpress/server-side-render" : "wp.serverSiderender",
+            "wp.icons" : "@wordpress/icons"
         }
 	};
 

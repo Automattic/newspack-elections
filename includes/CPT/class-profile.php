@@ -44,10 +44,10 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	public static function hooks() {
 		parent::hooks();
 		//add_action( 'cmb2_init', [ __CLASS__, 'add_profile_boxes' ] );
-		add_action( 'init', [ __CLASS__, 'register_post_meta' ] );
-		add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
-		add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
-		add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
+		\add_action( 'init', [ __CLASS__, 'register_post_meta' ] );
+		\add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
+		\add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
+		\add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
 	}
 
 	/**
@@ -78,7 +78,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 				'public'       => true,
 				'show_in_rest' => true,
 				'show_ui'      => true,
-				'supports'     => [ 'revisions', 'thumbnail', "editor"],
+				'supports'     => [ 'revisions', 'thumbnail', "editor", "custom-fields"],
 				'taxonomies'   => [ 'post_tag' ],
 				'as_taxonomy'  => \Newspack\Govpack\Tax\Profile::TAX_SLUG,
 				'menu_icon'    => 'dashicons-groups',
@@ -95,11 +95,13 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 */
 	public static function register_post_meta() {
 
+       
+
 		self::register_meta("prefix");
 		self::register_meta("first_name");
 		self::register_meta("last_name");
 
-		$address_fields = ["address", "city", "state", "county"];
+		$address_fields = ["address", "city", "state", "county", "zip"];
 		$address_types = ["main_office", "secondary_office"];
 
 		foreach($address_types as $type){
@@ -114,7 +116,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 
 		self::register_meta("main_phone");
 		self::register_meta("secondary_phone");
-		self::register_meta("text_email");
+		self::register_meta("email");
 		self::register_meta("twitter");
 		self::register_meta("instagram");
 		self::register_meta("facebook");
@@ -129,10 +131,14 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 */
 	public static function register_meta(string $slug, array $args = []) {
 
+
 		$args = array_merge([
 			'show_in_rest' => true,
 			'single' => true,
-			'type' => 'string'
+			'type' => 'string',
+            'auth_callback' => function() {
+                return current_user_can( 'edit_posts' );
+            }
 		], $args);
 
 		register_post_meta( self::CPT_SLUG, $slug, $args);

@@ -4,6 +4,39 @@ import { useRef } from '@wordpress/element';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import {useSelect} from '@wordpress/data';
 import { useEntityProp } from '@wordpress/core-data';
+import { TextControl } from '@wordpress/components';
+
+import {useState} from "React"
+
+import {
+    __experimentalHStack as HStack,
+    __experimentalText as Text,
+} from '@wordpress/components';
+
+const ListItem = (props) => {
+    console.log(props)
+
+    const updateMeta = (newValue) => {
+        console.log(newValue, props)
+        props.setMeta( { ...props.meta, [props.meta_key]: newValue } );
+    }
+
+    let value =  props.meta[props.meta_key]
+    return (
+        <div>
+            <dt><Text>{props.label}</Text></dt>
+            <dd>
+                <TextControl
+                    value={ value }
+                    onChange={ (val) => {
+                        //console.log("Change", val)
+                        updateMeta(val)
+                    } }
+                />
+            </dd>
+        </div>
+    )
+}
 
 /**
  * @param {Object} props The component properties.
@@ -16,20 +49,25 @@ import { useEntityProp } from '@wordpress/core-data';
 		props.setAttributes( { format: value } );
 	}
 
-	const ref = useRef();
-	const blockProps = useBlockProps( { ref } );
 
     const postType = useSelect(
         ( select ) => select( 'core/editor' ).getCurrentPostType(),
         []
     );
     const [ meta, setMeta ] = useEntityProp( 'postType', postType, 'meta' );
-    
-    console.log(postType, meta)
+
+
 
 	return (
-		<div { ...blockProps }>
-			Hi There
+
+		<div>
+			<h2>Meta Demo</h2>
+            <dl>
+                <ListItem label="Prefix" meta_key="prefix" key="prefix" meta = {meta} setMeta = {setMeta}/>
+                <ListItem label="First Name" meta_key="first_name" key="first_name" meta = {meta} setMeta = {setMeta}/>
+                <ListItem label="Last Name" meta_key="last_name" key="last_name" meta = {meta} setMeta = {setMeta}/>
+            </dl>
+            <hr />
 		</div>
 	);
 }

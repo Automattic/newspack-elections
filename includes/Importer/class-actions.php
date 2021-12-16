@@ -63,14 +63,6 @@ class Actions {
 		$this->process_post( $args, null );
 	}
 
-	/**
-	 * Action that fires from the importer to make the terms
-	 * 
-	 * @param array $args Args passed from Action Scheduler.
-	 */
-	public function make_post( $args ) {
-		$this->process_post( $args, null );
-	}
 
 	/**
 	 * Does the term exist?
@@ -139,15 +131,6 @@ class Actions {
 
 	}
 
-	/**
-	 * Pre-process post data.
-	 *
-	 * @param array $data Post data. (Return empty to skip.).
-	 */
-	protected function process_post( $data ) {
-		// this is a [placeholder.].
-		return $data;
-	}
 
 	/**
 	 * Does the post exist?

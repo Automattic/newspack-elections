@@ -93,42 +93,7 @@ class Importer {
 		return WXR::status();
 	}
 
-	/**
-	 * Adds rest endpoints for Importer Upload a file and combine
-	 */
-	public static function register_rest_endpoints() {
-
-		\register_rest_route(
-			Govpack::REST_PREFIX,
-			'/import',
-			[
-				'methods'             => 'GET',
-				'callback'            => [
-					__class__,
-					'import',
-				],
-				'permission_callback' => function () {
-					return \current_user_can( 'edit_others_posts' );
-
-				},
-			] 
-		);
-
-		\register_rest_route(
-			Govpack::REST_PREFIX,
-			'/import/progress',
-			[
-				'methods'             => 'GET',
-				'callback'            => [
-					__class__,
-					'progress',
-				],
-				'permission_callback' => function () {
-					return \current_user_can( 'edit_others_posts' );
-				},
-			] 
-		);
-	}
+	
 
 	/**
 	 * Called By The REST API to Check the progress of an ongoing import

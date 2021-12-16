@@ -1,4 +1,5 @@
 //import './blocks/issue.js';
 //import './blocks/issue-archive.js';
+import './meta/profile.js';
 import './blocks/profile.js';
 import './blocks/profile-meta.js';

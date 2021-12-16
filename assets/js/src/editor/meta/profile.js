@@ -60,11 +60,11 @@ const AboutPanel = (props) => {
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl label = "First Name" meta_key="first_name" onChange={setPostMeta} />
+                <PanelTextControl meta={props.meta} label = "First Name" meta_key="first_name" onChange={setPostMeta} />
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl label = "Last Name" meta_key="last_name" onChange={setPostMeta} />
+                <PanelTextControl meta={props.meta} label = "Last Name" meta_key="last_name" onChange={setPostMeta} />
             </PanelRow>
 
         </GovPackSidebarPanel>
@@ -98,8 +98,6 @@ const PanelSelectControl = (props) => {
 }
 
 const RawPanelTaxonomyControl = (props) => {
-
-    console.log("Render Taxonomy", props)
 
     if ( null === props.terms ) {
         return <Spinner />
@@ -280,7 +278,7 @@ const CommunicationsPanel = (props) => {
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl meta={props.meta} label= "Email" meta_key="text_email" onChange={setPostMeta}/>
+                <PanelTextControl meta={props.meta} label= "Email" meta_key="email" onChange={setPostMeta}/>
             </PanelRow>
 
             <PanelRow>

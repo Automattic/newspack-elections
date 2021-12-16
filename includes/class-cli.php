@@ -153,8 +153,10 @@ class CLI extends \WP_CLI_Command {
 		foreach ( $args as $file ) {
 			
 			try {
-				$importer = \Newspack\Govpack\Importer\WXR::make();
+
+				$importer = \Newspack\Govpack\Importer\Importer::make($file);
 				$importer::import( $file, $dry_run );
+
 			} catch ( \Exception $e ) {
 				WP_CLI::error( $e->getMessage() );
 			}
@@ -162,19 +164,104 @@ class CLI extends \WP_CLI_Command {
 	}
 
 	/**
-	 * Gets Proress from ongoing import
+	 * Gets Progess from ongoing import
+     * 
+	 * @subcommand progress
 	 *
-	 * @subcommand import
+	 * @param array $args        Array of command-line arguments.
+	 * @param array $assoc_args  Associative array of arguments.
 	 */
-	public function progress() {
+	public function progress( $args, $assoc_args) {
 		$importer = \Newspack\Govpack\Importer\WXR::make();
 		WP_CLI::line( $importer::progress() );
+	}
+
+    /**
+	 * Stops a Currently running import
+	 *
+     * @subcommand clear
+	 *
+	 * @param array $args        Array of command-line arguments.
+	 * @param array $assoc_args  Associative array of arguments.
+     */
+    public function clear( $args, $assoc_args) {
+		WP_CLI::line( \Newspack\Govpack\Importer\Importer::clear() );
 	}
 
 	/**
 	 * Add CLI command.
 	 */
 	public static function init() {
-		WP_CLI::add_command( 'govpack', '\Newspack\Govpack\CLI' );
+		WP_CLI::add_command( 'govpack import', '\Newspack\Govpack\CLI' );
+        WP_CLI::add_command( 'govpack purge', ['\Newspack\Govpack\CLI', "purge"] );
 	}
+
+    
+      /**
+	 * Stops a Currently running import
+	 *
+     * @subcommand clear
+	 *
+	 * @param array $args        Array of command-line arguments.
+	 * @param array $assoc_args  Associative array of arguments.
+     */
+    public function purge( $args, $assoc_args) {
+		WP_CLI::line( "Purging GovPack Data" );
+
+        $post_types = [
+            "govpack_profiles",
+            "govpack_issues"
+        ];
+
+        forEach($post_types as $post_type){
+
+            WP_CLI::line( sprintf("Purging Post Type : %s", $post_type));
+
+       
+            $posts = get_posts( [
+                'post_type' => 'govpack_profiles',
+                "post_status" => "any",
+                'numberposts' => '-1',
+                'fields' => 'ids',
+            ] );
+
+            foreach ($posts as $id) {
+                WP_CLI::line( sprintf("Deleting Post : %s", $id));
+                wp_delete_post( $id, true );
+            }   
+
+        }
+
+
+        $taxonomies = [
+            "govpack_city",
+            "govpack_county",
+            "govpack_state",
+            "govpack_installation",
+            "govpack_legislative_body",
+            "govpack_officeholder_status",
+            "govpack_party",
+        ];
+
+        forEach($taxonomies as $taxonomy){
+
+            WP_CLI::line( sprintf("Purging Taxonomy : %s", $taxonomy));
+
+       
+            $terms = get_terms( [
+                'taxonomy' => $taxonomy,
+                'hide_empty' => false,
+                "fields" => "ids",
+                "number" => 0 // all
+            ] );
+
+            foreach ($terms as $term) {
+                WP_CLI::line( sprintf("Deleting Term : %s", $term));
+                wp_delete_term( $term, $taxonomy );
+            }   
+
+        }
+
+	}
+		
 }

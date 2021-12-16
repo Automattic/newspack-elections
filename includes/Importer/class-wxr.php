@@ -12,7 +12,7 @@ use Newspack\Govpack\Govpack;
 /**
  * Register and handle the "USIO" Importer
  */
-class WXR extends Abstracts\Abstract_Importer {
+class WXR extends \Newspack\Govpack\Importer\Abstracts\Abstract_Importer {
 
 
 	/**

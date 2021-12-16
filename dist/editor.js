@@ -10,6 +10,16 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./assets/js/src/editor/blocks/profile-meta.js":
+/*!*****************************************************!*\
+  !*** ./assets/js/src/editor/blocks/profile-meta.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ \"./node_modules/@babel/runtime/helpers/esm/slicedToArray.js\");\n/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ \"@wordpress/element\");\n/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/blocks */ \"@wordpress/blocks\");\n/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/block-editor */ \"@wordpress/block-editor\");\n/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__);\n/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/data */ \"@wordpress/data\");\n/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_4__);\n/* harmony import */ var _wordpress_core_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/core-data */ \"@wordpress/core-data\");\n/* harmony import */ var _wordpress_core_data__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_core_data__WEBPACK_IMPORTED_MODULE_5__);\n\n\n\n\n\n\n\n/**\n * @param {Object} props The component properties.\n */\n\nfunction Edit(props) {\n  /**\n   * @param {string} value The selected format.\n   */\n  function updateFormat(value) {\n    props.setAttributes({\n      format: value\n    });\n  }\n\n  var ref = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useRef)();\n  var blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps)({\n    ref: ref\n  });\n  var postType = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useSelect)(function (select) {\n    return select('core/editor').getCurrentPostType();\n  }, []);\n\n  var _useEntityProp = (0,_wordpress_core_data__WEBPACK_IMPORTED_MODULE_5__.useEntityProp)('postType', postType, 'meta'),\n      _useEntityProp2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(_useEntityProp, 2),\n      meta = _useEntityProp2[0],\n      setMeta = _useEntityProp2[1];\n\n  console.log(postType, meta);\n  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(\"div\", blockProps, \"Hi There\");\n}\n\n(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__.registerBlockType)('govpack/profile-meta', {\n  apiVersion: 2,\n  title: 'Govpack Profile Meta',\n  icon: 'groups',\n  category: 'embed',\n  keywords: ['govpack'],\n  attributes: {},\n  edit: Edit,\n  save: function save() {\n    return null;\n  }\n});\n\n//# sourceURL=webpack://Govpack/./assets/js/src/editor/blocks/profile-meta.js?");
+
+/***/ }),
+
 /***/ "./assets/js/src/editor/blocks/profile.js":
 /*!************************************************!*\
   !*** ./assets/js/src/editor/blocks/profile.js ***!
@@ -20,53 +30,43 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _wor
 
 /***/ }),
 
-/***/ "./assets/js/src/editor/components/sidebar-panel.jsx":
-/*!***********************************************************!*\
-  !*** ./assets/js/src/editor/components/sidebar-panel.jsx ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"GovPackSidebarPanel\": () => (/* binding */ GovPackSidebarPanel),\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ \"@wordpress/element\");\n/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _wordpress_edit_post__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/edit-post */ \"@wordpress/edit-post\");\n/* harmony import */ var _wordpress_edit_post__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_edit_post__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/compose */ \"@wordpress/compose\");\n/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_compose__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ \"@wordpress/data\");\n/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);\n\n\n\n\n\n\nvar RawGovPackSidebarPanel = function RawGovPackSidebarPanel(props) {\n  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_edit_post__WEBPACK_IMPORTED_MODULE_1__.PluginDocumentSettingPanel, {\n    title: props.title,\n    name: props.name,\n    icon: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null)\n  }, props.children);\n};\n\nvar GovPackSidebarPanel = (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_2__.compose)([(0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.withSelect)(function (select) {\n  return {\n    meta: select('core/editor').getEditedPostAttribute('meta'),\n    type: select('core/editor').getCurrentPostType()\n  };\n}), (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.withDispatch)(function (dispatch) {\n  return {\n    setPostMeta: function setPostMeta(newMeta) {\n      dispatch('core/editor').editPost({\n        meta: newMeta\n      });\n    }\n  };\n})])(RawGovPackSidebarPanel);\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GovPackSidebarPanel);\n\n//# sourceURL=webpack://Govpack/./assets/js/src/editor/components/sidebar-panel.jsx?");
-
-/***/ }),
-
 /***/ "./assets/js/src/editor/index.js":
 /*!***************************************!*\
   !*** ./assets/js/src/editor/index.js ***!
   \***************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _blocks_profile_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./blocks/profile.js */ \"./assets/js/src/editor/blocks/profile.js\");\n/* harmony import */ var _meta_profile_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./meta/profile.js */ \"./assets/js/src/editor/meta/profile.js\");\n//import './blocks/issue.js';\n//import './blocks/issue-archive.js';\n\n\nconsole.log(\"In Editor.js\");\n\n//# sourceURL=webpack://Govpack/./assets/js/src/editor/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _blocks_profile_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./blocks/profile.js */ \"./assets/js/src/editor/blocks/profile.js\");\n/* harmony import */ var _blocks_profile_meta_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./blocks/profile-meta.js */ \"./assets/js/src/editor/blocks/profile-meta.js\");\n//import './blocks/issue.js';\n//import './blocks/issue-archive.js';\n\n\n\n//# sourceURL=webpack://Govpack/./assets/js/src/editor/index.js?");
 
 /***/ }),
 
-/***/ "./assets/js/src/editor/meta/profile.js":
-/*!**********************************************!*\
-  !*** ./assets/js/src/editor/meta/profile.js ***!
-  \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ \"./node_modules/@babel/runtime/helpers/esm/defineProperty.js\");\n/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ \"@wordpress/element\");\n/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _wordpress_plugins__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/plugins */ \"@wordpress/plugins\");\n/* harmony import */ var _wordpress_plugins__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_plugins__WEBPACK_IMPORTED_MODULE_2__);\nObject(function webpackMissingModule() { var e = new Error(\"Cannot find module '@wordpress/icons'\"); e.code = 'MODULE_NOT_FOUND'; throw e; }());\n/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ \"@wordpress/components\");\n/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);\n/* harmony import */ var _components_sidebar_panel__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../components/sidebar-panel */ \"./assets/js/src/editor/components/sidebar-panel.jsx\");\n/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/compose */ \"@wordpress/compose\");\n/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_compose__WEBPACK_IMPORTED_MODULE_6__);\n/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/data */ \"@wordpress/data\");\n/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_7__);\n/* harmony import */ var _json_prefix_json__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./../../../../json/prefix.json */ \"./assets/json/prefix.json\");\n/* harmony import */ var _json_title_json__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./../../../../json/title.json */ \"./assets/json/title.json\");\n\n\n// Using ESNext syntax\n//import { PluginSidebar, PluginSidebarMoreMenuItem } from '@wordpress/edit-post';\n\n\n\n\n\n\n\n\n\nfunction withPanel(component) {\n  return (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_6__.compose)([(0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.withSelect)(function (select) {\n    return {\n      meta: select('core/editor').getEditedPostAttribute('meta'),\n      type: select('core/editor').getCurrentPostType()\n    };\n  }), (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.withDispatch)(function (dispatch) {\n    return {\n      setPostMeta: function setPostMeta(newMeta) {\n        console.log(\"setPostMeta\", newMeta);\n        dispatch('core/editor').editPost({\n          meta: newMeta\n        });\n      },\n      setTerm: function setTerm(taxonomy, term) {\n        var _select = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.select)('core'),\n            getTaxonomy = _select.getTaxonomy;\n\n        var _taxonomy = getTaxonomy(taxonomy);\n\n        dispatch('core/editor').editPost((0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__[\"default\"])({}, _taxonomy.rest_base, term));\n      }\n    };\n  })])(component);\n}\n\nvar AboutPanel = function AboutPanel(props) {\n  var setPostMeta = props.setPostMeta;\n  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_components_sidebar_panel__WEBPACK_IMPORTED_MODULE_5__.GovPackSidebarPanel, {\n    title: \"About\",\n    name: \"gov-profile-about\"\n  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelSelectControl, {\n    options: Object.keys(_json_prefix_json__WEBPACK_IMPORTED_MODULE_8__).map(function (key) {\n      return {\n        value: key,\n        label: _json_prefix_json__WEBPACK_IMPORTED_MODULE_8__[key]\n      };\n    }),\n    label: \"Prefix\",\n    meta_key: \"prefix\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    label: \"First Name\",\n    meta_key: \"first_name\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    label: \"Last Name\",\n    meta_key: \"last_name\",\n    onChange: setPostMeta\n  })));\n};\n\nvar PanelTextControl = function PanelTextControl(props) {\n  var _props$meta$props$met, _props$meta;\n\n  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.TextControl, {\n    label: props.label,\n    value: (_props$meta$props$met = (_props$meta = props.meta) === null || _props$meta === void 0 ? void 0 : _props$meta[props.meta_key]) !== null && _props$meta$props$met !== void 0 ? _props$meta$props$met : \"\",\n    onChange: function onChange(value) {\n      console.log(value, props, (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__[\"default\"])({}, props.meta_key, value));\n      props.onChange((0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__[\"default\"])({}, props.meta_key, value));\n    }\n  });\n};\n\nvar PanelSelectControl = function PanelSelectControl(props) {\n  var _props$meta$props$met2, _props$meta2;\n\n  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.SelectControl, {\n    label: props.label,\n    value: (_props$meta$props$met2 = (_props$meta2 = props.meta) === null || _props$meta2 === void 0 ? void 0 : _props$meta2[props.meta_key]) !== null && _props$meta$props$met2 !== void 0 ? _props$meta$props$met2 : \"\",\n    onChange: function onChange(value) {\n      props.onChange((0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__[\"default\"])({}, props.meta_key, value));\n    },\n    options: props.options\n  });\n};\n\nvar RawPanelTaxonomyControl = function RawPanelTaxonomyControl(props) {\n  var _props$post_terms;\n\n  console.log(\"Render Taxonomy\", props);\n\n  if (null === props.terms) {\n    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Spinner, null);\n  }\n\n  var options = props.terms.map(function (term) {\n    return {\n      label: term.name,\n      value: term.id\n    };\n  });\n  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.SelectControl, {\n    label: props.label,\n    onChange: function onChange(value) {\n      props.onChange(props.taxonomy, value);\n    },\n    options: options,\n    value: (_props$post_terms = props.post_terms) !== null && _props$post_terms !== void 0 ? _props$post_terms : \"\"\n  });\n};\n\nvar PanelTaxonomyControl = (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_6__.compose)((0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.withSelect)(function (select, ownProps) {\n  var _select2 = select('core'),\n      getEntityRecords = _select2.getEntityRecords,\n      getTaxonomy = _select2.getTaxonomy;\n\n  var _select3 = select('core/editor'),\n      getEditedPostAttribute = _select3.getEditedPostAttribute;\n\n  var _taxonomy = getTaxonomy(ownProps.taxonomy);\n\n  return {\n    terms: getEntityRecords('taxonomy', ownProps.taxonomy, {\n      per_page: 100\n    }),\n    post_terms: _taxonomy ? getEditedPostAttribute(_taxonomy.rest_base) : []\n  };\n}))(RawPanelTaxonomyControl);\n\nvar OfficePanel = function OfficePanel(props) {\n  var setPostMeta = props.setPostMeta;\n  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_components_sidebar_panel__WEBPACK_IMPORTED_MODULE_5__.GovPackSidebarPanel, {\n    title: \"Office\",\n    name: \"gov-profile-office\"\n  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"Address\",\n    meta_key: \"main_office_address\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"City\",\n    meta_key: \"main_office_city\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"State\",\n    meta_key: \"main_office_state\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"Zip\",\n    meta_key: \"main_office_zip\",\n    onChange: setPostMeta\n  })));\n};\n\nvar SecondaryOfficePanel = function SecondaryOfficePanel(props) {\n  var setPostMeta = props.setPostMeta;\n  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_components_sidebar_panel__WEBPACK_IMPORTED_MODULE_5__.GovPackSidebarPanel, {\n    title: \"Secondary Office\",\n    name: \"gov-profile-secondary-office\"\n  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"Address\",\n    meta_key: \"secondary_office_address\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"City\",\n    meta_key: \"secondary_office_city\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"State\",\n    meta_key: \"secondary_office_state\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"Zip\",\n    meta_key: \"secondary_office_zip\",\n    onChange: setPostMeta\n  })));\n};\n\nvar PositionPanel = function PositionPanel(props) {\n  var setTerm = props.setTerm,\n      setPostMeta = props.setPostMeta;\n  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_components_sidebar_panel__WEBPACK_IMPORTED_MODULE_5__.GovPackSidebarPanel, {\n    title: \"Position\",\n    name: \"gov-profile-position\"\n  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelSelectControl, {\n    options: Object.keys(_json_title_json__WEBPACK_IMPORTED_MODULE_9__).map(function (key) {\n      return {\n        value: key,\n        label: _json_title_json__WEBPACK_IMPORTED_MODULE_9__[key]\n      };\n    }),\n    label: \"Title\",\n    meta_key: \"title\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTaxonomyControl, {\n    meta: props.meta,\n    label: \"Legislative Body\",\n    taxonomy: \"govpack_legislative_body\",\n    onChange: setTerm\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTaxonomyControl, {\n    meta: props.meta,\n    label: \"State\",\n    taxonomy: \"govpack_state\",\n    onChange: setTerm\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelSelectControl, {\n    meta: props.meta,\n    label: \"County\",\n    taxonomy: \"govpack_county\",\n    onChange: setTerm\n  })));\n};\n\nvar CommunicationsPanel = function CommunicationsPanel(props) {\n  var setPostMeta = props.setPostMeta;\n  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_components_sidebar_panel__WEBPACK_IMPORTED_MODULE_5__.GovPackSidebarPanel, {\n    title: \"Communications\",\n    name: \"gov-profile-communications\"\n  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"Main Phone\",\n    meta_key: \"main_phone\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"Secondary Phone\",\n    meta_key: \"secondary_phone\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"Email\",\n    meta_key: \"text_email\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"Twitter\",\n    meta_key: \"twitter\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"Facebook\",\n    meta_key: \"facebook\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"LinkedIn\",\n    meta_key: \"linked\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"Instagram\",\n    meta_key: \"instagram\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"Campaign Website\",\n    meta_key: \"campaign_url\",\n    onChange: setPostMeta\n  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(PanelTextControl, {\n    meta: props.meta,\n    label: \"Legislative Website\",\n    meta_key: \"leg_url\",\n    onChange: setPostMeta\n  })));\n};\n\nvar ComposedAboutPanel = withPanel(AboutPanel);\nvar ComposedOfficePanel = withPanel(OfficePanel);\nvar ComposedSecondaryOfficePanel = withPanel(SecondaryOfficePanel);\nvar ComposedPositionPanel = withPanel(PositionPanel);\nvar ComposedCommunicationsPanel = withPanel(CommunicationsPanel);\n\nvar GovPackProfileSidebar = function GovPackProfileSidebar() {\n  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(ComposedAboutPanel, null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(ComposedOfficePanel, null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(ComposedSecondaryOfficePanel, null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(ComposedPositionPanel, null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(ComposedCommunicationsPanel, null));\n};\n\n(0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_2__.registerPlugin)('profile-meta', {\n  icon: Object(function webpackMissingModule() { var e = new Error(\"Cannot find module '@wordpress/icons'\"); e.code = 'MODULE_NOT_FOUND'; throw e; }()),\n  render: GovPackProfileSidebar\n});\nconsole.log(\"profile-meta loaded\");\n\n//# sourceURL=webpack://Govpack/./assets/js/src/editor/meta/profile.js?");
-
-/***/ }),
-
-/***/ "@wordpress/components":
-/*!************************************!*\
-  !*** external ["wp","components"] ***!
-  \************************************/
+/***/ "@wordpress/block-editor":
+/*!*************************************!*\
+  !*** external ["wp","blockEditor"] ***!
+  \*************************************/
 /***/ ((module) => {
 
-module.exports = window["wp"]["components"];
+module.exports = window["wp"]["blockEditor"];
 
 /***/ }),
 
-/***/ "@wordpress/compose":
-/*!*********************************!*\
-  !*** external ["wp","compose"] ***!
-  \*********************************/
+/***/ "@wordpress/blocks":
+/*!********************************!*\
+  !*** external ["wp","blocks"] ***!
+  \********************************/
 /***/ ((module) => {
 
-module.exports = window["wp"]["compose"];
+module.exports = window["wp"]["blocks"];
+
+/***/ }),
+
+/***/ "@wordpress/core-data":
+/*!**********************************!*\
+  !*** external ["wp","coreData"] ***!
+  \**********************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["coreData"];
 
 /***/ }),
 
@@ -80,16 +80,6 @@ module.exports = window["wp"]["data"];
 
 /***/ }),
 
-/***/ "@wordpress/edit-post":
-/*!**********************************!*\
-  !*** external ["wp","editPost"] ***!
-  \**********************************/
-/***/ ((module) => {
-
-module.exports = window["wp"]["editPost"];
-
-/***/ }),
-
 /***/ "@wordpress/element":
 /*!*********************************!*\
   !*** external ["wp","element"] ***!
@@ -100,43 +90,63 @@ module.exports = window["wp"]["element"];
 
 /***/ }),
 
-/***/ "@wordpress/plugins":
-/*!*********************************!*\
-  !*** external ["wp","plugins"] ***!
-  \*********************************/
-/***/ ((module) => {
+/***/ "./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-module.exports = window["wp"]["plugins"];
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ _arrayLikeToArray)\n/* harmony export */ });\nfunction _arrayLikeToArray(arr, len) {\n  if (len == null || len > arr.length) len = arr.length;\n\n  for (var i = 0, arr2 = new Array(len); i < len; i++) {\n    arr2[i] = arr[i];\n  }\n\n  return arr2;\n}\n\n//# sourceURL=webpack://Govpack/./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js?");
 
 /***/ }),
 
-/***/ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js":
+/***/ "./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js":
 /*!*******************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/defineProperty.js ***!
+  !*** ./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js ***!
   \*******************************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ _defineProperty)\n/* harmony export */ });\nfunction _defineProperty(obj, key, value) {\n  if (key in obj) {\n    Object.defineProperty(obj, key, {\n      value: value,\n      enumerable: true,\n      configurable: true,\n      writable: true\n    });\n  } else {\n    obj[key] = value;\n  }\n\n  return obj;\n}\n\n//# sourceURL=webpack://Govpack/./node_modules/@babel/runtime/helpers/esm/defineProperty.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ _arrayWithHoles)\n/* harmony export */ });\nfunction _arrayWithHoles(arr) {\n  if (Array.isArray(arr)) return arr;\n}\n\n//# sourceURL=webpack://Govpack/./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js?");
 
 /***/ }),
 
-/***/ "./assets/json/prefix.json":
-/*!*********************************!*\
-  !*** ./assets/json/prefix.json ***!
-  \*********************************/
-/***/ ((module) => {
+/***/ "./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("module.exports = JSON.parse('{\"Mr.\":\"Mr.\",\"Mrs.\":\"Mrs.\",\"Ms\":\"Ms\",\"Dr.\":\"Dr.\",\"Rev.\":\"Rev.\"}');\n\n//# sourceURL=webpack://Govpack/./assets/json/prefix.json?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ _iterableToArrayLimit)\n/* harmony export */ });\nfunction _iterableToArrayLimit(arr, i) {\n  var _i = arr == null ? null : typeof Symbol !== \"undefined\" && arr[Symbol.iterator] || arr[\"@@iterator\"];\n\n  if (_i == null) return;\n  var _arr = [];\n  var _n = true;\n  var _d = false;\n\n  var _s, _e;\n\n  try {\n    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {\n      _arr.push(_s.value);\n\n      if (i && _arr.length === i) break;\n    }\n  } catch (err) {\n    _d = true;\n    _e = err;\n  } finally {\n    try {\n      if (!_n && _i[\"return\"] != null) _i[\"return\"]();\n    } finally {\n      if (_d) throw _e;\n    }\n  }\n\n  return _arr;\n}\n\n//# sourceURL=webpack://Govpack/./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js?");
 
 /***/ }),
 
-/***/ "./assets/json/title.json":
-/*!********************************!*\
-  !*** ./assets/json/title.json ***!
-  \********************************/
-/***/ ((module) => {
+/***/ "./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("module.exports = JSON.parse('{\"President\":\"President\",\"Vice President\":\"Vice President\",\"Senator\":\"Senator\",\"Representative\":\"Representative\",\"State Senator\":\"State Senator\",\"State Represenative\":\"State Representative\",\"City Council Member\":\"City Council Member\"}');\n\n//# sourceURL=webpack://Govpack/./assets/json/title.json?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ _nonIterableRest)\n/* harmony export */ });\nfunction _nonIterableRest() {\n  throw new TypeError(\"Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\");\n}\n\n//# sourceURL=webpack://Govpack/./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js?");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/slicedToArray.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ _slicedToArray)\n/* harmony export */ });\n/* harmony import */ var _arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayWithHoles.js */ \"./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js\");\n/* harmony import */ var _iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./iterableToArrayLimit.js */ \"./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js\");\n/* harmony import */ var _unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./unsupportedIterableToArray.js */ \"./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js\");\n/* harmony import */ var _nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./nonIterableRest.js */ \"./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js\");\n\n\n\n\nfunction _slicedToArray(arr, i) {\n  return (0,_arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(arr) || (0,_iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__[\"default\"])(arr, i) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__[\"default\"])(arr, i) || (0,_nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__[\"default\"])();\n}\n\n//# sourceURL=webpack://Govpack/./node_modules/@babel/runtime/helpers/esm/slicedToArray.js?");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ _unsupportedIterableToArray)\n/* harmony export */ });\n/* harmony import */ var _arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayLikeToArray.js */ \"./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js\");\n\nfunction _unsupportedIterableToArray(o, minLen) {\n  if (!o) return;\n  if (typeof o === \"string\") return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(o, minLen);\n  var n = Object.prototype.toString.call(o).slice(8, -1);\n  if (n === \"Object\" && o.constructor) n = o.constructor.name;\n  if (n === \"Map\" || n === \"Set\") return Array.from(o);\n  if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(o, minLen);\n}\n\n//# sourceURL=webpack://Govpack/./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js?");
 
 /***/ })
 

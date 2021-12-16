@@ -6,7 +6,8 @@
     "cmb2/cmb2": "2.9.*",
     "pablo-sg-pacheco/wp-namespace-autoloader": "dev-master",
     "woocommerce/action-scheduler": "^3.4",
-    "gargron/fileupload": "~1.4.0"
+    "gargron/fileupload": "~1.4.0",
+    "league/csv": "^9.7"
   },
   "require-dev": {
     "automattic/vipwpcs": "^2.2",

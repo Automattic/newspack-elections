@@ -6,8 +6,8 @@
     "cm": "git-cz",
     "semantic-release": "semantic-release",
     "start": "npm run dev",
-    "dev": "calypso-build --watch --config='./webpack.config.js' --env development",
-    "build": "calypso-build --config='./webpack.config.js'",
+    "dev": "calypso-build --watch --env WP",
+    "build": "calypso-build --config='./webpack.config.js' --env WP",
     "clean": "rm -rf dist/",
     "lint": "npm-run-all --parallel lint:*",
     "lint:js": "eslint --ext .js,.jsx assets/js/src",
@@ -93,25 +93,10 @@
     "url": "https://github.com/Automattic/govpack/issues"
   },
   "dependencies": {
-    "@wordpress/api-fetch": "^5.2.6",
-    "@wordpress/base-styles": "^4.0.4",
-    "@wordpress/block-editor": "^8.0.5",
-    "@wordpress/blocks": "^11.0.4",
-    "@wordpress/components": "^19.0.5",
-    "@wordpress/data": "^6.1.4",
-    "@wordpress/dependency-extraction-webpack-plugin": "^3.2.1",
-    "@wordpress/dom-ready": "^3.2.3",
-    "@wordpress/edit-post": "^5.0.11",
-    "@wordpress/element": "^4.0.4",
-    "@wordpress/html-entities": "^3.2.3",
-    "@wordpress/i18n": "^4.2.4",
-    "@wordpress/icons": "^6.1.1",
-    "@wordpress/plugins": "^4.0.6",
-    "@wordpress/server-side-render": "^3.0.9",
     "axios": "^0.24.0"
   },
   "devDependencies": {
-    "@automattic/calypso-build": "^10.0.0",
+    "@automattic/calypso-build": "^9.0.0",
     "@babel/core": "^7.13.8",
     "@commitlint/cli": "^12.0.1",
     "@commitlint/config-conventional": "^12.0.1",
@@ -121,6 +106,7 @@
     "@wordpress/eslint-plugin": "^8.0.2",
     "@wordpress/stylelint-config": "^19.0.3",
     "autoprefixer": "^10.2.4",
+    "copy-webpack-plugin": "^10.0.0",
     "cz-conventional-changelog": "^3.3.0",
     "duplicate-package-checker-webpack-plugin": "^3.0.0",
     "eslint": "^7.21.0",
@@ -153,6 +139,7 @@
     "stylelint-prettier": "^1.2.0",
     "url-regex": "^5.0.0",
     "util": "^0.12.4",
-    "webpack": "^5.62.1"
+    "webpack-cli": "^4.7.2",
+    "webpack": "^5.46.0"
   }
 }

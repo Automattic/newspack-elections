@@ -87,6 +87,7 @@ class Govpack {
 		\Newspack\Govpack\Importer\Importer::hooks();
 		
 		
+		
 		$menu = new \Newspack\Govpack\Admin\Menu();
 		$menu->set_page_title( 'GovPack' )
 			->set_menu_title( 'GovPack' )

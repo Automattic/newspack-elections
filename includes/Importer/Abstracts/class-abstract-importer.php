@@ -9,77 +9,95 @@ namespace Newspack\Govpack\Importer\Abstracts;
 
 use Exception;
 
+
+
 /**
  * Register and handle the "USIO" Importer
  */
 abstract class Abstract_Importer {
 
-		/**
-		 * How Does the importer work?
-		 * 1. Upload the file to the server
-		 * 2. Check the file is a valid wxr
-		 * 3. Split the file up into actions in action scheduler
-		 * 4. request to see how many actions to do
-		 * 5. action scheduker runs
-		 */
+    const IMPORT_NOT_RUNNING = 0;
+    const IMPORT_RUNNING = 1;
+    const IMPORT_DONE = 2;
+    const IMPORT_TEST_KEY = "govpack_import_processing";
+
+    /**
+	 * How Does the importer work?
+	 * 1. Upload the file to the server
+	 * 2. Check the file is a valid wxr
+	 * 3. Split the file up into actions in action scheduler
+	 * 4. request to see how many actions to do
+	 * 5. action scheduker runs
+	 */
 	public static function make() {
 		return new static();
 	}
+
+    public static function cancel(){
+        delete_option(self::IMPORT_TEST_KEY);
+    }
+
+    	
+    /**
+	 * Checks if an import is already running
+	 *
+	 */
+	public static function status( ) {
+
+
+
+		
+		$import_processing_running = get_option(self::IMPORT_TEST_KEY, self::IMPORT_NOT_RUNNING);
+
+		if($import_processing_running == self::IMPORT_RUNNING){
+			return ["status" => "running"];
+		}
+
+		if($import_processing_running == self::IMPORT_DONE){
+			return ["status" => "done"];
+		}
+
+        return ["status" => "not_running"];
+
+    }
 
 	/**
 	 * Main Import Process Runner
 	 *
 	 * @param string $file  Name of the JSON file.
 	 */
-	public static function import( $file ) {
+	public static function import( $file, $dry_run ) {
 
-		define( 'IMPORT_NOT_RUNNING', 0 );
-		define( 'IMPORT_RUNNING', 1 );
-		define( 'IMPORT_DONE', 2 );
+        var_dump("import method");
+       
+     
+        /*
+		$import_processing_running = get_option(self::IMPORT_TEST_KEY, self::IMPORT_NOT_RUNNING);
 
-		$test_key                  = 'govpack_import_processing';
-		$import_processing_running = get_option( $test_key, IMPORT_NOT_RUNNING );
-
-		if ( IMPORT_RUNNING === $import_processing_running ) {
-			return [ 'status' => 'running' ];
+        
+		if($import_processing_running == self::IMPORT_RUNNING){
+			return ["status" => "running"];
 		}
 
-		if ( IMPORT_DONE === $import_processing_running ) {
-			return [ 'status' => 'done' ];
+		if($import_processing_running == self::IMPORT_DONE){
+			return ["status" => "done"];
 		}
 
-		update_option( $test_key, IMPORT_RUNNING );
+		update_option(self::IMPORT_TEST_KEY, self::IMPORT_RUNNING);
+        */
 
-		$file   = self::check_file( $file );
-		$reader = self::create_reader( $file );
-		self::process( $reader );
+       
+		$file   = \Newspack\Govpack\Importer\Importer::check_file( $file );
 
-		update_option( $test_key, IMPORT_DONE );
+		$reader = static::create_reader( $file );
+		static::process( $reader );
 
-		return [ 'status' => 'running' ];
+		//update_option(self::IMPORT_TEST_KEY, self::IMPORT_DONE);
+
+		return ["status" => "running"];
 	}
 
-	/**
-	 * Checks the file exists in the Govpack uploads folder
-	 *
-	 * @param string $file  Name of the JSON file.
-	 * @throws \Exception File Not Found.
-	 */
-	public static function check_file( $file ) {
-
-		if ( file_exists( $file ) ) {
-			return $file;
-		}
-
-		$path = wp_get_upload_dir();
-		$path = $path['basedir'] . '/govpack/' . $file;
-
-		if ( file_exists( $path ) ) {
-			return $path;
-		}
-
-		throw new \Exception( 'File Not Found' );
-	} 
+	
 
 	/**
 	 * Creates and returns the XML reader for the Import File

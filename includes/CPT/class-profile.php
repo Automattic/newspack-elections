@@ -78,7 +78,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 				'public'       => true,
 				'show_in_rest' => true,
 				'show_ui'      => true,
-				'supports'     => [ 'revisions', 'thumbnail', 'editor' ],
+				'supports'     => [ 'revisions', 'thumbnail', "editor"],
 				'taxonomies'   => [ 'post_tag' ],
 				'as_taxonomy'  => \Newspack\Govpack\Tax\Profile::TAX_SLUG,
 				'menu_icon'    => 'dashicons-groups',

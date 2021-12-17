@@ -3,3 +3,4 @@
 import './meta/profile.js';
 import './blocks/profile.js';
 import './blocks/profile-meta.js';
+import './blocks/profile-meta-selected.js';

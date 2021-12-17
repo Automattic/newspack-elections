@@ -10,12 +10,14 @@ const ProfileSelector = ( { props } ) => {
 	// prettier-ignore
 	const profiles = useSelect( select => select( 'core' ).getEntityRecords( 'postType', 'govpack_profiles', { per_page: 100 } ) );
 
+
 	const profilesMapped = () => {
 		if ( profiles ) {
 			const mapped = profiles.map( profile => {
+                console.log(profile)
 				return {
 					value: profile.id,
-					label: `${ profile.cmb2.id.first_name } ${ profile.cmb2.id.last_name }`,
+					label: `${ profile.meta.first_name } ${ profile.meta.last_name }`,
 				};
 			} );
 

@@ -3,8 +3,10 @@ import { __ } from '@wordpress/i18n';
 
 import { useRef } from '@wordpress/element';
 
+import {isUndefined} from "lodash"
+
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import {useSelect} from '@wordpress/data';
+import {useSelect, select} from '@wordpress/data';
 import { useEntityProp } from '@wordpress/core-data';
 import { TextControl, Panel, PanelBody, PanelRow, RadioControl } from '@wordpress/components';
 
@@ -41,41 +43,26 @@ const ListItem = (props) => {
     const ref = useRef();
 	const blockProps = useBlockProps( { ref } );
 
+    const postType = useSelect(
+        ( select ) => select( 'core/editor' ).getCurrentPostType(),
+        []
+    );
+   
+    const profile = select( 'core' ).getEntityRecord('postType','govpack_profiles', (props.attributes.id ?? 0))
     
-	/**
+
+    	/**
 	 * @param {string} value The selected format.
 	 */
 	function updateFormat( value ) {
 		props.setAttributes( { format: value } );
 	}
 
+    console.log("render Selected Profile", props)
 
-    const postType = useSelect(
-        ( select ) => select( 'core/editor' ).getCurrentPostType(),
-        []
-    );
-   
+    const hasProfile = !isUndefined(profile)
 
-
-    const profileID = props.attributes.id ?? null
-    let hasProfile = true
-    let meta = false
-
-    if(!profileID){
-
-        let hasProfile = false
-
-    } else {
-        const profile = useSelect(
-            ( select ) => select( 'core' ).getEntityRecord('postType','govpack_profiles', profileID),
-            []
-        );
-        console.log("profile", profile)
-        meta = profile.meta
-    }
-
-
-    console.log(props)
+    console.log("pro?", profile, hasProfile)
 
 	return (
 
@@ -83,12 +70,12 @@ const ListItem = (props) => {
 
 			<h2>Meta Demo Selected</h2>
 
-            {meta && (
+            {hasProfile && (
                 <>
                     <dl>
-                        <ListItem label="Prefix" meta_key="prefix" key="prefix" meta = {meta}/>
-                        <ListItem label="First Name" meta_key="first_name" key="first_name" meta = {meta}/>
-                        <ListItem label="Last Name" meta_key="last_name" key="last_name" meta = {meta}/>
+                        <ListItem label="Prefix" meta_key="prefix" key="prefix" meta = {profile.meta}/>
+                        <ListItem label="First Name" meta_key="first_name" key="first_name" meta = {profile.meta}/>
+                        <ListItem label="Last Name" meta_key="last_name" key="last_name" meta = {profile.meta}/>
                     </dl>
                     <hr />
                 </>

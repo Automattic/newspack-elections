@@ -567,6 +567,61 @@ class Profile extends \Newspack\Govpack\Post_Type {
 
 		return $html;
 	}
+    
+    /**
+	 * Shortcode handler for [govpack].
+	 *
+	 * @param array  $atts    Array of shortcode attributes.
+	 * @param string $content Post content.
+	 *
+	 * @return string HTML for recipe shortcode.
+	 */
+
+    public static function shortcode_handler_selected($atts, $content = null){
+        if ( ! isset( $atts['id'] ) ) {
+			return;
+		}
+
+		$profile_data = self::get_data( $atts['id'] );
+		if ( ! $profile_data ) {
+			return;
+		}
+
+        ob_start();
+		require_once GOVPACK_PLUGIN_FILE . 'template-parts/profile-selected-demo.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+		$html = ob_get_clean();
+
+		return $html;
+    }
+
+     /**
+	 * Shortcode handler for [govpack].
+	 *
+	 * @param array  $atts    Array of shortcode attributes.
+	 * @param string $content Post content.
+	 *
+	 * @return string HTML for recipe shortcode.
+	 */
+
+    public static function shortcode_handler_meta($atts, $content = null){
+
+        global $post;
+
+        if(self::CPT_SLUG !== $post->post_type){
+            return;
+        }
+      
+        $profile_data = self::get_data($post->ID);
+		if ( ! $profile_data ) {
+			return;
+		}
+
+        ob_start();
+		require_once GOVPACK_PLUGIN_FILE . 'template-parts/profile-self.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+		$html = ob_get_clean();
+
+		return $html;
+    }
 
 	/**
 	 * Create a profile.

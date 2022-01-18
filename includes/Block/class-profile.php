@@ -41,6 +41,30 @@ class Profile extends \Newspack\Govpack\Block {
 				],
 			]
 		);
+
+        register_block_type(
+			'govpack/profile-meta-selected',
+			[
+				'apiVersion'      => 2,
+				'editor_script'   => 'govpack-editor',
+				'render_callback' => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler_selected' ],
+				'attributes'      => [
+					'id'        => [
+						'type'    => 'number',
+						'default' => 0,
+					],
+				],
+			]
+		);
+
+        register_block_type(
+			'govpack/profile-meta',
+			[
+				'apiVersion'      => 2,
+				'editor_script'   => 'govpack-editor',
+				'render_callback' => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler_meta' ],
+			]
+		);
 	}
 
 }

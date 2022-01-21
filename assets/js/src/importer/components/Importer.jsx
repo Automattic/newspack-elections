@@ -81,7 +81,7 @@ const Importer = () => {
 
     if(step === stage.IMPORTING){
         return (<Importing 
-           
+            updateStep = {setStep}
         />)
     }
 

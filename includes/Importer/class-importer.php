@@ -113,7 +113,10 @@ class Importer {
 			return new \WP_Error( '500', 'No File For Import' );
 		}
 		
-		return WXR::import($file);
+		
+        $importer = self::make($file);
+        return $importer::import( $file, false );
+
 			
 	}
 
@@ -224,6 +227,12 @@ class Importer {
 				[
 					'group'  => 'govpack',
 					'status' => \ActionScheduler_Store::STATUS_PENDING,
+				]
+			),
+            'failed'  => self::as_count_scheduled_actions(
+				[
+					'group'  => 'govpack',
+					'status' => \ActionScheduler_Store::STATUS_FAILED,
 				]
 			),
 		];

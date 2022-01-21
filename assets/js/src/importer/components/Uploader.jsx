@@ -3,6 +3,8 @@ import apiFetch from "./../ApiFetch"
 import InfoPanel from "./InfoPanel";
 import stage from "./../stages"
 
+import {isUndefined} from "lodash"
+
 import { 
     Button, 
     FormFileUpload, 
@@ -111,7 +113,7 @@ const Uploader = (props) => {
             )
 
             apiFetch( {
-                path: '/wp-json/govpack/v1/upload',
+                path: '/govpack/v1/upload',
                 method: 'POST',
                 headers:  {
                     'content-type': 'multipart/form-data',
@@ -170,7 +172,6 @@ const Uploader = (props) => {
                     justify="flex-start"
                 >
                     <FormFileUpload
-                        accept="image/*"
                         variant="primary"
                         onChange={ onFileChosen }
                     >

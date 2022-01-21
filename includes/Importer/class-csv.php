@@ -45,7 +45,6 @@ class CSV extends \Newspack\Govpack\Importer\Abstracts\Abstract_Importer {
 	public static function process( $reader ) {
 
         foreach ($reader->getRecords() as $offset => $record) {
-            var_dump($record);
             as_enqueue_async_action( 'govpack_import_csv_profile', ["data" => $record], 'govpack' );
         }
 

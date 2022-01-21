@@ -16,10 +16,14 @@ const Importing = (props) => {
             method: 'GET',
         } ).then( ( res ) => {
             
-            console.log(res.data)
-            setImportProgress( 100 / res.data.total * res.data.done)
+            setImportProgress( (100 / res.data.total * res.data.done).toFixed(2))
             setTotal(res.data.total)
             setDone(res.data.done)
+
+            if(res.data.todo === "0"){
+                console.log("?????")
+                props.updateStep(stage.DONE)
+            }
         } );
     }
 

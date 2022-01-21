@@ -68,8 +68,6 @@ abstract class Abstract_Importer {
 	 */
 	public static function import( $file, $dry_run ) {
 
-        var_dump("import method");
-       
      
         /*
 		$import_processing_running = get_option(self::IMPORT_TEST_KEY, self::IMPORT_NOT_RUNNING);

@@ -74,6 +74,8 @@ class Chunked_Upload {
 	 */
 	public static function upload( \WP_REST_Request $request ) {
 
+        $file_params = $request->get_file_params();
+  
 	  
 		$factory = new \FileUpload\FileUploadFactory(
 			new \FileUpload\PathResolver\Simple( \Newspack\Govpack\Admin\Pages\Import::get_upload_path( 'govpack' ) ), 
@@ -81,11 +83,11 @@ class Chunked_Upload {
 			[]
 		);
 
-		if ( empty( $request->files->blob ) ) {
+		if ( empty( $file_params['blob'] ) ) {
 			return new WP_Error( 'No File Uploaded' );
 		}
 		
-		$instance = $factory->create( $request->files->blob, $_SERVER );
+		$instance = $factory->create( $file_params['blob'], $_SERVER );
 
 		$resp = $instance->processAll();
 		$path = $instance->getFiles()[0]->getPathname();

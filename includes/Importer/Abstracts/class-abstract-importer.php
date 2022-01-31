@@ -66,7 +66,7 @@ abstract class Abstract_Importer {
 	 *
 	 * @param string $file  Name of the JSON file.
 	 */
-	public static function import( $file, $dry_run ) {
+	public static function import( $file, $dry_run, $extra ) {
 
      
         /*
@@ -88,7 +88,7 @@ abstract class Abstract_Importer {
 		$file   = \Newspack\Govpack\Importer\Importer::check_file( $file );
 
 		$reader = static::create_reader( $file );
-		static::process( $reader );
+		static::process( $reader, $extra );
 
 		//update_option(self::IMPORT_TEST_KEY, self::IMPORT_DONE);
 
@@ -111,6 +111,6 @@ abstract class Abstract_Importer {
 	 *
 	 * @param XMLReader $reader  path of the JSON file.
 	 */
-	abstract public static function process( $reader );
+	abstract public static function process( $reader, $extra );
 
 }

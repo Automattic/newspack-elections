@@ -188,6 +188,37 @@ class CLI extends \WP_CLI_Command {
 		WP_CLI::line( \Newspack\Govpack\Importer\Importer::clear() );
 	}
 
+    /**
+	 * Sideload an Image in a profile
+     * 
+     * ## OPTIONS
+	 * <profile_id>...
+	 * : The ID of the profile
+	 *
+     * @subcommand sideload
+	 *
+	 * @param array $args        Array of command-line arguments.
+	 * @param array $assoc_args  Associative array of arguments.
+     */
+    public function sideload( $args, $assoc_args) {
+
+		WP_CLI::line( "sideload" );
+
+        $id = $args[0];
+
+        try{
+
+            \Newspack\Govpack\Importer\Importer::sideload($id);
+            
+            WP_CLI::line( "sideloaded" );
+
+        }catch(\Exception $e){
+
+            WP_CLI::error( $e->getMessage() );
+        }
+        
+	}
+
 	/**
 	 * Add CLI command.
 	 */
@@ -197,10 +228,10 @@ class CLI extends \WP_CLI_Command {
 	}
 
     
-      /**
-	 * Stops a Currently running import
+    /**
+	 * Deletes All Govpack Data
 	 *
-     * @subcommand clear
+     * @subcommand purge
 	 *
 	 * @param array $args        Array of command-line arguments.
 	 * @param array $assoc_args  Associative array of arguments.

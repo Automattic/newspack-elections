@@ -70,7 +70,7 @@ class Importer {
 
 		\register_rest_route( Govpack::REST_PREFIX, "/import/sources", array(
             'methods' => 'GET',
-            'callback' => ["\Newspack\Govpack\Importer\GitHub_Sources", "urls"],
+            'callback' => ["\Newspack\Govpack\Importer\OpenStates_Sources", "urls"],
             'permission_callback' => function () {
                 return true;
                 return \current_user_can( 'edit_others_posts' );
@@ -80,7 +80,7 @@ class Importer {
 
         \register_rest_route( Govpack::REST_PREFIX, "/import/download", array(
             'methods' => 'POST',
-            'callback' => ["\Newspack\Govpack\Importer\GitHub_Sources", "download"],
+            'callback' => ["\Newspack\Govpack\Importer\OpenStates_Sources", "download"],
             'permission_callback' => function () {
                 return true;
                 return \current_user_can( 'edit_others_posts' );
@@ -108,6 +108,7 @@ class Importer {
 	public static function import() {
 
 		$file = get_option( 'govpack_import_path', false );
+        $extra = get_option( 'govpack_import_extra_args', false );
 
 		if ( ! $file ) {
 			return new \WP_Error( '500', 'No File For Import' );
@@ -115,7 +116,7 @@ class Importer {
 		
 		
         $importer = self::make($file);
-        return $importer::import( $file, false );
+        return $importer::import( $file, false, $extra);
 
 			
 	}
@@ -271,5 +272,43 @@ class Importer {
 			wp_mkdir_p( $upload_dir );
 		}
 	}
+
+
+    public static function sideload( $id = null){
+
+        if(!$id){
+            throw new \Exception("No Profile ID given");
+        }
+
+        if(!$post = get_post($id)){
+            throw new \Exception(sprintf("No Entity with ID %s exists", $id));
+        }
+
+        if($post->post_type !== "govpack_profiles"){
+            throw new \Exception(sprintf("No Profile with ID %s exists", $id));
+        }
+
+        if(!$post->image){
+            throw new \Exception(sprintf("Profile %s Does not have an `image` meta field", $id));
+        }
+
+        if(!\wp_http_validate_url($post->image)){
+            throw new \Exception(sprintf("Image meta field for profile %s does not contain a valid url", $id));
+        }
+
+        $url = \esc_url_raw($post->image);
+
+        $sideload = \media_sideload_image($url, $id, "", "id");
+
+        if(\is_wp_error($sideload)){
+            throw new \Exception(sprintf("Side load failed for profile %s", $id));
+        }
+
+        if(!\set_post_thumbnail($id, $sideload)){
+            throw new \Exception(sprintf("Side load failed for to side post thumbnail/featured image for profile %s", $id));
+        }
+
+        return true;
+    }
 
 }

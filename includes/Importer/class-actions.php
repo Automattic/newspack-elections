@@ -42,8 +42,15 @@ class Actions {
 		add_action( 'govpack_import_term', [ self::instance(), 'make_term' ] );
 		add_action( 'govpack_import_post', [ self::instance(), 'make_post' ] );
         add_action( 'govpack_import_csv_profile', [ self::instance(), 'make_profile_from_csv' ] );
+
+        add_filter("govpack\import\openstates\links", [ self::instance(), "explode_openstates_list" ]);
+        add_filter("govpack\import\openstates\sources", [ self::instance(), "explode_openstates_list" ]);
 	}
 
+
+    public static function explode_openstates_list($list){
+        return explode(";", $list);
+    }
 	/**
 	 * Action that fires from the importer to make the terms
 	 * 
@@ -386,23 +393,25 @@ class Actions {
         $main_office = self::get_address_from_open_states_data($data["district_address"]);
         $secondary_office = self::get_address_from_open_states_data($data["capitol_address"]);
 
-        
-        $resp = \wp_insert_post([
+      
+        $post = [
             "post_author" => 0,
             "post_content" => $data["biography"],
             "post_title" => $data["name"],
             "post_status" => "draft",
             "post_type" => "govpack_profiles",
             "comment_status" => "closed",
-            "tax_input" => [
-                "govpack_party" => $data["current_party"],
-                "govpack_officeholder_status" => "Active",
-            ],
+          
             "meta_input" => [
                 "open_state_id" => $data["id"],
 
                 "first_name"       => $data["given_name"],
                 "last_name"       => $data["family_name"],
+                "name"       => $data["name"],
+                "gender"       => $data["gender"],
+                "biography"       => $data["biography"],
+                "birth_date"       => $data["birth_date"],
+                "death_date"       => $data["death_date"],
 
                 "current_district" => $data["current_district"],
                 "current_chamber" => $data["current_chamber"],
@@ -419,18 +428,76 @@ class Actions {
                 "main_fax" => $data["district_fax"],
                 "secondary_fax" => $data["capitol_fax"],
 
-                "main_office_address" => $main_office["address"],
-                "main_office_city"  => $main_office["city"],
-                "main_office_state" => $main_office["state"],
-                "main_office_zip"   => $main_office["zip"],
+                "main_office_address" => $main_office["address"] ?? "",
+                "main_office_city"  => $main_office["city"] ?? "",
+                "main_office_state" => $main_office["state"] ?? "",
+                "main_office_zip"   => $main_office["zip"] ?? "",
 
                 "secondary_office_address" => $secondary_office["address"] ?? "",
                 "secondary_office_city" => $secondary_office["city"] ?? "",
                 "secondary_office_state"    => $secondary_office["state"] ?? "",
                 "secondary_office_zip"  => $secondary_office["zip"] ?? "",
+
+                "image"       => $data["image"],
+                "links"       => \apply_filters("govpack\import\openstates\links", $data["links"]),
+                "sources"       => \apply_filters("govpack\import\openstates\sources", $data["sources"]),
+                "extra"       => $data["extra"] ?? "",
+
             ]   
-        ]);
+        ];
+ 
+
+        $resp = \wp_insert_post($post);
+
+        if(\is_wp_error($resp)){
+            return; 
+        }
+
+        $created_post_id = $resp;
+
+        $party_term = \get_term_by("name", $data["current_party"], "govpack_party");
+        if(!$party_term){
+            $party_term = \wp_create_term( $data["current_party"], 'govpack_party' );
+        }
+
+        \wp_set_object_terms( $created_post_id, [$party_term->term_id], "govpack_party");
+
+        switch($data["current_chamber"]){
+            case "lower" :
+                $data["current_chamber"] = "US House";
+                break;
+            case "upper" :
+                $data["current_chamber"] = "US Senate";
+                break;
+            default :
+                $data["current_chamber"] = false;
+                break;
+        }
+
+        if($data["current_chamber"]){
+            $body_term = \get_term_by("name", $data["current_chamber"], "govpack_legislative_body");
+            if(!$body_term){
+                $body_term = \wp_create_term( $data["current_chamber"], 'govpack_legislative_body' );
+            }
+
+            \wp_set_object_terms( $created_post_id, [$body_term->term_id], "govpack_legislative_body");
+        }
+
+        if($data["state"]){
+            $state_term = \get_term_by("name", $data["state"], "govpack_state");
+            if(!$state_term){
+                $state_term = \wp_create_term( $data["state"], 'govpack_state' );
+            }
+
+            \wp_set_object_terms( $created_post_id, [$state_term->term_id], "govpack_state");
+        }
+
+        if($data["image"]){
+            try{
+                Importer::sideload($created_post_id);
+            } catch(Exception $e){}
+        }
         
-        error_log(print_r($resp, true));
+        error_log(print_r($created_post_id, true));
     }
 }

@@ -43,26 +43,9 @@ class Admin {
 				->set_callback( [ '\Newspack\Govpack\Admin\Pages\Import', 'view' ] ) 
 		);
 
-		$item = new \Newspack\Govpack\Admin\Menu_Item();
-		$menu->add_item(
-			$item->set_page_title( 'Profiles' )->set_menu_title( 'Profiles' )->set_menu_slug( 'govpack_profiles' )->set_callback(
-				function() {
-					
-				} 
-			) 
-		);
+	
 
-		$item = new \Newspack\Govpack\Admin\Menu_Item();
-		$menu->add_item(
-			$item->set_page_title( 'Issues' )
-				->set_menu_title( 'Issues' )
-				->set_menu_slug( '/edit.php?post_type=govpack_issues' )
-				->set_callback(
-					function() {
-						
-					}
-				) 
-		);
+		
 
 		$menu->create();
     }

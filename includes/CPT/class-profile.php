@@ -50,6 +50,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 		\add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
         \add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', [ __CLASS__, 'custom_columns' ] );
         \add_filter( 'manage_' . self::CPT_SLUG . '_posts_custom_column', [ __CLASS__, 'custom_columns_content' ], 10, 2);
+        \add_filter( 'manage_taxonomies_for_' . self::CPT_SLUG . '_columns',  [ __CLASS__, 'mod_taxonomy_columns' ], 10, 2);
     
 	}
 
@@ -177,6 +178,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 */
 	public static function custom_columns( $columns ) {
         
+
         // I want the image between the checkbox and the title so we have to slice up the columns array
         // Add the new colum and merge it all back together
         $before = array_splice($columns, 0, 1);
@@ -188,6 +190,19 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	}
 
     /**
+	 * Modify Taxonomy Columns on Profile Post List
+	 *
+	 * @param array $columns An array of columns.
+	 */
+    public static function  mod_taxonomy_columns( $columns ){
+
+        unset($columns["govpack_profile_tax"]);
+        unset($columns["govpack_issue_tax"]);
+        return $columns;
+
+    }
+
+    /**
 	 * Add The Pfofile Photo to the post Table.
 	 *
 	 * @param array $columns An array of columns.
@@ -196,9 +211,9 @@ class Profile extends \Newspack\Govpack\Post_Type {
 
         
         
-        if ($column_key == 'title') {
+        if ('image' === $column_key) {
             if(has_post_thumbnail($post_id)){
-               // echo \get_the_post_thumbnail($post_id, "thumbnail");
+            echo \get_the_post_thumbnail($post_id, [90,90]);
             }
         }
 		

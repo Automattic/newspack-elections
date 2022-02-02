@@ -86,48 +86,9 @@ class Govpack {
 
 		\Newspack\Govpack\Importer\Importer::hooks();
 		
+        \Newspack\Govpack\Admin\Admin::hooks();
 		
-		
-		$menu = new \Newspack\Govpack\Admin\Menu();
-		$menu->set_page_title( 'GovPack' )
-			->set_menu_title( 'GovPack' )
-			->set_menu_slug( 'govpack' )
-			->set_callback(
-				function() {
-				
-				}
-			);
-
-		$item = new \Newspack\Govpack\Admin\Menu_Item();
-		$menu->add_item(
-			$item->set_page_title( 'Import' )
-				->set_menu_title( 'Import' )
-				->set_menu_slug( 'govpack_import' )
-				->set_callback( [ '\Newspack\Govpack\Admin\Pages\Import', 'view' ] ) 
-		);
-
-		$item = new \Newspack\Govpack\Admin\Menu_Item();
-		$menu->add_item(
-			$item->set_page_title( 'Profiles' )->set_menu_title( 'Profiles' )->set_menu_slug( 'govpack_profiles' )->set_callback(
-				function() {
-					
-				} 
-			) 
-		);
-
-		$item = new \Newspack\Govpack\Admin\Menu_Item();
-		$menu->add_item(
-			$item->set_page_title( 'Issues' )
-				->set_menu_title( 'Issues' )
-				->set_menu_slug( '/edit.php?post_type=govpack_issues' )
-				->set_callback(
-					function() {
-						
-					}
-				) 
-		);
-
-		$menu->create();
+	
 	}
 
 	

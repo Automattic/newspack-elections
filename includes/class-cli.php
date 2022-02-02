@@ -237,6 +237,18 @@ class CLI extends \WP_CLI_Command {
 	 * @param array $assoc_args  Associative array of arguments.
      */
     public function purge( $args, $assoc_args) {
+
+        global $_wp_suspend_cache_invalidation;
+
+        $_wp_suspend_cache_invalidation = true;
+
+        // turn of term counts when post status changes
+		remove_action( 'transition_post_status', '_update_term_count_on_transition_post_status', 10, 3 );
+
+		// defer term counting
+		wp_defer_term_counting(true);
+
+
 		WP_CLI::line( "Purging GovPack Data" );
 
         $post_types = [
@@ -255,10 +267,18 @@ class CLI extends \WP_CLI_Command {
                 'numberposts' => '-1',
                 'fields' => 'ids',
             ] );
-
+            
+            $i = 0;
+            $count = count($posts);
+            
             foreach ($posts as $id) {
                 WP_CLI::line( sprintf("Deleting Post : %s", $id));
                 wp_delete_post( $id, true );
+                $i++;
+
+                if(($i % 1000) === 1){
+                    WP_CLI::line( sprintf("Deleting Post : %s of %s", $i, $count));
+                }
             }   
 
         }

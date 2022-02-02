@@ -15,6 +15,7 @@ const SassConfig = require( '@automattic/calypso-build/webpack/sass' );
 const TranspileConfig = require( '@automattic/calypso-build/webpack/transpile' );
 const { cssNameFromFilename, shouldTranspileDependency } = require( '@automattic/calypso-build/webpack/util' );
 // const { workerCount } = require( './webpack.common' ); // todo: shard...
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 process.env.NODE_ENV = "development"
 /**
@@ -139,6 +140,7 @@ const cachePath = path.resolve( '.cache' );
 			
 			new DuplicatePackageCheckerPlugin(),
 			...( env.WP ? [ new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ) ] : [] ),
+            new MiniCssExtractPlugin()
 		],
         externals : {
             React : "React",
@@ -165,6 +167,7 @@ function getUpdatedWebpackConfig(env, arg){
     webpackConfig.entry = {}
     webpackConfig.entry.editor = path.join( __dirname, 'assets', 'js', "src", 'editor', "index" )
     webpackConfig.entry.importer = path.join( __dirname, 'assets', 'js', "src", 'importer', "index" )
+    webpackConfig.entry.profile_table = path.join( __dirname, 'assets', 'css', "src", 'profile-table.scss')
 
     console.log(webpackConfig)
 

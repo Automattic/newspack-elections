@@ -15,11 +15,27 @@ use Exception;
 class Admin {
 
     public static function hooks() {
-        
+        \add_action( 'admin_menu', [ '\Newspack\Govpack\Admin\Menu', '_add_taxonomy_submenus'], 10, 1);
         \add_action( 'after_setup_theme', [ __class__, 'create_menus' ], 100, 1 );
         \add_action( 'admin_enqueue_scripts', [ __class__, 'register_assets' ], 100, 1 );
         \add_action( 'admin_enqueue_scripts', [ __class__, 'load_assets' ], 101, 1 );
-      
+
+        /*
+        add_filter( 'submenu_file', function ($submenu_file, $parent_file ) {
+
+
+            $compare = "edit-tags.php?taxonomy=govpack_party&amp;post_type=govpack_profiles";
+         
+            //if($compare == $submenu_file){
+            //    $submenu_file = "edit-tags.php?taxonomy=govpack_party";
+            //}
+
+            //var_dump($submenu_file);
+ 
+
+            return $submenu_file;
+        }, 10, 2);
+        */
 	}
 
     public static function create_menus(){

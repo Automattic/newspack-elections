@@ -17,6 +17,10 @@ const { cssNameFromFilename, shouldTranspileDependency } = require( '@automattic
 // const { workerCount } = require( './webpack.common' ); // todo: shard...
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
+const { responseInterceptor } = require('http-proxy-middleware');
+
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+
 process.env.NODE_ENV = "development"
 /**
  * Internal variables
@@ -70,6 +74,7 @@ const cachePath = path.resolve( '.cache' );
 		babelConfig = undefined;
 	}
 
+ 
 	// Use this package's PostCSS config. If it doesn't exist postcss will look
 	// for the config file starting in the current directory (https://github.com/webpack-contrib/postcss-loader#config-cascade)
 	const postCssConfigPath = path.join( process.cwd(), 'postcss.config.js' );
@@ -107,6 +112,9 @@ const cachePath = path.resolve( '.cache' );
 					exclude: /node_modules\//,
 					presets,
 					workerCount,
+                    plugins : [
+                        require.resolve('react-refresh/babel')
+                    ]
 				} ),
 				TranspileConfig.loader( {
 					cacheDirectory: path.resolve( cachePath, 'babel' ),
@@ -140,7 +148,8 @@ const cachePath = path.resolve( '.cache' );
 			
 			new DuplicatePackageCheckerPlugin(),
 			...( env.WP ? [ new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ) ] : [] ),
-            new MiniCssExtractPlugin()
+            new MiniCssExtractPlugin(),
+            new ReactRefreshWebpackPlugin()
 		],
         externals : {
             React : "React",
@@ -164,12 +173,55 @@ const cachePath = path.resolve( '.cache' );
 function getUpdatedWebpackConfig(env, arg){
 
     let webpackConfig = getWebpackConfig(env, arg)
+    webpackConfig.devServer = {
+        allowedHosts: 'all',
+        port: 8080,
+        devMiddleware: {
+            index: true, // specify to enable root proxying
+            publicPath: '/content/plugins/govpack/dist',
+        },
+        server: 'https',
+        hot: true,
+        /*
+        static: {
+            directory: path.join(__dirname, 'dist'),
+            publicPath: '/content/plugins/govpack/dist-hot',
+        },
+        */
+        proxy: [{
+            context : ["/**", "!/content/plugins/govpack/dist/**" ],
+            target: 'https://govpack.cup',
+            secure: false,
+            autoRewrite : true,
+            hostRewrite: true,
+            followRedirects: false,
+            cookieDomainRewrite: "localhost:8080",
+    
+            selfHandleResponse: true,
+            onProxyRes:responseInterceptor(async (responseBuffer, proxyRes, req, res) => {
+                if( proxyRes.headers &&
+                    proxyRes.headers[ 'content-type' ] &&
+                    proxyRes.headers[ 'content-type' ].match( 'text/html|application/json' ) ) {
+                
+                    const response = responseBuffer.toString('utf8'); // convert buffer to string
+                    return response.replace(/govpack.cup/gm, `localhost:8080`);
+                }
+
+                return responseBuffer
+            })
+        }]        
+    }
     webpackConfig.entry = {}
     webpackConfig.entry.editor = path.join( __dirname, 'assets', 'js', "src", 'editor', "index" )
     webpackConfig.entry.importer = path.join( __dirname, 'assets', 'js', "src", 'importer', "index" )
     webpackConfig.entry.profile_table = path.join( __dirname, 'assets', 'css', "src", 'profile-table.scss')
 
-    console.log(webpackConfig)
+    // Runtime code for hot module replacement
+    //webpackConfig.entry.hot = 'webpack/hot/dev-server.js',
+    // Dev server client for web socket transport, hot and live reload logic
+    //webpackConfig.entry.client = 'webpack-dev-server/client/index.js?hot=true&live-reload=true',
+
+    console.log(webpackConfig.module.rules[0].use[1])
 
     return webpackConfig
 }   

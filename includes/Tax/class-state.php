@@ -63,6 +63,7 @@ class State extends \Newspack\Govpack\Taxonomy {
 				'show_admin_column' => true,
 				'show_in_rest'      => true,
 				'show_ui'      		=> false,
+                'show_in_which_menu'=> "govpack",
 			]
 		);
 	}

@@ -75,12 +75,15 @@ class Chunked_Upload {
 	public static function upload( \WP_REST_Request $request ) {
 
         $file_params = $request->get_file_params();
+        
   
 	  
 		$factory = new \FileUpload\FileUploadFactory(
 			new \FileUpload\PathResolver\Simple( \Newspack\Govpack\Admin\Pages\Import::get_upload_path( 'govpack' ) ), 
 			new \FileUpload\FileSystem\Simple(), 
-			[]
+			[
+                new \FileUpload\Validator\MimeTypeValidator(['text/csv', 'text/plain']),
+            ]
 		);
 
 		if ( empty( $file_params['blob'] ) ) {
@@ -92,7 +95,9 @@ class Chunked_Upload {
 		$resp = $instance->processAll();
 		$path = $instance->getFiles()[0]->getPathname();
 
+        \update_option("govpack_import_extra_args", []);
 		\update_option( 'govpack_import_path', $path );
+        
 		return $resp;
 		
 	}

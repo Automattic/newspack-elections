@@ -52,6 +52,7 @@ class CSV extends \Newspack\Govpack\Importer\Abstracts\Abstract_Importer {
             as_enqueue_async_action( 'govpack_import_csv_profile', ["data" => $record], 'govpack' );
         }
 
+        as_enqueue_async_action( 'govpack_import_csv_profile', ["data" => $record], 'govpack' );
 	}
 
 }

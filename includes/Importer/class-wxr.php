@@ -73,7 +73,7 @@ class WXR extends \Newspack\Govpack\Importer\Abstracts\Abstract_Importer {
 	 *
 	 * @param XMLReader $reader  path of the JSON file.
 	 */
-	public static function process( $reader ) {
+	public static function process( $reader, $extra ) {
 
 		while ( $reader->read() ) {
 			// Only deal with element opens.

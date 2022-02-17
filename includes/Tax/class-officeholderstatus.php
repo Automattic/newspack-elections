@@ -26,6 +26,8 @@ class OfficeHolderStatus extends \Newspack\Govpack\Taxonomy {
 	 * Register this taxonomy for profiles.
 	 */
 	public static function register_taxonomy() {
+
+      
 		register_taxonomy(
 			self::TAX_SLUG,
 			self::get_taxonomy_post_types(),
@@ -53,16 +55,16 @@ class OfficeHolderStatus extends \Newspack\Govpack\Taxonomy {
 					'items_list_navigation'      => __( 'Officerholder Statuses list navigation', 'govpack' ),
 				],
 				'public'            => true,
-				'hierarchical'      => false,
+				'hierarchical'      => true,
 				'rewrite'           => [
 					'slug'         => self::SLUG,
 					'with_front'   => false,
 					'hierarchical' => false,
 				],
 				'meta_box_cb'       => false,
-				'show_admin_column' => false,
+				'show_admin_column' => true,
 				'show_in_rest'      => true,
-				'show_ui'      		=> false,
+				'show_ui'      		=> true,
 			]
 		);
 	}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import apiFetch from "./../ApiFetch"
 import InfoPanel from "./InfoPanel";
+import Error from "./Error";
 import stage from "./../stages"
 
 import {isUndefined} from "lodash"
@@ -9,6 +10,7 @@ import {
     Button, 
     FormFileUpload, 
     __experimentalHStack as HStack,
+    __experimentalVStack as VStack,
     __experimentalSpacer as Spacer,
     Spinner,
     SelectControl
@@ -25,6 +27,12 @@ const Uploader = (props) => {
     let [importData, setImportData] = useState()
     let [dataSources, setDataSources] = useState({})
     let [selectedSource, setSelectedSource] = useState("")
+
+    const [hasError, setHasError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
+
+
+    const allowed = ["text/csv"]
 
     // 0 = No
     // 1 = Yes
@@ -75,12 +83,22 @@ const Uploader = (props) => {
 
  
     const onFileChosen = ( event ) => {
-        setFile(event.target.files[0])
+
+        let file = event.target.files[0]
+        
+        
+        if(!isUndefined(allowed) && !allowed.includes(file.type)){
+            setHasError(true)
+            setErrorMessage(errorCodes['filetype'])
+            return false;
+        }
+        
+        setFile(file)
 	};
 
     const onFilesUpload = (  ) => {
 
-        props.updateStep(stage.UPLOADING)
+       
 
         console.log(file)
 
@@ -89,6 +107,10 @@ const Uploader = (props) => {
         let current_chunk = 0
         let upload_progress = 0
         let upload_progress_per_chunk = (100 / number_of_chunks)
+
+        const errorCodes = {
+            "filetype" : "Sorry, that file type is not supported, please use a CSV"
+        }
 
 
         console.log("Number of Chunks: ", number_of_chunks)
@@ -121,9 +143,29 @@ const Uploader = (props) => {
                 },
                 data: data
             } ).then( ( res ) => {
+
+                console.log(res)
+
+                if(res.data[0][0].error){
+                    setHasError(true)
+                    setErrorMessage(res.data[0][0].error)
+                    return
+                }
+
+
+                // First Chunk uploaded Successfully so move to upload bar
+                if( index === 0 ){
+                    props.updateStep(stage.UPLOADING)
+                }
+
                 upload_progress = upload_progress + upload_progress_per_chunk
                 props.onUploadProgress( upload_progress )
                 uploadChunk(index + 1)
+
+                if((index + 1) === chunks.length){
+                    props.updateStep(stage.PROCESSING)
+                }
+                
             } );
 
         }
@@ -135,7 +177,7 @@ const Uploader = (props) => {
         }
         
         uploadChunk()
-        props.updateStep(stage.PROCESSING)
+       // props.updateStep(stage.PROCESSING)
         
 	};
 
@@ -161,35 +203,63 @@ const Uploader = (props) => {
     return (
         <>
             <InfoPanel
-                heading="Upload Data"
+                heading="Upload Data?"
             >
-                <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In faucibus elit nec urna imperdiet, ut molestie orci viverra. Fusce interdum rutrum leo. Praesent non pretium purus, vel molestie orci. Cras hendrerit enim non dolor sollicitudin ultricies. 
-                </p>
+                <VStack
+                      spacing="4"
+                >  
+                    <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In faucibus elit nec urna imperdiet, ut molestie orci viverra. Fusce interdum rutrum leo. Praesent non pretium purus, vel molestie orci. Cras hendrerit enim non dolor sollicitudin ultricies. 
+                    </p>
 
-                <HStack
-                    spacing="4"
-                    justify="flex-start"
-                >
-                    <FormFileUpload
-                        variant="primary"
-                        onChange={ onFileChosen }
-                    >
-                        Choose File
-                    </FormFileUpload>
-
-                    { file && (
-                        <>
-                            <span>{file.name}</span>
-                            <Button 
-                                isSecondary={true}
-                                onClick = {onFilesUpload}
-                            >
-                            Upload
-                            </Button>
-                        </>
+                    {hasError && (
+                        <Error message={errorMessage} />
                     )}
-                </HStack>
+
+                    <HStack  
+                        spacing="4"
+                        justify="flex-start"
+                    >
+                        <FormFileUpload
+                            variant="primary"
+                            isPrimary={true}
+                            onChange={ onFileChosen }
+                            accept={allowed }
+                            disabled = {file}
+                        >
+                            Choose File
+                        </FormFileUpload>
+
+                        { file && (
+                            <>
+                                <span
+                                    style={{
+                                        display : "block",
+                                        marginLeft : "0.5rem"
+                                    }}
+                                >
+                                    {file.name}
+                                </span>
+                                <Button 
+                                    variant="tertiary"
+                                    onClick = { () => {
+                                        setFile(false)
+                                    }}
+                                    icon = "no-alt"
+                                    iconSize={12}
+                                    isSmall = {true}
+                                />
+                                <Button 
+                                    variant="primary"
+                                    onClick = {onFilesUpload}
+                                    className = {"components-button is-primary"}
+                                >
+                                Upload
+                                </Button>
+                            </>
+                        )}
+                    </HStack>
+                </VStack>
             </InfoPanel>
             <InfoPanel
                 heading = "From GovPack"

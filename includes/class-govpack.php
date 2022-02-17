@@ -76,6 +76,7 @@ class Govpack {
 		\Newspack\Govpack\Tax\Issue::hooks();
 		\Newspack\Govpack\Tax\LegislativeBody::hooks();
 		\Newspack\Govpack\Tax\OfficeHolderStatus::hooks();
+        \Newspack\Govpack\Tax\OfficeHolderTitle::hooks();
 		\Newspack\Govpack\Tax\Party::hooks();
 		\Newspack\Govpack\Tax\Profile::hooks();
 		\Newspack\Govpack\Tax\State::hooks();

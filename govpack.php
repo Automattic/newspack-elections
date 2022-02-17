@@ -40,3 +40,25 @@ if ( class_exists( '\Newspack\Govpack\Govpack' ) ) {
 	$GLOBALS['govpack'] = \Newspack\Govpack\Govpack::instance();
 }
 
+/*
+add_filter( 'login_redirect', function($redirect_to, $requested_redirect_to, $user){
+
+  
+    $parsed_redirect = wp_parse_url($redirect_to);
+    $url = sprintf("%s://%s%s", 
+        $parsed_redirect["scheme"],
+        $_SERVER["VIRTUAL_HOST"],
+        $parsed_redirect['path']
+    );
+
+    return $url;
+
+}, 10, 3);
+
+
+add_filter( 'site_url', function($url, $path, $scheme, $blog_id){
+    $parsed = wp_parse_url($url);
+    return sprintf("%s://%s%s", $parsed['scheme'], $_SERVER["VIRTUAL_HOST"], $parsed['path']);
+}, 100, 4);
+
+*/

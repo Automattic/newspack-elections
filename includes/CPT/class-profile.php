@@ -51,8 +51,44 @@ class Profile extends \Newspack\Govpack\Post_Type {
         \add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', [ __CLASS__, 'custom_columns' ] );
         \add_filter( 'manage_' . self::CPT_SLUG . '_posts_custom_column', [ __CLASS__, 'custom_columns_content' ], 10, 2);
         \add_filter( 'manage_taxonomies_for_' . self::CPT_SLUG . '_columns',  [ __CLASS__, 'mod_taxonomy_columns' ], 10, 2);
-    
+        \add_filter( 'default_hidden_columns', [ __CLASS__, 'hidden_columns' ], 10, 2);
+        \add_action( 'restrict_manage_posts', [ __CLASS__, 'post_table_filters' ], 10, 2);
+        \add_action( 'restrict_manage_posts', [ __CLASS__, 'remove_yoast' ], 10, 2);
+        add_filter( 'disable_months_dropdown', [ __CLASS__, 'disable_months_dropdown' ], 10, 2);
+
+        add_action('add_meta_boxes', [ __CLASS__, 'remove_wp_seo'], 100);
+
+        add_filter('wpseo_enable_editor_features_' . self::CPT_SLUG, "__return_false");
 	}
+
+    public static function remove_wp_seo() {
+
+        add_action('add_meta_boxes', function () {
+            remove_meta_box('wpseo_meta', self::CPT_SLUG, 'normal');
+        }, 100);
+        
+    }
+
+    public static function disable_months_dropdown($disable, $post_type ) {
+
+        if($post_type === self::CPT_SLUG){
+            return true;
+        }
+
+        return $disable;
+    }
+
+    public static function hidden_columns( $hidden, $screen ){
+
+      
+
+        if("edit-govpack_profiles" === $screen->id){
+            $hidden[] = "email";
+            $hidden[] = "phone";
+        }
+
+        return $hidden;
+    }
 
 	/**
 	 * Register the Profiles post type
@@ -83,7 +119,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 				'show_in_rest' => true,
 				'show_ui'      => true,
                 'show_in_menu' => "govpack",
-				'supports'     => [ 'revisions', 'thumbnail', "editor", "custom-fields"],
+				'supports'     => [ 'revisions', 'thumbnail', "editor", "custom-fields", "title"],
 				'taxonomies'   => [ 'post_tag' ],
 				'as_taxonomy'  => \Newspack\Govpack\Tax\Profile::TAX_SLUG,
 				'menu_icon'    => 'dashicons-groups',
@@ -91,6 +127,9 @@ class Profile extends \Newspack\Govpack\Post_Type {
 					'slug'       => apply_filters( 'govpack_profile_filter_slug', 'profile' ),
 					'with_front' => 'false',
 				],
+                'template' => array(
+                    array( 'govpack/profile-meta' )
+                )
 			]
 		);
 	}
@@ -169,6 +208,9 @@ class Profile extends \Newspack\Govpack\Post_Type {
 		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\State::TAX_SLUG ]           = 'State';
 		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\Party::TAX_SLUG ]           = 'Party';
 		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] = 'Legislative Body';
+        $sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\OfficeHolderStatus::TAX_SLUG ] = 'Office Holder Status';
+        $sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\OfficeHolderTitle::TAX_SLUG ] = 'Office Holder Title';
+    
 		return $sortable_columns;
 	}
 
@@ -187,8 +229,77 @@ class Profile extends \Newspack\Govpack\Post_Type {
         $after = array_splice($columns, 0);
         $columns = array_merge($before, $new, $after);
 
+
+        // generally I want to add new columns Before Date
+        // splace the array to remove date
+        $date = array_splice($columns, -1, 1);
+        // add the new columns
+        $columns["phone"] = "Main Phone";
+        $columns["email"] = "Email";
+
+        // remerge date on the end
+        $columns = array_merge($columns, $date);
+
 		return $columns;
 	}
+
+
+    public static function post_table_filters($post_type, $which){
+        
+        self::taxonomy_dropdown( \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG, $post_type );
+        self::taxonomy_dropdown( \Newspack\Govpack\Tax\State::TAX_SLUG, $post_type );
+        self::taxonomy_dropdown( \Newspack\Govpack\Tax\Party::TAX_SLUG, $post_type );
+        self::taxonomy_dropdown( \Newspack\Govpack\Tax\OfficeHolderStatus::TAX_SLUG, $post_type );
+        self::taxonomy_dropdown( \Newspack\Govpack\Tax\OfficeHolderTitle::TAX_SLUG, $post_type );
+        
+    }
+
+
+    /**
+	 * Displays a categories drop-down for filtering on the Posts list table.
+	 *
+	 * @since 4.6.0
+	 *
+	 * @global int $cat Currently selected category.
+	 *
+	 * @param string $post_type Post type slug.
+	 */
+	public static function taxonomy_dropdown( $taxonomy, $post_type ) {
+
+		$current = isset( $_REQUEST[$taxonomy] ) ? wc_clean( wp_unslash( $_REQUEST[$taxonomy] ) ) : false; // WPCS: input var ok, sanitization ok.
+
+
+		/**
+		 * Filters whether to remove the 'Categories' drop-down from the post list table.
+		 *
+		 * @since 4.6.0
+		 *
+		 * @param bool   $disable   Whether to disable the categories drop-down. Default false.
+		 * @param string $post_type Post type slug.
+		 */
+		if ( false !== apply_filters( 'disable_categories_dropdown', false, $post_type ) ) {
+			return;
+		}
+
+		if ( is_object_in_taxonomy( $post_type, $taxonomy ) ) {
+			$dropdown_options = array(
+				'show_option_all' => get_taxonomy( $taxonomy )->labels->all_items,
+				'hide_empty'      => 0,
+				'hierarchical'    => 1,
+				'show_count'      => 0,
+				'orderby'         => 'name',
+				'selected'        => $current,
+                'taxonomy'        => $taxonomy,
+                'name'        => $taxonomy,
+                'value_field' => "slug"
+			);
+
+			echo '<label class="screen-reader-text" for="cat">' . get_taxonomy( $taxonomy )->labels->filter_by_item . '</label>';
+
+			wp_dropdown_categories( $dropdown_options );
+		}
+	}
+
 
     /**
 	 * Modify Taxonomy Columns on Profile Post List
@@ -217,6 +328,24 @@ class Profile extends \Newspack\Govpack\Post_Type {
             echo \get_the_post_thumbnail($post_id, [90,90]);
             }
         }
+
+        if ('phone' === $column_key) {
+            
+
+                $phone = esc_html(get_post_meta($post_id, "main_phone", true));
+                if($phone){
+                    echo sprintf('<a href="tel:%s">%s</a>', $phone, $phone);
+                }
+        }
+
+        if ('email' === $column_key) {
+            $email = esc_html(get_post_meta($post_id, "email", true));
+            if($email){
+                echo sprintf('<a href="mailto:%s">%s</a>', $email, $email);
+            }
+            
+        }
+
 		
 	}
 

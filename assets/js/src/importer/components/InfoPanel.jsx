@@ -3,13 +3,14 @@ import {
     __experimentalHeading as Heading,
 } from '@wordpress/components';
 
+
 const InfoPanel = (props) => {
     return (
-        <div style={{
+        <div style={{  
             "backgroundColor" : "#fff",
             padding: "1rem",
             marginBottom : "1rem"
-        }} >
+        }} >  
             <Spacer padding="4">
                 <Heading level = "3">
                     {props.heading}

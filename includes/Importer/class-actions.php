@@ -43,6 +43,8 @@ class Actions {
 		add_action( 'govpack_import_post', [ self::instance(), 'make_post' ] );
         add_action( 'govpack_import_csv_profile', [ self::instance(), 'make_profile_from_csv' ] );
 
+        add_action( 'govpack_import_cleanup', [ self::instance(), 'cleanup_import' ] );
+
         add_filter("govpack\import\openstates\links", [ self::instance(), "explode_openstates_list" ]);
         add_filter("govpack\import\openstates\sources", [ self::instance(), "explode_openstates_list" ]);
 	}
@@ -393,6 +395,8 @@ class Actions {
         $main_office = self::get_address_from_open_states_data($data["district_address"]);
         $secondary_office = self::get_address_from_open_states_data($data["capitol_address"]);
 
+       
+
       
         $post = [
             "post_author" => 0,
@@ -454,6 +458,7 @@ class Actions {
         }
 
         $created_post_id = $resp;
+        /*
 
         $party_term = \get_term_by("name", $data["current_party"], "govpack_party");
         if(!$party_term){
@@ -462,18 +467,9 @@ class Actions {
 
         \wp_set_object_terms( $created_post_id, [$party_term->term_id], "govpack_party");
 
-        switch($data["current_chamber"]){
-            case "lower" :
-                $data["current_chamber"] = "US House";
-                break;
-            case "upper" :
-                $data["current_chamber"] = "US Senate";
-                break;
-            default :
-                $data["current_chamber"] = false;
-                break;
-        }
-
+      
+         /*
+        error_log(print_r($data["current_chamber"], true));
         if($data["current_chamber"]){
             $body_term = \get_term_by("name", $data["current_chamber"], "govpack_legislative_body");
             if(!$body_term){
@@ -483,6 +479,7 @@ class Actions {
             \wp_set_object_terms( $created_post_id, [$body_term->term_id], "govpack_legislative_body");
         }
 
+       
         if($data["state"]){
             $state_term = \get_term_by("name", $data["state"], "govpack_state");
             if(!$state_term){
@@ -490,14 +487,63 @@ class Actions {
             }
 
             \wp_set_object_terms( $created_post_id, [$state_term->term_id], "govpack_state");
-        }
+        }*/
 
+        $taxonomy_map = [
+            "current_party" => "govpack_party",
+            "state" => "govpack_state",
+            "current_chamber" => "govpack_legislative_body",
+            "title" => "govpack_officeholder_title",
+            "status" => "govpack_officeholder_status",
+        ];
+
+
+        foreach($taxonomy_map as $field => $taxonomy){
+            if($data[$field]){
+                self::assign_term_to_obj($created_post_id, $data[$field], $taxonomy);
+            }
+        }
+        
         if($data["image"]){
             try{
-                Importer::sideload($created_post_id);
+                //Importer::sideload($created_post_id);
             } catch(Exception $e){}
         }
         
         error_log(print_r($created_post_id, true));
+    }
+
+    public static function assign_term_to_obj($object_id, $term_name, $taxonomy){
+        $term = self::find_or_create_term($term_name, $taxonomy );
+        if(!\is_wp_error($term)){
+            \wp_set_object_terms( $object_id, [$term->term_id], $taxonomy);
+        }
+    }
+
+    public static function find_or_create_term($term_name = null, $taxonomy = null){
+
+        if(!$term_name){
+            return new WP_Error("No Term Provided to find or create");
+        }
+
+        if(!$taxonomy){
+            return new WP_Error("No Taxonmy Provided to find or create in");
+        }
+
+
+        $term = \get_term_by("name", $term_name, $taxonomy);
+
+        if(!$term){
+            $term = \wp_create_term( $term_name, $taxonomy );
+        }
+
+        return $term;
+        
+    }
+
+    public static function cleanup_import($data){
+
+        \Newspack\Govpack\Importer\Importer::clean();
+
     }
 }

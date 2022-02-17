@@ -314,5 +314,18 @@ class CLI extends \WP_CLI_Command {
         }
 
 	}
+
+
+    /**
+	 * Clean stored data from the import process
+	 *
+     * @subcommand clean
+	 *
+	 * @param array $args        Array of command-line arguments.
+	 * @param array $assoc_args  Associative array of arguments.
+     */
+    public function clean( $args, $assoc_args) {
+		WP_CLI::line( \Newspack\Govpack\Importer\Importer::clean() );
+	}
 		
 }

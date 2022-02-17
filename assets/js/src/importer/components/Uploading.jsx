@@ -1,3 +1,5 @@
+import InfoPanel from "./InfoPanel";
+
 const Uploading = (props) => {
     return (
        <InfoPanel heading="Uploading">

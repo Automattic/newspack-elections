@@ -258,6 +258,16 @@ class Importer {
 
     }
 
+     /**
+	 * Removes stored options from the last import
+     * 
+	 */
+    public static function clean() {
+          // delete the options cached for the import
+          \delete_option( 'govpack_import_extra_args', null);
+          \delete_option( 'govpack_import_path', null );
+    }
+
     /**
 	 * Check the uplaods will work and create a govpack specific directory
 	 * 

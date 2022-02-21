@@ -394,10 +394,7 @@ class Actions {
        
         $main_office = self::get_address_from_open_states_data($data["district_address"]);
         $secondary_office = self::get_address_from_open_states_data($data["capitol_address"]);
-
-       
-
-      
+  
         $post = [
             "post_author" => 0,
             "post_content" => $data["biography"],
@@ -458,36 +455,7 @@ class Actions {
         }
 
         $created_post_id = $resp;
-        /*
-
-        $party_term = \get_term_by("name", $data["current_party"], "govpack_party");
-        if(!$party_term){
-            $party_term = \wp_create_term( $data["current_party"], 'govpack_party' );
-        }
-
-        \wp_set_object_terms( $created_post_id, [$party_term->term_id], "govpack_party");
-
-      
-         /*
-        error_log(print_r($data["current_chamber"], true));
-        if($data["current_chamber"]){
-            $body_term = \get_term_by("name", $data["current_chamber"], "govpack_legislative_body");
-            if(!$body_term){
-                $body_term = \wp_create_term( $data["current_chamber"], 'govpack_legislative_body' );
-            }
-
-            \wp_set_object_terms( $created_post_id, [$body_term->term_id], "govpack_legislative_body");
-        }
-
        
-        if($data["state"]){
-            $state_term = \get_term_by("name", $data["state"], "govpack_state");
-            if(!$state_term){
-                $state_term = \wp_create_term( $data["state"], 'govpack_state' );
-            }
-
-            \wp_set_object_terms( $created_post_id, [$state_term->term_id], "govpack_state");
-        }*/
 
         $taxonomy_map = [
             "current_party" => "govpack_party",
@@ -506,7 +474,7 @@ class Actions {
         
         if($data["image"]){
             try{
-                //Importer::sideload($created_post_id);
+                Importer::sideload($created_post_id);
             } catch(Exception $e){}
         }
         

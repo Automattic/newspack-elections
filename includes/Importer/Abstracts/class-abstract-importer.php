@@ -21,6 +21,8 @@ abstract class Abstract_Importer {
     const IMPORT_DONE = 2;
     const IMPORT_TEST_KEY = "govpack_import_processing";
 
+    public static $import_group = null;
+
     /**
 	 * How Does the importer work?
 	 * 1. Upload the file to the server
@@ -45,8 +47,6 @@ abstract class Abstract_Importer {
 	public static function status( ) {
 
 
-
-		
 		$import_processing_running = get_option(self::IMPORT_TEST_KEY, self::IMPORT_NOT_RUNNING);
 
 		if($import_processing_running == self::IMPORT_RUNNING){
@@ -68,11 +68,9 @@ abstract class Abstract_Importer {
 	 */
 	public static function import( $file, $dry_run, $extra ) {
 
-     
-        /*
+        $import_group = get_option("govpack_import_group", false);
 		$import_processing_running = get_option(self::IMPORT_TEST_KEY, self::IMPORT_NOT_RUNNING);
 
-        
 		if($import_processing_running == self::IMPORT_RUNNING){
 			return ["status" => "running"];
 		}
@@ -82,17 +80,21 @@ abstract class Abstract_Importer {
 		}
 
 		update_option(self::IMPORT_TEST_KEY, self::IMPORT_RUNNING);
-        */
+        
 
-       
 		$file   = \Newspack\Govpack\Importer\Importer::check_file( $file );
 
 		$reader = static::create_reader( $file );
 		static::process( $reader, $extra );
 
-		//update_option(self::IMPORT_TEST_KEY, self::IMPORT_DONE);
 
-		return ["status" => "running"];
+        $response = ["status" => "running"];
+
+        if($import_group){
+            $response["import_group"] = $import_group;
+        }
+
+		return  $response;
 	}
 
 	
@@ -113,4 +115,14 @@ abstract class Abstract_Importer {
 	 */
 	abstract public static function process( $reader, $extra );
 
+    public static function import_group(){
+
+        if(self::$import_group){
+            return self::$import_group;
+        }
+
+        self::$import_group = sprintf("govpack_%s", time());
+
+        return self::$import_group;
+    }
 }

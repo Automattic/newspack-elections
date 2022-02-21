@@ -1,0 +1,35 @@
+{
+	"name": "govpack-profile",
+	"category": "govpack",
+	"attributes": {
+		"className": {
+			"type": "string",
+			"default": ""
+		},
+		"profileId": {
+			"type": "number",
+			"default": 0
+		},
+		
+		"showAvatar": {
+			"type": "boolean",
+			"default": true
+		},
+		"avatarAlignment": {
+			"type": "string",
+			"default": "left"
+		},
+		"avatarBorderRadius": {
+			"type": "string",
+			"default": "50%"
+		},
+		"avatarSize": {
+			"type": "number",
+			"default": 128
+		},
+		"avatarHideDefault": {
+			"type": "boolean",
+			"default": false
+		}
+	}
+}

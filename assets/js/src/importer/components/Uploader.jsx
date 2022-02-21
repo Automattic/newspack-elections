@@ -177,7 +177,7 @@ const Uploader = (props) => {
         }
         
         uploadChunk()
-       // props.updateStep(stage.PROCESSING)
+
         
 	};
 

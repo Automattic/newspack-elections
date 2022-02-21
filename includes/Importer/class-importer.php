@@ -212,27 +212,34 @@ class Importer {
 	 * Call the Import/Action Scheduler backend and see progress
 	 */
 	public static function progress_check() {
+
+        $import_group = get_option("govpack_import_group", false);
+
+        if(!$import_group){
+            return [];
+        }
+
 		return [
 			'total' => self::as_count_scheduled_actions(
 				[
-					'group' => 'govpack',
+					'group' => $import_group,
 				]
 			),
 			'done'  => self::as_count_scheduled_actions(
 				[
-					'group'  => 'govpack',
+					'group'  => $import_group,
 					'status' => \ActionScheduler_Store::STATUS_COMPLETE,
 				]
 			),
 			'todo'  => self::as_count_scheduled_actions(
 				[
-					'group'  => 'govpack',
+					'group'  => $import_group,
 					'status' => \ActionScheduler_Store::STATUS_PENDING,
 				]
 			),
             'failed'  => self::as_count_scheduled_actions(
 				[
-					'group'  => 'govpack',
+					'group'  => $import_group,
 					'status' => \ActionScheduler_Store::STATUS_FAILED,
 				]
 			),

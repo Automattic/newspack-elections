@@ -50,7 +50,6 @@ const Importer = () => {
             path: '/govpack/v1/import/status',
             method: 'GET',
         } ).then( ( res ) => {
-            console.log(res.data.status)
             if(res.data.status === "running"){
                 setStep(stage.PROCESSING)
             }

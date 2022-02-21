@@ -41,6 +41,14 @@ abstract class Block {
 			$asset_data['version'] ?? '',
 			true
 		);
+
+        wp_register_style(
+			'govpack-editor-style',
+			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/editor.css',
+			[],
+			$asset_data['version'],
+			"all"
+		);
         
 
         $file = GOVPACK_PLUGIN_FILE . 'dist/importer.asset.php';

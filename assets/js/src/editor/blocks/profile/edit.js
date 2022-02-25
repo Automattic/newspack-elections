@@ -3,10 +3,10 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { Panel, PanelBody, PanelRow, RadioControl, Placeholder, Spinner, ToggleControl, BaseControl, ButtonGroup, Button } from '@wordpress/components';
+import { InspectorControls, useBlockProps, BlockControls} from '@wordpress/block-editor';
+import { Panel, PanelBody, PanelRow, RadioControl, Placeholder, Spinner, ToggleControl, BaseControl, ButtonGroup, Button, Toolbar } from '@wordpress/components';
 import { useRef, useState, useEffect } from '@wordpress/element';
-import { Icon, postAuthor } from '@wordpress/icons';
+import { Icon, postAuthor,  pullLeft, pullRight } from '@wordpress/icons';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -113,10 +113,22 @@ function Edit( props ) {
 		profileId,
         showAvatar,
         avatarBorderRadius,
-        avatarSize
+        avatarSize,
+        avatarAlignment,
+        
+        showBio,
+        showLegislativeBody,
+        showPosition,
+        showParty,
+        showState,
+        showEmail,
+        showSocial,
+        showAddress,
+        showProfileLink
+        
 	} = attributes;
 
-    console.log("attributes", attributes )
+
 
 	/**
 	 * @param {string} value The selected format.
@@ -134,7 +146,6 @@ function Edit( props ) {
 
     const getProfileById = async () => {
 
-        console.log("getProfile by ID", profileId);
 
 		setError( null );
 		setIsLoading( true );
@@ -174,6 +185,7 @@ function Edit( props ) {
 
 	return (
 		<div { ...blockProps }>
+
 			<InspectorControls>
                 <Panel>
 					<PanelBody title={ __( 'Avatar', 'govpack' ) }>
@@ -229,28 +241,125 @@ function Edit( props ) {
 					) }
                     </PanelBody>
                 </Panel>
-				<Panel>
-					<PanelBody title={ __( 'Govpack Profile', 'govpack' ) }>
-						<PanelRow>
-							<ProfileSelector props={ props } />
-						</PanelRow>
-						<PanelRow>
-							<RadioControl
-								label="Format"
-								selected={ props.attributes.format }
-								options={ [
-									{ value: 'full', label: 'Full' },
-									{ value: 'mini', label: 'Mini' },
-									{ value: 'wiki', label: 'Wiki' },
-								] }
-								onChange={ updateFormat }
-							/>
-						</PanelRow>
-					</PanelBody>
-				</Panel>
+                <Panel>
+                    <PanelBody title={ __( 'Govpack Profile Settings', 'govpack' ) }>
+
+                    <PanelRow>
+						    <ToggleControl
+							    label={ __( 'Display Bio', 'govpack-blocks' ) }
+							    checked={ showBio }
+    							onChange={ () => setAttributes( { showBio: ! showBio } ) }
+		    				/>
+	    				</PanelRow>
+                        <PanelRow>
+						    <ToggleControl
+							    label={ __( 'Display Legistlative Body', 'govpack-blocks' ) }
+							    checked={ showLegislativeBody }
+    							onChange={ () => setAttributes( { showLegislativeBody: ! showLegislativeBody } ) }
+		    				/>
+	    				</PanelRow>
+
+                        <PanelRow>
+						    <ToggleControl
+							    label={ __( 'Display Position', 'govpack-blocks' ) }
+							    checked={ showPosition }
+    							onChange={ () => setAttributes( { showPosition: ! showPosition } ) }
+		    				/>
+	    				</PanelRow>
+                        
+                        <PanelRow>
+						    <ToggleControl
+							    label={ __( 'Display Party', 'govpack-blocks' ) }
+							    checked={ showParty }
+    							onChange={ () => setAttributes( { showParty: ! showParty } ) }
+		    				/>
+	    				</PanelRow>
+                        <PanelRow>
+						    <ToggleControl
+							    label={ __( 'Display State', 'govpack-blocks' ) }
+							    checked={ showState }
+    							onChange={ () => setAttributes( { showState: ! showState } ) }
+		    				/>
+	    				</PanelRow>
+                        <PanelRow>
+						    <ToggleControl
+							    label={ __( 'Display Email', 'govpack-blocks' ) }
+							    checked={ showEmail }
+    							onChange={ () => setAttributes( { showEmail: ! showEmail } ) }
+		    				/>
+	    				</PanelRow>
+                        <PanelRow>
+						    <ToggleControl
+							    label={ __( 'Display Social', 'govpack-blocks' ) }
+							    checked={ showSocial }
+    							onChange={ () => setAttributes( { showSocial: ! showSocial } ) }
+		    				/>
+	    				</PanelRow>
+
+                        <PanelRow>
+						    <ToggleControl
+							    label={ __( 'Display Addresses', 'govpack-blocks' ) }
+							    checked={ showAddress }
+    							onChange={ () => setAttributes( { showAddress: ! showAddress } ) }
+		    				/>
+	    				</PanelRow>
+
+                        <PanelRow>
+						    <ToggleControl
+							    label={ __( 'Include Link to Profile Page', 'govpack-blocks' ) }
+							    checked={ showProfileLink }
+    							onChange={ () => setAttributes( { showProfileLink: ! showProfileLink } ) }
+		    				/>
+	    				</PanelRow>
+
+                    </PanelBody>
+                </Panel>
+				
 			</InspectorControls>
+                              
             { profile ? (
-				<SingleProfile profile={profile} attributes={ attributes } />
+                <>
+                   
+                   { showAvatar &&  'is-style-center' !== attributes.className &&(
+                        <BlockControls>
+                           <Toolbar
+							controls={ [
+								{
+									icon: <Icon icon={ pullLeft } />,
+									title: __( 'Show avatar on left', 'newspack-blocks' ),
+									isActive: avatarAlignment === 'left',
+									onClick: () => setAttributes( { avatarAlignment: 'left' } ),
+								},
+								{
+									icon: <Icon icon={ pullRight } />,
+									title: __( 'Show avatar on right', 'newspack-blocks' ),
+									isActive: avatarAlignment === 'right',
+									onClick: () => setAttributes( { avatarAlignment: 'right' } ),
+								},
+							] }
+						/>
+                        </BlockControls>
+                    ) }
+
+                    { profile &&(
+                        <BlockControls>
+                           <Toolbar
+							controls={ [
+								{
+									icon: <Icon icon={ postAuthor } />,
+									title: __( 'Modify Selection', 'newspack-blocks' ),
+									onClick: () => {
+                                        setAttributes( { profileId: 0 } );
+                                        setProfile( null );
+                                    },
+								},
+							] }
+						/>
+                        </BlockControls>
+                    ) }
+
+				    <SingleProfile profile={profile} attributes={ attributes } />
+                </>
 			) : (
 			<Placeholder
                 icon={ <Icon icon={ postAuthor } /> }
@@ -301,7 +410,6 @@ function Edit( props ) {
                         } }
                         maxItemsToSuggest={ maxItemsToSuggest }
                         onChange={ (items) => {
-                            console.log(items[0].value)
                             props.setAttributes( { profileId: parseInt( items[ 0 ].value ) } ) 
                         }}
                         postTypeLabel={ __( 'profile', 'govpack-blocks' ) }

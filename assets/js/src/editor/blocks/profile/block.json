@@ -27,9 +27,50 @@
 			"type": "number",
 			"default": 128
 		},
+
 		"avatarHideDefault": {
 			"type": "boolean",
 			"default": false
+		},
+        "showBio": {
+			"type": "boolean",
+			"default": true
+		},   
+        "showLegislativeBody": {
+			"type": "boolean",
+			"default": true
+		},
+        "showPosition": {
+			"type": "boolean",
+			"default": true
+		},
+        "showParty": {
+			"type": "boolean",
+			"default": true
+		},
+        "showState": {
+			"type": "boolean",
+			"default": true
+		},
+        "showStatus": {
+			"type": "boolean",
+			"default": true
+		},
+        "showSocial": {
+			"type": "boolean",
+			"default": true
+		},
+        "showEmail": {
+			"type": "boolean",
+			"default": true
+		},
+        "showAddress": {
+			"type": "boolean",
+			"default": true
+		},
+        "showProfileLink": {
+			"type": "boolean",
+			"default": true
 		}
 	}
 }

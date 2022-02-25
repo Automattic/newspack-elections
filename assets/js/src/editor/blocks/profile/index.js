@@ -23,6 +23,10 @@ registerBlockType( 'govpack/profile', {
     attributes,
 	icon: 'groups',
 	keywords: [ 'govpack' ],
+    styles: [
+		{ name: 'default', label:  'Default', isDefault: true },
+		{ name: 'center', label:  'Centered' },
+	],
 	edit : Edit,
 	save() {
 		return null;

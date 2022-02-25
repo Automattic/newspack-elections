@@ -119,7 +119,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 				'show_in_rest' => true,
 				'show_ui'      => true,
                 'show_in_menu' => "govpack",
-				'supports'     => [ 'revisions', 'thumbnail', "editor", "custom-fields", "title"],
+				'supports'     => [ 'revisions', 'thumbnail', "editor", "custom-fields", "title", "excerpt"],
 				'taxonomies'   => [ 'post_tag' ],
 				'as_taxonomy'  => \Newspack\Govpack\Tax\Profile::TAX_SLUG,
 				'menu_icon'    => 'dashicons-groups',

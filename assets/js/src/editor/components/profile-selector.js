@@ -14,7 +14,6 @@ const ProfileSelector = ( { props } ) => {
 	const profilesMapped = () => {
 		if ( profiles ) {
 			const mapped = profiles.map( profile => {
-                console.log(profile)
 				return {
 					value: profile.id,
 					label: `${ profile.meta.first_name } ${ profile.meta.last_name }`,

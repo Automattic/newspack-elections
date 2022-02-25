@@ -24,7 +24,7 @@ class Profile extends \Newspack\Govpack\Block {
 		register_block_type(
 			'govpack/profile',
 			[
-				'apiVersion'      => 2,
+				'apiVersion'      => 2, 
                 "category"  => "govpack",
 				'editor_script'   => 'govpack-editor',
 				'render_callback' => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler' ],

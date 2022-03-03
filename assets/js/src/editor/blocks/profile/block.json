@@ -1,5 +1,7 @@
 {
-	"name": "govpack-profile",
+	"name": "govpack/profile",
+    "style": "file:../../../../../../dist/profile_block.css",
+    "editorScript": "file:../../../../../../dist/profile_block.js",
 	"category": "govpack",
 	"attributes": {
 		"className": {
@@ -71,6 +73,12 @@
         "showProfileLink": {
 			"type": "boolean",
 			"default": true
+		},
+        "align": {
+			"type": "string"
+		},
+        "width": {
+			"type": "string"
 		}
 	}
 }

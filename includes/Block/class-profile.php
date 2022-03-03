@@ -20,6 +20,16 @@ class Profile extends \Newspack\Govpack\Block {
 	 * @return void
 	 */
 	public static function register_block() {
+
+        
+        \register_block_type(
+            GOVPACK_PLUGIN_FILE . "assets/js/src/editor/blocks/profile",
+            [
+                "render_callback" => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler' ],
+            ]
+        );
+        
+
         /*
 		register_block_type(
 			'govpack/profile',
@@ -45,6 +55,7 @@ class Profile extends \Newspack\Govpack\Block {
 		);
         */
         
+        /*
         register_block_type(
 			'govpack/profile-meta-selected',
 			[
@@ -68,7 +79,7 @@ class Profile extends \Newspack\Govpack\Block {
 				'render_callback' => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler_meta' ],
 			]
 		);
-        
+        */
 	}
 
 }

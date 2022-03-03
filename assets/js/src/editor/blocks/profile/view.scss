@@ -23,6 +23,11 @@
             }
         }
 
+        &--align-center{
+            margin-left: auto;
+            margin-right: auto;
+        }
+
     }
 
     &__contacts{
@@ -77,6 +82,7 @@
         }
     }
 
+    &.is-style-boxed_centered,
     &.is-style-center{
 
         #{$block}__avatar {
@@ -100,5 +106,13 @@
         #{$block}__contacts ul{
             justify-content: center;
         }
+    }
+
+    &.is-style-boxed_centered,
+    &.is-style-boxed{
+        padding:2rem;
+        border:1px solid rgba(0,0,0,0.04);
+        background-color:rgba(0,0,0,0.02);
+        margin-top: 0 !important;
     }
 }

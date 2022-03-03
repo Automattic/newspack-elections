@@ -213,6 +213,7 @@ function getUpdatedWebpackConfig(env, arg){
     }
     webpackConfig.entry = {}
     webpackConfig.entry.editor = path.join( __dirname, 'assets', 'js', "src", 'editor', "index" )
+    webpackConfig.entry.profile_block = path.join( __dirname, 'assets', 'js', "src", 'editor', 'blocks', 'profile', "index" )
     webpackConfig.entry.importer = path.join( __dirname, 'assets', 'js', "src", 'importer', "index" )
     webpackConfig.entry.profile_table = path.join( __dirname, 'assets', 'css', "src", 'profile-table.scss')
 

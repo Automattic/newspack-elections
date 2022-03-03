@@ -3,10 +3,10 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { InspectorControls, useBlockProps, BlockControls} from '@wordpress/block-editor';
-import { Panel, PanelBody, PanelRow, RadioControl, Placeholder, Spinner, ToggleControl, BaseControl, ButtonGroup, Button, Toolbar } from '@wordpress/components';
+import { InspectorControls, useBlockProps, BlockControls, BlockAlignmentControl} from '@wordpress/block-editor';
+import { Panel, PanelBody, PanelRow, RadioControl, Placeholder, Spinner, ToggleControl, BaseControl, ButtonGroup, Button, Toolbar, ToolbarDropdownMenu } from '@wordpress/components';
 import { useRef, useState, useEffect } from '@wordpress/element';
-import { Icon, postAuthor,  pullLeft, pullRight } from '@wordpress/icons';
+import { Icon, postAuthor,  pullLeft, pullRight, resizeCornerNE } from '@wordpress/icons';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -115,6 +115,7 @@ function Edit( props ) {
         avatarBorderRadius,
         avatarSize,
         avatarAlignment,
+        align,
         
         showBio,
         showLegislativeBody,
@@ -128,7 +129,28 @@ function Edit( props ) {
         
 	} = attributes;
 
-
+    const availableWidths = [
+        {
+            label : "Small",
+            value : "small",
+            maxWidth : "300px"
+        },
+        {
+            label : "Medium",
+            value : "medium",
+            maxWidth : "400px"
+        },
+        {
+            label : "Large",
+            value : "large",
+            maxWidth : "600px"
+        },
+        {
+            label : "Full",
+            value : "full",
+            maxWidth : "100%"
+        }
+    ]
 
 	/**
 	 * @param {string} value The selected format.
@@ -341,24 +363,51 @@ function Edit( props ) {
                         </BlockControls>
                     ) }
 
-                    { profile &&(
-                        <BlockControls>
-                           <Toolbar
-							controls={ [
-								{
-									icon: <Icon icon={ postAuthor } />,
-									title: __( 'Modify Selection', 'newspack-blocks' ),
-									onClick: () => {
-                                        setAttributes( { profileId: 0 } );
-                                        setProfile( null );
-                                    },
-								},
-							] }
-						/>
-                        </BlockControls>
+                    { profile && (
+                        <>
+                            <BlockControls>
+                                <Toolbar>
+                                    <BlockAlignmentControl
+                                        value={ align }
+                                        onChange={ (newAlignment) => setAttributes( { align: newAlignment } ) }
+                                        controls = {['left', 'center', 'right','full']}
+                                    />
+                                    { (align !== "full") && (
+                                        <ToolbarDropdownMenu
+                                                icon = {resizeCornerNE}
+                                                label = { __( 'Modify Selection', 'newspack-blocks' ) }
+                                                controls={ availableWidths.map( (width) => {
+                                                    return [
+                                                        {
+                                                            title: width.label,
+                                                            icon: resizeCornerNE,
+                                                            onClick: () => setAttributes( { width: width.value } )
+                                                        },
+                                                    ]
+                                                }) }
+                                        />
+                                    )}
+                                </Toolbar>
+                            </BlockControls>
+
+                            <BlockControls>
+                                <Toolbar
+                                    controls={ [
+                                        {
+                                            icon: <Icon icon={ postAuthor } />,
+                                            title: __( 'Modify Selection', 'newspack-blocks' ),
+                                            onClick: () => {
+                                                setAttributes( { profileId: 0 } );
+                                                setProfile( null );
+                                            },
+                                        },
+                                    ] }
+                                />
+                            </BlockControls>
+                        </>
                     ) }
 
-				    <SingleProfile profile={profile} attributes={ attributes } />
+				    <SingleProfile profile={profile} attributes={ attributes } availableWidths = {availableWidths} />
                 </>
 			) : (
 			<Placeholder
@@ -392,7 +441,9 @@ function Edit( props ) {
                                     offset,
                                     fields: 'id,name',
                                 } ),
-                            } );
+                            } ).catch( (error) => {
+                                return error
+                            });
 
                             const total = parseInt( response.headers.get( 'x-wp-total' ) || 0 );
                             const profiles = await response.json();

@@ -85,6 +85,8 @@ const SingleProfile = (props) => {
         avatarBorderRadius, 
         avatarSize,
         avatarAlignment,
+        align,
+        width,
 
         showBio,
         showLegislativeBody,
@@ -100,7 +102,9 @@ const SingleProfile = (props) => {
 
     } = props.attributes
 
-    console.log(profile)
+    console.log(profile, props)
+
+    const maxWidth = (align !== "full" ? props.availableWidths.find( (w) => w.value === width)?.maxWidth : false)
 
     const Link = (props) => {
 
@@ -163,7 +167,12 @@ const SingleProfile = (props) => {
             "wp-block-govpack-profile__container--right" : (avatarAlignment === "right"),
             "wp-block-govpack-profile__container--left" : (avatarAlignment === "left"),
             "wp-block-govpack-profile__container--center" : (className === "is-styled-center"),
-       })}>
+            "wp-block-govpack-profile__container--align-center" : (align === "center"),
+       })}
+       style = {{
+           maxWidth : maxWidth ?? "none"
+       }}
+       >
 
     
             { showAvatar && profile.featured_image_thumbnail && (

@@ -53,11 +53,10 @@ class Profile extends \Newspack\Govpack\Post_Type {
         \add_filter( 'manage_taxonomies_for_' . self::CPT_SLUG . '_columns',  [ __CLASS__, 'mod_taxonomy_columns' ], 10, 2);
         \add_filter( 'default_hidden_columns', [ __CLASS__, 'hidden_columns' ], 10, 2);
         \add_action( 'restrict_manage_posts', [ __CLASS__, 'post_table_filters' ], 10, 2);
-        \add_action( 'restrict_manage_posts', [ __CLASS__, 'remove_yoast' ], 10, 2);
+
+        //\add_action( 'restrict_manage_posts', [ __CLASS__, 'remove_yoast' ], 10, 2);
         add_filter( 'disable_months_dropdown', [ __CLASS__, 'disable_months_dropdown' ], 10, 2);
-
         add_action('add_meta_boxes', [ __CLASS__, 'remove_wp_seo'], 100);
-
         add_filter('wpseo_enable_editor_features_' . self::CPT_SLUG, "__return_false");
 	}
 
@@ -672,12 +671,18 @@ class Profile extends \Newspack\Govpack\Post_Type {
 			return;
 		}
 
-		$profile_raw_data = get_post_meta( $profile_id );
+        $profile_raw_data = get_post($profile_id );
 		if ( ! $profile_raw_data ) {
 			return;
 		}
 
-		if ( empty( $profile_raw_data['first_name'][0] ) || empty( $profile_raw_data['last_name'][0] ) ) {
+
+		$profile_raw_meta_data = get_post_meta( $profile_id );
+		if ( ! $profile_raw_meta_data ) {
+			return;
+		}
+
+		if ( empty( $profile_raw_meta_data['first_name'][0] ) || empty( $profile_raw_meta_data['last_name'][0] ) ) {
 			return;
 		}
 
@@ -693,20 +698,26 @@ class Profile extends \Newspack\Govpack\Post_Type {
 
 		$profile_data = [ // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 			'id'               => $profile_id,
-			'first_name'       => $profile_raw_data['first_name'][0] ?? '',
-			'last_name'        => $profile_raw_data['last_name'][0] ?? '',
-			'title'            => $profile_raw_data['title'][0] ?? '',
-			'phone'            => $profile_raw_data['main_phone'][0] ?? '',
-			'twitter'          => $profile_raw_data['twitter'][0] ?? '',
-			'instagram'        => $profile_raw_data['instagram'][0] ?? '',
-			'email'            => $profile_raw_data['email'][0] ?? '',
-			'facebook'         => $profile_raw_data['facebook'][0] ?? '',
-			'website'          => $profile_raw_data['leg_url'][0] ?? '',
-			'biography'        => $profile_raw_data['biography'][0] ?? '',
+			'first_name'       => $profile_raw_meta_data['first_name'][0] ?? '',
+			'last_name'        => $profile_raw_meta_data['last_name'][0] ?? '',
+			'title'            => $profile_raw_meta_data['title'][0] ?? '',
+			'phone'            => $profile_raw_meta_data['main_phone'][0] ?? '',
+			'twitter'          => $profile_raw_meta_data['twitter'][0] ?? '',
+			'instagram'        => $profile_raw_meta_data['instagram'][0] ?? '',
+			'email'            => $profile_raw_meta_data['email'][0] ?? '',
+			'facebook'         => $profile_raw_meta_data['facebook'][0] ?? '',
+			'website'          => $profile_raw_meta_data['leg_url'][0] ?? '',
+			'biography'        => $profile_raw_meta_data['biography'][0] ?? '',
+            'address'           => $profile_raw_meta_data['main_office_address'][0] ?? $profile_raw_meta_data['secondary_office_address'][0] ?? '',
 			'party'            => $term_data[ \Newspack\Govpack\Tax\Party::TAX_SLUG ] ?? '',
 			'state'            => $term_data[ \Newspack\Govpack\Tax\State::TAX_SLUG ] ?? '',
 			'legislative_body' => $term_data[ \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] ?? '',
+            'name'             => $profile_raw_data->post_title ?? '',
+            'bio'             =>  $profile_raw_data->post_excerpt ?? '',
+            'link'          => get_permalink( $profile_id)
 		];
+
+        $profile_data['hasSocial'] = ($profile_data['facebook'] || $profile_data['instagram'] || $profile_data['twitter'] || $profile_data['linkedin']);
 
 		return $profile_data;
 	}
@@ -720,15 +731,19 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 * @return string HTML for recipe shortcode.
 	 */
 	public static function shortcode_handler( $atts, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		if ( ! isset( $atts['id'] ) ) {
+
+       $attributes = $atts;
+
+		if ( ! isset( $atts['profileId'] ) ) {
 			return;
 		}
 
-		$profile_data = self::get_data( $atts['id'] );
+		$profile_data = self::get_data( $atts['profileId'] );
 		if ( ! $profile_data ) {
 			return;
 		}
 
+ 
 		$atts = shortcode_atts(
 			[
 				'format'    => self::$default_profile_format,
@@ -737,12 +752,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 			$atts
 		);
 
-		if ( ! in_array( $atts['format'], self::$profile_formats, true ) ) {
-			$atts['format'] = self::$default_profile_format;
-		}
-
-		$profile_data['format'] = $atts['format'];
-
+        
 		ob_start();
 		require_once GOVPACK_PLUGIN_FILE . 'template-parts/profile.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 		$html = ob_get_clean();

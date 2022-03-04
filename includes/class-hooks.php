@@ -21,6 +21,9 @@ class Hooks {
 		add_filter( 'wpseo_accessible_post_types', [ __CLASS__, 'wpseo_accessible_post_types' ] );
 		add_action( 'init', [ __CLASS__, 'register_sidebars' ] );
 		add_action( 'admin_notices', [ __CLASS__, 'admin_notices' ] );
+
+     
+
 	}
 
 	/**

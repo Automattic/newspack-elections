@@ -1,0 +1,67 @@
+{
+	"name": "govpack/profile-self",
+    "style": "file:../../../../../../dist/profile_self_block.css",
+    "editorScript": "file:../../../../../../dist/profile_self_block.js",
+	"category": "govpack",
+	"attributes": {
+		"className": {
+			"type": "string",
+			"default": ""
+		},
+		"profileId": {
+			"type": "number",
+			"default": 0
+		},
+		"showAvatar": {
+			"type": "boolean",
+			"default": true
+		},
+		"avatarHideDefault": {
+			"type": "boolean",
+			"default": false
+		},
+        "showBio": {
+			"type": "boolean",
+			"default": false
+		},  
+        "showName": {
+			"type": "boolean",
+			"default": false
+		},   
+        "showLegislativeBody": {
+			"type": "boolean",
+			"default": true
+		},
+        "showPosition": {
+			"type": "boolean",
+			"default": true
+		},
+        "showParty": {
+			"type": "boolean",
+			"default": true
+		},
+        "showState": {
+			"type": "boolean",
+			"default": true
+		},
+        "showStatus": {
+			"type": "boolean",
+			"default": true
+		},
+        "showSocial": {
+			"type": "boolean",
+			"default": true
+		},
+        "showEmail": {
+			"type": "boolean",
+			"default": true
+		},
+        "showAddress": {
+			"type": "boolean",
+			"default": true
+		},
+        "align": {
+			"type": "string"
+		}
+	}
+}

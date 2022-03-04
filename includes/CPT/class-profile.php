@@ -732,39 +732,42 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 */
 	public static function shortcode_handler( $atts, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 
-       $attributes = $atts;
-
+        return self::load_block($atts, $content, "profile");
+	}
     
-		if ( ! isset( $atts['profileId'] ) ) {
+
+    public static function load_block($attributes, $content, $template){
+
+        if ( ! isset( $attributes['profileId'] ) ) {
 			return;
 		}
 
-    
-
-		$profile_data = self::get_data( $atts['profileId'] );
+		$profile_data = self::get_data( $attributes['profileId'] );
 		if ( ! $profile_data ) {
 			return;
 		}
 
-       
-		$atts = shortcode_atts(
-			[
-				'format'    => self::$default_profile_format,
-				'className' => '',
-			],
-			$atts
-		);
-
- 
         require_once GOVPACK_PLUGIN_FILE . 'template-parts/functions.php';
 
-		ob_start();
-		require GOVPACK_PLUGIN_FILE . 'template-parts/profile.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+        ob_start();
+		require GOVPACK_PLUGIN_FILE . 'template-parts/'. $template .'.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 		$html = ob_get_clean();
 
 		return $html;
-	}
-    
+
+    }
+    /**
+	 * Shortcode handler for [govpack].
+	 *
+	 * @param array  $atts    Array of shortcode attributes.
+	 * @param string $content Post content.
+	 *
+	 * @return string HTML for recipe shortcode.
+	 */
+	public static function shortcode_handler_self( $atts, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+        return self::load_block($atts, $content, "profile-self");
+    }
+
     /**
 	 * Shortcode handler for [govpack].
 	 *

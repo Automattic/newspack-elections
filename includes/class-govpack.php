@@ -60,15 +60,12 @@ class Govpack {
 	 */
 	public static function hooks() {
 
-		
+		\Newspack\Govpack\CPT\AsTaxonomy::hooks();
+
 		\Newspack\Govpack\CPT\Issue::hooks();
 		\Newspack\Govpack\CPT\Profile::hooks();
 
-		//\Newspack\Govpack\Block\Issue::hooks();
-		//\Newspack\Govpack\Block\IssueArchive::hooks();
 		\Newspack\Govpack\Block\Profile::hooks();
-
-		\Newspack\Govpack\CPT\AsTaxonomy::hooks();
 
 		\Newspack\Govpack\Tax\City::hooks();
 		\Newspack\Govpack\Tax\County::hooks();
@@ -84,10 +81,9 @@ class Govpack {
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			\Newspack\Govpack\CLI::init();
 		}
-
 		\Newspack\Govpack\Importer\Importer::hooks();
-		
         \Newspack\Govpack\Admin\Admin::hooks();
+        \Newspack\Govpack\FrontEnd\FrontEnd::hooks();
 		
 	
 	}

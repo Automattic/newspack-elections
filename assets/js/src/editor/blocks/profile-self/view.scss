@@ -1,0 +1,121 @@
+.wp-block-govpack-profile-self {
+
+    $block : &;
+
+
+    &__contacts ul,
+    &__container {
+        display: flex;  
+        flex-direction: row;
+        width:100%;
+    }
+
+    
+    &__container {
+
+        $element : &;
+        &--right {
+            flex-direction: row-reverse;
+
+            #{$block}__avatar{
+                margin-right:0;
+                margin-left:1rem;
+            }
+        }
+
+        &--align-center{
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+    }
+
+    &__contacts{
+
+        ul{
+            margin:0;
+            padding:0;
+            list-style: none;
+        }
+
+        ul li{
+            margin-right:.5rem;
+
+            &:last-of-type{
+                margin-right:0;
+            }
+        }
+    }
+
+    &__avatar {
+
+        margin-right:1rem;
+        width:50%;
+
+        figure {
+            margin: 0;
+            overflow:hidden;
+
+            img{
+                display:block;
+                width:100%;
+            }
+        }
+    }
+
+    &__info{
+        width:50%;
+        display: flex;
+        flex-direction: column;
+        margin-left:1rem;
+        justify-content: center;
+
+        h3{
+            margin-top:0;
+        }
+    }
+
+    &__line{
+        padding-top:.5rem;
+        padding-bottom:.5rem;
+        border-bottom: 1px solid;
+
+        &:first-of-type{
+            padding-top:0rem;
+        }
+    }
+
+    &.is-style-boxed_centered,
+    &.is-style-center{
+
+        #{$block}__avatar {
+            margin-left:0;
+            margin-right:0;
+            margin-bottom:1rem;
+        }
+        #{$block}__info,
+        #{$block}__container {
+            flex-direction: column;
+            width:100%;
+            align-items: center;
+            align-content: center;
+        }
+
+        #{$block}__line{
+            width:100%;
+            text-align:center;
+        }
+
+        #{$block}__contacts ul{
+            justify-content: center;
+        }
+    }
+
+    &.is-style-boxed_centered,
+    &.is-style-boxed{
+        padding:2rem;
+        border:1px solid rgba(0,0,0,0.04);
+        background-color:rgba(0,0,0,0.02);
+        margin-top: 0 !important;
+    }
+}

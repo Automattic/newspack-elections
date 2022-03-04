@@ -11,7 +11,7 @@
 $classes = join( ' ', array_filter( [ 
     'wp-block-govpack-profile', 
     $attributes['className'],
-    ($attributes['align'] ? "align" . $attributes['align'] : false )
+    (isset($attributes['align']) ? "align" . $attributes['align'] : false )
 ] ) );
 
 $availableWidths = [
@@ -39,16 +39,17 @@ $availableWidths = [
 
 
 $styles = join(" ", [
-    "max-width:" . $availableWidths[$attributes['width']]["maxWidth"] . ";"
+    "max-width:" . $availableWidths[$attributes['width'] ?? "full"]["maxWidth"] . ";"
 ]);
 
 $container_classes = join( ' ', array_filter( [ 
     'wp-block-govpack-profile__container', 
     ($attributes['avatarAlignment'] === "right" ? "wp-block-govpack-profile__container--right" : false),
     ($attributes['avatarAlignment'] === "left" ? "wp-block-govpack-profile__container--left" : false),
-    ($attributes['align'] === "center" ? "wp-block-govpack-profile__container--align-center" : false),
+    (isset($attributes['align']) && ($attributes['align'] === "center" ? "wp-block-govpack-profile__container--align-center" : false)),
     ($attributes['className'] === "is-styled-center" ? "wp-block-govpack-profile__container--center" : false)
 ] ) );
+
 
 ?>
 

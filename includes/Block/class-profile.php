@@ -23,6 +23,13 @@ class Profile extends \Newspack\Govpack\Block {
 
         
         \register_block_type(
+            GOVPACK_PLUGIN_FILE . "assets/js/src/editor/blocks/profile-self",
+            [
+                "render_callback" => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler_self' ],
+            ]
+        );
+
+        \register_block_type(
             GOVPACK_PLUGIN_FILE . "assets/js/src/editor/blocks/profile",
             [
                 "render_callback" => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler' ],

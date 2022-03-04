@@ -56,6 +56,8 @@ abstract class Post_Type {
 	 * @return array
 	 */
 	public static function filter_body_class( $classes ) {
+
+        /*
 		if ( is_singular( static::CPT_SLUG ) ) {
 			$classes[] = 'archive';
 			$classes[] = 'feature-latest';
@@ -65,7 +67,8 @@ abstract class Post_Type {
 				unset( $classes[ $key ] );
 			}
 		}
-
+        */
+        
 		return $classes;
 	}
 

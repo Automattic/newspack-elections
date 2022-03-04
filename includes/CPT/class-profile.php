@@ -734,16 +734,19 @@ class Profile extends \Newspack\Govpack\Post_Type {
 
        $attributes = $atts;
 
+    
 		if ( ! isset( $atts['profileId'] ) ) {
 			return;
 		}
+
+    
 
 		$profile_data = self::get_data( $atts['profileId'] );
 		if ( ! $profile_data ) {
 			return;
 		}
 
- 
+       
 		$atts = shortcode_atts(
 			[
 				'format'    => self::$default_profile_format,
@@ -752,9 +755,11 @@ class Profile extends \Newspack\Govpack\Post_Type {
 			$atts
 		);
 
-        
+ 
+        require_once GOVPACK_PLUGIN_FILE . 'template-parts/functions.php';
+
 		ob_start();
-		require_once GOVPACK_PLUGIN_FILE . 'template-parts/profile.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+		require GOVPACK_PLUGIN_FILE . 'template-parts/profile.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 		$html = ob_get_clean();
 
 		return $html;

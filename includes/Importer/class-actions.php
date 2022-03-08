@@ -41,18 +41,18 @@ class Actions {
 		add_action( 'govpack_import_tag', [ self::instance(), 'make_term' ] );
 		add_action( 'govpack_import_term', [ self::instance(), 'make_term' ] );
 		add_action( 'govpack_import_post', [ self::instance(), 'make_post' ] );
-        add_action( 'govpack_import_csv_profile', [ self::instance(), 'make_profile_from_csv' ] );
+		add_action( 'govpack_import_csv_profile', [ self::instance(), 'make_profile_from_csv' ] );
 
-        add_action( 'govpack_import_cleanup', [ self::instance(), 'cleanup_import' ] );
+		add_action( 'govpack_import_cleanup', [ self::instance(), 'cleanup_import' ] );
 
-        add_filter("govpack\import\openstates\links", [ self::instance(), "explode_openstates_list" ]);
-        add_filter("govpack\import\openstates\sources", [ self::instance(), "explode_openstates_list" ]);
+		add_filter( 'govpack\import\openstates\links', [ self::instance(), 'explode_openstates_list' ] );
+		add_filter( 'govpack\import\openstates\sources', [ self::instance(), 'explode_openstates_list' ] );
 	}
 
 
-    public static function explode_openstates_list($list){
-        return explode(";", $list);
-    }
+	public static function explode_openstates_list( $list ) {
+		return explode( ';', $list );
+	}
 	/**
 	 * Action that fires from the importer to make the terms
 	 * 
@@ -168,18 +168,20 @@ class Actions {
 			return false;
 		}
 
-		$original_id = isset( $data['post_id'] )     ? (int) $data['post_id']     : 0;
+		$original_id = isset( $data['post_id'] ) ? (int) $data['post_id'] : 0;
 		$parent_id   = isset( $data['post_parent'] ) ? (int) $data['post_parent'] : 0;
 
 		$post_type_object = get_post_type_object( $data['post_type'] );
 
 		// Is this type even valid?
 		if ( ! $post_type_object ) {
-			$this->logger->warning( sprintf(
-				__( 'Failed to import "%s": Invalid post type %s', 'wordpress-importer' ),
-				$data['post_title'],
-				$data['post_type']
-			) );
+			$this->logger->warning(
+				sprintf(
+					__( 'Failed to import "%1$s": Invalid post type %2$s', 'wordpress-importer' ),
+					$data['post_title'],
+					$data['post_type']
+				) 
+			);
 			return false;
 		}
 
@@ -191,7 +193,10 @@ class Actions {
 			if ( isset( $this->mapping['post'][ $parent_id ] ) ) {
 				$data['post_parent'] = $this->mapping['post'][ $parent_id ];
 			} else {
-				$meta[] = array( 'key' => '_wxr_import_parent', 'value' => $parent_id );
+				$meta[]             = [
+					'key'   => '_wxr_import_parent',
+					'value' => $parent_id,
+				];
 				$requires_remapping = true;
 
 				$data['post_parent'] = 0;
@@ -206,23 +211,26 @@ class Actions {
 		} elseif ( isset( $this->mapping['user_slug'][ $author ] ) ) {
 			$data['post_author'] = $this->mapping['user_slug'][ $author ];
 		} else {
-			$meta[] = array( 'key' => '_wxr_import_user_slug', 'value' => $author );
+			$meta[]             = [
+				'key'   => '_wxr_import_user_slug',
+				'value' => $author,
+			];
 			$requires_remapping = true;
 
 			$data['post_author'] = (int) get_current_user_id();
 		}
 
 		// Does the post look like it contains attachment images?
-		//if ( preg_match( self::REGEX_HAS_ATTACHMENT_REFS, $data['post_content'] ) ) {
-		//	$meta[] = array( 'key' => '_wxr_import_has_attachment_refs', 'value' => true );
-		//	$requires_remapping = true;
-		//}
+		// if ( preg_match( self::REGEX_HAS_ATTACHMENT_REFS, $data['post_content'] ) ) {
+		// $meta[] = array( 'key' => '_wxr_import_has_attachment_refs', 'value' => true );
+		// $requires_remapping = true;
+		// }
 
 		// Whitelist to just the keys we allow
-		$postdata = array(
+		$postdata = [
 			'import_id' => $data['post_id'],
-		);
-		$allowed = array(
+		];
+		$allowed  = [
 			'post_author'    => true,
 			'post_date'      => true,
 			'post_date_gmt'  => true,
@@ -238,7 +246,7 @@ class Actions {
 			'menu_order'     => true,
 			'post_type'      => true,
 			'post_password'  => true,
-		);
+		];
 		foreach ( $data as $key => $value ) {
 			if ( ! isset( $allowed[ $key ] ) ) {
 				continue;
@@ -253,11 +261,13 @@ class Actions {
 		do_action( 'wp_import_insert_post', $post_id, $original_id, $postdata, $data );
 
 		if ( is_wp_error( $post_id ) ) {
-			$this->logger->error( sprintf(
-				__( 'Failed to import "%s" (%s)', 'wordpress-importer' ),
-				$data['post_title'],
-				$post_type_object->labels->singular_name
-			) );
+			$this->logger->error(
+				sprintf(
+					__( 'Failed to import "%1$s" (%2$s)', 'wordpress-importer' ),
+					$data['post_title'],
+					$post_type_object->labels->singular_name
+				) 
+			);
 			$this->logger->debug( $post_id->get_error_message() );
 
 			/**
@@ -282,15 +292,18 @@ class Actions {
 		$terms = apply_filters( 'wp_import_post_terms', $terms, $post_id, $data );
 
 		if ( ! empty( $terms ) ) {
-			$term_ids = array();
+			$term_ids = [];
 			foreach ( $terms as $term ) {
 				$taxonomy = $term['taxonomy'];
-				$key = sha1( $taxonomy . ':' . $term['slug'] );
+				$key      = sha1( $taxonomy . ':' . $term['slug'] );
 
 				if ( isset( $this->mapping['term'][ $key ] ) ) {
 					$term_ids[ $taxonomy ][] = (int) $this->mapping['term'][ $key ];
 				} else {
-					$meta[] = array( 'key' => '_wxr_import_term', 'value' => $term );
+					$meta[]             = [
+						'key'   => '_wxr_import_term',
+						'value' => $term,
+					];
 					$requires_remapping = true;
 				}
 			}
@@ -309,7 +322,7 @@ class Actions {
 	 * Process and import post meta items.
 	 *
 	 * @param array $meta List of meta data arrays
-	 * @param int $post_id Post to associate with
+	 * @param int   $post_id Post to associate with
 	 * @param array $post Post data
 	 * @return int|WP_Error Number of meta items imported on success, error otherwise.
 	 */
@@ -330,7 +343,7 @@ class Actions {
 				return false;
 			}
 
-			$key = apply_filters( 'import_post_meta_key', $meta_item['key'], $post_id, $post );
+			$key   = apply_filters( 'import_post_meta_key', $meta_item['key'], $post_id, $post );
 			$value = false;
 
 			if ( '_edit_last' === $key ) {
@@ -359,159 +372,160 @@ class Actions {
 	}
 
 
-    public static function get_address_from_open_states_data($address){
+	public static function get_address_from_open_states_data( $address ) {
 
-        error_log($address);
-        if(!$address){
-            return [];
-        }
+		error_log( $address );
+		if ( ! $address ) {
+			return [];
+		}
 
-        $new_address = [];
-        // First we need to split the address string on the ; so we get the street address and the state/zip in the second
-        $re = '/([^;]+)/m';
-        preg_match_all($re, $address, $matches, PREG_SET_ORDER, 0);
+		$new_address = [];
+		// First we need to split the address string on the ; so we get the street address and the state/zip in the second
+		$re = '/([^;]+)/m';
+		preg_match_all( $re, $address, $matches, PREG_SET_ORDER, 0 );
 
-        $new_address["address"] = $matches[0][0];
-        $the_rest = $matches[1][0] ?? null; 
+		$new_address['address'] = $matches[0][0];
+		$the_rest               = $matches[1][0] ?? null; 
 
-        if($the_rest){
-            preg_match_all('/([^,]+), ([A-Z]+) ([0-9-]+)/m', $the_rest, $new_matches, PREG_SET_ORDER, 0);
+		if ( $the_rest ) {
+			preg_match_all( '/([^,]+), ([A-Z]+) ([0-9-]+)/m', $the_rest, $new_matches, PREG_SET_ORDER, 0 );
 
-            if($new_matches){
-            
-                $new_address["city"] = $new_matches[0][1] ?? "";
-                $new_address["state"] = $new_matches[0][2] ?? "";
-                $new_address["zip"] = $new_matches[0][3] ?? "";
-            }
-        }
-    
-        return $new_address;
+			if ( $new_matches ) {
+			
+				$new_address['city']  = $new_matches[0][1] ?? '';
+				$new_address['state'] = $new_matches[0][2] ?? '';
+				$new_address['zip']   = $new_matches[0][3] ?? '';
+			}
+		}
+	
+		return $new_address;
 
-    }
+	}
 
-    public static function make_profile_from_csv($data){
-       
-       
-        $main_office = self::get_address_from_open_states_data($data["district_address"]);
-        $secondary_office = self::get_address_from_open_states_data($data["capitol_address"]);
+	public static function make_profile_from_csv( $data ) {
+	   
+	   
+		$main_office      = self::get_address_from_open_states_data( $data['district_address'] );
+		$secondary_office = self::get_address_from_open_states_data( $data['capitol_address'] );
   
-        $post = [
-            "post_author" => 0,
-            "post_content" => $data["biography"],
-            "post_title" => $data["name"],
-            "post_status" => "draft",
-            "post_type" => "govpack_profiles",
-            "comment_status" => "closed",
-          
-            "meta_input" => [
-                "open_state_id" => $data["id"],
+		$post = [
+			'post_author'    => 0,
+			'post_content'   => $data['biography'],
+			'post_title'     => $data['name'],
+			'post_status'    => 'draft',
+			'post_type'      => 'govpack_profiles',
+			'comment_status' => 'closed',
+		  
+			'meta_input'     => [
+				'open_state_id'            => $data['id'],
 
-                "first_name"       => $data["given_name"],
-                "last_name"       => $data["family_name"],
-                "name"       => $data["name"],
-                "gender"       => $data["gender"],
-                "biography"       => $data["biography"],
-                "birth_date"       => $data["birth_date"],
-                "death_date"       => $data["death_date"],
+				'first_name'               => $data['given_name'],
+				'last_name'                => $data['family_name'],
+				'name'                     => $data['name'],
+				'gender'                   => $data['gender'],
+				'biography'                => $data['biography'],
+				'birth_date'               => $data['birth_date'],
+				'death_date'               => $data['death_date'],
 
-                "current_district" => $data["current_district"],
-                "current_chamber" => $data["current_chamber"],
-               
-                "email"       => $data["email"],
-                "twitter"       => $data["twitter"],
-                "youtube"       => $data["youtube"],
-                "instagram"       => $data["instagram"],
-                "facebook"       => $data["facebook"],
-                
-                "main_phone" => $data["district_voice"],
-                "secondary_phone" => $data["capitol_voice"],
+				'current_district'         => $data['current_district'],
+				'current_chamber'          => $data['current_chamber'],
+			   
+				'email'                    => $data['email'],
+				'twitter'                  => $data['twitter'],
+				'youtube'                  => $data['youtube'],
+				'instagram'                => $data['instagram'],
+				'facebook'                 => $data['facebook'],
+				
+				'main_phone'               => $data['district_voice'],
+				'secondary_phone'          => $data['capitol_voice'],
 
-                "main_fax" => $data["district_fax"],
-                "secondary_fax" => $data["capitol_fax"],
+				'main_fax'                 => $data['district_fax'],
+				'secondary_fax'            => $data['capitol_fax'],
 
-                "main_office_address" => $main_office["address"] ?? "",
-                "main_office_city"  => $main_office["city"] ?? "",
-                "main_office_state" => $main_office["state"] ?? "",
-                "main_office_zip"   => $main_office["zip"] ?? "",
+				'main_office_address'      => $main_office['address'] ?? '',
+				'main_office_city'         => $main_office['city'] ?? '',
+				'main_office_state'        => $main_office['state'] ?? '',
+				'main_office_zip'          => $main_office['zip'] ?? '',
 
-                "secondary_office_address" => $secondary_office["address"] ?? "",
-                "secondary_office_city" => $secondary_office["city"] ?? "",
-                "secondary_office_state"    => $secondary_office["state"] ?? "",
-                "secondary_office_zip"  => $secondary_office["zip"] ?? "",
+				'secondary_office_address' => $secondary_office['address'] ?? '',
+				'secondary_office_city'    => $secondary_office['city'] ?? '',
+				'secondary_office_state'   => $secondary_office['state'] ?? '',
+				'secondary_office_zip'     => $secondary_office['zip'] ?? '',
 
-                "image"       => $data["image"],
-                "links"       => \apply_filters("govpack\import\openstates\links", $data["links"]),
-                "sources"       => \apply_filters("govpack\import\openstates\sources", $data["sources"]),
-                "extra"       => $data["extra"] ?? "",
+				'image'                    => $data['image'],
+				'links'                    => \apply_filters( 'govpack\import\openstates\links', $data['links'] ),
+				'sources'                  => \apply_filters( 'govpack\import\openstates\sources', $data['sources'] ),
+				'extra'                    => $data['extra'] ?? '',
 
-            ]   
-        ];
+			],   
+		];
  
 
-        $resp = \wp_insert_post($post);
+		$resp = \wp_insert_post( $post );
 
-        if(\is_wp_error($resp)){
-            return; 
-        }
+		if ( \is_wp_error( $resp ) ) {
+			return; 
+		}
 
-        $created_post_id = $resp;
-       
+		$created_post_id = $resp;
+	   
 
-        $taxonomy_map = [
-            "current_party" => "govpack_party",
-            "state" => "govpack_state",
-            "current_chamber" => "govpack_legislative_body",
-            "title" => "govpack_officeholder_title",
-            "status" => "govpack_officeholder_status",
-        ];
-
-
-        foreach($taxonomy_map as $field => $taxonomy){
-            if($data[$field]){
-                self::assign_term_to_obj($created_post_id, $data[$field], $taxonomy);
-            }
-        }
-        
-        if($data["image"]){
-            try{
-                Importer::sideload($created_post_id);
-            } catch(Exception $e){}
-        }
-        
-        error_log(print_r($created_post_id, true));
-    }
-
-    public static function assign_term_to_obj($object_id, $term_name, $taxonomy){
-        $term = self::find_or_create_term($term_name, $taxonomy );
-        if(!\is_wp_error($term)){
-            \wp_set_object_terms( $object_id, [$term->term_id], $taxonomy);
-        }
-    }
-
-    public static function find_or_create_term($term_name = null, $taxonomy = null){
-
-        if(!$term_name){
-            return new WP_Error("No Term Provided to find or create");
-        }
-
-        if(!$taxonomy){
-            return new WP_Error("No Taxonmy Provided to find or create in");
-        }
+		$taxonomy_map = [
+			'current_party'   => 'govpack_party',
+			'state'           => 'govpack_state',
+			'current_chamber' => 'govpack_legislative_body',
+			'title'           => 'govpack_officeholder_title',
+			'status'          => 'govpack_officeholder_status',
+		];
 
 
-        $term = \get_term_by("name", $term_name, $taxonomy);
+		foreach ( $taxonomy_map as $field => $taxonomy ) {
+			if ( $data[ $field ] ) {
+				self::assign_term_to_obj( $created_post_id, $data[ $field ], $taxonomy );
+			}
+		}
+		
+		if ( $data['image'] ) {
+			try {
+				Importer::sideload( $created_post_id );
+			} catch ( Exception $e ) {
+			}
+		}
+		
+		error_log( print_r( $created_post_id, true ) );
+	}
 
-        if(!$term){
-            $term = \wp_create_term( $term_name, $taxonomy );
-        }
+	public static function assign_term_to_obj( $object_id, $term_name, $taxonomy ) {
+		$term = self::find_or_create_term( $term_name, $taxonomy );
+		if ( ! \is_wp_error( $term ) ) {
+			\wp_set_object_terms( $object_id, [ $term->term_id ], $taxonomy );
+		}
+	}
 
-        return $term;
-        
-    }
+	public static function find_or_create_term( $term_name = null, $taxonomy = null ) {
 
-    public static function cleanup_import($data){
+		if ( ! $term_name ) {
+			return new WP_Error( 'No Term Provided to find or create' );
+		}
 
-        \Newspack\Govpack\Importer\Importer::clean();
+		if ( ! $taxonomy ) {
+			return new WP_Error( 'No Taxonmy Provided to find or create in' );
+		}
 
-    }
+
+		$term = \get_term_by( 'name', $term_name, $taxonomy );
+
+		if ( ! $term ) {
+			$term = \wp_create_term( $term_name, $taxonomy );
+		}
+
+		return $term;
+		
+	}
+
+	public static function cleanup_import( $data ) {
+
+		\Newspack\Govpack\Importer\Importer::clean();
+
+	}
 }

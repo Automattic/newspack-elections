@@ -30,7 +30,7 @@ class Party extends \Newspack\Govpack\Taxonomy {
 			self::TAX_SLUG,
 			self::get_taxonomy_post_types(),
 			[
-				'labels'            => [
+				'labels'             => [
 					'name'                       => _x( 'Parties', 'Taxonomy General Name', 'govpack' ),
 					'singular_name'              => _x( 'Party', 'Taxonomy Singular Name', 'govpack' ),
 					'menu_name'                  => __( 'Parties', 'govpack' ),
@@ -52,18 +52,18 @@ class Party extends \Newspack\Govpack\Taxonomy {
 					'items_list'                 => __( 'Parties list', 'govpack' ),
 					'items_list_navigation'      => __( 'Parties list navigation', 'govpack' ),
 				],
-				'public'            => true,
-				'hierarchical'      => true,
-				'rewrite'           => [
+				'public'             => true,
+				'hierarchical'       => true,
+				'rewrite'            => [
 					'slug'         => self::SLUG,
 					'with_front'   => false,
 					'hierarchical' => false,
 				],
-				'meta_box_cb'       => false,
-				'show_admin_column' => true,
-				'show_in_rest'      => true,
-				'show_ui'      		=> true,
-                'show_in_which_menu'=> "govpack",
+				'meta_box_cb'        => false,
+				'show_admin_column'  => true,
+				'show_in_rest'       => true,
+				'show_ui'            => true,
+				'show_in_which_menu' => 'govpack',
 			]
 		);
 	}

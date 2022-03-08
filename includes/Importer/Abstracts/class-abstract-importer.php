@@ -16,14 +16,14 @@ use Exception;
  */
 abstract class Abstract_Importer {
 
-    const IMPORT_NOT_RUNNING = 0;
-    const IMPORT_RUNNING = 1;
-    const IMPORT_DONE = 2;
-    const IMPORT_TEST_KEY = "govpack_import_processing";
+	const IMPORT_NOT_RUNNING = 0;
+	const IMPORT_RUNNING     = 1;
+	const IMPORT_DONE        = 2;
+	const IMPORT_TEST_KEY    = 'govpack_import_processing';
 
-    public static $import_group = null;
+	public static $import_group = null;
 
-    /**
+	/**
 	 * How Does the importer work?
 	 * 1. Upload the file to the server
 	 * 2. Check the file is a valid wxr
@@ -35,31 +35,30 @@ abstract class Abstract_Importer {
 		return new static();
 	}
 
-    public static function cancel(){
-        delete_option(self::IMPORT_TEST_KEY);
-    }
+	public static function cancel() {
+		delete_option( self::IMPORT_TEST_KEY );
+	}
 
-    	
-    /**
+		
+	/**
 	 * Checks if an import is already running
-	 *
 	 */
-	public static function status( ) {
+	public static function status() {
 
 
-		$import_processing_running = get_option(self::IMPORT_TEST_KEY, self::IMPORT_NOT_RUNNING);
+		$import_processing_running = get_option( self::IMPORT_TEST_KEY, self::IMPORT_NOT_RUNNING );
 
-		if($import_processing_running == self::IMPORT_RUNNING){
-			return ["status" => "running"];
+		if ( $import_processing_running == self::IMPORT_RUNNING ) {
+			return [ 'status' => 'running' ];
 		}
 
-		if($import_processing_running == self::IMPORT_DONE){
-			return ["status" => "done"];
+		if ( $import_processing_running == self::IMPORT_DONE ) {
+			return [ 'status' => 'done' ];
 		}
 
-        return ["status" => "not_running"];
+		return [ 'status' => 'not_running' ];
 
-    }
+	}
 
 	/**
 	 * Main Import Process Runner
@@ -68,33 +67,33 @@ abstract class Abstract_Importer {
 	 */
 	public static function import( $file, $dry_run, $extra ) {
 
-        $import_group = get_option("govpack_import_group", false);
-		$import_processing_running = get_option(self::IMPORT_TEST_KEY, self::IMPORT_NOT_RUNNING);
+		$import_group              = get_option( 'govpack_import_group', false );
+		$import_processing_running = get_option( self::IMPORT_TEST_KEY, self::IMPORT_NOT_RUNNING );
 
-		if($import_processing_running == self::IMPORT_RUNNING){
-			return ["status" => "running"];
+		if ( $import_processing_running == self::IMPORT_RUNNING ) {
+			return [ 'status' => 'running' ];
 		}
 
-		if($import_processing_running == self::IMPORT_DONE){
-			return ["status" => "done"];
+		if ( $import_processing_running == self::IMPORT_DONE ) {
+			return [ 'status' => 'done' ];
 		}
 
-		update_option(self::IMPORT_TEST_KEY, self::IMPORT_RUNNING);
-        
+		update_option( self::IMPORT_TEST_KEY, self::IMPORT_RUNNING );
+		
 
-		$file   = \Newspack\Govpack\Importer\Importer::check_file( $file );
+		$file = \Newspack\Govpack\Importer\Importer::check_file( $file );
 
 		$reader = static::create_reader( $file );
 		static::process( $reader, $extra );
 
 
-        $response = ["status" => "running"];
+		$response = [ 'status' => 'running' ];
 
-        if($import_group){
-            $response["import_group"] = $import_group;
-        }
+		if ( $import_group ) {
+			$response['import_group'] = $import_group;
+		}
 
-		return  $response;
+		return $response;
 	}
 
 	
@@ -115,14 +114,14 @@ abstract class Abstract_Importer {
 	 */
 	abstract public static function process( $reader, $extra );
 
-    public static function import_group(){
+	public static function import_group() {
 
-        if(self::$import_group){
-            return self::$import_group;
-        }
+		if ( self::$import_group ) {
+			return self::$import_group;
+		}
 
-        self::$import_group = sprintf("govpack_%s", time());
+		self::$import_group = sprintf( 'govpack_%s', time() );
 
-        return self::$import_group;
-    }
+		return self::$import_group;
+	}
 }

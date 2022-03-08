@@ -154,7 +154,7 @@ class CLI extends \WP_CLI_Command {
 			
 			try {
 
-				$importer = \Newspack\Govpack\Importer\Importer::make($file);
+				$importer = \Newspack\Govpack\Importer\Importer::make( $file );
 				$importer::import( $file, $dry_run );
 
 			} catch ( \Exception $e ) {
@@ -165,58 +165,58 @@ class CLI extends \WP_CLI_Command {
 
 	/**
 	 * Gets Progess from ongoing import
-     * 
+	 * 
 	 * @subcommand progress
 	 *
 	 * @param array $args        Array of command-line arguments.
 	 * @param array $assoc_args  Associative array of arguments.
 	 */
-	public function progress( $args, $assoc_args) {
+	public function progress( $args, $assoc_args ) {
 		$importer = \Newspack\Govpack\Importer\WXR::make();
 		WP_CLI::line( $importer::progress() );
 	}
 
-    /**
+	/**
 	 * Stops a Currently running import
 	 *
-     * @subcommand clear
+	 * @subcommand clear
 	 *
 	 * @param array $args        Array of command-line arguments.
 	 * @param array $assoc_args  Associative array of arguments.
-     */
-    public function clear( $args, $assoc_args) {
+	 */
+	public function clear( $args, $assoc_args ) {
 		WP_CLI::line( \Newspack\Govpack\Importer\Importer::clear() );
 	}
 
-    /**
+	/**
 	 * Sideload an Image in a profile
-     * 
-     * ## OPTIONS
+	 * 
+	 * ## OPTIONS
 	 * <profile_id>...
 	 * : The ID of the profile
 	 *
-     * @subcommand sideload
+	 * @subcommand sideload
 	 *
 	 * @param array $args        Array of command-line arguments.
 	 * @param array $assoc_args  Associative array of arguments.
-     */
-    public function sideload( $args, $assoc_args) {
+	 */
+	public function sideload( $args, $assoc_args ) {
 
-		WP_CLI::line( "sideload" );
+		WP_CLI::line( 'sideload' );
 
-        $id = $args[0];
+		$id = $args[0];
 
-        try{
+		try {
 
-            \Newspack\Govpack\Importer\Importer::sideload($id);
-            
-            WP_CLI::line( "sideloaded" );
+			\Newspack\Govpack\Importer\Importer::sideload( $id );
+			
+			WP_CLI::line( 'sideloaded' );
 
-        }catch(\Exception $e){
+		} catch ( \Exception $e ) {
 
-            WP_CLI::error( $e->getMessage() );
-        }
-        
+			WP_CLI::error( $e->getMessage() );
+		}
+		
 	}
 
 	/**
@@ -224,107 +224,109 @@ class CLI extends \WP_CLI_Command {
 	 */
 	public static function init() {
 		WP_CLI::add_command( 'govpack import', '\Newspack\Govpack\CLI' );
-        WP_CLI::add_command( 'govpack purge', ['\Newspack\Govpack\CLI', "purge"] );
+		WP_CLI::add_command( 'govpack purge', [ '\Newspack\Govpack\CLI', 'purge' ] );
 	}
 
-    
-    /**
+	
+	/**
 	 * Deletes All Govpack Data
 	 *
-     * @subcommand purge
+	 * @subcommand purge
 	 *
 	 * @param array $args        Array of command-line arguments.
 	 * @param array $assoc_args  Associative array of arguments.
-     */
-    public function purge( $args, $assoc_args) {
+	 */
+	public function purge( $args, $assoc_args ) {
 
-        global $_wp_suspend_cache_invalidation;
+		global $_wp_suspend_cache_invalidation;
 
-        $_wp_suspend_cache_invalidation = true;
+		$_wp_suspend_cache_invalidation = true;
 
-        // turn of term counts when post status changes
+		// turn of term counts when post status changes
 		remove_action( 'transition_post_status', '_update_term_count_on_transition_post_status', 10, 3 );
 
 		// defer term counting
-		wp_defer_term_counting(true);
+		wp_defer_term_counting( true );
 
 
-		WP_CLI::line( "Purging GovPack Data" );
+		WP_CLI::line( 'Purging GovPack Data' );
 
-        $post_types = [
-            "govpack_profiles",
-            "govpack_issues"
-        ];
+		$post_types = [
+			'govpack_profiles',
+			'govpack_issues',
+		];
 
-        forEach($post_types as $post_type){
+		foreach ( $post_types as $post_type ) {
 
-            WP_CLI::line( sprintf("Purging Post Type : %s", $post_type));
+			WP_CLI::line( sprintf( 'Purging Post Type : %s', $post_type ) );
 
-       
-            $posts = get_posts( [
-                'post_type' => 'govpack_profiles',
-                "post_status" => "any",
-                'numberposts' => '-1',
-                'fields' => 'ids',
-            ] );
-            
-            $i = 0;
-            $count = count($posts);
-            
-            foreach ($posts as $id) {
-                WP_CLI::line( sprintf("Deleting Post : %s", $id));
-                wp_delete_post( $id, true );
-                $i++;
+	   
+			$posts = get_posts(
+				[
+					'post_type'   => 'govpack_profiles',
+					'post_status' => 'any',
+					'numberposts' => '-1',
+					'fields'      => 'ids',
+				] 
+			);
+			
+			$i     = 0;
+			$count = count( $posts );
+			
+			foreach ( $posts as $id ) {
+				WP_CLI::line( sprintf( 'Deleting Post : %s', $id ) );
+				wp_delete_post( $id, true );
+				$i++;
 
-                if(($i % 1000) === 1){
-                    WP_CLI::line( sprintf("Deleting Post : %s of %s", $i, $count));
-                }
-            }   
+				if ( ( $i % 1000 ) === 1 ) {
+					WP_CLI::line( sprintf( 'Deleting Post : %s of %s', $i, $count ) );
+				}
+			}       
+		}
 
-        }
 
+		$taxonomies = [
+			'govpack_city',
+			'govpack_county',
+			'govpack_state',
+			'govpack_installation',
+			'govpack_legislative_body',
+			'govpack_officeholder_status',
+			'govpack_party',
+		];
 
-        $taxonomies = [
-            "govpack_city",
-            "govpack_county",
-            "govpack_state",
-            "govpack_installation",
-            "govpack_legislative_body",
-            "govpack_officeholder_status",
-            "govpack_party",
-        ];
+		foreach ( $taxonomies as $taxonomy ) {
 
-        forEach($taxonomies as $taxonomy){
+			WP_CLI::line( sprintf( 'Purging Taxonomy : %s', $taxonomy ) );
 
-            WP_CLI::line( sprintf("Purging Taxonomy : %s", $taxonomy));
+	   
+			$terms = get_terms(
+				[
+					'taxonomy'   => $taxonomy,
+					'hide_empty' => false,
+					'fields'     => 'ids',
+					'number'     => 0, // all
+				] 
+			);
 
-       
-            $terms = get_terms( [
-                'taxonomy' => $taxonomy,
-                'hide_empty' => false,
-                "fields" => "ids",
-                "number" => 0 // all
-            ] );
-
-            foreach ($terms as $term) {
-                WP_CLI::line( sprintf("Deleting Term : %s", $term));
-                wp_delete_term( $term, $taxonomy );
-            }   
-
-        }
+			foreach ( $terms as $term ) {
+				WP_CLI::line( sprintf( 'Deleting Term : %s', $term ) );
+				wp_delete_term( $term, $taxonomy );
+			}       
+		}
 
 	}
 
 
-    /**
+	/**
 	 * Clean stored data from the import process
 	 *
-     * @subcommand clean
+	 * @subcommand clean
 	 *
 	 * @param array $args        Array of command-line arguments.
 	 * @param array $assoc_args  Associative array of arguments.
-     */
-    public function clean( $args, $assoc_args) {
+	 */
+	public function clean( $args, $assoc_args ) {
 		WP_CLI::line( \Newspack\Govpack\Importer\Importer::clean() );
 	}
 		

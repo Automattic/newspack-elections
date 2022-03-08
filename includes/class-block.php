@@ -27,44 +27,7 @@ abstract class Block {
 	 *
 	 * @return void
 	 */
-	public static function register_script() {
-		$file = GOVPACK_PLUGIN_FILE . 'dist/editor.asset.php';
-
-		if ( file_exists( $file ) ) {
-			$asset_data = require_once $file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
-		}
-
-        /*
-		wp_register_script(
-			'govpack-editor',
-			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/editor.js',
-			$asset_data['dependencies'] ?? [],
-			$asset_data['version'] ?? '',
-			true
-		);
-
-        wp_register_style(
-			'govpack-editor-style',
-			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/editor.css',
-			[],
-			$asset_data['version'],
-			"all"
-		);
-        
-        */
-
-        $file = GOVPACK_PLUGIN_FILE . 'dist/importer.asset.php';
-        if ( file_exists( $file ) ) {
-			$asset_data = require_once $file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
-		}
-
-		wp_register_script(
-			'govpack-importer',
-			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/importer.js',
-			$asset_data['dependencies'] ?? [],
-			$asset_data['version'] ?? '',
-			true
-		);
-	}
+	
+	public static function register_script() {}
 
 }

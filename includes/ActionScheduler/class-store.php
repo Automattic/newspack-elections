@@ -30,7 +30,7 @@ class Store extends \ActionScheduler_DBStore {
 		$table_maker->register_tables();
 	}
 
-    /**
+	/**
 	 * Delete pending actions by hook.
 	 *
 	 * @since 1.0.0
@@ -40,7 +40,7 @@ class Store extends \ActionScheduler_DBStore {
 	 * @return void
 	 */
 	public function delete_actions_by_hook( $hook ) {
-		$this->bulk_delete_actions( array( 'hook' => $hook ) );
+		$this->bulk_delete_actions( [ 'hook' => $hook ] );
 	}
 
 	/**
@@ -51,14 +51,16 @@ class Store extends \ActionScheduler_DBStore {
 	 * @return void
 	 */
 	public function delete_actions_by_group( $group ) {
-        
-		$this->bulk_delete_actions( array( 
-            'group' => $group,
-            'status' => ["pending", "canceled", "failed"] 
-        ) );
+		
+		$this->bulk_delete_actions(
+			[ 
+				'group'  => $group,
+				'status' => [ 'pending', 'canceled', 'failed' ], 
+			] 
+		);
 	}
 
-    /**
+	/**
 	 * Bulk cancel actions.
 	 *
 	 * @since 3.0.0
@@ -76,17 +78,16 @@ class Store extends \ActionScheduler_DBStore {
 
 		$action_ids = true;
 		$query_args = wp_parse_args(
-
-			array(
+			[
 				'per_page' => 1000,
 				'orderby'  => 'action_id',
-            ),
-            $query_args
+			],
+			$query_args
 		);
 
 
 		while ( $action_ids ) {
-            
+			
 
 			$action_ids = $this->query_actions( $query_args );
 

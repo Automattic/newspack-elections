@@ -212,25 +212,25 @@ class Menu {
 		}
 	}
 
-    /**
-     * Add submenus for post types.
-     *
-     * @access private
-     * @since 3.1.0
-     */
-    public static function _add_taxonomy_submenus() {
-        foreach ( get_taxonomies( array( 'show_ui' => true ), "objects" ) as $tax ) {
+	/**
+	 * Add submenus for post types.
+	 *
+	 * @access private
+	 * @since 3.1.0
+	 */
+	public static function _add_taxonomy_submenus() {
+		foreach ( get_taxonomies( [ 'show_ui' => true ], 'objects' ) as $tax ) {
 
-            if(!isset($tax->show_in_which_menu)){
-                return;
-            }
-            // Sub-menus only.
-            if ( ! $tax->show_in_which_menu || true === $tax->show_in_which_menu ) {
-                continue;
-            }
+			if ( ! isset( $tax->show_in_which_menu ) ) {
+				return;
+			}
+			// Sub-menus only.
+			if ( ! $tax->show_in_which_menu || true === $tax->show_in_which_menu ) {
+				continue;
+			}
   
-            add_submenu_page( $tax->show_in_which_menu, $tax->labels->name, $tax->labels->name, $tax->cap->manage_terms, "edit-tags.php?taxonomy=$tax->name&post_type=govpack" );
-        }
-    }
+			add_submenu_page( $tax->show_in_which_menu, $tax->labels->name, $tax->labels->name, $tax->cap->manage_terms, "edit-tags.php?taxonomy=$tax->name&post_type=govpack" );
+		}
+	}
 
 }

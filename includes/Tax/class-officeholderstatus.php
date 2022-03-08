@@ -27,7 +27,7 @@ class OfficeHolderStatus extends \Newspack\Govpack\Taxonomy {
 	 */
 	public static function register_taxonomy() {
 
-      
+	  
 		register_taxonomy(
 			self::TAX_SLUG,
 			self::get_taxonomy_post_types(),
@@ -64,7 +64,7 @@ class OfficeHolderStatus extends \Newspack\Govpack\Taxonomy {
 				'meta_box_cb'       => false,
 				'show_admin_column' => true,
 				'show_in_rest'      => true,
-				'show_ui'      		=> true,
+				'show_ui'           => true,
 			]
 		);
 	}

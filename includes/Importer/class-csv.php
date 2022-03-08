@@ -24,12 +24,12 @@ class CSV extends \Newspack\Govpack\Importer\Abstracts\Abstract_Importer {
 	 */
 	public static function create_reader( $file ) {
 
-        try{
-            $reader = Reader::createFromPath($file);
-            $reader->setHeaderOffset(0);
-        } catch(Exception $e) {
-            throw new Exception( 'Could Not Open File to Parse' );
-        }
+		try {
+			$reader = Reader::createFromPath( $file );
+			$reader->setHeaderOffset( 0 );
+		} catch ( Exception $e ) {
+			throw new Exception( 'Could Not Open File to Parse' );
+		}
 
 		return $reader;
 	}
@@ -43,18 +43,18 @@ class CSV extends \Newspack\Govpack\Importer\Abstracts\Abstract_Importer {
 	 */
 	public static function process( $reader, $extra ) {
 
-        update_option("govpack_import_group", self::import_group());
+		update_option( 'govpack_import_group', self::import_group() );
 
-        foreach ($reader->getRecords() as $offset => $record) {
+		foreach ( $reader->getRecords() as $offset => $record ) {
 
-            if(\is_array($extra)){
-                $record = array_merge($record, $extra);
-            } 
-            
-            as_enqueue_async_action( 'govpack_import_csv_profile', ["data" => $record], self::import_group() );
-        }
+			if ( \is_array( $extra ) ) {
+				$record = array_merge( $record, $extra );
+			} 
+			
+			as_enqueue_async_action( 'govpack_import_csv_profile', [ 'data' => $record ], self::import_group() );
+		}
 
-        as_enqueue_async_action( 'govpack_import_cleanup', [], self::import_group() );
+		as_enqueue_async_action( 'govpack_import_cleanup', [], self::import_group() );
 
 	}
 

@@ -60,20 +60,16 @@ class Govpack {
 	 */
 	public static function hooks() {
 
+		// Functions well need
 		\Newspack\Govpack\CPT\AsTaxonomy::hooks();
 
-		\Newspack\Govpack\CPT\Issue::hooks();
+		// Custom Post Types
 		\Newspack\Govpack\CPT\Profile::hooks();
 
-		\Newspack\Govpack\Block\Profile::hooks();
-
-		\Newspack\Govpack\Tax\City::hooks();
-		\Newspack\Govpack\Tax\County::hooks();
-		\Newspack\Govpack\Tax\Installation::hooks();
-		\Newspack\Govpack\Tax\Issue::hooks();
+		// Taxonomies
 		\Newspack\Govpack\Tax\LegislativeBody::hooks();
 		\Newspack\Govpack\Tax\OfficeHolderStatus::hooks();
-        \Newspack\Govpack\Tax\OfficeHolderTitle::hooks();
+		\Newspack\Govpack\Tax\OfficeHolderTitle::hooks();
 		\Newspack\Govpack\Tax\Party::hooks();
 		\Newspack\Govpack\Tax\Profile::hooks();
 		\Newspack\Govpack\Tax\State::hooks();
@@ -81,12 +77,11 @@ class Govpack {
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			\Newspack\Govpack\CLI::init();
 		}
-		\Newspack\Govpack\Importer\Importer::hooks();
-        \Newspack\Govpack\Admin\Admin::hooks();
-        \Newspack\Govpack\FrontEnd\FrontEnd::hooks();
-		
-	
-	}
 
-	
+		\Newspack\Govpack\Importer\Importer::hooks();
+		\Newspack\Govpack\Admin\Admin::hooks();
+		\Newspack\Govpack\FrontEnd\FrontEnd::hooks();
+
+		\Newspack\Govpack\Block\Profile::hooks();
+	}
 }

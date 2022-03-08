@@ -22,7 +22,7 @@ class Hooks {
 		add_action( 'init', [ __CLASS__, 'register_sidebars' ] );
 		add_action( 'admin_notices', [ __CLASS__, 'admin_notices' ] );
 
-     
+	 
 
 	}
 

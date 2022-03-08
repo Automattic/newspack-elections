@@ -21,72 +21,27 @@ class Profile extends \Newspack\Govpack\Block {
 	 */
 	public static function register_block() {
 
-        
-        \register_block_type(
-            GOVPACK_PLUGIN_FILE . "assets/js/src/editor/blocks/profile-self",
-            [
-                "render_callback" => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler_self' ],
-            ]
-        );
-
-        \register_block_type(
-            GOVPACK_PLUGIN_FILE . "assets/js/src/editor/blocks/profile",
-            [
-                "render_callback" => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler' ],
-            ]
-        );
-        
-
-        /*
-		register_block_type(
-			'govpack/profile',
+		\register_block_type(
+			GOVPACK_PLUGIN_FILE . 'assets/js/src/editor/blocks/profile/block.json',
 			[
-				'apiVersion'      => 2, 
-                "category"  => "govpack",
-				'editor_script'   => 'govpack-editor',
 				'render_callback' => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler' ],
-				'attributes'      => [
-					'id'        => [
-						'type'    => 'number',
-						'default' => 0,
-					],
-					'className' => [
-						'type' => 'string',
-					],
-					'format'    => [
-						'type'    => 'string',
-						'default' => \Newspack\Govpack\CPT\Profile::$default_profile_format,
-					],
-				],
-			]
-		);
-        */
-        
-        /*
-        register_block_type(
-			'govpack/profile-meta-selected',
-			[
-				'apiVersion'      => 2,
-				'editor_script'   => 'govpack-editor',
-				'render_callback' => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler_selected' ],
-				'attributes'      => [
-					'id'        => [
-						'type'    => 'number',
-						'default' => 0,
-					],
-				],
 			]
 		);
 
-        register_block_type(
-			'govpack/profile-meta',
+		/*
+		\register_block_type(
+			GOVPACK_PLUGIN_FILE . "assets/js/src/editor/blocks/profile-self",
 			[
-				'apiVersion'      => 2,
-				'editor_script'   => 'govpack-editor',
-				'render_callback' => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler_meta' ],
+				"render_callback" => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler_self' ],
 			]
 		);
-        */
+
+		return;
+		
+		*/
+		
+
+	  
 	}
 
 }

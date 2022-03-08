@@ -170,21 +170,21 @@ const cachePath = path.resolve( '.cache' );
 			new DuplicatePackageCheckerPlugin(),
 			...( env.WP ? [ new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ) ] : [] ),
             new MiniCssExtractPlugin(),
-            new ReactRefreshWebpackPlugin()
+
 		],
         externals : {
             React : "React",
             ReactDOM : "ReactDOM",
-            
+             '@wordpress/blocks': 'wp.blocks',
             "wp.apiFetch" : "@wordpress/api-fetch",
             "@wordpress/block-editor" : "wp.blockEditor",
-            "@wordpress/blocks" : "wp.blocks",
             "wp.components" : "@wordpress/components",
             "@wordpress/data" : "wp.data",
             "wp.element" : "@wordpress/element",
             "@wordpress/i18n"   : "wp.i18n",
             "@wordpress/server-side-render" : "wp.serverSiderender",
             "wp.icons" : "@wordpress/icons"
+            
         }
 	};
 

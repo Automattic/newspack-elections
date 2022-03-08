@@ -30,7 +30,7 @@ class State extends \Newspack\Govpack\Taxonomy {
 			self::TAX_SLUG,
 			self::get_taxonomy_post_types(),
 			[
-				'labels'            => [
+				'labels'             => [
 					'name'                       => _x( 'States', 'Taxonomy General Name', 'govpack' ),
 					'singular_name'              => _x( 'State', 'Taxonomy Singular Name', 'govpack' ),
 					'menu_name'                  => __( 'States', 'govpack' ),
@@ -52,18 +52,18 @@ class State extends \Newspack\Govpack\Taxonomy {
 					'items_list'                 => __( 'States list', 'govpack' ),
 					'items_list_navigation'      => __( 'States list navigation', 'govpack' ),
 				],
-				'public'            => true,
-				'hierarchical'      => false,
-				'rewrite'           => [
+				'public'             => true,
+				'hierarchical'       => false,
+				'rewrite'            => [
 					'slug'         => self::SLUG,
 					'with_front'   => false,
 					'hierarchical' => false,
 				],
-				'meta_box_cb'       => false,
-				'show_admin_column' => true,
-				'show_in_rest'      => true,
-				'show_ui'      		=> false,
-                'show_in_which_menu'=> "govpack",
+				'meta_box_cb'        => false,
+				'show_admin_column'  => true,
+				'show_in_rest'       => true,
+				'show_ui'            => false,
+				'show_in_which_menu' => 'govpack',
 			]
 		);
 	}

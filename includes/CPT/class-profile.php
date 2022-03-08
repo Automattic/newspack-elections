@@ -43,51 +43,55 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 */
 	public static function hooks() {
 		parent::hooks();
-		//add_action( 'cmb2_init', [ __CLASS__, 'add_profile_boxes' ] );
+		// add_action( 'cmb2_init', [ __CLASS__, 'add_profile_boxes' ] );
 		\add_action( 'init', [ __CLASS__, 'register_post_meta' ] );
 		\add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
 		\add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
 		\add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
-        \add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', [ __CLASS__, 'custom_columns' ] );
-        \add_filter( 'manage_' . self::CPT_SLUG . '_posts_custom_column', [ __CLASS__, 'custom_columns_content' ], 10, 2);
-        \add_filter( 'manage_taxonomies_for_' . self::CPT_SLUG . '_columns',  [ __CLASS__, 'mod_taxonomy_columns' ], 10, 2);
-        \add_filter( 'default_hidden_columns', [ __CLASS__, 'hidden_columns' ], 10, 2);
-        \add_action( 'restrict_manage_posts', [ __CLASS__, 'post_table_filters' ], 10, 2);
+		\add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', [ __CLASS__, 'custom_columns' ] );
+		\add_filter( 'manage_' . self::CPT_SLUG . '_posts_custom_column', [ __CLASS__, 'custom_columns_content' ], 10, 2 );
+		\add_filter( 'manage_taxonomies_for_' . self::CPT_SLUG . '_columns', [ __CLASS__, 'mod_taxonomy_columns' ], 10, 2 );
+		\add_filter( 'default_hidden_columns', [ __CLASS__, 'hidden_columns' ], 10, 2 );
+		\add_action( 'restrict_manage_posts', [ __CLASS__, 'post_table_filters' ], 10, 2 );
 
-        //\add_action( 'restrict_manage_posts', [ __CLASS__, 'remove_yoast' ], 10, 2);
-        add_filter( 'disable_months_dropdown', [ __CLASS__, 'disable_months_dropdown' ], 10, 2);
-        add_action('add_meta_boxes', [ __CLASS__, 'remove_wp_seo'], 100);
-        add_filter('wpseo_enable_editor_features_' . self::CPT_SLUG, "__return_false");
+		// \add_action( 'restrict_manage_posts', [ __CLASS__, 'remove_yoast' ], 10, 2);
+		add_filter( 'disable_months_dropdown', [ __CLASS__, 'disable_months_dropdown' ], 10, 2 );
+		add_action( 'add_meta_boxes', [ __CLASS__, 'remove_wp_seo' ], 100 );
+		add_filter( 'wpseo_enable_editor_features_' . self::CPT_SLUG, '__return_false' );
 	}
 
-    public static function remove_wp_seo() {
+	public static function remove_wp_seo() {
 
-        add_action('add_meta_boxes', function () {
-            remove_meta_box('wpseo_meta', self::CPT_SLUG, 'normal');
-        }, 100);
-        
-    }
+		add_action(
+			'add_meta_boxes',
+			function () {
+				remove_meta_box( 'wpseo_meta', self::CPT_SLUG, 'normal' );
+			},
+			100
+		);
+		
+	}
 
-    public static function disable_months_dropdown($disable, $post_type ) {
+	public static function disable_months_dropdown( $disable, $post_type ) {
 
-        if($post_type === self::CPT_SLUG){
-            return true;
-        }
+		if ( $post_type === self::CPT_SLUG ) {
+			return true;
+		}
 
-        return $disable;
-    }
+		return $disable;
+	}
 
-    public static function hidden_columns( $hidden, $screen ){
+	public static function hidden_columns( $hidden, $screen ) {
 
-      
+	  
 
-        if("edit-govpack_profiles" === $screen->id){
-            $hidden[] = "email";
-            $hidden[] = "phone";
-        }
+		if ( 'edit-govpack_profiles' === $screen->id ) {
+			$hidden[] = 'email';
+			$hidden[] = 'phone';
+		}
 
-        return $hidden;
-    }
+		return $hidden;
+	}
 
 	/**
 	 * Register the Profiles post type
@@ -117,8 +121,8 @@ class Profile extends \Newspack\Govpack\Post_Type {
 				'public'       => true,
 				'show_in_rest' => true,
 				'show_ui'      => true,
-                'show_in_menu' => "govpack",
-				'supports'     => [ 'revisions', 'thumbnail', "editor", "custom-fields", "title", "excerpt"],
+				'show_in_menu' => 'govpack',
+				'supports'     => [ 'revisions', 'thumbnail', 'editor', 'custom-fields', 'title', 'excerpt' ],
 				'taxonomies'   => [ 'post_tag' ],
 				'as_taxonomy'  => \Newspack\Govpack\Tax\Profile::TAX_SLUG,
 				'menu_icon'    => 'dashicons-groups',
@@ -126,9 +130,9 @@ class Profile extends \Newspack\Govpack\Post_Type {
 					'slug'       => apply_filters( 'govpack_profile_filter_slug', 'profile' ),
 					'with_front' => 'false',
 				],
-                'template' => array(
-                    array( 'govpack/profile-meta' )
-                )
+				'template'     => [
+					[ 'govpack/profile-meta' ],
+				],
 			]
 		);
 	}
@@ -138,53 +142,56 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 */
 	public static function register_post_meta() {
 
-       
+	   
 
-		self::register_meta("prefix");
-		self::register_meta("first_name");
-		self::register_meta("last_name");
+		self::register_meta( 'prefix' );
+		self::register_meta( 'first_name' );
+		self::register_meta( 'last_name' );
 
-		$address_fields = ["address", "city", "state", "county", "zip"];
-		$address_types = ["main_office", "secondary_office"];
+		$address_fields = [ 'address', 'city', 'state', 'county', 'zip' ];
+		$address_types  = [ 'main_office', 'secondary_office' ];
 
-		foreach($address_types as $type){
-			foreach($address_fields as $field){
-				$slug = sprintf("%s_%s", $type, $field);
-				self::register_meta($slug);
+		foreach ( $address_types as $type ) {
+			foreach ( $address_fields as $field ) {
+				$slug = sprintf( '%s_%s', $type, $field );
+				self::register_meta( $slug );
 			}
 		}
 
-		self::register_meta("position");
-		self::register_meta("title");
+		self::register_meta( 'position' );
+		self::register_meta( 'title' );
 
-		self::register_meta("main_phone");
-		self::register_meta("secondary_phone");
-		self::register_meta("email");
-		self::register_meta("twitter");
-		self::register_meta("instagram");
-		self::register_meta("facebook");
-		self::register_meta("linkedin");
-		self::register_meta("leg_url");
-		self::register_meta("campaign_url");
+		self::register_meta( 'main_phone' );
+		self::register_meta( 'secondary_phone' );
+		self::register_meta( 'email' );
+		self::register_meta( 'twitter' );
+		self::register_meta( 'instagram' );
+		self::register_meta( 'facebook' );
+		self::register_meta( 'linkedin' );
+		self::register_meta( 'leg_url' );
+		self::register_meta( 'campaign_url' );
 		
 	}
 
 	/**
 	 * Register single Meta data for the post in the REST API 
 	 */
-	public static function register_meta(string $slug, array $args = []) {
+	public static function register_meta( string $slug, array $args = [] ) {
 
 
-		$args = array_merge([
-			'show_in_rest' => true,
-			'single' => true,
-			'type' => 'string',
-            'auth_callback' => function() {
-                return current_user_can( 'edit_posts' );
-            }
-		], $args);
+		$args = array_merge(
+			[
+				'show_in_rest'  => true,
+				'single'        => true,
+				'type'          => 'string',
+				'auth_callback' => function() {
+					return current_user_can( 'edit_posts' );
+				},
+			],
+			$args
+		);
 
-		register_post_meta( self::CPT_SLUG, $slug, $args);
+		register_post_meta( self::CPT_SLUG, $slug, $args );
 	}
 
 	/**
@@ -204,57 +211,57 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 * @param array $sortable_columns An array of sortable columns.
 	 */
 	public static function sortable_columns( $sortable_columns ) {
-		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\State::TAX_SLUG ]           = 'State';
-		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\Party::TAX_SLUG ]           = 'Party';
-		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] = 'Legislative Body';
-        $sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\OfficeHolderStatus::TAX_SLUG ] = 'Office Holder Status';
-        $sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\OfficeHolderTitle::TAX_SLUG ] = 'Office Holder Title';
-    
+		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\State::TAX_SLUG ]              = 'State';
+		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\Party::TAX_SLUG ]              = 'Party';
+		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ]    = 'Legislative Body';
+		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\OfficeHolderStatus::TAX_SLUG ] = 'Office Holder Status';
+		$sortable_columns[ 'taxonomy-' . \Newspack\Govpack\Tax\OfficeHolderTitle::TAX_SLUG ]  = 'Office Holder Title';
+	
 		return $sortable_columns;
 	}
 
-    /**
+	/**
 	 * Add The Pfofile Photo to the post Table.
 	 *
 	 * @param array $columns An array of columns.
 	 */
 	public static function custom_columns( $columns ) {
-        
+		
 
-        // I want the image between the checkbox and the title so we have to slice up the columns array
-        // Add the new colum and merge it all back together
-        $before = array_splice($columns, 0, 1);
-        $new = [  "image" => "Picture" ];
-        $after = array_splice($columns, 0);
-        $columns = array_merge($before, $new, $after);
+		// I want the image between the checkbox and the title so we have to slice up the columns array
+		// Add the new colum and merge it all back together
+		$before  = array_splice( $columns, 0, 1 );
+		$new     = [ 'image' => 'Picture' ];
+		$after   = array_splice( $columns, 0 );
+		$columns = array_merge( $before, $new, $after );
 
 
-        // generally I want to add new columns Before Date
-        // splace the array to remove date
-        $date = array_splice($columns, -1, 1);
-        // add the new columns
-        $columns["phone"] = "Main Phone";
-        $columns["email"] = "Email";
+		// generally I want to add new columns Before Date
+		// splace the array to remove date
+		$date = array_splice( $columns, -1, 1 );
+		// add the new columns
+		$columns['phone'] = 'Main Phone';
+		$columns['email'] = 'Email';
 
-        // remerge date on the end
-        $columns = array_merge($columns, $date);
+		// remerge date on the end
+		$columns = array_merge( $columns, $date );
 
 		return $columns;
 	}
 
 
-    public static function post_table_filters($post_type, $which){
-        
-        self::taxonomy_dropdown( \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG, $post_type );
-        self::taxonomy_dropdown( \Newspack\Govpack\Tax\State::TAX_SLUG, $post_type );
-        self::taxonomy_dropdown( \Newspack\Govpack\Tax\Party::TAX_SLUG, $post_type );
-        self::taxonomy_dropdown( \Newspack\Govpack\Tax\OfficeHolderStatus::TAX_SLUG, $post_type );
-        self::taxonomy_dropdown( \Newspack\Govpack\Tax\OfficeHolderTitle::TAX_SLUG, $post_type );
-        
-    }
+	public static function post_table_filters( $post_type, $which ) {
+		
+		self::taxonomy_dropdown( \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG, $post_type );
+		self::taxonomy_dropdown( \Newspack\Govpack\Tax\State::TAX_SLUG, $post_type );
+		self::taxonomy_dropdown( \Newspack\Govpack\Tax\Party::TAX_SLUG, $post_type );
+		self::taxonomy_dropdown( \Newspack\Govpack\Tax\OfficeHolderStatus::TAX_SLUG, $post_type );
+		self::taxonomy_dropdown( \Newspack\Govpack\Tax\OfficeHolderTitle::TAX_SLUG, $post_type );
+		
+	}
 
 
-    /**
+	/**
 	 * Displays a categories drop-down for filtering on the Posts list table.
 	 *
 	 * @since 4.6.0
@@ -265,7 +272,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 */
 	public static function taxonomy_dropdown( $taxonomy, $post_type ) {
 
-		$current = isset( $_REQUEST[$taxonomy] ) ? wc_clean( wp_unslash( $_REQUEST[$taxonomy] ) ) : false; // WPCS: input var ok, sanitization ok.
+		$current = isset( $_REQUEST[ $taxonomy ] ) ? wc_clean( wp_unslash( $_REQUEST[ $taxonomy ] ) ) : false; // WPCS: input var ok, sanitization ok.
 
 
 		/**
@@ -281,17 +288,17 @@ class Profile extends \Newspack\Govpack\Post_Type {
 		}
 
 		if ( is_object_in_taxonomy( $post_type, $taxonomy ) ) {
-			$dropdown_options = array(
+			$dropdown_options = [
 				'show_option_all' => get_taxonomy( $taxonomy )->labels->all_items,
 				'hide_empty'      => 0,
 				'hierarchical'    => 1,
 				'show_count'      => 0,
 				'orderby'         => 'name',
 				'selected'        => $current,
-                'taxonomy'        => $taxonomy,
-                'name'        => $taxonomy,
-                'value_field' => "slug"
-			);
+				'taxonomy'        => $taxonomy,
+				'name'            => $taxonomy,
+				'value_field'     => 'slug',
+			];
 
 			echo '<label class="screen-reader-text" for="cat">' . get_taxonomy( $taxonomy )->labels->filter_by_item . '</label>';
 
@@ -300,50 +307,49 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	}
 
 
-    /**
+	/**
 	 * Modify Taxonomy Columns on Profile Post List
 	 *
 	 * @param array $columns An array of columns.
 	 */
-    public static function  mod_taxonomy_columns( $columns ){
+	public static function mod_taxonomy_columns( $columns ) {
 
-        unset($columns["govpack_profile_tax"]);
-        unset($columns["govpack_issue_tax"]);
-        return $columns;
+		unset( $columns['govpack_profile_tax'] );
+		unset( $columns['govpack_issue_tax'] );
+		return $columns;
 
-    }
+	}
 
-    /**
+	/**
 	 * Add The Pfofile Photo to the post Table.
 	 *
 	 * @param array $columns An array of columns.
 	 */
-	public static function custom_columns_content( $column_key, $post_id) {
+	public static function custom_columns_content( $column_key, $post_id ) {
 
-        
-        
-        if ('image' === $column_key) {
-            if(has_post_thumbnail($post_id)){
-            echo \get_the_post_thumbnail($post_id, [90,90]);
-            }
-        }
+		
+		
+		if ( 'image' === $column_key ) {
+			if ( has_post_thumbnail( $post_id ) ) {
+				echo \get_the_post_thumbnail( $post_id, [ 90, 90 ] );
+			}
+		}
 
-        if ('phone' === $column_key) {
-            
+		if ( 'phone' === $column_key ) {
+			
 
-                $phone = esc_html(get_post_meta($post_id, "main_phone", true));
-                if($phone){
-                    echo sprintf('<a href="tel:%s">%s</a>', $phone, $phone);
-                }
-        }
+				$phone = esc_html( get_post_meta( $post_id, 'main_phone', true ) );
+			if ( $phone ) {
+				echo sprintf( '<a href="tel:%s">%s</a>', $phone, $phone );
+			}
+		}
 
-        if ('email' === $column_key) {
-            $email = esc_html(get_post_meta($post_id, "email", true));
-            if($email){
-                echo sprintf('<a href="mailto:%s">%s</a>', $email, $email);
-            }
-            
-        }
+		if ( 'email' === $column_key ) {
+			$email = esc_html( get_post_meta( $post_id, 'email', true ) );
+			if ( $email ) {
+				echo sprintf( '<a href="mailto:%s">%s</a>', $email, $email );
+			}       
+		}
 
 		
 	}
@@ -671,7 +677,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 			return;
 		}
 
-        $profile_raw_data = get_post($profile_id );
+		$profile_raw_data = get_post( $profile_id );
 		if ( ! $profile_raw_data ) {
 			return;
 		}
@@ -708,16 +714,16 @@ class Profile extends \Newspack\Govpack\Post_Type {
 			'facebook'         => $profile_raw_meta_data['facebook'][0] ?? '',
 			'website'          => $profile_raw_meta_data['leg_url'][0] ?? '',
 			'biography'        => $profile_raw_meta_data['biography'][0] ?? '',
-            'address'           => $profile_raw_meta_data['main_office_address'][0] ?? $profile_raw_meta_data['secondary_office_address'][0] ?? '',
+			'address'          => $profile_raw_meta_data['main_office_address'][0] ?? $profile_raw_meta_data['secondary_office_address'][0] ?? '',
 			'party'            => $term_data[ \Newspack\Govpack\Tax\Party::TAX_SLUG ] ?? '',
 			'state'            => $term_data[ \Newspack\Govpack\Tax\State::TAX_SLUG ] ?? '',
 			'legislative_body' => $term_data[ \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] ?? '',
-            'name'             => $profile_raw_data->post_title ?? '',
-            'bio'             =>  $profile_raw_data->post_excerpt ?? '',
-            'link'          => get_permalink( $profile_id)
+			'name'             => $profile_raw_data->post_title ?? '',
+			'bio'              => $profile_raw_data->post_excerpt ?? '',
+			'link'             => get_permalink( $profile_id ),
 		];
 
-        $profile_data['hasSocial'] = ($profile_data['facebook'] || $profile_data['instagram'] || $profile_data['twitter'] || $profile_data['linkedin']);
+		$profile_data['hasSocial'] = ( $profile_data['facebook'] || $profile_data['instagram'] || $profile_data['twitter'] || $profile_data['linkedin'] );
 
 		return $profile_data;
 	}
@@ -732,13 +738,13 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 */
 	public static function shortcode_handler( $atts, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 
-        return self::load_block($atts, $content, "profile");
+		return self::load_block( $atts, $content, 'profile' );
 	}
-    
+	
 
-    public static function load_block($attributes, $content, $template){
+	public static function load_block( $attributes, $content, $template ) {
 
-        if ( ! isset( $attributes['profileId'] ) ) {
+		if ( ! isset( $attributes['profileId'] ) ) {
 			return;
 		}
 
@@ -747,16 +753,16 @@ class Profile extends \Newspack\Govpack\Post_Type {
 			return;
 		}
 
-        require_once GOVPACK_PLUGIN_FILE . 'template-parts/functions.php';
+		require_once GOVPACK_PLUGIN_FILE . 'template-parts/functions.php';
 
-        ob_start();
-		require GOVPACK_PLUGIN_FILE . 'template-parts/'. $template .'.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+		ob_start();
+		require GOVPACK_PLUGIN_FILE . 'template-parts/' . $template . '.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 		$html = ob_get_clean();
 
 		return $html;
 
-    }
-    /**
+	}
+	/**
 	 * Shortcode handler for [govpack].
 	 *
 	 * @param array  $atts    Array of shortcode attributes.
@@ -765,10 +771,10 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 * @return string HTML for recipe shortcode.
 	 */
 	public static function shortcode_handler_self( $atts, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-        return self::load_block($atts, $content, "profile-self");
-    }
+		return self::load_block( $atts, $content, 'profile-self' );
+	}
 
-    /**
+	/**
 	 * Shortcode handler for [govpack].
 	 *
 	 * @param array  $atts    Array of shortcode attributes.
@@ -777,8 +783,8 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 * @return string HTML for recipe shortcode.
 	 */
 
-    public static function shortcode_handler_selected($atts, $content = null){
-        if ( ! isset( $atts['id'] ) ) {
+	public static function shortcode_handler_selected( $atts, $content = null ) {
+		if ( ! isset( $atts['id'] ) ) {
 			return;
 		}
 
@@ -787,41 +793,41 @@ class Profile extends \Newspack\Govpack\Post_Type {
 			return;
 		}
 
-        ob_start();
+		ob_start();
 		require_once GOVPACK_PLUGIN_FILE . 'template-parts/profile-selected-demo.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 		$html = ob_get_clean();
 
 		return $html;
-    }
+	}
 
-     /**
-	 * Shortcode handler for [govpack].
-	 *
-	 * @param array  $atts    Array of shortcode attributes.
-	 * @param string $content Post content.
-	 *
-	 * @return string HTML for recipe shortcode.
-	 */
+	 /**
+	  * Shortcode handler for [govpack].
+	  *
+	  * @param array  $atts    Array of shortcode attributes.
+	  * @param string $content Post content.
+	  *
+	  * @return string HTML for recipe shortcode.
+	  */
 
-    public static function shortcode_handler_meta($atts, $content = null){
+	public static function shortcode_handler_meta( $atts, $content = null ) {
 
-        global $post;
+		global $post;
 
-        if(self::CPT_SLUG !== $post->post_type){
-            return;
-        }
-      
-        $profile_data = self::get_data($post->ID);
+		if ( self::CPT_SLUG !== $post->post_type ) {
+			return;
+		}
+	  
+		$profile_data = self::get_data( $post->ID );
 		if ( ! $profile_data ) {
 			return;
 		}
 
-        ob_start();
+		ob_start();
 		require_once GOVPACK_PLUGIN_FILE . 'template-parts/profile-self.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 		$html = ob_get_clean();
 
 		return $html;
-    }
+	}
 
 	/**
 	 * Create a profile.

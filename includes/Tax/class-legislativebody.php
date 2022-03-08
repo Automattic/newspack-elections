@@ -30,7 +30,7 @@ class LegislativeBody extends \Newspack\Govpack\Taxonomy {
 			self::TAX_SLUG,
 			self::get_taxonomy_post_types(),
 			[
-				'labels'            => [
+				'labels'             => [
 					'name'                       => _x( 'Legislative Bodies', 'Taxonomy General Name', 'govpack' ),
 					'singular_name'              => _x( 'Legislative Body', 'Taxonomy Singular Name', 'govpack' ),
 					'menu_name'                  => __( 'Legislative Bodies', 'govpack' ),
@@ -52,18 +52,18 @@ class LegislativeBody extends \Newspack\Govpack\Taxonomy {
 					'items_list'                 => __( 'Legislative Bodies list', 'govpack' ),
 					'items_list_navigation'      => __( 'Legislative Bodies list navigation', 'govpack' ),
 				],
-				'public'            => true,
-				'hierarchical'      => true,
-				'rewrite'           => [
+				'public'             => true,
+				'hierarchical'       => true,
+				'rewrite'            => [
 					'slug'         => self::SLUG,
 					'with_front'   => false,
 					'hierarchical' => true,
 				],
-				'meta_box_cb'       => false,
-				'show_admin_column' => true,
-				'show_in_rest'      => true,
-				'show_ui'      		=> true,
-                'show_in_which_menu'      => "govpack",
+				'meta_box_cb'        => false,
+				'show_admin_column'  => true,
+				'show_in_rest'       => true,
+				'show_ui'            => true,
+				'show_in_which_menu' => 'govpack',
 			]
 		);
 	}

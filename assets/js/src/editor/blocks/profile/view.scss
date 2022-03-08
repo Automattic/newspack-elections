@@ -2,12 +2,14 @@
 
     $block : &;
 
+    margin-bottom:1rem;
 
     &__contacts ul,
     &__container {
         display: flex;  
         flex-direction: row;
         width:100%;
+       
     }
 
     
@@ -30,6 +32,7 @@
 
     }
 
+    .editor-styles-wrapper &__contacts,
     &__contacts{
 
         ul{
@@ -62,15 +65,42 @@
         }
     }
 
-    &__info{
-        width:100%;
-        display: flex;
-        flex-direction: column;
+    &__contact {
 
-        h3{
-            margin-top:0;
+        $elm : &;
+
+        &__link,
+        a{
+            display:block;
+            text-decoration: none;
         }
+
+        &__icon{
+            display:inline-block;
+            max-width:20px;
+            max-height:20px;
+            width:auto;
+            height:auto;
+    
+            svg{
+                max-width:20px;
+                max-height:20px;
+                display:block;
+            }
+        }
+
+        &__label{
+            display:inline-block;
+        }
+
+        &--hide-label{
+            #{$elm}__label{
+                display:none;
+            }
+        }
+
     }
+
 
     &__line{
         padding-top:.5rem;

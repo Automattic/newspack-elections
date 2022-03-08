@@ -10,8 +10,12 @@ import {
     SelectControl
 } from '@wordpress/components';
 import { decodeEntities } from '@wordpress/html-entities';
+import {Icon} from '@wordpress/icons';
 
-
+import FacebookIcon from "./../../../../../images/facebook.svg"
+import TwitterIcon from "./../../../../../images/twitter.svg"
+import LinkedinIcon from "./../../../../../images/linkedin.svg"
+import EmailIcon from "./../../../../../images/email.svg"
 /**
  * External dependencies
  */
@@ -103,6 +107,7 @@ const SingleProfile = (props) => {
     } = props.attributes
 
     console.log(profile, props)
+    
 
     const maxWidth = (align !== "full" ? props.availableWidths.find( (w) => w.value === width)?.maxWidth : false)
 
@@ -117,35 +122,59 @@ const SingleProfile = (props) => {
         </a>)
     }
 
+    const Contact = (props) => {
+        return (
+            <li className={classnames("wp-block-govpack-profile__contact", {
+                "wp-block-govpack-profile__contact--hide-label" : true
+            })}>
+                <a href={props.href} className="wp-block-govpack-profile__link">
+                    {props.icon && (
+                        <span className="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--\">{props.icon}</span>
+                    )}
+                    <span className = "wp-block-govpack-profile__contact__label">{props.label}</span>
+                </a>
+            </li >
+        )
+    }
+
     const Contacts = (props) => {
         return (
            
             <div className="wp-block-govpack-profile__contacts">
                 <ul>
                     { showEmail && (
-                        <li>
-                            <a href={`mailto:${profile.link}`}>em</a>
-                        </li>
+                    
+                        <Contact 
+                            href={`mailto:${profile.link}`}
+                            label = "email"
+                            icon = { <EmailIcon />}
+                        />
                     )}
 
                     { showSocial && (
                         <>
-                            { profile.facebook && (
-                                <li>
-                                    <a href={profile.facebook}>fb</a>
-                                </li>
+                            { profile.facebook && (                              
+                                <Contact 
+                                    href={profile.facebook} 
+                                    label = "FB"
+                                    icon = { <FacebookIcon />}
+                                />
                             )}
 
                             { profile.twitter && (
-                                <li>
-                                    <a href={profile.twitter}>tw</a>
-                                </li>
+                                 <Contact 
+                                    href={profile.twitter} 
+                                    label = "Tw" 
+                                    icon = { <TwitterIcon />}
+                                />
                             )}
 
                             { profile.linkedin && (
-                                <li>
-                                    <a href={profile.linkedin}>li</a>
-                                </li>
+                                 <Contact 
+                                    href={profile.linkedin} 
+                                    label = "Li" 
+                                    icon = { <LinkedinIcon />}
+                                />
                             )}
                         </>
                     )}

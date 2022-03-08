@@ -20,6 +20,7 @@ class Admin {
         \add_action( 'enqueue_block_editor_assets', [ __class__, 'register_blocks' ], 1, 1 );
         \add_action( 'admin_enqueue_scripts', [ __class__, 'register_assets' ], 100, 1 );
         \add_action( 'admin_enqueue_scripts', [ __class__, 'load_assets' ], 101, 1 );
+        \add_action( 'block_categories', [ __class__, 'block_categories' ], 10, 2 );
 
         /*
         add_filter( 'submenu_file', function ($submenu_file, $parent_file ) {
@@ -37,7 +38,21 @@ class Admin {
             return $submenu_file;
         }, 10, 2);
         */
-	}
+    }
+
+    public static function block_categories( $categories ) {
+        return array_merge(
+                $categories,
+                [
+                    [
+                        'slug'  => 'govpack-blocks',
+                        'title' => \__( 'Govpack Blocks', 'govpack' ),
+                    ],
+                ]
+        );
+    }
+	
+
     public static function register_blocks(){
         
        // wp_enqueue_script("govpack-editor");

@@ -2,7 +2,7 @@
 	"name": "govpack/profile",
     "style": "file:../../../../../../dist/profile_block.css",
     "editorScript": "file:../../../../../../dist/profile_block.js",
-	"category": "govpack",
+	"category": "govpack-blocks",
 	"attributes": {
 		"className": {
 			"type": "string",

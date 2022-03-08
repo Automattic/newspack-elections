@@ -9,7 +9,7 @@ const process = require( 'process' );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
 const DuplicatePackageCheckerPlugin = require( 'duplicate-package-checker-webpack-plugin' );
 const webpack = require( 'webpack' );
-const FileConfig = require( '@automattic/calypso-build/webpack/file-loader' );
+
 const Minify = require( '@automattic/calypso-build/webpack/minify' );
 const SassConfig = require( '@automattic/calypso-build/webpack/sass' );
 const TranspileConfig = require( '@automattic/calypso-build/webpack/transpile' );
@@ -63,6 +63,23 @@ const cachePath = path.resolve( '.cache' );
 	const cssFilename = cssNameFromFilename( outputFilename );
 	const cssChunkFilename = cssNameFromFilename( outputChunkFilename );
 
+    let FileConfig = {}
+    FileConfig.loader = ( {
+        outputPath = 'images/',
+        name = '[name]-[hash][ext]',
+        publicPath = '/',
+        emitFile = true,
+    } = {} ) => ( {
+        test: /\.(?:gif|jpg|jpeg|png)$/i,
+        type: 'asset/resource',
+        generator: {
+            filename: path.join( outputPath, name ),
+            publicPath,
+            emit: emitFile,
+        },
+    } );
+    
+
 	let babelConfig = path.join( process.cwd(), 'babel.config.js' );
 	let presets = [];
 	if ( ! fs.existsSync( babelConfig ) ) {
@@ -106,6 +123,10 @@ const cachePath = path.resolve( '.cache' );
 		module: {
 			strictExportPresence: true,
 			rules: [
+                {
+                    test: /\.svg$/i,
+                    use: ['@svgr/webpack']
+                },
 				TranspileConfig.loader( {
 					cacheDirectory: path.resolve( cachePath, 'babel' ),
 					configFile: babelConfig,
@@ -132,7 +153,7 @@ const cachePath = path.resolve( '.cache' );
 			],
 		},
 		resolve: {
-			extensions: [ '.json', '.js', '.jsx', '.ts', '.tsx' ],
+			extensions: [ '.json', '.js', '.jsx', '.ts', '.tsx', ".svg" ],
 			mainFields: [ 'browser', 'calypso:src', 'module', 'main' ],
 			modules: [ 'node_modules' ],
 		},
@@ -223,7 +244,7 @@ function getUpdatedWebpackConfig(env, arg){
     // Dev server client for web socket transport, hot and live reload logic
     //webpackConfig.entry.client = 'webpack-dev-server/client/index.js?hot=true&live-reload=true',
 
-    console.log(webpackConfig.module.rules[0].use[1])
+    console.log(webpackConfig.module)
 
     return webpackConfig
 }   

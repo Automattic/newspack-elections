@@ -1,26 +1,9 @@
 import { useState, useEffect } from "react"
-import { ReactDOM } from "ReactDOM"
 
 
-
-import { 
-    Button, 
-    FormFileUpload, 
-    __experimentalHStack as HStack,
-    __experimentalSurface as Surface,
-    __experimentalSpacer as Spacer,
-    __experimentalHeading as Heading,
-    Spinner,
-    SelectControl
-} from '@wordpress/components';
 
 import stage from "./../stages"
 import apiFetch from "./../ApiFetch"
-
-import {isUndefined} from "lodash"
-
-import Error from "./Error.jsx"
-import InfoPanel from "./InfoPanel.jsx"
 
 
 import Uploader from "./Uploader.jsx"

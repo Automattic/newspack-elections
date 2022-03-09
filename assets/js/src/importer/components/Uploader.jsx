@@ -261,6 +261,7 @@ const Uploader = (props) => {
                     </HStack>
                 </VStack>
             </InfoPanel>
+            {/*
             <InfoPanel
                 heading = "From GovPack"
             >
@@ -304,6 +305,7 @@ const Uploader = (props) => {
                 </HStack>
 
             </InfoPanel>
+                            */}
         </>
     )
 }

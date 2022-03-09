@@ -18,7 +18,7 @@ const InfoPanel = (props) => {
                 <Spacer marginBottom="4" />
                 { props.children }
             </Spacer>
-        </div>
+        </div>  
     )
 }
 

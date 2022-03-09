@@ -16,7 +16,7 @@ import FacebookIcon from "./../../../../../images/facebook.svg"
 import TwitterIcon from "./../../../../../images/twitter.svg"
 import LinkedinIcon from "./../../../../../images/linkedin.svg"
 import EmailIcon from "./../../../../../images/email.svg"
-/**
+/**  
  * External dependencies
  */
  import classnames from 'classnames';

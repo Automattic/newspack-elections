@@ -19,7 +19,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 const { responseInterceptor } = require('http-proxy-middleware');
 
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+//const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 process.env.NODE_ENV = "development"
 /**
@@ -133,9 +133,9 @@ const cachePath = path.resolve( '.cache' );
 					exclude: /node_modules\//,
 					presets,
 					workerCount,
-                    plugins : [
-                        require.resolve('react-refresh/babel')
-                    ]
+                    //plugins : [
+                    //    require.resolve('react-refresh/babel')
+                   // ]
 				} ),
 				TranspileConfig.loader( {
 					cacheDirectory: path.resolve( cachePath, 'babel' ),
@@ -194,6 +194,8 @@ const cachePath = path.resolve( '.cache' );
 function getUpdatedWebpackConfig(env, arg){
 
     let webpackConfig = getWebpackConfig(env, arg)
+
+    /*
     webpackConfig.devServer = {
         allowedHosts: 'all',
         port: 8080,
@@ -203,12 +205,7 @@ function getUpdatedWebpackConfig(env, arg){
         },
         server: 'https',
         hot: true,
-        /*
-        static: {
-            directory: path.join(__dirname, 'dist'),
-            publicPath: '/content/plugins/govpack/dist-hot',
-        },
-        */
+ 
         proxy: [{
             context : ["/**", "!/content/plugins/govpack/dist/**" ],
             target: 'https://govpack.cup',
@@ -232,6 +229,7 @@ function getUpdatedWebpackConfig(env, arg){
             })
         }]        
     }
+    */
     webpackConfig.entry = {}
     webpackConfig.entry.editor = path.join( __dirname, 'assets', 'js', "src", 'editor', "index" )
     webpackConfig.entry.profile_block = path.join( __dirname, 'assets', 'js', "src", 'editor', 'blocks', 'profile', "index" )

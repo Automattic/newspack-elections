@@ -13,18 +13,6 @@ import { decodeEntities } from '@wordpress/html-entities';
 
 import {__experimentalUnitControl as UnitControl} from '@wordpress/components';
 
-/*
- * import { ServerSideRender } from '@wordpress/editor'
- *    is deprecated.
- * Use
- *    import ServerSideRender from @wordpress/server-side-render
- * instead. But it only has a default export, not a named export,
- * so you can't use braces.
- */
-
-
-import ServerSideRender from '@wordpress/server-side-render';
-import ProfileSelector from '../../components/profile-selector';
 
 import { AutocompleteWithSuggestions } from 'newspack-components';
 
@@ -52,7 +40,7 @@ const units = [
 	},
 	{
 		value: 'rem',
-		label: 'rem',
+		label: 'rem',  
 	},
 ];
 

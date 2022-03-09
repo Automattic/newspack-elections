@@ -11,7 +11,6 @@ function modulesOption( opts ) {
 	return false; // Default
 }
 
-console.log("adaskkdv")
 module.exports = ( api, opts ) => ( {
 	presets: [
 		[
@@ -44,6 +43,5 @@ module.exports = ( api, opts ) => ( {
 			},
 		],
 		require.resolve( './babel-plugin-optimize-i18n' ),
-        require.resolve('react-refresh/babel')
 	],
 } );

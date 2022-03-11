@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Register and handle the block.
  */
-class Profile extends \Newspack\Govpack\Block {
+class ProfileSelf extends \Newspack\Govpack\Block {
 
 	/**
 	 * Registers the block.
@@ -22,7 +22,7 @@ class Profile extends \Newspack\Govpack\Block {
 	public static function register_block() {
 
 		\register_block_type(
-			GOVPACK_PLUGIN_FILE . 'assets/js/src/editor/blocks/profile/block.json',
+			GOVPACK_PLUGIN_FILE . 'assets/js/src/editor/blocks/profile-self/block.json',
 			[
 				'render_callback' => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler' ],
 			]

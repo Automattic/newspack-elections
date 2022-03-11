@@ -61,7 +61,8 @@
 			"default": true
 		},
         "align": {
-			"type": "string"
+			"type": "string",
+            "default": "left"
 		}
 	}
 }

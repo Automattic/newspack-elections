@@ -723,7 +723,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 			'link'             => get_permalink( $profile_id ),
 		];
 
-		$profile_data['hasSocial'] = ( $profile_data['facebook'] || $profile_data['instagram'] || $profile_data['twitter'] || $profile_data['linkedin'] );
+		$profile_data['hasSocial'] = ( $profile_data['facebook'] ?? $profile_data['instagram'] ?? $profile_data['twitter'] ?? $profile_data['linkedin'] ?? false );
 
 		return $profile_data;
 	}
@@ -736,9 +736,9 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 *
 	 * @return string HTML for recipe shortcode.
 	 */
-	public static function shortcode_handler( $atts, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public static function shortcode_handler( $attributes, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 
-		return self::load_block( $atts, $content, 'profile' );
+		return self::load_block( $attributes, $content, 'profile' );
 	}
 	
 
@@ -752,6 +752,10 @@ class Profile extends \Newspack\Govpack\Post_Type {
 		if ( ! $profile_data ) {
 			return;
 		}
+
+        echo "<pre>";
+        var_dump($attributes);
+        die();
 
 		require_once GOVPACK_PLUGIN_FILE . 'template-parts/functions.php';
 

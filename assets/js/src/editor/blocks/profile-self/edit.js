@@ -9,6 +9,7 @@ import { useRef, useState, useEffect } from '@wordpress/element';
 import { Icon, postAuthor,  pullLeft, pullRight, resizeCornerNE } from '@wordpress/icons';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
+import { useSelect }  from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
 
 import { AutocompleteWithSuggestions } from 'newspack-components';
@@ -67,10 +68,14 @@ function Edit( props ) {
 		if ( 0 !== profileId ) {
 			getProfileById();
 		} else {
-            setAttributes({profileId : 7220})
+
         }
 	}, [ profileId ] );
 
+    useSelect( async (select) => {
+        let id = await select("core/editor").getCurrentPostId()
+        setAttributes({"profileId" : id })
+    });
 
     const getProfileById = async () => {
 

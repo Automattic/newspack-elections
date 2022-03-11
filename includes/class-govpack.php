@@ -83,5 +83,6 @@ class Govpack {
 		\Newspack\Govpack\FrontEnd\FrontEnd::hooks();
 
 		\Newspack\Govpack\Block\Profile::hooks();
+        \Newspack\Govpack\Block\ProfileSelf::hooks();
 	}
 }

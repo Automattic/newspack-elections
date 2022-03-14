@@ -744,6 +744,10 @@ class Profile extends \Newspack\Govpack\Post_Type {
 
 	public static function load_block( $block_name, $attributes, $content, $template ) {
 
+        if(\is_admin()){
+            return false;
+        }
+
 		if ( ! isset( $attributes['profileId'] ) ) {
 			return;
 		}

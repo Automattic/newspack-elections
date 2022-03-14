@@ -17,7 +17,7 @@ import {__experimentalUnitControl as UnitControl} from '@wordpress/components';
 import { AutocompleteWithSuggestions } from 'newspack-components';
 
 
-import SingleProfile from "./single-profile.jsx"
+import SingleProfile from "./../../components/single-profile"
 
 /**
  * @param {Object} props The component properties.
@@ -395,7 +395,7 @@ function Edit( props ) {
                         </>
                     ) }
 
-				    <SingleProfile profile={profile} attributes={ attributes } availableWidths = {availableWidths} />
+				    <SingleProfile blockClassName = "wp-block-govpack-profile"  profile={profile} attributes={ attributes } availableWidths = {availableWidths} />
                 </>
 			) : (
 			<Placeholder

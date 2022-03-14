@@ -81,6 +81,7 @@ const SingleProfile = (props) => {
     let {
         profile,
         attributes,
+        blockClassName,
         showSelf = false
     } = props
 
@@ -112,6 +113,8 @@ const SingleProfile = (props) => {
 
     console.log(profile, props)
 
+    
+
     const maxWidth = (align !== "full" ? props.availableWidths.find( (w) => w.value === width)?.maxWidth : false)
 
     const Link = (props) => {
@@ -128,7 +131,7 @@ const SingleProfile = (props) => {
     const Contacts = (props) => {
         return (
            
-            <div className="wp-block-govpack-profile__contacts">
+            <div className={`${blockClassName}__contacts`}>
                 <ul>
                     { showEmail && (
                         <li>
@@ -171,12 +174,12 @@ const SingleProfile = (props) => {
         '';
 
     return (
-       <div className= {classnames("wp-block-govpack-profile-self__container", {
-            "wp-block-govpack-profile-self__container--right" : (avatarAlignment === "right"),
-            "wp-block-govpack-profile-self__container--left" : (avatarAlignment === "left"),
-            "wp-block-govpack-profile-self__container--center" : (className === "is-styled-center"),
-            "wp-block-govpack-profile-self__container--align-center" : (align === "center"),
-            "wp-block-govpack-profile-self__container--show-self" : showSelf,
+       <div className= {classnames(`${blockClassName}__container`, {
+            [`${blockClassName}__container--right`] : (avatarAlignment === "right"),
+            [`${blockClassName}__container--left`] : (avatarAlignment === "left"),
+            [`${blockClassName}__container--center`] : (className === "is-styled-center"),
+            [`${blockClassName}__container--align-center`] : (align === "center"),
+            [`${blockClassName}__container--show-self`] : showSelf,
        })}
        style = {{
            maxWidth : maxWidth ?? "none"
@@ -185,7 +188,7 @@ const SingleProfile = (props) => {
 
     
             { showAvatar && profile.featured_image_thumbnail && (
-				<div className="wp-block-govpack-profile-self__avatar">
+				<div className={`${blockClassName}__avatar`}>
                     <Link>
                         <figure
                             style={ {
@@ -202,8 +205,8 @@ const SingleProfile = (props) => {
 
 
             
-                <div className="wp-block-govpack-profile-self__info">
-                    <div className="wp-block-govpack-profile-self__line">
+                <div className={`${blockClassName}__info`}>
+                    <div className={`${blockClassName}__line`}>
                         {showName && (
                             <h3><Link>{profile.title}</Link></h3>
                         )}

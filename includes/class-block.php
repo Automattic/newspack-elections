@@ -27,7 +27,6 @@ abstract class Block {
 	 *
 	 * @return void
 	 */
-	
 	public static function register_script() {}
 
 }

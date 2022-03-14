@@ -126,7 +126,7 @@ function Edit( props ) {
                         <AvatarAlignmentToolBar  attributes = {attributes} setAttributes = {setAttributes} />
                     )}
 
-				    <SingleProfile profile={profile} attributes={ attributes } availableWidths = {availableWidths} showSelf = {true} />
+				    <SingleProfile blockClassName="wp-block-govpack-profile-self" profile={profile} attributes={ attributes } availableWidths = {availableWidths} showSelf = {true} />
 
                 </>
 			) : (

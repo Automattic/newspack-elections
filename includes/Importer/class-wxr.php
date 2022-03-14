@@ -71,7 +71,8 @@ class WXR extends \Newspack\Govpack\Importer\Abstracts\Abstract_Importer {
 	 * Process Loop over WML file
 	 * calls  read_x functions for elements it finds
 	 *
-	 * @param XMLReader $reader  path of the JSON file.
+	 * @param XMLReader $reader path of the JSON file.
+	 * @param XMLReader $extra  Any extra data that needs to be passed in. Kept for compatability for Abstract.
 	 */
 	public static function process( $reader, $extra ) {
 

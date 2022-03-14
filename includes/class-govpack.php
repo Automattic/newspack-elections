@@ -45,14 +45,12 @@ class Govpack {
 	}
 
 	/**
-	 * Inits the class and registeres the hooks call
-	 *
-	 * @return self
+	 * Inits the class and registeres the hooks call.
 	 */
 	public function __construct() {
 		add_action( 'after_setup_theme', [ __class__, 'hooks' ] );
 		add_action( 'plugins_loaded', [ '\Newspack\Govpack\ActionScheduler\ActionScheduler', 'hooks' ], 0 );
-	
+
 	}
 
 	/**
@@ -60,13 +58,13 @@ class Govpack {
 	 */
 	public static function hooks() {
 
-		// Functions well need
+		// Functions well need.
 		\Newspack\Govpack\CPT\AsTaxonomy::hooks();
 
-		// Custom Post Types
+		// Custom Post Types.
 		\Newspack\Govpack\CPT\Profile::hooks();
 
-		// Taxonomies
+		// Taxonomies.
 		\Newspack\Govpack\Tax\LegislativeBody::hooks();
 		\Newspack\Govpack\Tax\OfficeHolderStatus::hooks();
 		\Newspack\Govpack\Tax\OfficeHolderTitle::hooks();
@@ -83,6 +81,6 @@ class Govpack {
 		\Newspack\Govpack\FrontEnd\FrontEnd::hooks();
 
 		\Newspack\Govpack\Block\Profile::hooks();
-        \Newspack\Govpack\Block\ProfileSelf::hooks();
+		\Newspack\Govpack\Block\ProfileSelf::hooks();
 	}
 }

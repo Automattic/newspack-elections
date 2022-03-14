@@ -43,7 +43,6 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 */
 	public static function hooks() {
 		parent::hooks();
-		// add_action( 'cmb2_init', [ __CLASS__, 'add_profile_boxes' ] );
 		\add_action( 'init', [ __CLASS__, 'register_post_meta' ] );
 		\add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
 		\add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
@@ -54,36 +53,34 @@ class Profile extends \Newspack\Govpack\Post_Type {
 		\add_filter( 'default_hidden_columns', [ __CLASS__, 'hidden_columns' ], 10, 2 );
 		\add_action( 'restrict_manage_posts', [ __CLASS__, 'post_table_filters' ], 10, 2 );
 
-		// \add_action( 'restrict_manage_posts', [ __CLASS__, 'remove_yoast' ], 10, 2);
 		add_filter( 'disable_months_dropdown', [ __CLASS__, 'disable_months_dropdown' ], 10, 2 );
-		add_action( 'add_meta_boxes', [ __CLASS__, 'remove_wp_seo' ], 100 );
 		add_filter( 'wpseo_enable_editor_features_' . self::CPT_SLUG, '__return_false' );
 	}
 
-	public static function remove_wp_seo() {
-
-		add_action(
-			'add_meta_boxes',
-			function () {
-				remove_meta_box( 'wpseo_meta', self::CPT_SLUG, 'normal' );
-			},
-			100
-		);
-		
-	}
-
+	/**
+	 * Disabled The Months Dropdown in the WP_List_Table
+	 * 
+	 * @param boolean $disable Boolean of wether or not its already been disabled  or not, possibly be another filter.
+	 * @param string  $post_type Slug of the post type being viewed in the admin.
+	 * @return boolean
+	 */
 	public static function disable_months_dropdown( $disable, $post_type ) {
 
-		if ( $post_type === self::CPT_SLUG ) {
+		if ( self::CPT_SLUG === $post_type ) {
 			return true;
 		}
 
 		return $disable;
 	}
 
+	/**
+	 * Adds Columns to the List of Columns Hidden by Default, They can be turned on in screen options
+	 * 
+	 * @param array  $hidden Array of columns available to the list table.
+	 * @param object $screen WP_Screen Object of the currently view.
+	 * @return array
+	 */
 	public static function hidden_columns( $hidden, $screen ) {
-
-	  
 
 		if ( 'edit-govpack_profiles' === $screen->id ) {
 			$hidden[] = 'email';
@@ -131,7 +128,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 					'with_front' => 'false',
 				],
 				'template'     => [
-					[ 'govpack/profile-meta' ],
+					[ 'govpack/profile-self' ],
 				],
 			]
 		);
@@ -175,6 +172,9 @@ class Profile extends \Newspack\Govpack\Post_Type {
 
 	/**
 	 * Register single Meta data for the post in the REST API 
+	 * 
+	 * @param string $slug name of the meta_field to register.
+	 * @param array  $args extra arguments the meta_field may take.
 	 */
 	public static function register_meta( string $slug, array $args = [] ) {
 
@@ -228,28 +228,33 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	public static function custom_columns( $columns ) {
 		
 
-		// I want the image between the checkbox and the title so we have to slice up the columns array
-		// Add the new colum and merge it all back together
+		// I want the image between the checkbox and the title so we have to slice up the columns array.
+		// Add the new colum and merge it all back together.
 		$before  = array_splice( $columns, 0, 1 );
 		$new     = [ 'image' => 'Picture' ];
 		$after   = array_splice( $columns, 0 );
 		$columns = array_merge( $before, $new, $after );
 
 
-		// generally I want to add new columns Before Date
-		// splace the array to remove date
+		// generally I want to add new columns Before Date.
+		// splice the array to remove date.
 		$date = array_splice( $columns, -1, 1 );
-		// add the new columns
+		// add the new columns.
 		$columns['phone'] = 'Main Phone';
 		$columns['email'] = 'Email';
 
-		// remerge date on the end
+		// remerge date on the end.
 		$columns = array_merge( $columns, $date );
 
 		return $columns;
 	}
 
-
+	/**
+	 * Adds Dropdowns to the WP_List_Table for the post_type
+	 *
+	 * @param string $post_type slug of the post type we want add the dropdowns to.
+	 * @param string $which unknown, kept fo it triggers the cirrect function from the filter call.
+	 */
 	public static function post_table_filters( $post_type, $which ) {
 		
 		self::taxonomy_dropdown( \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG, $post_type );
@@ -268,11 +273,17 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 *
 	 * @global int $cat Currently selected category.
 	 *
+	 * @param string $taxonomy Taxonomy slug.
 	 * @param string $post_type Post type slug.
 	 */
 	public static function taxonomy_dropdown( $taxonomy, $post_type ) {
 
-		$current = isset( $_REQUEST[ $taxonomy ] ) ? wc_clean( wp_unslash( $_REQUEST[ $taxonomy ] ) ) : false; // WPCS: input var ok, sanitization ok.
+		if ( isset( $_REQUEST[ $taxonomy ] ) ) {
+			$current = sanitize_key( wp_unslash( $_REQUEST[ $taxonomy ] ) );
+		
+		} else {
+			$current = false;
+		}
 
 
 		/**
@@ -300,8 +311,11 @@ class Profile extends \Newspack\Govpack\Post_Type {
 				'value_field'     => 'slug',
 			];
 
-			echo '<label class="screen-reader-text" for="cat">' . get_taxonomy( $taxonomy )->labels->filter_by_item . '</label>';
-
+			?>
+			<label class="screen-reader-text" for="cat">
+				<?php echo esc_html( get_taxonomy( $taxonomy )->labels->filter_by_item ); ?>
+			</label>
+			<?php
 			wp_dropdown_categories( $dropdown_options );
 		}
 	}
@@ -323,7 +337,8 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	/**
 	 * Add The Pfofile Photo to the post Table.
 	 *
-	 * @param array $columns An array of columns.
+	 * @param string $column_key the key of the column used in WP_List_Table.
+	 * @param int    $post_id id of the post being displayed in the row.
 	 */
 	public static function custom_columns_content( $column_key, $post_id ) {
 
@@ -331,7 +346,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 		
 		if ( 'image' === $column_key ) {
 			if ( has_post_thumbnail( $post_id ) ) {
-				echo \get_the_post_thumbnail( $post_id, [ 90, 90 ] );
+				echo get_the_post_thumbnail( $post_id, [ 90, 90 ] );
 			}
 		}
 
@@ -340,14 +355,16 @@ class Profile extends \Newspack\Govpack\Post_Type {
 
 				$phone = esc_html( get_post_meta( $post_id, 'main_phone', true ) );
 			if ( $phone ) {
-				echo sprintf( '<a href="tel:%s">%s</a>', $phone, $phone );
+				// translators: ignore.
+				echo esc_html( sprintf( '<a href="tel:%s">%s</a>', $phone, $phone ) );
 			}
 		}
 
 		if ( 'email' === $column_key ) {
 			$email = esc_html( get_post_meta( $post_id, 'email', true ) );
 			if ( $email ) {
-				echo sprintf( '<a href="mailto:%s">%s</a>', $email, $email );
+				// translators: ignore.
+				echo esc_html( sprintf( '<a href="mailto:%s">%s</a>', $email, $email ) );
 			}       
 		}
 
@@ -731,22 +748,29 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	/**
 	 * Shortcode handler for [govpack].
 	 *
-	 * @param array  $atts    Array of shortcode attributes.
+	 * @param array  $attributes    Array of shortcode attributes.
 	 * @param string $content Post content.
 	 *
 	 * @return string HTML for recipe shortcode.
 	 */
 	public static function shortcode_handler( $attributes, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 
-		return self::load_block( "profile", $attributes, $content, 'profile' );
+		return self::load_block( 'govpack/profile', $attributes, $content, 'profile' );
 	}
 	
-
+	/**
+	 * Loads a block from display on the frontend/via render.
+	 *
+	 * @param string $block_name the name(or slug) of the block being output.
+	 * @param array  $attributes array of block attributes.
+	 * @param string $content Any HTML or content redurned form the block.
+	 * @param string $template The filename of teh template-part to use.
+	 */
 	public static function load_block( $block_name, $attributes, $content, $template ) {
 
-        if(\is_admin()){
-            return false;
-        }
+		if ( \is_admin() ) {
+			return false;
+		}
 
 		if ( ! isset( $attributes['profileId'] ) ) {
 			return;
@@ -757,15 +781,21 @@ class Profile extends \Newspack\Govpack\Post_Type {
 			return;
 		}
 
-        $block_registry = \WP_Block_Type_Registry::get_instance();
-        $block = $block_registry->get_registered($block_name);
-        $block_attributes = array_merge(...array_map(function($key, $value){
-            return [$key => $value["default"]];
-        }, array_keys($block->attributes), $block->attributes));
+		$block_registry   = \WP_Block_Type_Registry::get_instance();
+		$block            = $block_registry->get_registered( $block_name );
+		$block_attributes = array_merge(
+			...array_map(
+				function( $key, $value ) {
+					return [ $key => $value['default'] ?? false ];
+				},
+				array_keys( $block->attributes ),
+				$block->attributes
+			)
+		);
 
-        $attributes = array_merge($block_attributes, $attributes);
-     
-		require_once GOVPACK_PLUGIN_FILE . 'template-parts/functions.php';
+		$attributes = array_merge( $block_attributes, $attributes );
+	 
+		require_once GOVPACK_PLUGIN_FILE . 'template-parts/functions.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 
 		ob_start();
 		require GOVPACK_PLUGIN_FILE . 'template-parts/' . $template . '.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
@@ -783,7 +813,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 * @return string HTML for recipe shortcode.
 	 */
 	public static function shortcode_handler_self( $atts, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		return self::load_block( "govpack/profile-self", $atts, $content, 'profile-self' );
+		return self::load_block( 'govpack/profile-self', $atts, $content, 'profile-self' );
 	}
 
 	/**
@@ -791,10 +821,8 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 *
 	 * @param array  $atts    Array of shortcode attributes.
 	 * @param string $content Post content.
-	 *
 	 * @return string HTML for recipe shortcode.
 	 */
-
 	public static function shortcode_handler_selected( $atts, $content = null ) {
 		if ( ! isset( $atts['id'] ) ) {
 			return;
@@ -812,15 +840,13 @@ class Profile extends \Newspack\Govpack\Post_Type {
 		return $html;
 	}
 
-	 /**
-	  * Shortcode handler for [govpack].
-	  *
-	  * @param array  $atts    Array of shortcode attributes.
-	  * @param string $content Post content.
-	  *
-	  * @return string HTML for recipe shortcode.
-	  */
-
+	/**
+	 * Shortcode handler for [govpack].
+	 *
+	 * @param array  $atts    Array of shortcode attributes.
+	 * @param string $content Post content.
+	 * @return string HTML for recipe shortcode.
+	 */
 	public static function shortcode_handler_meta( $atts, $content = null ) {
 
 		global $post;

@@ -205,7 +205,7 @@ class Helpers {
 		if ( false === $cached_posts ) {
 			$cached_posts = new \WP_Query( $query_args );
 
-			wp_cache_set( $cache_name, $cached_posts, $cache_group, $cache_duration ); // phpcs:ignore WordPressVIPMinimum.Performance.LowExpiryCacheTime.LowCacheTime
+			wp_cache_set( $cache_name, $cached_posts, $cache_group, $cache_duration ); // phpcs:ignore WordPressVIPMinimum.Performance.LowExpiryCacheTime.CacheTimeUndetermined
 		}
 
 		return $cached_posts;

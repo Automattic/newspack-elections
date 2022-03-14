@@ -14,6 +14,9 @@ use Exception;
  */
 class FrontEnd {
 
+	/**
+	 * Adds Hooks Specifically for the Frontend display
+	 */
 	public static function hooks() {
 
 		add_filter(
@@ -21,7 +24,7 @@ class FrontEnd {
 			function( $use_post_thumbnail ) {
 				global $post;
 
-				if ( $post->post_type === 'govpack_profiles' ) {
+				if ( 'govpack_profiles' === $post->post_type ) {
 					return false;
 				}
 			

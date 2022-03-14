@@ -14,7 +14,7 @@ class GitHub_Sources extends \Newspack\Govpack\Importer\Abstracts\Abstract_Sourc
 
 
 	/**
-	 * get URLS for Github files
+	 * Get URLS for Github files
 	 */
 	public static function urls() {
 

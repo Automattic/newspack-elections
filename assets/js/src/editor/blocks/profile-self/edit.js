@@ -3,23 +3,20 @@
  */
 import { __ } from '@wordpress/i18n';
 
-import { InspectorControls, useBlockProps, BlockControls, BlockAlignmentControl} from '@wordpress/block-editor';
-import { Placeholder, Spinner, Toolbar, ToolbarDropdownMenu } from '@wordpress/components';
+import { InspectorControls, useBlockProps} from '@wordpress/block-editor';
+import { Placeholder, Spinner } from '@wordpress/components';
 import { useRef, useState, useEffect } from '@wordpress/element';
-import { Icon, postAuthor,  pullLeft, pullRight, resizeCornerNE } from '@wordpress/icons';
+import { Icon, postAuthor } from '@wordpress/icons';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 import { useSelect }  from '@wordpress/data';
-import { decodeEntities } from '@wordpress/html-entities';
 
-import { AutocompleteWithSuggestions } from 'newspack-components';
 import ProfileDisplaySettings from './../../components/Panels/ProfileDisplaySettings.jsx'
 import ProfileAvatarPanel from '../../components/Panels/ProfileAvatarPanel';
 
-import SingleProfile from "./single-profile.jsx"
-import BlockSizeAlignmentToolbar from '../../components/Toolbars/BlockSizeAlignmentToolbar.jsx';
+import SingleProfile from "./../../components/single-profile"
 import AvatarAlignmentToolBar from '../../components/Toolbars/AvatarAlignment.jsx';
-import ResetProfileToolbar from '../../components/Toolbars/ResetProfileToolbar.jsx';
+
 
 
 const availableWidths = [

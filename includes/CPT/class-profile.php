@@ -738,11 +738,11 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 */
 	public static function shortcode_handler( $attributes, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 
-		return self::load_block( $attributes, $content, 'profile' );
+		return self::load_block( "profile", $attributes, $content, 'profile' );
 	}
 	
 
-	public static function load_block( $attributes, $content, $template ) {
+	public static function load_block( $block_name, $attributes, $content, $template ) {
 
 		if ( ! isset( $attributes['profileId'] ) ) {
 			return;
@@ -753,10 +753,14 @@ class Profile extends \Newspack\Govpack\Post_Type {
 			return;
 		}
 
-        echo "<pre>";
-        var_dump($attributes);
-        die();
+        $block_registry = \WP_Block_Type_Registry::get_instance();
+        $block = $block_registry->get_registered($block_name);
+        $block_attributes = array_merge(...array_map(function($key, $value){
+            return [$key => $value["default"]];
+        }, array_keys($block->attributes), $block->attributes));
 
+        $attributes = array_merge($block_attributes, $attributes);
+     
 		require_once GOVPACK_PLUGIN_FILE . 'template-parts/functions.php';
 
 		ob_start();
@@ -775,7 +779,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 * @return string HTML for recipe shortcode.
 	 */
 	public static function shortcode_handler_self( $atts, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		return self::load_block( $atts, $content, 'profile-self' );
+		return self::load_block( "govpack/profile-self", $atts, $content, 'profile-self' );
 	}
 
 	/**

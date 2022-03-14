@@ -16,6 +16,10 @@
 			"type": "boolean",
 			"default": true
 		},
+        "avatarAlignment": {
+			"type": "string",
+			"default": "left"
+		},
 		"avatarHideDefault": {
 			"type": "boolean",
 			"default": false
@@ -62,7 +66,7 @@
 		},
         "align": {
 			"type": "string",
-            "default": "left"
+            "default": ""
 		}
 	}
 }

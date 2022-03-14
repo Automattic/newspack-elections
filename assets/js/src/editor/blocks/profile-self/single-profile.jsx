@@ -23,7 +23,7 @@ function normalize_porfile(profile){
 
     console.log(profile)
 
-    const featured_image = profile?._embedded?.["wp:featuredmedia"][0] ?? null
+    const featured_image = profile?._embedded?.["wp:featuredmedia"]?.[0] ?? null
 
    
 

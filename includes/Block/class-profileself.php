@@ -24,7 +24,7 @@ class ProfileSelf extends \Newspack\Govpack\Block {
 		\register_block_type(
 			GOVPACK_PLUGIN_FILE . 'assets/js/src/editor/blocks/profile-self/block.json',
 			[
-				'render_callback' => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler' ],
+				'render_callback' => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler_self' ],
 			]
 		);
 	}

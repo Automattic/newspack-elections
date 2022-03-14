@@ -2,22 +2,24 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/blocks';
-import { InspectorControls, useBlockProps, BlockControls, BlockAlignmentControl} from '@wordpress/block-editor';
-import { Panel, PanelBody, PanelRow, RadioControl, Placeholder, Spinner, ToggleControl, BaseControl, ButtonGroup, Button, Toolbar, ToolbarDropdownMenu } from '@wordpress/components';
+import { InspectorControls, useBlockProps} from '@wordpress/block-editor';
+import { Placeholder, Spinner } from '@wordpress/components';
 import { useRef, useState, useEffect } from '@wordpress/element';
-import { Icon, postAuthor,  pullLeft, pullRight, resizeCornerNE } from '@wordpress/icons';
+import { Icon, postAuthor, } from '@wordpress/icons';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 import { decodeEntities } from '@wordpress/html-entities';
 
-import {__experimentalUnitControl as UnitControl} from '@wordpress/components';
-
 
 import { AutocompleteWithSuggestions } from 'newspack-components';
 
-
+import ProfileDisplaySettings from './../../components/Panels/ProfileDisplaySettings.jsx'
+import ProfileAvatarPanel from '../../components/Panels/ProfileAvatarPanel';
 import SingleProfile from "./../../components/single-profile"
+import AvatarAlignmentToolBar from '../../components/Toolbars/AvatarAlignment.jsx';
+import BlockSizeAlignmentToolbar from '../../components/Toolbars/BlockSizeAlignmentToolbar.jsx';
+import ResetProfileToolbar from '../../components/Toolbars/ResetProfileToolbar.jsx';
+
 
 /**
  * @param {Object} props The component properties.
@@ -196,202 +198,23 @@ function Edit( props ) {
 	return (
 		<div { ...blockProps }>
 
-			<InspectorControls>
-                <Panel>
-					<PanelBody title={ __( 'Avatar', 'govpack' ) }>
-                        <PanelRow>
-						    <ToggleControl
-				    			label={ __( 'Display avatar', 'newspack-blocks' ) }
-			    				checked={ showAvatar }
-		    					onChange={ () => setAttributes( { showAvatar: ! showAvatar } ) }
-	    					/>
-    					</PanelRow>
-                        { showAvatar && (
-						<PanelRow>
-							<UnitControl
-								label={ __( 'Avatar border radius', 'newspack-blocks' ) }
-								labelPosition="edge"
-								__unstableInputWidth="80px"
-								units={ units }
-								value={ avatarBorderRadius }
-								onChange={ value =>
-									setAttributes( { avatarBorderRadius: 0 > parseFloat( value ) ? '0' : value } )
-								}
-							/>
-						</PanelRow>
-					) }
-                    { showAvatar && (
-						<BaseControl
-							label={ __( 'Avatar size', 'newspack-blocks' ) }
-							id="newspack-blocks__avatar-size-control"
-						>
-							<PanelRow>
-								<ButtonGroup
-									id="newspack-blocks__avatar-size-control-buttons"
-									aria-label={ __( 'Avatar size', 'newspack-blocks' ) }
-								>
-									{ avatarSizeOptions.map( option => {
-										const isCurrent = avatarSize === option.value;
-										return (
-											<Button
-												isLarge
-												isPrimary={ isCurrent }
-												aria-pressed={ isCurrent }
-												aria-label={ option.label }
-												key={ option.value }
-												onClick={ () => setAttributes( { avatarSize: option.value } ) }
-											>
-												{ option.shortName }
-											</Button>
-										);
-									} ) }
-								</ButtonGroup>
-							</PanelRow>
-						</BaseControl>
-					) }
-                    </PanelBody>
-                </Panel>
-                <Panel>
-                    <PanelBody title={ __( 'Govpack Profile Settings', 'govpack' ) }>
-
-                    <PanelRow>
-						    <ToggleControl
-							    label={ __( 'Display Bio', 'govpack-blocks' ) }
-							    checked={ showBio }
-    							onChange={ () => setAttributes( { showBio: ! showBio } ) }
-		    				/>
-	    				</PanelRow>
-                        <PanelRow>
-						    <ToggleControl
-							    label={ __( 'Display Legistlative Body', 'govpack-blocks' ) }
-							    checked={ showLegislativeBody }
-    							onChange={ () => setAttributes( { showLegislativeBody: ! showLegislativeBody } ) }
-		    				/>
-	    				</PanelRow>
-
-                        <PanelRow>
-						    <ToggleControl
-							    label={ __( 'Display Position', 'govpack-blocks' ) }
-							    checked={ showPosition }
-    							onChange={ () => setAttributes( { showPosition: ! showPosition } ) }
-		    				/>
-	    				</PanelRow>
-                        
-                        <PanelRow>
-						    <ToggleControl
-							    label={ __( 'Display Party', 'govpack-blocks' ) }
-							    checked={ showParty }
-    							onChange={ () => setAttributes( { showParty: ! showParty } ) }
-		    				/>
-	    				</PanelRow>
-                        <PanelRow>
-						    <ToggleControl
-							    label={ __( 'Display State', 'govpack-blocks' ) }
-							    checked={ showState }
-    							onChange={ () => setAttributes( { showState: ! showState } ) }
-		    				/>
-	    				</PanelRow>
-                        <PanelRow>
-						    <ToggleControl
-							    label={ __( 'Display Email', 'govpack-blocks' ) }
-							    checked={ showEmail }
-    							onChange={ () => setAttributes( { showEmail: ! showEmail } ) }
-		    				/>
-	    				</PanelRow>
-                        <PanelRow>
-						    <ToggleControl
-							    label={ __( 'Display Social', 'govpack-blocks' ) }
-							    checked={ showSocial }
-    							onChange={ () => setAttributes( { showSocial: ! showSocial } ) }
-		    				/>
-	    				</PanelRow>
-
-                        <PanelRow>
-						    <ToggleControl
-							    label={ __( 'Display Addresses', 'govpack-blocks' ) }
-							    checked={ showAddress }
-    							onChange={ () => setAttributes( { showAddress: ! showAddress } ) }
-		    				/>
-	    				</PanelRow>
-
-                        <PanelRow>
-						    <ToggleControl
-							    label={ __( 'Include Link to Profile Page', 'govpack-blocks' ) }
-							    checked={ showProfileLink }
-    							onChange={ () => setAttributes( { showProfileLink: ! showProfileLink } ) }
-		    				/>
-	    				</PanelRow>
-
-                    </PanelBody>
-                </Panel>
-				
-			</InspectorControls>
+            <InspectorControls>
+                <ProfileAvatarPanel attributes = {attributes} setAttributes = {setAttributes} showSizeControl = {true} showRadiusControl = {true} />
+                <ProfileDisplaySettings attributes = {attributes} setAttributes = {setAttributes} showBioControl = {true} showLinkControl = {true} />
+            </InspectorControls>
                               
             { profile ? (
                 <>
                    
-                   { showAvatar &&  'is-style-center' !== attributes.className &&(
-                        <BlockControls>
-                           <Toolbar
-							controls={ [
-								{
-									icon: <Icon icon={ pullLeft } />,
-									title: __( 'Show avatar on left', 'newspack-blocks' ),
-									isActive: avatarAlignment === 'left',
-									onClick: () => setAttributes( { avatarAlignment: 'left' } ),
-								},
-								{
-									icon: <Icon icon={ pullRight } />,
-									title: __( 'Show avatar on right', 'newspack-blocks' ),
-									isActive: avatarAlignment === 'right',
-									onClick: () => setAttributes( { avatarAlignment: 'right' } ),
-								},
-							] }
-						/>
-                        </BlockControls>
-                    ) }
+                    {showAvatar &&  'is-style-center' !== attributes.className &&(
+                        <AvatarAlignmentToolBar attributes={attributes} setAttributes={setAttributes} />
+                    )}
 
                     { profile && (
                         <>
-                            <BlockControls>
-                                <Toolbar>
-                                    <BlockAlignmentControl
-                                        value={ align }
-                                        onChange={ (newAlignment) => setAttributes( { align: newAlignment } ) }
-                                        controls = {['left', 'center', 'right','full']}
-                                    />
-                                    { (align !== "full") && (
-                                        <ToolbarDropdownMenu
-                                                icon = {resizeCornerNE}
-                                                label = { __( 'Modify Selection', 'newspack-blocks' ) }
-                                                controls={ availableWidths.map( (width) => {
-                                                    return [
-                                                        {
-                                                            title: width.label,
-                                                            icon: resizeCornerNE,
-                                                            onClick: () => setAttributes( { width: width.value } )
-                                                        },
-                                                    ]
-                                                }) }
-                                        />
-                                    )}
-                                </Toolbar>
-                            </BlockControls>
-
-                            <BlockControls>
-                                <Toolbar
-                                    controls={ [
-                                        {
-                                            icon: <Icon icon={ postAuthor } />,
-                                            title: __( 'Modify Selection', 'newspack-blocks' ),
-                                            onClick: () => {
-                                                setAttributes( { profileId: 0 } );
-                                                setProfile( null );
-                                            },
-                                        },
-                                    ] }
-                                />
-                            </BlockControls>
+                            
+                            <BlockSizeAlignmentToolbar attributes={attributes} setAttributes={setAttributes} />
+                            <ResetProfileToolbar setProfile={setProfile} attributes={attributes} setAttributes={setAttributes} />
                         </>
                     ) }
 

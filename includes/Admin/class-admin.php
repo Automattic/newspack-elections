@@ -15,7 +15,7 @@ use Exception;
 class Admin {
 
 	public static function hooks() {
-		\add_action( 'admin_menu', [ '\Newspack\Govpack\Admin\Menu', '_add_taxonomy_submenus' ], 10, 1 );
+		\add_action( 'admin_menu', [ '\Newspack\Govpack\Admin\Menu', 'add_taxonomy_submenus' ], 10, 1 );
 		\add_action( 'after_setup_theme', [ __class__, 'create_menus' ], 100, 1 );
 		\add_action( 'enqueue_block_editor_assets', [ __class__, 'register_blocks' ], 1, 1 );
 		\add_action( 'admin_enqueue_scripts', [ __class__, 'register_assets' ], 100, 1 );

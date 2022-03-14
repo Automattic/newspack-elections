@@ -238,14 +238,10 @@ class CLI extends \WP_CLI_Command {
 	 */
 	public function purge( $args, $assoc_args ) {
 
-		global $_wp_suspend_cache_invalidation;
-
-		$_wp_suspend_cache_invalidation = true;
-
-		// turn of term counts when post status changes
+		// turn of term counts when post status changes.
 		remove_action( 'transition_post_status', '_update_term_count_on_transition_post_status', 10, 3 );
 
-		// defer term counting
+		// defer term counting.
 		wp_defer_term_counting( true );
 
 
@@ -261,19 +257,19 @@ class CLI extends \WP_CLI_Command {
 			WP_CLI::line( sprintf( 'Purging Post Type : %s', $post_type ) );
 
 	   
-			$posts = get_posts(
+			$posts = new WP_Query(
 				[
-					'post_type'   => 'govpack_profiles',
-					'post_status' => 'any',
-					'numberposts' => '-1',
-					'fields'      => 'ids',
+					'post_type'      => 'govpack_profiles',
+					'post_status'    => 'any',
+					'posts_per_page' => '-1',
+					'fields'         => 'ids',
 				] 
 			);
 			
 			$i     = 0;
-			$count = count( $posts );
+			$count = count( $posts->posts );
 			
-			foreach ( $posts as $id ) {
+			foreach ( $posts->posts as $id ) {
 				WP_CLI::line( sprintf( 'Deleting Post : %s', $id ) );
 				wp_delete_post( $id, true );
 				$i++;
@@ -305,7 +301,7 @@ class CLI extends \WP_CLI_Command {
 					'taxonomy'   => $taxonomy,
 					'hide_empty' => false,
 					'fields'     => 'ids',
-					'number'     => 0, // all
+					'number'     => 0, // all.
 				] 
 			);
 

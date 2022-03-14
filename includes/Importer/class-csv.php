@@ -40,6 +40,7 @@ class CSV extends \Newspack\Govpack\Importer\Abstracts\Abstract_Importer {
 	 * calls  read_x functions for elements it finds
 	 *
 	 * @param XMLReader $reader  path of the JSON file.
+	 * @param Array     $extra  Extra params used for the import.
 	 */
 	public static function process( $reader, $extra ) {
 

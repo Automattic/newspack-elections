@@ -66,9 +66,10 @@ class Store extends \ActionScheduler_DBStore {
 	 * @since 3.0.0
 	 *
 	 * @param array $query_args Query parameters.
+	 * @global object $wpdb WordPress DB
 	 */
 	protected function bulk_delete_actions( $query_args ) {
-		/** @var \wpdb $wpdb */
+		
 		global $wpdb;
 
 		if ( ! is_array( $query_args ) ) {
@@ -97,12 +98,12 @@ class Store extends \ActionScheduler_DBStore {
 
 			$format     = array_fill( 0, count( $action_ids ), '%d' );
 			$query_in   = '(' . implode( ',', $format ) . ')';
-			$parameters = $action_ids;
+			$parameters = $query_in;
 
-
-			$wpdb->query(
+			$wpdb->query( // phpcs:ignore
 				$wpdb->prepare(
-					"DELETE FROM {$wpdb->actionscheduler_actions} WHERE action_id IN {$query_in}", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					'DELETE FROM %s WHERE action_id IN %s', // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					$wpdb->actionscheduler_actions,
 					$parameters
 				)
 			);

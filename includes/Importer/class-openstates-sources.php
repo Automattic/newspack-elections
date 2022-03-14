@@ -14,7 +14,7 @@ class OpenStates_Sources extends \Newspack\Govpack\Importer\Abstracts\Abstract_S
 
 
 	/**
-	 * get URLS for OpenStates files
+	 * Get URLS for OpenStates files
 	 */
 	public static function urls() {
 
@@ -53,6 +53,11 @@ class OpenStates_Sources extends \Newspack\Govpack\Importer\Abstracts\Abstract_S
 		return $data;
 	}
 
+	/**
+	 * Handles a REST Request thet sideloads items from OpenStates
+	 * 
+	 * @param \WP_REST_Request $request REST Reqest object.
+	 */
 	public static function download( \WP_REST_Request $request ) {
 
 		if ( ! $request->has_param( 'source_file' ) ) {

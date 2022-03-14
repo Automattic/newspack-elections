@@ -21,7 +21,6 @@ abstract class Post_Type {
 		add_action( 'init', [ get_called_class(), 'register_post_type' ] );
 		add_filter( 'manage_' . static::CPT_SLUG . '_posts_columns', [ __CLASS__, 'manage_columns' ] );
 		add_shortcode( static::SHORTCODE, [ get_called_class(), 'shortcode_handler' ] );
-		add_filter( 'body_class', [ get_called_class(), 'filter_body_class' ] );
 	}
 
 	/**
@@ -47,29 +46,4 @@ abstract class Post_Type {
 		unset( $columns['tags'] );
 		return $columns;
 	}
-
-	/**
-	 * Add body classes depending on layout.
-	 *
-	 * @param array $classes CSS classes.
-	 *
-	 * @return array
-	 */
-	public static function filter_body_class( $classes ) {
-
-		/*
-		if ( is_singular( static::CPT_SLUG ) ) {
-			$classes[] = 'archive';
-			$classes[] = 'feature-latest';
-
-			$key = array_search( 'single', $classes, true );
-			if ( false !== $key ) {
-				unset( $classes[ $key ] );
-			}
-		}
-		*/
-		
-		return $classes;
-	}
-
 }

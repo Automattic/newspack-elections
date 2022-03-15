@@ -353,18 +353,21 @@ class Profile extends \Newspack\Govpack\Post_Type {
 		if ( 'phone' === $column_key ) {
 			
 
-				$phone = esc_html( get_post_meta( $post_id, 'main_phone', true ) );
+				$phone = get_post_meta( $post_id, 'main_phone', true );
 			if ( $phone ) {
-				// translators: ignore.
-				echo esc_html( sprintf( '<a href="tel:%s">%s</a>', $phone, $phone ) );
+				
+				?>
+				<a href="tel:<?php echo esc_attr( $phone ); ?>"><?php echo esc_html( $phone ); ?></a>
+				<?php
 			}
 		}
 
 		if ( 'email' === $column_key ) {
-			$email = esc_html( get_post_meta( $post_id, 'email', true ) );
+			$email = get_post_meta( $post_id, 'email', true );
 			if ( $email ) {
-				// translators: ignore.
-				echo esc_html( sprintf( '<a href="mailto:%s">%s</a>', $email, $email ) );
+				?>
+				<a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a>
+				<?php
 			}       
 		}
 

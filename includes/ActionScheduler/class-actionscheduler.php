@@ -18,6 +18,7 @@ class ActionScheduler {
 	public static function hooks() {
 		add_filter( 'action_scheduler_store_class', [ __class__, 'replace_store' ] );
 		add_filter( 'action_scheduler_queue_runner_concurrent_batches', [ __class__, 'as_concurrent_batches' ] );
+		add_filter( 'action_scheduler_logger_class',  [ __class__, 'replace_logger' ]);
 	}
 
 	/**
@@ -38,4 +39,14 @@ class ActionScheduler {
 		remove_filter( 'action_scheduler_store_class', [ 'ActionScheduler_DataController', 'set_store_class' ], 100 );
 		return '\Newspack\Govpack\ActionScheduler\Store';
 	}
+
+	/**
+	 * Action added to replace the defaukt logger used by Action Scheduler.
+	 * 
+	 * @param string $current_logging_class Current Store used By Action Scheduler.
+	 */
+	public static function replace_logger( $current_logging_class ) {
+		return 'ActionScheduler_DBLogger';
+	}
+	
 }

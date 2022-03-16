@@ -20,6 +20,7 @@ const ProfileDisplaySettings = (props) => {
         showEmail,
         showSocial,
         showAddress,
+		showName,
         showProfileLink
         
     } = attributes
@@ -36,6 +37,13 @@ const ProfileDisplaySettings = (props) => {
                                 />
                             </PanelRow>
                         )}
+						<PanelRow>
+                                <ToggleControl
+                                    label={ __( 'Display Name', 'govpack-blocks' ) }
+                                    checked={ showName }
+                                    onChange={ () => setAttributes( { showName: ! showName } ) }
+                                />
+                            </PanelRow>
                         <PanelRow>
 						    <ToggleControl
 							    label={ __( 'Display Legistlative Body', 'govpack-blocks' ) }

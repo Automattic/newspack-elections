@@ -38,8 +38,8 @@ class Admin {
 
 	public static function register_blocks() {
 		
-		// wp_enqueue_script("govpack-editor");
-		// wp_enqueue_style("govpack-editor-style");
+		wp_enqueue_script("govpack-editor");
+		wp_enqueue_style("govpack-editor-style");
 	}
 
 	public static function create_menus() {
@@ -63,14 +63,12 @@ class Admin {
 				->set_callback( [ '\Newspack\Govpack\Admin\Pages\Import', 'view' ] ) 
 		);
 
-	
-
-		
-
 		$menu->create();
 	}
 
 	public static function register_assets() {
+
+		;
 
 		$file = GOVPACK_PLUGIN_FILE . 'dist/profile_table.asset.php';
 
@@ -85,6 +83,27 @@ class Admin {
 			$asset_data['version'] ?? '',
 			true
 		);
+
+		$file = GOVPACK_PLUGIN_FILE . 'govpack/dist/editor.asset.php';
+
+		if ( file_exists( $file ) ) {
+			$asset_data = require_once $file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+		}
+
+		wp_register_script(
+			'govpack-editor',
+			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/editor.js',
+			$asset_data['dependencies'] ?? [],
+			$asset_data['version'] ?? '',
+			true
+		);
+		wp_register_style(
+			'govpack-editor-style',
+			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/editor.css',
+			// $asset_data['dependencies'] ?? [],
+			$asset_data['version'] ?? '',
+			true
+		);
 	}
 
 	public static function load_assets() {
@@ -92,6 +111,14 @@ class Admin {
 		$screen = get_current_screen();
 		if ( 'edit-govpack_profiles' === $screen->id ) {
 			\wp_enqueue_style( 'govpack-profile-table' );
+		}
+
+		if ( true === $screen->is_block_editor() && "govpack_profiles" === $screen->post_type){
+
+		
+
+			\wp_enqueue_script( 'govpack-editor' );
+			\wp_enqueue_style( 'govpack-editor-style' );
 		}
 	}
 }

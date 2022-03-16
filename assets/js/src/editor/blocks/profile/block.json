@@ -29,7 +29,10 @@
 			"type": "number",
 			"default": 128
 		},
-
+		"showName": {
+			"type": "boolean",
+			"default": true
+		},
 		"avatarHideDefault": {
 			"type": "boolean",
 			"default": false

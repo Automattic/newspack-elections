@@ -63,7 +63,7 @@ const ListItem = (props) => {
 		<div>
 			<h2>Meta Demo</h2>
             <dl>
-                <ListItem label="Prefix" meta_key="prefix" key="prefix" meta = {meta} setMeta = {setMeta}/>
+
                 <ListItem label="First Name" meta_key="first_name" key="first_name" meta = {meta} setMeta = {setMeta}/>
                 <ListItem label="Last Name" meta_key="last_name" key="last_name" meta = {meta} setMeta = {setMeta}/>
             </dl>

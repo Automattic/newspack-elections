@@ -10,50 +10,62 @@ import {
     SelectControl
 } from '@wordpress/components';
 import { decodeEntities } from '@wordpress/html-entities';
-
+import { select} from "@wordpress/data";
 
 /**
  * External dependencies
  */
  import classnames from 'classnames';
- import { isArray, isEmpty } from 'lodash';
+ import { isArray, isEmpty, isUndefined, isNil } from 'lodash';
+
 
 
 function normalize_porfile(profile){
 
-    console.log(profile)
+
 
     const featured_image = profile?._embedded?.["wp:featuredmedia"]?.[0] ?? null
-
-   
-
     const getFromEmbedded = (tax) => {
-
         if(isArray(profile[tax]) && !isEmpty(profile[tax])){
             return profile[tax].map( (term) => {
-                return profile._embedded["wp:term"].filter( (t) => {
+                return profile._embedded?.["wp:term"]?.filter( (t) => {
                     return t?.[0]?.id === term
                 })[0]
-            })[0][0]
+            })?.[0]?.[0]
         }
     }
 
+	const createAddress = (type) => {
+
+		let address = []
+		address.push(profile.meta?.[type + "_office_address"] ?? null)
+		address.push(profile.meta?.[type + "_office_city"] ?? null)
+		address.push(profile.meta?.[type + "_office_county"] ?? null)
+		address.push(profile.meta?.[type + "_office_state"] ?? null)
+		address.push(profile.meta?.[type + "_office_zip"] ?? null)
+
+		address = address.filter( (line) => ( !isNil(line) && !isEmpty(line) && ("" !== line) ) ) 
+
+
+		return address.join(", ") ?? null
+	}
+
     return {
-        title : decodeEntities(profile.title.rendered),
+        title : decodeEntities(profile?.title?.rendered ?? profile?.title),
         featured_image : featured_image,
-        featured_image_thumbnail :  featured_image?.media_details.sizes?.full ?? null,
+        featured_image_thumbnail :  featured_image?.media_details?.sizes?.full ?? null,
         legislative_body : getFromEmbedded("govpack_legislative_body")?.name ?? null,
         position : getFromEmbedded("govpack_officeholder_title")?.name ?? null,
         state : getFromEmbedded("govpack_state")?.name ?? null,
         party : getFromEmbedded("govpack_party")?.name ?? null,
-        email :  decodeEntities(profile.meta.email ?? null),
+        email :  decodeEntities(profile.meta?.email ?? null),
         link :  profile.link,
-        twitter :  profile.meta.twitter,
-        facebook :  profile.meta.facebook,
-        linkedin :  profile.meta.linkedin,
-        hasSocial : !!(profile.meta.twitter ?? profile.meta.facebook ?? profile.meta.linkedin),
-        address : (profile.meta.main_office_address ?? profile.meta.secondary_office_address ?? null),
-        bio : decodeEntities(profile.excerpt.rendered)
+        twitter :  profile.meta?.twitter,
+        facebook :  profile.meta?.facebook,
+        linkedin :  profile.meta?.linkedin,
+        hasSocial : !!(profile.meta?.twitter ?? profile.meta?.facebook ?? profile.meta?.linkedin),
+        address : (createAddress("main") ?? createAddress("secondary") ?? null),
+        bio : decodeEntities(profile.excerpt?.rendered ?? profile.excerpt ?? null)
     }
 }
 
@@ -110,19 +122,13 @@ const SingleProfile = (props) => {
 
     } = attributes
 
-
-    console.log(profile, props)
-
-    
-
-    const maxWidth = (align !== "full" ? props.availableWidths.find( (w) => w.value === width)?.maxWidth : false)
+	//console.log(profile)
 
     const Link = (props) => {
 
         if(!showProfileLink){
             return props.children
         }
-
         return (<a href={profile.link}>
            {props.children}
         </a>)
@@ -165,13 +171,11 @@ const SingleProfile = (props) => {
         )
     }
 
+	const maxWidth = (align !== "full" ? props.availableWidths.find( (w) => w.value === width)?.maxWidth : false)
     const excerptElement = document.createElement( 'div' );
     excerptElement.innerHTML = profile.bio;
 
-    let bio =
-        excerptElement.textContent ||
-        excerptElement.innerText ||
-        '';
+    let bio = excerptElement.textContent || excerptElement.innerText || '';
 
     return (
        <div className= {classnames(`${blockClassName}__container`, {
@@ -212,9 +216,10 @@ const SingleProfile = (props) => {
                         )}
                         {showBio && profile.bio && (
                             <>
-                                {bio}
+                                <div>{bio}</div>
                                 {showProfileLink && (
-                                    <Link>More about {profile.title}</Link>
+                                    <div><Link>More about {profile.title}</Link></div>
+									
                                 )}
                             </>
                         )}

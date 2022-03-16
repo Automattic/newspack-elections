@@ -51,15 +51,6 @@ const AboutPanel = (props) => {
             name="gov-profile-about"
         >
             <PanelRow>
-               <PanelSelectControl options = {Object.keys(prefixes).map( (key) => {
-                   return {
-                    value : key,
-                    label : prefixes[key]
-                   }
-               } )} label = "Prefix" meta_key="prefix" onChange={setPostMeta} />
-            </PanelRow>
-
-            <PanelRow>
                 <PanelTextControl meta={props.meta} label = "First Name" meta_key="first_name" onChange={setPostMeta} />
             </PanelRow>
 
@@ -324,7 +315,6 @@ const GovPackProfileSidebar = () => (
         <ComposedAboutPanel />
         <ComposedOfficePanel />
         <ComposedSecondaryOfficePanel />
-        <ComposedPositionPanel />
         <ComposedCommunicationsPanel />
     </>
 
@@ -334,5 +324,3 @@ registerPlugin( 'profile-meta', {
     icon: more,
     render: GovPackProfileSidebar,
 } );
-
-console.log("profile-meta loaded")

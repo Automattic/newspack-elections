@@ -21,7 +21,8 @@ const ProfileDisplaySettings = (props) => {
         showSocial,
         showAddress,
 		showName,
-        showProfileLink
+        showProfileLink,
+		showWebsites
         
     } = attributes
 
@@ -94,6 +95,14 @@ const ProfileDisplaySettings = (props) => {
 							    label={ __( 'Display Addresses', 'govpack-blocks' ) }
 							    checked={ showAddress }
     							onChange={ () => setAttributes( { showAddress: ! showAddress } ) }
+		    				/>
+	    				</PanelRow>
+
+						<PanelRow>
+						    <ToggleControl
+							    label={ __( 'Display Websites', 'govpack-blocks' ) }
+							    checked={ showWebsites }
+    							onChange={ () => setAttributes( { showWebsites: ! showWebsites } ) }
 		    				/>
 	    				</PanelRow>
 

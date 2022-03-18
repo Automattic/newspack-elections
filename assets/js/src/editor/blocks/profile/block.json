@@ -33,6 +33,10 @@
 			"type": "boolean",
 			"default": true
 		},
+		"showWebsites": {
+			"type": "boolean",
+			"default": true
+		},
 		"avatarHideDefault": {
 			"type": "boolean",
 			"default": false

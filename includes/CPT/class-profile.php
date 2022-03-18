@@ -730,6 +730,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 			'phone'            => $profile_raw_meta_data['main_phone'][0] ?? '',
 			'twitter'          => $profile_raw_meta_data['twitter'][0] ?? '',
 			'instagram'        => $profile_raw_meta_data['instagram'][0] ?? '',
+			'linkedin'        => $profile_raw_meta_data['linkedin'][0] ?? '',
 			'email'            => $profile_raw_meta_data['email'][0] ?? '',
 			'facebook'         => $profile_raw_meta_data['facebook'][0] ?? '',
 			'website'          => $profile_raw_meta_data['leg_url'][0] ?? '',
@@ -910,6 +911,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 			'twitter',
 			'facebook',
 			'instagram',
+			'linkedin',
 			'biography',
 		];
 

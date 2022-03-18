@@ -32,6 +32,10 @@
 			"type": "boolean",
 			"default": false
 		},   
+		"showWebsites": {
+			"type": "boolean",
+			"default": true
+		},
         "showLegislativeBody": {
 			"type": "boolean",
 			"default": true

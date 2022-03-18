@@ -143,7 +143,7 @@ const OfficePanel = (props) => {
 
     return (
         <GovPackSidebarPanel 
-            title="Office"
+            title="Capitol Office"
             name="gov-profile-office"
         >
         
@@ -163,6 +163,10 @@ const OfficePanel = (props) => {
                 <PanelTextControl meta={props.meta} label = "Zip" meta_key="main_office_zip" onChange={setPostMeta}/>
             </PanelRow>
 
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "Phone" meta_key="main_phone" onChange={setPostMeta}/>
+            </PanelRow>
+
         </GovPackSidebarPanel>
     )
 }
@@ -173,7 +177,7 @@ const SecondaryOfficePanel = (props) => {
 
     return (
         <GovPackSidebarPanel 
-            title="Secondary Office"
+            title="District Office"
             name="gov-profile-secondary-office"
         >
         
@@ -192,6 +196,11 @@ const SecondaryOfficePanel = (props) => {
             <PanelRow>
                 <PanelTextControl meta={props.meta} label = "Zip" meta_key="secondary_office_zip" onChange={setPostMeta}/>
             </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "Phone" meta_key="secondary_phone" onChange={setPostMeta}/>
+            </PanelRow>
+
 
         </GovPackSidebarPanel>
     )
@@ -260,14 +269,7 @@ const CommunicationsPanel = (props) => {
             name="gov-profile-communications"
         >
         
-            <PanelRow>
-                <PanelTextControl meta={props.meta} label= "Main Phone" meta_key="main_phone" onChange={setPostMeta}/>
-            </PanelRow>
-
-            <PanelRow>
-                <PanelTextControl meta={props.meta} label= "Secondary Phone" meta_key="secondary_phone" onChange={setPostMeta}/>
-            </PanelRow>
-
+        
             <PanelRow>
                 <PanelTextControl meta={props.meta} label= "Email" meta_key="email" onChange={setPostMeta}/>
             </PanelRow>
@@ -281,7 +283,7 @@ const CommunicationsPanel = (props) => {
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl meta={props.meta} label= "LinkedIn" meta_key="linked" onChange={setPostMeta}/>
+                <PanelTextControl meta={props.meta} label= "LinkedIn" meta_key="linkedin" onChange={setPostMeta}/>
             </PanelRow>
 
             <PanelRow>

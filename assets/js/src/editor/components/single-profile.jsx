@@ -44,6 +44,10 @@ function normalize_porfile(profile){
 		address.push(profile.meta?.[type + "_office_state"] ?? null)
 		address.push(profile.meta?.[type + "_office_zip"] ?? null)
 
+		if(profile.meta?.[type + "_phone"]){
+			address.push("(" + profile.meta?.[type + "_phone"] + ")")
+		}
+
 		address = address.filter( (line) => ( !isNil(line) && !isEmpty(line) && ("" !== line) ) ) 
 
 		console.log("address", type, address)
@@ -61,10 +65,13 @@ function normalize_porfile(profile){
         party : getFromEmbedded("govpack_party")?.name ?? null,
         email :  decodeEntities(profile.meta?.email ?? null),
         link :  profile.link,
-        twitter :  profile.meta?.twitter,
-        facebook :  profile.meta?.facebook,
-        linkedin :  profile.meta?.linkedin,
-        hasSocial : !!(profile.meta?.twitter ?? profile.meta?.facebook ?? profile.meta?.linkedin),
+		social : {
+        	twitter :  profile.meta?.twitter,
+        	facebook :  profile.meta?.facebook,
+        	linkedin :  profile.meta?.linkedin,
+			instagram :  profile.meta?.instagram
+		},
+        hasSocial : !!(profile.meta?.twitter ?? profile.meta?.facebook ?? profile.meta?.linkedin ?? profile.meta?.instagram),
 		address : {
 			default 	: (createAddress("main") ?? createAddress("secondary") ?? null),
 			primary 	: createAddress("main"),
@@ -75,6 +82,11 @@ function normalize_porfile(profile){
 			first 	:  profile.meta?.first_name ?? null,
 			last 	:  profile.meta?.last_name ?? null
 		},
+		websites : {
+			campaign : profile.meta?.campaign_url ?? null,
+			legislative : profile.meta?.leg_url ?? null,
+		},
+		hasWebsites : !!(profile.meta?.campaign_url ?? profile.meta?.leg_url),
         bio : decodeEntities(profile.excerpt?.rendered ?? profile.excerpt ?? null)
     }
 }
@@ -96,6 +108,54 @@ const Row = (props) => {
             {value}
         </div>
     )
+}
+
+const Link = (props) => {
+
+	const {
+		showProfileLink,
+		href
+	} = props
+
+	if(!showProfileLink){
+		return props.children
+	}
+	return (<a href={href}>
+	   {props.children}
+	</a>)
+}
+
+const Photo = (props) => {
+
+	const {
+		showAvatar,
+		href,
+		blockClassName,
+		avatarBorderRadius,
+		avatarSize,
+		LinkProps = {}
+	} = props
+
+	if(!showAvatar && !href){
+		return null
+	}
+
+	return (
+		
+		<div className={`${blockClassName}__avatar`}>
+			<Link {...LinkProps} >
+				<figure
+					style={ {
+						borderRadius: avatarBorderRadius,
+						height: `${ avatarSize }px`,
+						width: `${ avatarSize }px`,
+					} }
+				>
+					<img src={href} />
+				</figure>
+			</Link>
+		</div>
+	)
 }
 
 const SingleProfile = (props) => {
@@ -127,6 +187,7 @@ const SingleProfile = (props) => {
         showEmail,
         showSocial,
         showAddress,
+		showWebsites,
         showProfileLink,
         className
 
@@ -134,14 +195,26 @@ const SingleProfile = (props) => {
 
 	//console.log(profile)
 
-    const Link = (props) => {
 
-        if(!showProfileLink){
-            return props.children
-        }
-        return (<a href={profile.link}>
-           {props.children}
-        </a>)
+
+	const Websites = (props) => {
+		return (
+			<div className={`${blockClassName}__contacts`}>
+				<ul>
+				{ profile.websites.campaign && (
+					<li>
+						<a href={profile.websites.campaign}>Campaign Website</a>
+					</li>
+				)}
+
+				{ profile.websites.legislative && (
+					<li>
+						<a href={profile.websites.legislative}>Legislative Website</a>
+					</li>
+				)}
+				</ul>
+			</div>
+		)
     }
 
     const Contacts = (props) => {
@@ -157,21 +230,27 @@ const SingleProfile = (props) => {
 
                     { showSocial && (
                         <>
-                            { profile.facebook && (
+                            { profile.social.facebook && (
                                 <li>
-                                    <a href={profile.facebook}>fb</a>
+                                    <a href={profile.social.facebook}>fb</a>
                                 </li>
                             )}
 
-                            { profile.twitter && (
+                            { profile.social.twitter && (
                                 <li>
-                                    <a href={profile.twitter}>tw</a>
+                                    <a href={profile.social.twitter}>tw</a>
                                 </li>
                             )}
 
-                            { profile.linkedin && (
+                            { profile.social.linkedin && (
                                 <li>
-                                    <a href={profile.linkedin}>li</a>
+                                    <a href={profile.social.linkedin}>li</a>
+                                </li>
+                            )}
+
+							{ profile.social.instagram && (
+                                <li>
+                                    <a href={profile.social.instagram}>in</a>
                                 </li>
                             )}
                         </>
@@ -203,22 +282,19 @@ const SingleProfile = (props) => {
        >
 
     
-            { showAvatar && profile.featured_image_thumbnail && (
-				<div className={`${blockClassName}__avatar`}>
-                    <Link>
-                        <figure
-                            style={ {
-                                borderRadius: avatarBorderRadius,
-                                height: `${ avatarSize }px`,
-                                width: `${ avatarSize }px`,
-                            } }
-                        >
-                            <img src={profile.featured_image_thumbnail.source_url} />
-                        </figure>
-                    </Link>
-				</div>
-			) }
-
+         
+				<Photo 
+					display = {showAvatar} 
+					href= {profile.featured_image_thumbnail?.source_url}
+					borderRadius= {avatarBorderRadius}
+					blockClassName = {blockClassName}
+					size = {avatarSize}
+					key = {"photo"}
+					LinkProps = {{
+						href : profile.link,
+						showProfileLink : showProfileLink
+					}}
+				/>
 
             
                 <div className={`${blockClassName}__info`}>
@@ -237,14 +313,15 @@ const SingleProfile = (props) => {
                         )}
                         
                     </div>
-                    <Row value={profile.legislative_body} display={showLegislativeBody}/>
-                    <Row value={profile.position}  display={showPosition}/>
-                    <Row value={profile.party}  display={showParty}/>
-                    <Row value={profile.state} display={showState}/>
-                    <Row value={<Contacts />} display={showEmail || (showSocial && profile.hasSocial)}/>
-                    <Row value={profile.address.default} display={showAddress}/>
-					<Row value={profile.address.secondary} display={showSecondaryAddress}/>
-                    <Row value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
+                    <Row key="leg_body" value={profile.legislative_body} display={showLegislativeBody}/>
+                    <Row key="pos" value={profile.position}  display={showPosition}/>
+                    <Row key="party" value={profile.party}  display={showParty}/>
+                    <Row key="states" value={profile.state} display={showState}/>
+                    <Row key="contact" value={<Contacts />} display={showEmail || (showSocial && profile.hasSocial)}/>
+                    <Row key="address" value={profile.address.default} display={showAddress}/>
+					<Row key="secondaryaddress" value={profile.address.secondary} display={showSecondaryAddress}/>
+					<Row key="website" value={<Websites />} display={showWebsites && profile.hasWebsites}/>
+                    <Row key="url" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
                 </div>
             </div>  
      

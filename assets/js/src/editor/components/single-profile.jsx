@@ -65,7 +65,11 @@ function normalize_porfile(profile){
         facebook :  profile.meta?.facebook,
         linkedin :  profile.meta?.linkedin,
         hasSocial : !!(profile.meta?.twitter ?? profile.meta?.facebook ?? profile.meta?.linkedin),
-        address : (createAddress("main") ?? createAddress("secondary") ?? null),
+		address : {
+			default : (createAddress("main") ?? createAddress("secondary") ?? null),
+			primary : createAddress("main"),
+			secondary : createAddress("secondary")
+		},
         bio : decodeEntities(profile.excerpt?.rendered ?? profile.excerpt ?? null)
     }
 }
@@ -178,6 +182,8 @@ const SingleProfile = (props) => {
 
     let bio = excerptElement.textContent || excerptElement.innerText || '';
 
+	const showSecondaryAddress = (!isEmpty(profile.address.secondary) && (profile.address.secondary !== profile.address.default))
+
     return (
        <div className= {classnames(`${blockClassName}__container`, {
             [`${blockClassName}__container--right`] : (avatarAlignment === "right"),
@@ -231,7 +237,8 @@ const SingleProfile = (props) => {
                     <Row value={profile.party}  display={showParty}/>
                     <Row value={profile.state} display={showState}/>
                     <Row value={<Contacts />} display={showEmail || (showSocial && profile.hasSocial)}/>
-                    <Row value={profile.address} display={showAddress}/>
+                    <Row value={profile.address.default} display={showAddress}/>
+					<Row value={profile.address.secondary} display={showSecondaryAddress}/>
                     <Row value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
                 </div>
             </div>  

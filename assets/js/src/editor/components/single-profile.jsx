@@ -46,8 +46,9 @@ function normalize_porfile(profile){
 
 		address = address.filter( (line) => ( !isNil(line) && !isEmpty(line) && ("" !== line) ) ) 
 
+		console.log("address", type, address)
 
-		return address.join(", ") ?? null
+		return isEmpty(address) ? null : address.join(", ")
 	}
 
     return {

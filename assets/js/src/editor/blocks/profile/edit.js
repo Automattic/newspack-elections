@@ -9,6 +9,7 @@ import { Icon, postAuthor, } from '@wordpress/icons';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 import { decodeEntities } from '@wordpress/html-entities';
+import { withSelect, useSelect, select} from "@wordpress/data";
 
 
 import { AutocompleteWithSuggestions } from 'newspack-components';
@@ -89,6 +90,7 @@ function Edit( props ) {
     const [ profile, setProfile ] = useState( null );
 	const [ error, setError ] = useState( null );
 	const [ isLoading, setIsLoading ] = useState( false );
+	const [ gotProfile, setGotProfile ] = useState( false );
 	const [ maxItemsToSuggest, setMaxItemsToSuggest ] = useState( 10 );
 
     const ref = useRef();
@@ -101,22 +103,7 @@ function Edit( props ) {
     
     const {
 		profileId,
-        showAvatar,
-        avatarBorderRadius,
-        avatarSize,
-        avatarAlignment,
-        align,
-        
-        showBio,
-        showLegislativeBody,
-        showPosition,
-        showParty,
-        showState,
-        showEmail,
-        showSocial,
-        showAddress,
-        showProfileLink
-        
+        showAvatar
 	} = attributes;
 
     const availableWidths = [
@@ -149,20 +136,34 @@ function Edit( props ) {
 		setAttributes( { format: value } );
 	}
 
-    useEffect( () => {
+    useEffect( () => {	
+		
+		if(gotProfile){
+			return
+		}
+
+		if(isLoading){
+			return
+		}
+
 		if ( 0 !== profileId ) {
 			getProfileById();
 		}
-	}, [ profileId ] );
+
+	}, [ profileId, gotProfile, isLoading ] );
 
 
     const getProfileById = async () => {
 
+		//console.log("getProfile By Id")
 
 		setError( null );
 		setIsLoading( true );
+
 		try {
 		
+			//console.log("getProfile")
+
 
 			const response = await apiFetch( {
 				path: addQueryArgs( '/wp/v2/govpack_profiles/' + profileId , {
@@ -180,6 +181,8 @@ function Edit( props ) {
 				);
 			}
 			setProfile( _profile );
+			setGotProfile( true )
+			setIsLoading( false );
 
 		} catch ( e ) {
 			setError(
@@ -191,8 +194,11 @@ function Edit( props ) {
 						profileId
 					)
 			);
-		}
-		setIsLoading( false );
+			setIsLoading( false );
+			setGotProfile( true )
+		}	
+		
+		
 	};
 
 	return (
@@ -241,9 +247,9 @@ function Edit( props ) {
 
                         fetchSuggestions={ async ( search = null, offset = 0 ) => {
                             // If we already have a selected author, no need to fetch suggestions.
-                            // if ( props.attributes.id ) {
-                            //    return [];
-                            // }
+                             if ( profileId ) {
+                                return [];
+                             }
 
                             const response = await apiFetch( {
                                 parse: false,

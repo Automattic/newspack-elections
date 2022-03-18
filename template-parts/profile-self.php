@@ -67,6 +67,9 @@ $container_classes = join(
 
 
 $show_photo = ( has_post_thumbnail( $profile_data['id'] ) && $attributes['showAvatar'] );
+$show_secondary_address = (isset($profile_data['address']['secondary']) && 
+	($profile_data['address']['secondary'] !== $profile_data['address']['default'])
+);
 
 ?>
 
@@ -89,7 +92,9 @@ $show_photo = ( has_post_thumbnail( $profile_data['id'] ) && $attributes['showAv
 				Row( $profile_data['party'], $attributes['showParty'] );
 				Row( $profile_data['state'], $attributes['showState'] );
 				Row( GP_Contacts( $profile_data, $attributes ), ( $attributes['showEmail'] || $attributes['showSocial'] && $profile_data['hasSocial'] ) );
-				Row( $profile_data['address'], $attributes['showAddress'] );
+				Row( $profile_data['address']['default'], $attributes['showAddress'] );
+				Row( $profile_data['address']['secondary'],($attributes['showAddress'] && $show_secondary_address));
+				Row( GP_Websites($profile_data['websites']), ($attributes['showWebsites'] && $profile_data['hasWebsites']) );
 				
 			?>
 		</div>

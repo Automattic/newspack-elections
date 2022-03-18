@@ -684,6 +684,31 @@ class Profile extends \Newspack\Govpack\Post_Type {
 		return $data;
 	}
 
+	public static function formatAddress($profile_data, $type = "main"){
+
+		// BUild an arry of address items that we can connect with a join(", ") to get nice formatting
+		$address = [];
+		$address[] = ($profile_data[$type . "_office_address"][0] ?? null);
+		$address[] = ($profile_data[$type . "_office_city"][0] ?? null);
+		$address[] = ($profile_data[$type . "_office_county"][0] ?? null);
+		$address[] = ($profile_data[$type . "_office_state"][0] ?? null);
+		$address[] = ($profile_data[$type . "_office_zip"][0] ?? null);
+
+		if($profile_data[$type . "_phone"]){
+			$address[] = ("(" . $profile_data[$type . "_phone"][0] . ")");
+		}
+	
+		$address = array_filter( $address, function($line){
+			return (
+				("" !== $line) 
+			) ;
+		}); 
+
+
+		return (empty($address) ? null : join(", ", $address));
+	}
+
+
 	/**
 	 * Fetch profile data into an array. Used for shortcode and block.
 	 *
@@ -735,16 +760,26 @@ class Profile extends \Newspack\Govpack\Post_Type {
 			'facebook'         => $profile_raw_meta_data['facebook'][0] ?? '',
 			'website'          => $profile_raw_meta_data['leg_url'][0] ?? '',
 			'biography'        => $profile_raw_meta_data['biography'][0] ?? '',
-			'address'          => $profile_raw_meta_data['main_office_address'][0] ?? $profile_raw_meta_data['secondary_office_address'][0] ?? '',
+			'address'          => [
+				"default" 			=> self::formatAddress($profile_raw_meta_data, "main") ?? self::formatAddress($profile_raw_meta_data, "secondary") ?? '',
+				"primary" 			=> self::formatAddress($profile_raw_meta_data, "main") ?? null,
+				"secondary" 		=> self::formatAddress($profile_raw_meta_data, "secondary") ?? null
+			],
 			'party'            => $term_data[ \Newspack\Govpack\Tax\Party::TAX_SLUG ] ?? '',
 			'state'            => $term_data[ \Newspack\Govpack\Tax\State::TAX_SLUG ] ?? '',
 			'legislative_body' => $term_data[ \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG ] ?? '',
 			'name'             => $profile_raw_data->post_title ?? '',
 			'bio'              => $profile_raw_data->post_excerpt ?? '',
 			'link'             => get_permalink( $profile_id ),
+			'websites'         => [
+				'campaign'			=> $profile_raw_meta_data['campaign_url'][0] ?? '',
+				'legislative' 		=> $profile_raw_meta_data['leg_url'][0] ?? ''
+			],
 		];
 
+		$profile_data['name'] = join(" ", [$profile_data['first_name'], $profile_data['last_name']]);
 		$profile_data['hasSocial'] = ( $profile_data['facebook'] ?? $profile_data['instagram'] ?? $profile_data['twitter'] ?? $profile_data['linkedin'] ?? false );
+		$profile_data['hasWebsites'] = ( $profile_data['websites']["campaign"] ?? $profile_data['websites']["legislative"] ?? false );
 
 		return $profile_data;
 	}
@@ -758,6 +793,10 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 * @return string HTML for recipe shortcode.
 	 */
 	public static function shortcode_handler( $attributes, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+
+		if ( ! isset( $attributes['profileId'] ) ) {
+			return;
+		}
 
 		return self::load_block( 'govpack/profile', $attributes, $content, 'profile' );
 	}
@@ -775,11 +814,7 @@ class Profile extends \Newspack\Govpack\Post_Type {
 		if ( \is_admin() ) {
 			return false;
 		}
-
-		if ( ! isset( $attributes['profileId'] ) ) {
-			return;
-		}
-
+	
 		$profile_data = self::get_data( $attributes['profileId'] );
 		if ( ! $profile_data ) {
 			return;
@@ -816,8 +851,10 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 *
 	 * @return string HTML for recipe shortcode.
 	 */
-	public static function shortcode_handler_self( $atts, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		return self::load_block( 'govpack/profile-self', $atts, $content, 'profile-self' );
+	public static function shortcode_handler_self( $attributes, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		
+		$attributes["profileId"] = get_queried_object_id();
+		return self::load_block( 'govpack/profile-self', $attributes, $content, 'profile-self' );
 	}
 
 	/**

@@ -67,14 +67,14 @@ function useLoaded(props){
 			});
 
 			if(isEmpty(terms)){
-				terms = null
+				terms = false
 			}		
 		}
 
 		return {
 			taxonomies, 
 			entity,
-			image : select( 'core' ).getMedia( entity.featured_media ),
+			image : select( 'core' ).getMedia( entity.featured_media ) ?? false,
 			terms : terms
 		}
 	}, [] );
@@ -85,7 +85,7 @@ function useLoaded(props){
 function RawEdit( props ) {
 
 	const loaded = useLoaded(props)
-
+	console.log("LOADED", loaded)
 	const [ isLoading, setIsLoading ] = useState( true );
     const ref = useRef();
 	const blockProps = useBlockProps( { ref } );

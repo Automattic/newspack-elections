@@ -26,7 +26,7 @@ function normalize_porfile(profile){
 
     const featured_image = profile?._embedded?.["wp:featuredmedia"]?.[0] ?? null
     const getFromEmbedded = (tax) => {
-        if(isArray(profile[tax]) && !isEmpty(profile[tax])){
+        if(isArray(profile[tax]) && !isEmpty(profile[tax]) && (isArray(profile._embedded?.["wp:term"]))){
             return profile[tax].map( (term) => {
                 return profile._embedded?.["wp:term"]?.filter( (t) => {
                     return t?.[0]?.id === term
@@ -37,6 +37,7 @@ function normalize_porfile(profile){
 
 	const createAddress = (type) => {
 
+		// BUild an arry of address items that we can connect with a join(", ") to get nice formatting
 		let address = []
 		address.push(profile.meta?.[type + "_office_address"] ?? null)
 		address.push(profile.meta?.[type + "_office_city"] ?? null)
@@ -49,9 +50,6 @@ function normalize_porfile(profile){
 		}
 
 		address = address.filter( (line) => ( !isNil(line) && !isEmpty(line) && ("" !== line) ) ) 
-
-		console.log("address", type, address)
-
 		return isEmpty(address) ? null : address.join(", ")
 	}
 

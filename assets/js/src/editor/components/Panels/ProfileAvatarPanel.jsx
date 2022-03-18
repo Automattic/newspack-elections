@@ -115,7 +115,6 @@ const ProfileAvatarPanel = (props) => {
 										const isCurrent = avatarSize === option.value;
 										return (
 											<Button
-												isLarge
 												isPrimary={ isCurrent }
 												aria-pressed={ isCurrent }
 												aria-label={ option.label }

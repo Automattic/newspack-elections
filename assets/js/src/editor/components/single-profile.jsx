@@ -66,9 +66,14 @@ function normalize_porfile(profile){
         linkedin :  profile.meta?.linkedin,
         hasSocial : !!(profile.meta?.twitter ?? profile.meta?.facebook ?? profile.meta?.linkedin),
 		address : {
-			default : (createAddress("main") ?? createAddress("secondary") ?? null),
-			primary : createAddress("main"),
-			secondary : createAddress("secondary")
+			default 	: (createAddress("main") ?? createAddress("secondary") ?? null),
+			primary 	: createAddress("main"),
+			secondary 	: createAddress("secondary")
+		},
+		name : {
+			full 	: [profile.meta?.first_name, profile.meta?.last_name].join(" "),
+			first 	:  profile.meta?.first_name ?? null,
+			last 	:  profile.meta?.last_name ?? null
 		},
         bio : decodeEntities(profile.excerpt?.rendered ?? profile.excerpt ?? null)
     }
@@ -219,13 +224,13 @@ const SingleProfile = (props) => {
                 <div className={`${blockClassName}__info`}>
                     <div className={`${blockClassName}__line`}>
                         {showName && (
-                            <h3><Link>{profile.title}</Link></h3>
+                            <h3><Link>{profile.name.full}</Link></h3>
                         )}
                         {showBio && profile.bio && (
                             <>
                                 <div>{bio}</div>
                                 {showProfileLink && (
-                                    <div><Link>More about {profile.title}</Link></div>
+                                    <div><Link>More about {profile.name.first}</Link></div>
 									
                                 )}
                             </>

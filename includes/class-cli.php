@@ -207,7 +207,7 @@ class CLI extends \WP_CLI_Command {
 		$id = $args[0];
 
 		try {
-
+			var_dump($id);
 			\Newspack\Govpack\Importer\Importer::sideload( $id );
 			
 			WP_CLI::line( 'sideloaded' );

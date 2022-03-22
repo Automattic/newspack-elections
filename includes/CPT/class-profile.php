@@ -694,8 +694,13 @@ class Profile extends \Newspack\Govpack\Post_Type {
 		$address[] = ($profile_data[$type . "_office_state"][0] ?? null);
 		$address[] = ($profile_data[$type . "_office_zip"][0] ?? null);
 
-		if($profile_data[$type . "_phone"]){
-			$address[] = ("(" . $profile_data[$type . "_phone"][0] . ")");
+		$phone = $profile_data[$type . "_phone"][0] ?? null;
+
+		if(
+			( $phone ) && 
+			( $phone  !== "")
+		){
+			$address[] = ("(" .  $phone  . ")");
 		}
 	
 		$address = array_filter( $address, function($line){
@@ -730,10 +735,6 @@ class Profile extends \Newspack\Govpack\Post_Type {
 
 		$profile_raw_meta_data = get_post_meta( $profile_id );
 		if ( ! $profile_raw_meta_data ) {
-			return;
-		}
-
-		if ( empty( $profile_raw_meta_data['first_name'][0] ) || empty( $profile_raw_meta_data['last_name'][0] ) ) {
 			return;
 		}
 

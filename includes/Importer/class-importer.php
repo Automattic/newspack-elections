@@ -309,6 +309,8 @@ class Importer {
 		  // delete the options cached for the import
 		  \delete_option( 'govpack_import_extra_args', null );
 		  \delete_option( 'govpack_import_path', null );
+		  \delete_option( 'govpack_import_processing', null );
+		  \delete_option( 'govpack_import_group', null );
 	}
 
 	/**
@@ -349,17 +351,52 @@ class Importer {
 			throw new \Exception( sprintf( 'Image meta field for profile %s does not contain a valid url', $id ) );
 		}
 
-		$url = \esc_url_raw( $post->image );
 
-		$sideload = \media_sideload_image( $url, $id, '', 'id' );
+		require_once(ABSPATH . 'wp-admin/includes/media.php');
+		require_once(ABSPATH . 'wp-admin/includes/file.php');
+		require_once(ABSPATH . 'wp-admin/includes/image.php');
 
-		if ( \is_wp_error( $sideload ) ) {
-			throw new \Exception( sprintf( 'Side load failed for profile %s', $id ) );
+		foreach ( get_intermediate_image_sizes() as $size ) {
+            remove_image_size( $size );
+    	}
+
+		add_filter( 'http_request_timeout', function($timeout_value, $url ){
+			return 5;
+		}, 10, 2);
+
+		$url = $post->image;
+
+		var_dump("attempting sideload for " . $id);
+		var_dump("attempting sideload wudth " . $url);
+
+	
+		add_filter( 'wp_image_editors', function(){
+			return array( 'WP_Image_Editor_GD', );
+		} );
+		
+		
+	
+		try{
+			
+			$sideload = \media_sideload_image( $url, $id, '', 'id' );
+			var_dump($sideload);
+
+			if ( \is_wp_error( $sideload ) ) {
+				throw new \Exception( sprintf( 'Side load failed for profile %s', $id ) );
+			}
+
+			if (! $huh = \set_post_thumbnail( $id, $sideload ) ) {
+				throw new \Exception( sprintf( 'Side load failed for to side post thumbnail/featured image for profile %s', $id ) );
+			}
+		
+		} catch(Exception $e){
+			error_log(print_r($e, true));
+			return true;
 		}
 
-		if ( ! \set_post_thumbnail( $id, $sideload ) ) {
-			throw new \Exception( sprintf( 'Side load failed for to side post thumbnail/featured image for profile %s', $id ) );
-		}
+		var_dump("id: " . $id);
+		var_dump("media: " . $sideload);
+		var_dump("set: " . $huh);
 
 		return true;
 	}

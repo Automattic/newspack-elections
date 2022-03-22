@@ -19,6 +19,7 @@ class ActionScheduler {
 		add_filter( 'action_scheduler_store_class', [ __class__, 'replace_store' ] );
 		add_filter( 'action_scheduler_queue_runner_concurrent_batches', [ __class__, 'as_concurrent_batches' ] );
 		add_filter( 'action_scheduler_logger_class',  [ __class__, 'replace_logger' ]);
+		add_filter( 'action_scheduler_failure_period', [ __class__, 'set_timeout_seconds' ]);
 	}
 
 	/**
@@ -49,4 +50,7 @@ class ActionScheduler {
 		return 'ActionScheduler_DBLogger';
 	}
 	
+	public static function set_timeout_seconds($seconds){
+		return 10;
+	}
 }

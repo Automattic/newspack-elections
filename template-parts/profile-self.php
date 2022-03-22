@@ -70,6 +70,7 @@ $show_photo = ( has_post_thumbnail( $profile_data['id'] ) && $attributes['showAv
 $show_secondary_address = (isset($profile_data['address']['secondary']) && 
 	($profile_data['address']['secondary'] !== $profile_data['address']['default'])
 );
+$show_name = (isset($profile_data['name']) && $attributes['showName'] );
 
 ?>
 
@@ -85,12 +86,14 @@ $show_secondary_address = (isset($profile_data['address']['secondary']) &&
 		<?php } ?>
 
 		<div class="wp-block-govpack-profile-self__info">
-			<h1> <?php echo esc_html( $profile_data['name'] ); ?></h1>
+			<?php if ( $show_name ) { ?>
+				<h1> <?php echo esc_html( $profile_data['name'] ); ?></h1>
+			<?php } ?>
 			<?php
-				Row( $profile_data['legislative_body'], $attributes['showLegislativeBody'] );
-				Row( $profile_data['position'] ?? null, $attributes['showPosition'] );
+				Row( $profile_data['legislative_body'], $attributes['showLegislativeBody'], );
+				Row( $profile_data['position'], $attributes['showPosition'] );
 				Row( $profile_data['party'], $attributes['showParty'] );
-				Row( $profile_data['state'], $attributes['showState'] );
+				Row( $profile_data['state'], ($attributes['showState'] && $profile_data['state']));
 				Row( GP_Contacts( $profile_data, $attributes ), ( $attributes['showEmail'] || $attributes['showSocial'] && $profile_data['hasSocial'] ) );
 				Row( $profile_data['address']['default'], $attributes['showAddress'] );
 				Row( $profile_data['address']['secondary'],($attributes['showAddress'] && $show_secondary_address));

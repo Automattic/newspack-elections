@@ -92,20 +92,17 @@ $container_classes = join(
 						echo $profile_data['bio'];
 					} 
 					?>
-					  <?php if ( $attributes['showProfileLink'] ) { ?>
-						<p><?php echo GP_Link( $profile_data['link'], $profile_data['name'] ); ?></p>
-					<?php } ?>
+
 				</div>
 				<?php
-					Row( $profile_data['legislative_body'], $attributes['showLegislativeBody'] );
-					Row( $profile_data['position'] ?? null, $attributes['showPosition'] );
+					Row( $profile_data['legislative_body'], $attributes['showLegislativeBody'], );
+					Row( $profile_data['position'], $attributes['showPosition'] );
 					Row( $profile_data['party'], $attributes['showParty'] );
-					Row( $profile_data['state'], $attributes['showState'] );
-					// <Row value={<Contacts />} display={showEmail || (showSocial && profile.hasSocial)}/>
+					Row( $profile_data['state'], ($attributes['showState'] && $profile_data['state']));
 					Row( GP_Contacts( $profile_data, $attributes ), ( $attributes['showEmail'] || $attributes['showSocial'] && $profile_data['hasSocial'] ) );
-
-					Row( $profile_data['address'], $attributes['showAddress'] );
-					Row( GP_Link( $profile_data['link'], $profile_data['name'] ), $attributes['showProfileLink'] );
+					Row( $profile_data['address']['default'], $attributes['showAddress'] );
+					Row( $profile_data['address']['secondary'],($attributes['showAddress'] && $show_secondary_address));
+					Row( GP_Websites($profile_data['websites']), ($attributes['showWebsites'] && $profile_data['hasWebsites']) );
 					
 				?>
 			</div>

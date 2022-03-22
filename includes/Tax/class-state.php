@@ -53,7 +53,7 @@ class State extends \Newspack\Govpack\Taxonomy {
 					'items_list_navigation'      => __( 'States list navigation', 'govpack' ),
 				],
 				'public'             => true,
-				'hierarchical'       => false,
+				'hierarchical'       => true,
 				'rewrite'            => [
 					'slug'         => self::SLUG,
 					'with_front'   => false,
@@ -62,7 +62,7 @@ class State extends \Newspack\Govpack\Taxonomy {
 				'meta_box_cb'        => false,
 				'show_admin_column'  => true,
 				'show_in_rest'       => true,
-				'show_ui'            => false,
+				'show_ui'            => true,
 				'show_in_which_menu' => 'govpack',
 			]
 		);

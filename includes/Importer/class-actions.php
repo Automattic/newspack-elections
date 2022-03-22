@@ -373,8 +373,6 @@ class Actions {
 
 
 	public static function get_address_from_open_states_data( $address ) {
-
-		error_log( $address );
 		if ( ! $address ) {
 			return [];
 		}
@@ -402,9 +400,14 @@ class Actions {
 
 	}
 
-	public static function make_profile_from_csv( $data ) {
-	   
-	   
+	public static function make_profile_from_csv( $data_input ) {
+		
+		$data = [];
+
+		foreach($data_input as $key => $value){
+			$data[trim(strtolower($key))] = trim($value);
+		}
+
 		$main_office      = self::get_address_from_open_states_data( $data['district_address'] );
 		$secondary_office = self::get_address_from_open_states_data( $data['capitol_address'] );
   
@@ -469,7 +472,6 @@ class Actions {
 
 		$created_post_id = $resp;
 	   
-
 		$taxonomy_map = [
 			'current_party'   => 'govpack_party',
 			'state'           => 'govpack_state',
@@ -478,21 +480,30 @@ class Actions {
 			'status'          => 'govpack_officeholder_status',
 		];
 
-
 		foreach ( $taxonomy_map as $field => $taxonomy ) {
-			if ( $data[ $field ] ) {
+			
+			if ( isset($data[ $field ])) {
 				self::assign_term_to_obj( $created_post_id, $data[ $field ], $taxonomy );
+				error_log("Attaching Term to Profile");
 			}
 		}
 		
+	
+
 		if ( $data['image'] ) {
+
+			error_log("Attempting to sideload Image");
+			error_log(print_r($data['image'], true));
+
+			
 			try {
 				Importer::sideload( $created_post_id );
 			} catch ( Exception $e ) {
+
 			}
 		}
 		
-		error_log( print_r( $created_post_id, true ) );
+		return true;
 	}
 
 	public static function assign_term_to_obj( $object_id, $term_name, $taxonomy ) {
@@ -503,6 +514,9 @@ class Actions {
 	}
 
 	public static function find_or_create_term( $term_name = null, $taxonomy = null ) {
+
+		require_once(ABSPATH . "wp-admin/includes/taxonomy.php");
+
 
 		if ( ! $term_name ) {
 			return new WP_Error( 'No Term Provided to find or create' );
@@ -523,9 +537,7 @@ class Actions {
 		
 	}
 
-	public static function cleanup_import( $data ) {
-
+	public static function cleanup_import( ) {
 		\Newspack\Govpack\Importer\Importer::clean();
-
 	}
 }

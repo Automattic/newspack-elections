@@ -20,6 +20,8 @@ class IssueArchive extends \Newspack\Govpack\Block {
 	 * @return void
 	 */
 	public static function register_block() {
+
+		/*
 		register_block_type(
 			'govpack/issue-archive',
 			[
@@ -41,6 +43,7 @@ class IssueArchive extends \Newspack\Govpack\Block {
 				],
 			]
 		);
+		*/
 	}
 
 	/**

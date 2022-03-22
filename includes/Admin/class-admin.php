@@ -38,8 +38,8 @@ class Admin {
 
 	public static function register_blocks() {
 		
-		wp_enqueue_script("govpack-editor");
-		wp_enqueue_style("govpack-editor-style");
+		//wp_enqueue_script("govpack-editor");
+		//wp_enqueue_style("govpack-editor-style");
 	}
 
 	public static function create_menus() {
@@ -114,9 +114,6 @@ class Admin {
 		}
 
 		if ( true === $screen->is_block_editor() && "govpack_profiles" === $screen->post_type){
-
-		
-
 			\wp_enqueue_script( 'govpack-editor' );
 			\wp_enqueue_style( 'govpack-editor-style' );
 		}

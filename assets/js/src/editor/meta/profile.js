@@ -63,14 +63,20 @@ const AboutPanel = (props) => {
 }
 
 const PanelTextControl = (props) => {
+
+	const {onChange, ...restProps} = props
+
     return (
         <TextControl
+			
             label = {props.label}
             value={ props.meta?.[props.meta_key] ?? "" }
             onChange={ ( value ) => {
-                console.log( value, props, { [props.meta_key]: value } )
-                props.onChange( { [props.meta_key]: value } )
-             } }
+                onChange( { [props.meta_key]: value } )
+            }}
+			
+			{...restProps}
+			
         />
     )
 }
@@ -291,11 +297,11 @@ const CommunicationsPanel = (props) => {
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl meta={props.meta} label= "Campaign Website" meta_key="campaign_url" onChange={setPostMeta}/>
+                <PanelTextControl meta={props.meta} label= "Campaign Website" meta_key="campaign_url" onChange={setPostMeta} placeholder="https://"/>
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl meta={props.meta} label= "Legislative Website" meta_key="leg_url" onChange={setPostMeta}/>
+                <PanelTextControl meta={props.meta} label= "Legislative Website" meta_key="leg_url" onChange={setPostMeta} placeholder="https://"/>
             </PanelRow>
 
         </GovPackSidebarPanel>

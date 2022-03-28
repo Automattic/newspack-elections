@@ -285,6 +285,15 @@ class Importer {
 	}
 
 	/**
+	* Removes stored options from the last import
+	*/
+	public static function check_for_stuck_import() {
+		die("hey!");
+  	}
+
+
+
+	/**
 	 * Reset all Import Funcions to empty
 	 */
 	public static function clear() {
@@ -356,36 +365,17 @@ class Importer {
 		require_once(ABSPATH . 'wp-admin/includes/file.php');
 		require_once(ABSPATH . 'wp-admin/includes/image.php');
 
-		foreach ( get_intermediate_image_sizes() as $size ) {
-            remove_image_size( $size );
-    	}
-
-		add_filter( 'http_request_timeout', function($timeout_value, $url ){
-			return 5;
-		}, 10, 2);
-
 		$url = $post->image;
-
-		var_dump("attempting sideload for " . $id);
-		var_dump("attempting sideload wudth " . $url);
-
-	
-		add_filter( 'wp_image_editors', function(){
-			return array( 'WP_Image_Editor_GD', );
-		} );
-		
-		
 	
 		try{
 			
 			$sideload = \media_sideload_image( $url, $id, '', 'id' );
-			var_dump($sideload);
 
 			if ( \is_wp_error( $sideload ) ) {
 				throw new \Exception( sprintf( 'Side load failed for profile %s', $id ) );
 			}
 
-			if (! $huh = \set_post_thumbnail( $id, $sideload ) ) {
+			if (!\set_post_thumbnail( $id, $sideload ) ) {
 				throw new \Exception( sprintf( 'Side load failed for to side post thumbnail/featured image for profile %s', $id ) );
 			}
 		
@@ -393,10 +383,6 @@ class Importer {
 			error_log(print_r($e, true));
 			return true;
 		}
-
-		var_dump("id: " . $id);
-		var_dump("media: " . $sideload);
-		var_dump("set: " . $huh);
 
 		return true;
 	}

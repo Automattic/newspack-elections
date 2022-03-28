@@ -12,6 +12,12 @@ import {
 import { decodeEntities } from '@wordpress/html-entities';
 import { select} from "@wordpress/data";
 
+import FacebookIcon from "./../../../../images/facebook.svg"
+import TwitterIcon from "./../../../../images/twitter.svg"
+import LinkedinIcon from "./../../../../images/linkedin.svg"
+import EmailIcon from "./../../../../images/email.svg"
+import InstagramIcon from "./../../../../images/instagram.svg"
+
 /**
  * External dependencies
  */
@@ -215,41 +221,66 @@ const SingleProfile = (props) => {
 		)
     }
 
+	const Contact = (props) => {
+        return (
+            <li className={classnames(`${blockClassName}__contact`, {
+                [`${blockClassName}__contact--hide-label`] : true
+            })}>
+                <a href={props.href} className={`${blockClassName}__link`}>
+                    {props.icon && (
+                        <span className={`${blockClassName}__contact__icon ${blockClassName}__contact__icon`}>{props.icon}</span>
+                    )}
+                    <span className = {`${blockClassName}__contact__label`}>{props.label}</span>
+                </a>
+            </li >
+        )
+    }
+
     const Contacts = (props) => {
         return (
            
             <div className={`${blockClassName}__contacts`}>
                 <ul>
                     { showEmail && (
-                        <li>
-                            <a href={`mailto:${profile.link}`}>em</a>
-                        </li>
+                        <Contact 
+							href={`mailto:${profile.link}`}
+							label = "email"
+							icon = { <EmailIcon />}
+						/>
                     )}
 
                     { showSocial && (
                         <>
                             { profile.social.facebook && (
-                                <li>
-                                    <a href={profile.social.facebook}>fb</a>
-                                </li>
+                                <Contact 
+								 	href={profile.facebook} 
+								 	label = "FB"
+									icon = { <FacebookIcon />}
+							 	/>
                             )}
 
                             { profile.social.twitter && (
-                                <li>
-                                    <a href={profile.social.twitter}>tw</a>
-                                </li>
+                                <Contact 
+									href={profile.twitter} 
+									label = "Tw" 
+									icon = { <TwitterIcon />}
+								/>
                             )}
 
                             { profile.social.linkedin && (
-                                <li>
-                                    <a href={profile.social.linkedin}>li</a>
-                                </li>
+                                <Contact 
+									href={profile.linkedin} 
+									label = "Li" 
+									icon = { <LinkedinIcon />}
+								/>
                             )}
 
 							{ profile.social.instagram && (
-                                <li>
-                                    <a href={profile.social.instagram}>in</a>
-                                </li>
+                                <Contact 
+									href={profile.instagram} 
+									label = "In" 
+									icon = { <InstagramIcon />}
+								/>
                             )}
                         </>
                     )}
@@ -303,10 +334,6 @@ const SingleProfile = (props) => {
                         {showBio && profile.bio && (
                             <>
                                 <div>{bio}</div>
-                                {showProfileLink && (
-                                    <div><Link>More about {profile.name.first}</Link></div>
-									
-                                )}
                             </>
                         )}
                         

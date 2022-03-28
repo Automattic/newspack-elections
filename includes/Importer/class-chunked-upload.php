@@ -66,6 +66,18 @@ class Chunked_Upload {
 		
 	}
 
+	/**
+	 * Get the path we want to use as uploads for GovPack
+	 * 
+	 * @param string $slug path of the uploads older to create.
+	 */
+	public static function get_upload_path( $slug ) {
+		$upload     = wp_upload_dir();
+		$upload_dir = $upload['basedir'];
+		$upload_dir = $upload_dir . '/' . $slug;
+		return $upload_dir;
+	} 
+	
 
 	/**
 	 * Called By The REST API to upload a Chunk of a file and combine it 
@@ -79,7 +91,7 @@ class Chunked_Upload {
   
 	  
 		$factory = new \FileUpload\FileUploadFactory(
-			new \FileUpload\PathResolver\Simple( \Newspack\Govpack\Admin\Pages\Import::get_upload_path( 'govpack' ) ), 
+			new \FileUpload\PathResolver\Simple( self::get_upload_path( 'govpack' ) ), 
 			new \FileUpload\FileSystem\Simple(), 
 			[
 				new \FileUpload\Validator\MimeTypeValidator( [ 'text/csv', 'text/plain' ] ),

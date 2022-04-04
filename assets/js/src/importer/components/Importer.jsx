@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import stage from "./../stages"
 import apiFetch from "./../ApiFetch"
 
-
+import Checking from "./Checking.jsx"
 import Uploader from "./Uploader.jsx"
 import Uploading from "./Uploading.jsx"
 import Processing from "./Processing.jsx"
@@ -34,13 +34,20 @@ const Importer = () => {
             method: 'GET',
         } ).then( ( res ) => {
             if(res.data.status === "running"){
-                setStep(stage.PROCESSING)
+                setStep(stage.IMPORTING)
             }
+			setDidInitialStatusCheck(true)
         } );
 
-        setDidInitialStatusCheck(true)
+        
 
     });
+
+	if(!didInitialStatusCheck){
+		return (
+			<Checking />
+		) 
+	}
 
     if(step === stage.UPLOADER){
         return (<Uploader 

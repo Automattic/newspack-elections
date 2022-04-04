@@ -4,6 +4,7 @@ export let stage = {
     PROCESSING : 2,
     IMPORTING : 3,
     DONE : 4,
+	CHECKING : 5,
 }
 
 export default stage

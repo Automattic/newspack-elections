@@ -78,6 +78,20 @@ class Chunked_Upload {
 		return $upload_dir;
 	} 
 	
+	/**
+	 * Check the uplaods will work and create a govpack specific directory
+	 * 
+	 * @param string $slug path of the uploads older to create.
+	 */
+	public static function create_upload_directory( $slug = 'govpack' ) {
+		
+		$upload     = wp_upload_dir();
+		$upload_dir = $upload['basedir'];
+		$upload_dir = $upload_dir . '/' . $slug;
+		if ( ! is_dir( $upload_dir ) ) {
+			wp_mkdir_p( $upload_dir );
+		}
+	}
 
 	/**
 	 * Called By The REST API to upload a Chunk of a file and combine it 
@@ -88,8 +102,8 @@ class Chunked_Upload {
 
 		$file_params = $request->get_file_params();
 		
+		self::create_upload_directory();
   
-	  
 		$factory = new \FileUpload\FileUploadFactory(
 			new \FileUpload\PathResolver\Simple( self::get_upload_path( 'govpack' ) ), 
 			new \FileUpload\FileSystem\Simple(), 

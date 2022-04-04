@@ -153,11 +153,12 @@ class Importer {
 			return new \WP_Error( '500', 'No File For Import' );
 		}
 		
-		
+
 		$importer = self::make( $file );
+
 		return $importer::import( $file, false, $extra );
 
-			
+
 	}
 
 	/**
@@ -212,6 +213,7 @@ class Importer {
 		try {
 			self::check_file( $file );
 			$file_type = self::filetype( $file );
+
 	
 			if ( $file_type === 'csv' ) {
 				return CSV::make();
@@ -223,7 +225,6 @@ class Importer {
 		} catch ( Exception $e ) {
 			return false;
 		}
-		
 	}
 
 	/**
@@ -288,8 +289,23 @@ class Importer {
 	* Removes stored options from the last import
 	*/
 	public static function check_for_stuck_import() {
-		die("hey!");
+
+		$progress_check = self::progress_check();
+
+		// no known import on the go
+		if(empty($progress_check)){
+			return;
+		}
+
+		// there are no items left todo, reset the importer
+		if(0 === intval($progress_check["todo"])){
+			self::clean();
+			return;
+		}
+
   	}
+
+	  
 
 
 
@@ -322,20 +338,6 @@ class Importer {
 		  \delete_option( 'govpack_import_group', null );
 	}
 
-	/**
-	 * Check the uplaods will work and create a govpack specific directory
-	 * 
-	 * @param string $slug path of the uploads older to create.
-	 */
-	public static function create_upload_directory( $slug = 'govpack' ) {
-		
-		$upload     = wp_upload_dir();
-		$upload_dir = $upload['basedir'];
-		$upload_dir = $upload_dir . '/' . $slug;
-		if ( ! is_dir( $upload_dir ) ) {
-			wp_mkdir_p( $upload_dir );
-		}
-	}
 
 
 	public static function sideload( $id = null ) {

@@ -15,13 +15,18 @@ const Importing = (props) => {
             path: '/govpack/v1/import/progress',
             method: 'GET',
         } ).then( ( res ) => {
-            
-            setImportProgress( (100 / res.data.total * res.data.done).toFixed(2))
-            setTotal(res.data.total)
-            setDone(res.data.done)
+			
+			let {total, done, todo} = res.data
 
-            if(res.data.todo === "0"){
-                console.log("?????")
+			total = parseInt(total)
+			done = parseInt(done)
+			todo = parseInt(todo)
+
+            setImportProgress( (100 / total * done).toFixed(2) )
+            setTotal(total)
+            setDone(done)
+
+            if(todo === 0){
                 props.updateStep(stage.DONE)
             }
         } );
@@ -31,7 +36,7 @@ const Importing = (props) => {
         Tick()
         timeout = setTimeout( () => {
             Tock();
-        }, 5000)
+        }, 3000)
     }
 
     let timeout = null
@@ -45,7 +50,7 @@ const Importing = (props) => {
         Tick();
         timeout = setTimeout( () => {
             Tock(timeout)
-        }, 5000)
+        }, 3000)
 
         return () => { clearTimeout(timeout) }
     }, [timeout] )
@@ -53,9 +58,16 @@ const Importing = (props) => {
     return (
         <div>
             <InfoPanel heading="Importing">
-                <progress style={{width:"100%"}} id="import_progress" max="100" value={importProgress}> {importProgress}% </progress>
+				{ (done === 0) && (
+					<p>Your Import have been queued and will start shortly</p>
+				) }
+                <progress style={{
+					width:"100%",
+					marginBottom: "1rem",
+
+				}} id="import_progress" max="100" value={importProgress}> {importProgress}% </progress>
                 <div>
-                    <strong>{importProgress}%</strong> : <em>{done}</em> /<span>{total}</span>
+                    <strong>{importProgress}%</strong> : <em>{done}</em>/<span>{total}</span>
                 </div>
             </InfoPanel>
         </div>

@@ -28,8 +28,6 @@ import InstagramIcon from "./../../../../images/instagram.svg"
 
 function normalize_porfile(profile){
 
-
-
     const featured_image = profile?._embedded?.["wp:featuredmedia"]?.[0] ?? null
     const getFromEmbedded = (tax) => {
         if(isArray(profile[tax]) && !isEmpty(profile[tax]) && (isArray(profile._embedded?.["wp:term"]))){
@@ -58,11 +56,11 @@ function normalize_porfile(profile){
 		address = address.filter( (line) => ( !isNil(line) && !isEmpty(line) && ("" !== line) ) ) 
 		return isEmpty(address) ? null : address.join(", ")
 	}
-
+	
     return {
         title : decodeEntities(profile?.title?.rendered ?? profile?.title),
         featured_image : featured_image,
-        featured_image_thumbnail :  featured_image?.media_details?.sizes?.full ?? null,
+        featured_image_thumbnail :  featured_image?.source_url ?? null,
         legislative_body : getFromEmbedded("govpack_legislative_body")?.name ?? null,
         position : getFromEmbedded("govpack_officeholder_title")?.name ?? null,
         state : getFromEmbedded("govpack_state")?.name ?? null,
@@ -199,7 +197,7 @@ const SingleProfile = (props) => {
 
     } = attributes
 
-	//console.log(profile)
+	console.log(profile)
 
 	console.log(showAvatar)
 
@@ -317,7 +315,7 @@ const SingleProfile = (props) => {
          
 				<Photo 
 					display = {showAvatar} 
-					href= {profile.featured_image_thumbnail?.source_url}
+					href= {profile.featured_image_thumbnail}
 					borderRadius= {avatarBorderRadius}
 					blockClassName = {blockClassName}
 					size = {avatarSize}

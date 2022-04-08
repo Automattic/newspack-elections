@@ -132,7 +132,7 @@ const Link = (props) => {
 const Photo = (props) => {
 
 	const {
-		showAvatar,
+		display,
 		href,
 		blockClassName,
 		avatarBorderRadius,
@@ -140,7 +140,9 @@ const Photo = (props) => {
 		LinkProps = {}
 	} = props
 
-	if(!showAvatar && !href){
+	console.log(props)
+
+	if(!display || !href){
 		return null
 	}
 
@@ -199,6 +201,7 @@ const SingleProfile = (props) => {
 
 	//console.log(profile)
 
+	console.log(showAvatar)
 
 
 	const Websites = (props) => {

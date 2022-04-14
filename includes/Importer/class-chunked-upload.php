@@ -10,7 +10,7 @@ namespace Newspack\Govpack\Importer;
 use Exception;
 use WP_Error;
 use Newspack\Govpack\Govpack;
-
+use Newspack\Govpack\Capabilities;
 
 /**
  * Handles Chunked Uploading via a REST Endpoint
@@ -57,7 +57,7 @@ class Chunked_Upload {
 					'upload',
 				],
 				'permission_callback' => function () {
-					return \current_user_can( 'edit_others_posts' );
+					return \current_user_can( Capabilities::CAN_IMPORT );
 
 				},
 			] 

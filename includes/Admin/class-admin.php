@@ -6,6 +6,7 @@
  */
 
 namespace Newspack\Govpack\Admin;
+use Newspack\Govpack\Capabilities;
 
 use Exception;
 
@@ -60,6 +61,7 @@ class Admin {
 			$item->set_page_title( 'Import' )
 				->set_menu_title( 'Import' )
 				->set_menu_slug( 'govpack_import' )
+				->set_capability(Capabilities::CAN_IMPORT)
 				->set_callback( [ '\Newspack\Govpack\Admin\Pages\Import', 'view' ] ) 
 		);
 

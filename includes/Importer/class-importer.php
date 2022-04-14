@@ -9,6 +9,7 @@ namespace Newspack\Govpack\Importer;
 
 use Exception;
 use Newspack\Govpack\Govpack;
+use Newspack\Govpack\Capabilities;
 
 /**
  * Register and handle the "USIO" Importer
@@ -58,8 +59,8 @@ class Importer {
 					'import',
 				],
 				'permission_callback' => function () {
-					return true;
-					return \current_user_can( 'edit_others_posts' );
+				
+					return \current_user_can( Capabilities::CAN_IMPORT );
 
 				},
 			] 
@@ -75,8 +76,8 @@ class Importer {
 					'progress',
 				],
 				'permission_callback' => function () {
-					return true;
-					return \current_user_can( 'edit_others_posts' );
+				
+					return \current_user_can( Capabilities::CAN_IMPORT );
 
 				},
 			] 
@@ -92,8 +93,8 @@ class Importer {
 					'status',
 				],
 				'permission_callback' => function () {
-					return true;
-					return \current_user_can( 'edit_others_posts' );
+				
+					return \current_user_can( Capabilities::CAN_IMPORT );
 
 				},
 			] 
@@ -106,8 +107,8 @@ class Importer {
 				'methods'             => 'GET',
 				'callback'            => [ '\Newspack\Govpack\Importer\OpenStates_Sources', 'urls' ],
 				'permission_callback' => function () {
-					return true;
-					return \current_user_can( 'edit_others_posts' );
+				
+					return \current_user_can( Capabilities::CAN_IMPORT );
 
 				},
 			] 
@@ -120,8 +121,8 @@ class Importer {
 				'methods'             => 'POST',
 				'callback'            => [ '\Newspack\Govpack\Importer\OpenStates_Sources', 'download' ],
 				'permission_callback' => function () {
-					return true;
-					return \current_user_can( 'edit_others_posts' );
+					
+					return \current_user_can( Capabilities::CAN_IMPORT );
 
 				},
 			] 

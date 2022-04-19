@@ -90,14 +90,14 @@ $show_name              = ( isset( $profile_data['name'] ) && $attributes['showN
 				<h1> <?php echo esc_html( $profile_data['name'] ); ?></h1>
 			<?php } ?>
 			<?php
-				Row( $profile_data['legislative_body'], $attributes['showLegislativeBody'], );
-				Row( $profile_data['position'], $attributes['showPosition'] );
-				Row( $profile_data['party'], $attributes['showParty'] );
-				Row( $profile_data['state'], ( $attributes['showState'] && $profile_data['state'] ) );
-				Row( GP_Contacts( $profile_data, $attributes ), ( $attributes['showEmail'] || $attributes['showSocial'] && $profile_data['hasSocial'] ) );
-				Row( $profile_data['address']['default'], $attributes['showAddress'] );
-				Row( $profile_data['address']['secondary'], ( $attributes['showAddress'] && $show_secondary_address ) );
-				Row( GP_Websites( $profile_data['websites'] ), ( $attributes['showWebsites'] && $profile_data['hasWebsites'] ) );
+				gp_row( $profile_data['legislative_body'], $attributes['showLegislativeBody'], );
+				gp_row( $profile_data['position'], $attributes['showPosition'] );
+				gp_row( $profile_data['party'], $attributes['showParty'] );
+				gp_row( $profile_data['state'], ( $attributes['showState'] && $profile_data['state'] ) );
+				gp_row( gp_contacts( $profile_data, $attributes ), ( $attributes['showEmail'] || $attributes['showSocial'] && $profile_data['hasSocial'] ) );
+				gp_row( $profile_data['address']['default'], $attributes['showAddress'] );
+				gp_row( $profile_data['address']['secondary'], ( $attributes['showAddress'] && $show_secondary_address ) );
+				gp_row( gp_websites( $profile_data['websites'] ), ( $attributes['showWebsites'] && $profile_data['hasWebsites'] ) );
 				
 			?>
 		</div>

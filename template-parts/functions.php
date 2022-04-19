@@ -21,7 +21,8 @@ function gp_row( $value, $display ) {
 		return null;
 	}
 
-	echo '<div class="wp-block-govpack-profile__line">' . esc_html( $value ) . '</div>';
+	// No escaping here. $value here needs to handle HTML beyond what wp_kses can realistically handle. Escaping should be done before passing to this function.
+	echo '<div class="wp-block-govpack-profile__line">' . $value . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 }
 

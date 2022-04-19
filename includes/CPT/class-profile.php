@@ -278,8 +278,8 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 */
 	public static function taxonomy_dropdown( $taxonomy, $post_type ) {
 
-		if ( isset( $_REQUEST[ $taxonomy ] ) ) {
-			$current = sanitize_key( wp_unslash( $_REQUEST[ $taxonomy ] ) );
+		if ( isset( $_REQUEST[ $taxonomy ] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$current = sanitize_key( wp_unslash( $_REQUEST[ $taxonomy ] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		
 		} else {
 			$current = false;

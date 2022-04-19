@@ -9,9 +9,12 @@ namespace Newspack\Govpack\Importer\Abstracts;
 
 use Exception;
 
+/**
+ * Govpack Abstract Source Class.
+ */
 abstract class Abstract_Source {
 
-	const states = [
+	const STATES = [
 		'AL' => 'Alabama',
 		'AK' => 'Alaska',
 		'AZ' => 'Arizona',
@@ -66,7 +69,9 @@ abstract class Abstract_Source {
 	];
 
 
-
+	/**
+	 * Merges and returns urls for the source
+	 */
 	public static function flattened_urls() {
 		$source = static::urls(); 
 		$urls   = [];
@@ -76,6 +81,12 @@ abstract class Abstract_Source {
 		return $urls;
 	}
 
+	/**
+	 * Get the source info based on the key passed to it. The key isn't the index, its on the child array
+	 * 
+	 * @param string $key Key to get from the sources array.
+	 * @throws \Exception No Source Found.
+	 */
 	public static function get_source_from_key( $key ) {
 		$sources = self::flattened_urls();
 		$source  = array_filter(
@@ -91,13 +102,24 @@ abstract class Abstract_Source {
 		return reset( $source );
 	}
 
+	/**
+	 * Callback that adds XML as an allowed type to uploads
+	 * 
+	 * @param array $mime_types Existsing Mimetypes.
+	 */
 	public static function extra_upload_mimes( $mime_types ) {
-		$mime_types['xml'] = 'text/xml'; // Adding svg extension
+		$mime_types['xml'] = 'text/xml'; // Adding svg extension.
 		return $mime_types;
 	}
 
    
-
+	/**
+	 * Downloads the selected source file amnd saves it to the govpack directory.
+	 * 
+	 * @param array $source Existsing Mimetypes.
+	 * 
+	 * @throws \Exception Could Not Download File.
+	 */
 	public static function sideload( $source ) {
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		$temp_file = download_url( $source['url'], 5 );
@@ -115,22 +137,25 @@ abstract class Abstract_Source {
 		];
 	
 		$overrides = [
-			// Tells WordPress to not look for the POST form
-			// fields that would normally be present as
-			// we downloaded the file from a remote server, so there
-			// will be no form fields
-			// Default is true
+
+			/* 
+			Tells WordPress to not look for the POST form
+			fields that would normally be present as
+			we downloaded the file from a remote server, so there
+			will be no form fields
+			Default is true
+			*/
 			'test_form' => false,
 	
-			// Setting this to false lets WordPress allow empty files, not recommended
-			// Default is true
+			// Setting this to false lets WordPress allow empty files, not recommended, Default is true.
 			'test_size' => true,
 		];
 
 		add_filter( 'upload_dir', [ __class__, 'change_upload_dir' ] );
-		add_filter( 'upload_mimes', [ __class__, 'extra_upload_mimes' ], 1, 1 );
+		// PHPCS Ignore bellow, as we specific XML.
+		add_filter( 'upload_mimes', [ __class__, 'extra_upload_mimes' ], 1, 1 ); //phpcs:ignore WordPressVIPMinimum.Hooks.RestrictedHooks.upload_mimes
 
-		// Move the temporary file into the uploads directory
+		// Move the temporary file into the uploads directory.
 		$results = wp_handle_sideload( $file, $overrides );
 
 		remove_filter( 'upload_dir', [ __class__, 'change_upload_dir' ] );
@@ -139,6 +164,11 @@ abstract class Abstract_Source {
 		return $results;
 	}
 
+	/**
+	 * Downloads the selected source file amnd saves it to the govpack directory.
+	 * 
+	 * @param string $dir Upload directory definition.
+	 */
 	public static function change_upload_dir( $dir ) {
 		return [
 			'path'   => $dir['basedir'] . '/govpack',
@@ -147,6 +177,11 @@ abstract class Abstract_Source {
 		] + $dir;
 	}
 
+	/**
+	 * Downloads the selected source filem saves it to the govpack directory and stores a reference for the importer to use.
+	 * 
+	 * @param \WP_REST_Request $request REST Request Definition.
+	 */
 	public static function download( \WP_REST_Request $request ) {
 
 		if ( ! $request->has_param( 'source_file' ) ) {

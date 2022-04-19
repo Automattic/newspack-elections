@@ -30,6 +30,9 @@ class Importer {
 
 	}
 
+	/**
+	 * Adds ASSETS used for importing  
+	 */
 	public static function register_scripts() {
 
 		$file = GOVPACK_PLUGIN_FILE . 'dist/importer.asset.php';
@@ -47,6 +50,9 @@ class Importer {
 		);
 	}
 
+	/**
+	 * Register the REST Routes 
+	 */
 	public static function register_rest_endpoints() {
 
 		\register_rest_route(
@@ -129,7 +135,10 @@ class Importer {
 		);
 	}
 
-	public static function status( \WP_REST_Request $request ) {
+	/**
+	 * Called By The REST API to Check the status of an ongoing import
+	 */
+	public static function status() {
 		return WXR::status();
 	}
 
@@ -184,12 +193,12 @@ class Importer {
 		throw new \Exception( 'File Not Found' );
 	} 
 
-	 /**
-	  * Checks the file exists in the Govpack uploads folder
-	  *
-	  * @param string $file  Name of the JSON file.
-	  * @throws \Exception File Not Found.
-	  */
+	/**
+	 * Checks the file exists in the Govpack uploads folder
+	 *
+	 * @param string $file  Name of the JSON file.
+	 * @throws \Exception File Not Found.
+	 */
 	public static function filetype( $file ) {
 
 	
@@ -209,16 +218,20 @@ class Importer {
 		throw new \Exception( 'File Not Found' );
 	} 
 
+	/**
+	 * Create the importer based on the filetype passed in
+	 *
+	 * @param string $file Path of the file to import.
+	 * @throws \Exception File Not Found.
+	 */
 	public static function make( $file ) {
 		
 		try {
 			self::check_file( $file );
 			$file_type = self::filetype( $file );
-
-	
-			if ( $file_type === 'csv' ) {
+			if ( 'csv' === $file_type ) {
 				return CSV::make();
-			} elseif ( $file_type === 'xml' ) {
+			} elseif ( 'xml' === $file_type ) {
 				return XML::make();
 			} else {
 				return false;
@@ -293,12 +306,12 @@ class Importer {
 
 		$progress_check = self::progress_check();
 
-		// no known import on the go
+		// no known import on the go.
 		if ( empty( $progress_check ) ) {
 			return;
 		}
 
-		// there are no items left todo, reset the importer
+		// there are no items left todo, reset the importer.
 		if ( 0 === intval( $progress_check['todo'] ) ) {
 			self::clean();
 			return;
@@ -328,30 +341,36 @@ class Importer {
 
 	}
 
-	 /**
-	  * Removes stored options from the last import
-	  */
+	/**
+	 * Removes stored options from the last import
+	 */
 	public static function clean() {
-		  // delete the options cached for the import
-		  \delete_option( 'govpack_import_extra_args', null );
-		  \delete_option( 'govpack_import_path', null );
-		  \delete_option( 'govpack_import_processing', null );
-		  \delete_option( 'govpack_import_group', null );
+		// delete the options cached for the import.
+		\delete_option( 'govpack_import_extra_args', null );
+		\delete_option( 'govpack_import_path', null );
+		\delete_option( 'govpack_import_processing', null );
+		\delete_option( 'govpack_import_group', null );
 	}
 
 
-
+	/**
+	 * For a Given Post ID, look for the image meta value, sideload it and save it as the post thumbnail
+	 * 
+	 * @param integer $id Post ID to lookup and sideload.
+	 * @throws \Exception Profile errors.
+	 */
 	public static function sideload( $id = null ) {
 
 		if ( ! $id ) {
 			throw new \Exception( 'No Profile ID given' );
 		}
 
-		if ( ! $post = get_post( $id ) ) {
+		$post = get_post( $id );
+		if ( ! $post ) {
 			throw new \Exception( sprintf( 'No Entity with ID %s exists', $id ) );
 		}
 
-		if ( $post->post_type !== 'govpack_profiles' ) {
+		if ( 'govpack_profiles' !== $post->post_type ) {
 			throw new \Exception( sprintf( 'No Profile with ID %s exists', $id ) );
 		}
 
@@ -382,7 +401,6 @@ class Importer {
 				throw new \Exception( sprintf( 'Side load failed for to side post thumbnail/featured image for profile %s', $id ) );
 			}       
 		} catch ( Exception $e ) {
-			error_log( print_r( $e, true ) );
 			return true;
 		}
 

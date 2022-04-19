@@ -40,19 +40,23 @@ class Actions {
 		add_action( 'govpack_import_category', [ self::instance(), 'make_term' ] );
 		add_action( 'govpack_import_tag', [ self::instance(), 'make_term' ] );
 		add_action( 'govpack_import_term', [ self::instance(), 'make_term' ] );
-		add_action( 'govpack_import_post', [ self::instance(), 'make_post' ] );
+		
+
 		add_action( 'govpack_import_csv_profile', [ self::instance(), 'make_profile_from_csv' ] );
-
 		add_action( 'govpack_import_cleanup', [ self::instance(), 'cleanup_import' ] );
-
-		add_filter( 'govpack\import\openstates\links', [ self::instance(), 'explode_openstates_list' ] );
-		add_filter( 'govpack\import\openstates\sources', [ self::instance(), 'explode_openstates_list' ] );
+		add_filter( 'govpack_import_openstates_links', [ self::instance(), 'explode_openstates_list' ] );
+		add_filter( 'govpack_import_openstates_sources', [ self::instance(), 'explode_openstates_list' ] );
 	}
 
-
+	/**
+	 * Convert a string from openstates into an array
+	 * 
+	 * @param string $list string of items from openstates.
+	 */
 	public static function explode_openstates_list( $list ) {
 		return explode( ';', $list );
 	}
+
 	/**
 	 * Action that fires from the importer to make the terms
 	 * 
@@ -60,16 +64,6 @@ class Actions {
 	 */
 	public function make_term( $args ) {
 		$this->process_term( $args, null );
-	}
-
-
-	/**
-	 * Action that fires from the importer to make the terms
-	 * 
-	 * @param array $args Args passed from Action Scheduler.
-	 */
-	public function make_post( $args ) {
-		$this->process_post( $args, null );
 	}
 
 
@@ -140,245 +134,18 @@ class Actions {
 
 	}
 
-
 	/**
-	 * Does the post exist?
-	 *
-	 * @param array $data Post data to check against.
-	 * @return int|bool Existing post ID if it exists, false otherwise.
+	 * From OpenStates data, split the address up into pieces
+	 * 
+	 * @param string $address address to be split up.
 	 */
-	protected function post_exists( $data ) {
-
-		// Still nothing, try post_exists, and cache it
-		$exists = post_exists( $data['post_title'], $data['post_content'], $data['post_date'] );
-
-		return $exists;
-	}
-
-
-	/**
-	 * Pre-process post data.
-	 *
-	 * @param array $data Post data. (Return empty to skip.).
-	 */
-	protected function process_post( $data, $meta, $comments = null, $terms ) {
-
-	
-		if ( empty( $data ) ) {
-			return false;
-		}
-
-		$original_id = isset( $data['post_id'] ) ? (int) $data['post_id'] : 0;
-		$parent_id   = isset( $data['post_parent'] ) ? (int) $data['post_parent'] : 0;
-
-		$post_type_object = get_post_type_object( $data['post_type'] );
-
-		// Is this type even valid?
-		if ( ! $post_type_object ) {
-			$this->logger->warning(
-				sprintf(
-					__( 'Failed to import "%1$s": Invalid post type %2$s', 'wordpress-importer' ),
-					$data['post_title'],
-					$data['post_type']
-				) 
-			);
-			return false;
-		}
-
-		$post_exists = $this->post_exists( $data );
-
-		// Map the parent post, or mark it as one we need to fix
-		$requires_remapping = false;
-		if ( $parent_id ) {
-			if ( isset( $this->mapping['post'][ $parent_id ] ) ) {
-				$data['post_parent'] = $this->mapping['post'][ $parent_id ];
-			} else {
-				$meta[]             = [
-					'key'   => '_wxr_import_parent',
-					'value' => $parent_id,
-				];
-				$requires_remapping = true;
-
-				$data['post_parent'] = 0;
-			}
-		}
-
-		// Map the author, or mark it as one we need to fix
-		$author = sanitize_user( $data['post_author'], true );
-		if ( empty( $author ) ) {
-			// Missing or invalid author, use default if available.
-			$data['post_author'] = $this->options['default_author'];
-		} elseif ( isset( $this->mapping['user_slug'][ $author ] ) ) {
-			$data['post_author'] = $this->mapping['user_slug'][ $author ];
-		} else {
-			$meta[]             = [
-				'key'   => '_wxr_import_user_slug',
-				'value' => $author,
-			];
-			$requires_remapping = true;
-
-			$data['post_author'] = (int) get_current_user_id();
-		}
-
-		// Does the post look like it contains attachment images?
-		// if ( preg_match( self::REGEX_HAS_ATTACHMENT_REFS, $data['post_content'] ) ) {
-		// $meta[] = array( 'key' => '_wxr_import_has_attachment_refs', 'value' => true );
-		// $requires_remapping = true;
-		// }
-
-		// Whitelist to just the keys we allow
-		$postdata = [
-			'import_id' => $data['post_id'],
-		];
-		$allowed  = [
-			'post_author'    => true,
-			'post_date'      => true,
-			'post_date_gmt'  => true,
-			'post_content'   => true,
-			'post_excerpt'   => true,
-			'post_title'     => true,
-			'post_status'    => true,
-			'post_name'      => true,
-			'comment_status' => true,
-			'ping_status'    => true,
-			'guid'           => true,
-			'post_parent'    => true,
-			'menu_order'     => true,
-			'post_type'      => true,
-			'post_password'  => true,
-		];
-		foreach ( $data as $key => $value ) {
-			if ( ! isset( $allowed[ $key ] ) ) {
-				continue;
-			}
-
-			$postdata[ $key ] = $data[ $key ];
-		}
-
-		$postdata = apply_filters( 'wp_import_post_data_processed', $postdata, $data );
-
-		$post_id = wp_insert_post( $postdata, true );
-		do_action( 'wp_import_insert_post', $post_id, $original_id, $postdata, $data );
-
-		if ( is_wp_error( $post_id ) ) {
-			$this->logger->error(
-				sprintf(
-					__( 'Failed to import "%1$s" (%2$s)', 'wordpress-importer' ),
-					$data['post_title'],
-					$post_type_object->labels->singular_name
-				) 
-			);
-			$this->logger->debug( $post_id->get_error_message() );
-
-			/**
-			 * Post processing failed.
-			 *
-			 * @param WP_Error $post_id Error object.
-			 * @param array $data Raw data imported for the post.
-			 * @param array $meta Raw meta data, already processed by {@see process_post_meta}.
-			 * @param array $comments Raw comment data, already processed by {@see process_comments}.
-			 * @param array $terms Raw term data, already processed.
-			 */
-			do_action( 'wxr_importer.process_failed.post', $post_id, $data, $meta, null, $terms );
-			return false;
-		}
-
-		// Ensure stickiness is handled correctly too
-		if ( $data['is_sticky'] === '1' ) {
-			stick_post( $post_id );
-		}
-
-		// Handle the terms too
-		$terms = apply_filters( 'wp_import_post_terms', $terms, $post_id, $data );
-
-		if ( ! empty( $terms ) ) {
-			$term_ids = [];
-			foreach ( $terms as $term ) {
-				$taxonomy = $term['taxonomy'];
-				$key      = sha1( $taxonomy . ':' . $term['slug'] );
-
-				if ( isset( $this->mapping['term'][ $key ] ) ) {
-					$term_ids[ $taxonomy ][] = (int) $this->mapping['term'][ $key ];
-				} else {
-					$meta[]             = [
-						'key'   => '_wxr_import_term',
-						'value' => $term,
-					];
-					$requires_remapping = true;
-				}
-			}
-
-			foreach ( $term_ids as $tax => $ids ) {
-				$tt_ids = wp_set_post_terms( $post_id, $ids, $tax );
-				do_action( 'wp_import_set_post_terms', $tt_ids, $ids, $tax, $post_id, $data );
-			}
-		}
-
-		$this->process_post_meta( $meta, $post_id, $data );
-
-	}
-
-	/**
-	 * Process and import post meta items.
-	 *
-	 * @param array $meta List of meta data arrays
-	 * @param int   $post_id Post to associate with
-	 * @param array $post Post data
-	 * @return int|WP_Error Number of meta items imported on success, error otherwise.
-	 */
-	protected function process_post_meta( $meta, $post_id, $post ) {
-		if ( empty( $meta ) ) {
-			return true;
-		}
-
-		foreach ( $meta as $meta_item ) {
-			/**
-			 * Pre-process post meta data.
-			 *
-			 * @param array $meta_item Meta data. (Return empty to skip.)
-			 * @param int $post_id Post the meta is attached to.
-			 */
-			$meta_item = apply_filters( 'wxr_importer.pre_process.post_meta', $meta_item, $post_id );
-			if ( empty( $meta_item ) ) {
-				return false;
-			}
-
-			$key   = apply_filters( 'import_post_meta_key', $meta_item['key'], $post_id, $post );
-			$value = false;
-
-			if ( '_edit_last' === $key ) {
-				$value = intval( $meta_item['value'] );
-				if ( ! isset( $this->mapping['user'][ $value ] ) ) {
-					// Skip!
-					continue;
-				}
-
-				$value = $this->mapping['user'][ $value ];
-			}
-
-			if ( $key ) {
-				// export gets meta straight from the DB so could have a serialized string
-				if ( ! $value ) {
-					$value = maybe_unserialize( $meta_item['value'] );
-				}
-
-				add_post_meta( $post_id, $key, $value );
-				do_action( 'import_post_meta', $post_id, $key, $value );
-
-			}
-		}
-
-		return true;
-	}
-
-
 	public static function get_address_from_open_states_data( $address ) {
 		if ( ! $address ) {
 			return [];
 		}
 
 		$new_address = [];
-		// First we need to split the address string on the ; so we get the street address and the state/zip in the second
+		// First we need to split the address string on the ; so we get the street address and the state/zip in the second.
 		$re = '/([^;]+)/m';
 		preg_match_all( $re, $address, $matches, PREG_SET_ORDER, 0 );
 
@@ -400,6 +167,11 @@ class Actions {
 
 	}
 
+	/**
+	 * From CSV data, create a profile
+	 * 
+	 * @param array $data_input Data passed from Action Scheduler.
+	 */
 	public static function make_profile_from_csv( $data_input ) {
 		
 		$data = [];
@@ -456,8 +228,8 @@ class Actions {
 				'secondary_office_zip'     => $secondary_office['zip'] ?? '',
 
 				'image'                    => $data['image'],
-				'links'                    => \apply_filters( 'govpack\import\openstates\links', $data['links'] ),
-				'sources'                  => \apply_filters( 'govpack\import\openstates\sources', $data['sources'] ),
+				'links'                    => \apply_filters( 'govpack_import_openstates_links', $data['links'] ),
+				'sources'                  => \apply_filters( 'govpack_import_openstates_sources', $data['sources'] ),
 				'extra'                    => $data['extra'] ?? '',
 
 			],   
@@ -484,7 +256,6 @@ class Actions {
 			
 			if ( isset( $data[ $field ] ) ) {
 				self::assign_term_to_obj( $created_post_id, $data[ $field ], $taxonomy );
-				error_log( 'Attaching Term to Profile' );
 			}
 		}
 		
@@ -492,20 +263,23 @@ class Actions {
 
 		if ( $data['image'] ) {
 
-			error_log( 'Attempting to sideload Image' );
-			error_log( print_r( $data['image'], true ) );
-
-			
 			try {
 				Importer::sideload( $created_post_id );
 			} catch ( Exception $e ) {
-
+				return false;
 			}
 		}
 		
 		return true;
 	}
 
+	/**
+	 * Utility to assign a term to an object
+	 *
+	 * @param string $object_id The ID of the object to which the term gets added.
+	 * @param string $term_name The Name of the term to find or create.
+	 * @param string $taxonomy the taxonomy to look/create in.
+	 */
 	public static function assign_term_to_obj( $object_id, $term_name, $taxonomy ) {
 		$term = self::find_or_create_term( $term_name, $taxonomy );
 		if ( ! \is_wp_error( $term ) ) {
@@ -513,6 +287,12 @@ class Actions {
 		}
 	}
 
+	/**
+	 * Look For a term in a taxonomy, create it if it doesn't exist
+	 * 
+	 * @param string $term_name The Name of the term to find or create.
+	 * @param string $taxonomy the taxonomy to look/create in.
+	 */
 	public static function find_or_create_term( $term_name = null, $taxonomy = null ) {
 
 		require_once ABSPATH . 'wp-admin/includes/taxonomy.php';
@@ -537,6 +317,9 @@ class Actions {
 		
 	}
 
+	/**
+	 * Run a Cleanup  
+	 */
 	public static function cleanup_import() {
 		\Newspack\Govpack\Importer\Importer::clean();
 	}

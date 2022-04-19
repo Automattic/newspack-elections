@@ -207,10 +207,8 @@ class CLI extends \WP_CLI_Command {
 		$id = $args[0];
 
 		try {
-			var_dump($id);
 			\Newspack\Govpack\Importer\Importer::sideload( $id );
-			
-			WP_CLI::line( 'sideloaded' );
+			WP_CLI::line( sprintf( 'Sideloaded Image for profile %s', $id ) );
 
 		} catch ( \Exception $e ) {
 

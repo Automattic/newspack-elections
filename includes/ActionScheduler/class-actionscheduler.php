@@ -18,8 +18,8 @@ class ActionScheduler {
 	public static function hooks() {
 		add_filter( 'action_scheduler_store_class', [ __class__, 'replace_store' ] );
 		add_filter( 'action_scheduler_queue_runner_concurrent_batches', [ __class__, 'as_concurrent_batches' ] );
-		add_filter( 'action_scheduler_logger_class',  [ __class__, 'replace_logger' ]);
-		add_filter( 'action_scheduler_failure_period', [ __class__, 'set_timeout_seconds' ]);
+		add_filter( 'action_scheduler_logger_class', [ __class__, 'replace_logger' ] );
+		add_filter( 'action_scheduler_failure_period', [ __class__, 'set_timeout_seconds' ] );
 	}
 
 	/**
@@ -50,7 +50,12 @@ class ActionScheduler {
 		return 'ActionScheduler_DBLogger';
 	}
 	
-	public static function set_timeout_seconds($seconds){
+	/**
+	 * Action added to set how long to wait for an action to timeout.
+	 * 
+	 * @param integer $seconds Seconds to wait for the action.
+	 */
+	public static function set_timeout_seconds( $seconds ) {
 		return 10;
 	}
 }

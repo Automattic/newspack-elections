@@ -684,33 +684,48 @@ class Profile extends \Newspack\Govpack\Post_Type {
 		return $data;
 	}
 
-	public static function formatAddress($profile_data, $type = "main"){
+	/**
+	 * Formats address for output in a block.
+	 * 
+	 * Creates an array of the address from profile data, filters that array to remove empty entries then joins them in a string seperated by a ",".
+	 * Profile Data can contain multiple addresses with keys in the format {$type}_office_{$part}. you can get different types by modifying the 
+	 *
+	 * @param array  $profile_data  An array of slashed, sanitized, and processed post data.
+	 * @param string $type          The Type key for getting the address type from the post data.
+	 * @param string $seperator     String used to seperate the address items returned in the output string.
+	 * @return string
+	 */
+	public static function formatAddress( $profile_data, $type = 'main', $seperator = ',' ) {
 
-		// BUild an arry of address items that we can connect with a join(", ") to get nice formatting
-		$address = [];
-		$address[] = ($profile_data[$type . "_office_address"][0] ?? null);
-		$address[] = ($profile_data[$type . "_office_city"][0] ?? null);
-		$address[] = ($profile_data[$type . "_office_county"][0] ?? null);
-		$address[] = ($profile_data[$type . "_office_state"][0] ?? null);
-		$address[] = ($profile_data[$type . "_office_zip"][0] ?? null);
+		// BUild an arry of address items that we can connect with a join(", ") to get nice formatting.
+		$address   = [];
+		$address[] = ( $profile_data[ $type . '_office_address' ][0] ?? null );
+		$address[] = ( $profile_data[ $type . '_office_city' ][0] ?? null );
+		$address[] = ( $profile_data[ $type . '_office_county' ][0] ?? null );
+		$address[] = ( $profile_data[ $type . '_office_state' ][0] ?? null );
+		$address[] = ( $profile_data[ $type . '_office_zip' ][0] ?? null );
 
-		$phone = $profile_data[$type . "_phone"][0] ?? null;
+		$phone = $profile_data[ $type . '_phone' ][0] ?? null;
 
-		if(
+		if (
 			( $phone ) && 
-			( $phone  !== "")
-		){
-			$address[] = ("(" .  $phone  . ")");
+			( '' !== $phone )
+		) {
+			$address[] = ( '(' . $phone . ')' );
 		}
 	
-		$address = array_filter( $address, function($line){
-			return (
-				("" !== $line) 
-			) ;
-		}); 
+		$address = array_filter(
+			$address,
+			function( $line ) {
+				return (
+				( '' !== $line ) 
+				);
+			}
+		); 
 
-
-		return (empty($address) ? null : join(", ", $address));
+		// add a space after the seperator.
+		$seperator = $seperator . ' ';
+		return ( empty( $address ) ? null : join( $seperator, $address ) );
 	}
 
 
@@ -756,15 +771,15 @@ class Profile extends \Newspack\Govpack\Post_Type {
 			'phone'            => $profile_raw_meta_data['main_phone'][0] ?? '',
 			'twitter'          => $profile_raw_meta_data['twitter'][0] ?? '',
 			'instagram'        => $profile_raw_meta_data['instagram'][0] ?? '',
-			'linkedin'        => $profile_raw_meta_data['linkedin'][0] ?? '',
+			'linkedin'         => $profile_raw_meta_data['linkedin'][0] ?? '',
 			'email'            => $profile_raw_meta_data['email'][0] ?? '',
 			'facebook'         => $profile_raw_meta_data['facebook'][0] ?? '',
 			'website'          => $profile_raw_meta_data['leg_url'][0] ?? '',
 			'biography'        => $profile_raw_meta_data['biography'][0] ?? '',
 			'address'          => [
-				"default" 			=> self::formatAddress($profile_raw_meta_data, "main") ?? self::formatAddress($profile_raw_meta_data, "secondary") ?? '',
-				"primary" 			=> self::formatAddress($profile_raw_meta_data, "main") ?? null,
-				"secondary" 		=> self::formatAddress($profile_raw_meta_data, "secondary") ?? null
+				'default'   => self::formatAddress( $profile_raw_meta_data, 'main' ) ?? self::formatAddress( $profile_raw_meta_data, 'secondary' ) ?? '',
+				'primary'   => self::formatAddress( $profile_raw_meta_data, 'main' ) ?? null,
+				'secondary' => self::formatAddress( $profile_raw_meta_data, 'secondary' ) ?? null,
 			],
 			'party'            => $term_data[ \Newspack\Govpack\Tax\Party::TAX_SLUG ] ?? '',
 			'state'            => $term_data[ \Newspack\Govpack\Tax\State::TAX_SLUG ] ?? '',
@@ -773,14 +788,14 @@ class Profile extends \Newspack\Govpack\Post_Type {
 			'bio'              => $profile_raw_data->post_excerpt ?? '',
 			'link'             => get_permalink( $profile_id ),
 			'websites'         => [
-				'campaign'			=> $profile_raw_meta_data['campaign_url'][0] ?? '',
-				'legislative' 		=> $profile_raw_meta_data['leg_url'][0] ?? ''
+				'campaign'    => $profile_raw_meta_data['campaign_url'][0] ?? '',
+				'legislative' => $profile_raw_meta_data['leg_url'][0] ?? '',
 			],
 		];
 
-		$profile_data['name'] = join(" ", [$profile_data['first_name'], $profile_data['last_name']]);
-		$profile_data['hasSocial'] = ( $profile_data['facebook'] ?? $profile_data['instagram'] ?? $profile_data['twitter'] ?? $profile_data['linkedin'] ?? false );
-		$profile_data['hasWebsites'] = ( $profile_data['websites']["campaign"] ?? $profile_data['websites']["legislative"] ?? false );
+		$profile_data['name']        = join( ' ', [ $profile_data['first_name'], $profile_data['last_name'] ] );
+		$profile_data['hasSocial']   = ( $profile_data['facebook'] ?? $profile_data['instagram'] ?? $profile_data['twitter'] ?? $profile_data['linkedin'] ?? false );
+		$profile_data['hasWebsites'] = ( $profile_data['websites']['campaign'] ?? $profile_data['websites']['legislative'] ?? false );
 
 		return $profile_data;
 	}
@@ -847,14 +862,14 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	/**
 	 * Shortcode handler for [govpack].
 	 *
-	 * @param array  $atts    Array of shortcode attributes.
+	 * @param array  $attributes    Array of shortcode attributes.
 	 * @param string $content Post content.
 	 *
 	 * @return string HTML for recipe shortcode.
 	 */
 	public static function shortcode_handler_self( $attributes, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		
-		$attributes["profileId"] = get_queried_object_id();
+		$attributes['profileId'] = get_queried_object_id();
 		return self::load_block( 'govpack/profile-self', $attributes, $content, 'profile-self' );
 	}
 

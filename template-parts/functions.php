@@ -14,26 +14,29 @@ function Row( $value, $display ) {
 
 }
 
-function GP_Address($profile_data, $type = "main"){
+function GP_Address( $profile_data, $type = 'main' ) {
 
 	// BUild an arry of address items that we can connect with a join(", ") to get nice formatting
-	$address = [];
-	$address[] = ($profile_data[$type . "_office_address"] ?? null);
-	$address[] = ($profile_data[$type . "_office_city"] ?? null);
-	$address[] = ($profile_data[$type . "_office_county"] ?? null);
-	$address[] = ($profile_data[$type . "_office_state"] ?? null);
-	$address[] = ($profile_data[$type . "_office_zip"] ?? null);
+	$address   = [];
+	$address[] = ( $profile_data[ $type . '_office_address' ] ?? null );
+	$address[] = ( $profile_data[ $type . '_office_city' ] ?? null );
+	$address[] = ( $profile_data[ $type . '_office_county' ] ?? null );
+	$address[] = ( $profile_data[ $type . '_office_state' ] ?? null );
+	$address[] = ( $profile_data[ $type . '_office_zip' ] ?? null );
 
-	if($profile_data[$type . "_phone"]){
-		$address[] = ("(" . $profile_data[$type . "_phone"] . ")");
+	if ( $profile_data[ $type . '_phone' ] ) {
+		$address[] = ( '(' . $profile_data[ $type . '_phone' ] . ')' );
 	}
 	
-	$address = array_filter( $address, function($line){
-		 return ((!$line) && !empty($line) && ("" !== $line) ) ;
-	}); 
+	$address = array_filter(
+		$address,
+		function( $line ) {
+			return ( ( ! $line ) && ! empty( $line ) && ( '' !== $line ) );
+		}
+	); 
 
 
-	return (empty($address) ? null : join(", ", $address));
+	return ( empty( $address ) ? null : join( ', ', $address ) );
 }
 
 function GP_Link( $url, $title ) {
@@ -50,16 +53,16 @@ function GP_Maybe_Link( $content, $url, $useLink ) {
 
 function GP_Websites( $websites ) {
 
-	$campaign = "";
-	$legislative = "";
-	$li = "<li><a href=\"%s\">%s</a></li>";
+	$campaign    = '';
+	$legislative = '';
+	$li          = '<li><a href="%s">%s</a></li>';
 
-	if($websites["campaign"]){
-		$campaign = sprintf($li, $websites["campaign"], "Campaign Website");
+	if ( $websites['campaign'] ) {
+		$campaign = sprintf( $li, $websites['campaign'], 'Campaign Website' );
 	}
 
-	if($websites["legislative"]){
-		$legislative = sprintf($li, $websites["legislative"], "Legislative Website");
+	if ( $websites['legislative'] ) {
+		$legislative = sprintf( $li, $websites['legislative'], 'Legislative Website' );
 	}
 
 	return sprintf(

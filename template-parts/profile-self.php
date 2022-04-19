@@ -66,11 +66,11 @@ $container_classes = join(
 );
 
 
-$show_photo = ( has_post_thumbnail( $profile_data['id'] ) && $attributes['showAvatar'] );
-$show_secondary_address = (isset($profile_data['address']['secondary']) && 
-	($profile_data['address']['secondary'] !== $profile_data['address']['default'])
+$show_photo             = ( has_post_thumbnail( $profile_data['id'] ) && $attributes['showAvatar'] );
+$show_secondary_address = ( isset( $profile_data['address']['secondary'] ) && 
+	( $profile_data['address']['secondary'] !== $profile_data['address']['default'] )
 );
-$show_name = (isset($profile_data['name']) && $attributes['showName'] );
+$show_name              = ( isset( $profile_data['name'] ) && $attributes['showName'] );
 
 ?>
 
@@ -93,11 +93,11 @@ $show_name = (isset($profile_data['name']) && $attributes['showName'] );
 				Row( $profile_data['legislative_body'], $attributes['showLegislativeBody'], );
 				Row( $profile_data['position'], $attributes['showPosition'] );
 				Row( $profile_data['party'], $attributes['showParty'] );
-				Row( $profile_data['state'], ($attributes['showState'] && $profile_data['state']));
+				Row( $profile_data['state'], ( $attributes['showState'] && $profile_data['state'] ) );
 				Row( GP_Contacts( $profile_data, $attributes ), ( $attributes['showEmail'] || $attributes['showSocial'] && $profile_data['hasSocial'] ) );
 				Row( $profile_data['address']['default'], $attributes['showAddress'] );
-				Row( $profile_data['address']['secondary'],($attributes['showAddress'] && $show_secondary_address));
-				Row( GP_Websites($profile_data['websites']), ($attributes['showWebsites'] && $profile_data['hasWebsites']) );
+				Row( $profile_data['address']['secondary'], ( $attributes['showAddress'] && $show_secondary_address ) );
+				Row( GP_Websites( $profile_data['websites'] ), ( $attributes['showWebsites'] && $profile_data['hasWebsites'] ) );
 				
 			?>
 		</div>

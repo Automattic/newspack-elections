@@ -21,6 +21,11 @@ abstract class Abstract_Importer {
 	const IMPORT_DONE        = 2;
 	const IMPORT_TEST_KEY    = 'govpack_import_processing';
 
+	/**
+	 * Store the generated import group for the whole request, It's timestamp based so it could change during a request.
+	 * 
+	 * @var string|null 
+	 */
 	public static $import_group = null;
 
 	/**
@@ -35,6 +40,9 @@ abstract class Abstract_Importer {
 		return new static();
 	}
 
+	/**
+	 * Should we need to cancel the import the quickest way to to delete the keys storing how it runs.
+	 */
 	public static function cancel() {
 		delete_option( self::IMPORT_TEST_KEY );
 	}
@@ -48,11 +56,11 @@ abstract class Abstract_Importer {
 
 		$import_processing_running = get_option( self::IMPORT_TEST_KEY, self::IMPORT_NOT_RUNNING );
 
-		if ( $import_processing_running == self::IMPORT_RUNNING ) {
+		if ( self::IMPORT_RUNNING === $import_processing_running ) {
 			return [ 'status' => 'running' ];
 		}
 
-		if ( $import_processing_running == self::IMPORT_DONE ) {
+		if ( self::IMPORT_DONE === $import_processing_running ) {
 			return [ 'status' => 'done' ];
 		}
 
@@ -64,17 +72,18 @@ abstract class Abstract_Importer {
 	 * Main Import Process Runner
 	 *
 	 * @param string $file  Name of the JSON file.
+	 * @param array  $extra Array of extra import configuration passed to the importer.
 	 */
-	public static function import( $file, $dry_run, $extra ) {
+	public static function import( $file, $extra ) {
 
 		$import_group              = get_option( 'govpack_import_group', false );
 		$import_processing_running = get_option( self::IMPORT_TEST_KEY, self::IMPORT_NOT_RUNNING );
 
-		if ( $import_processing_running == self::IMPORT_RUNNING ) {
+		if ( self::IMPORT_RUNNING === $import_processing_running ) {
 			return [ 'status' => 'running' ];
 		}
 
-		if ( $import_processing_running == self::IMPORT_DONE ) {
+		if ( self::IMPORT_DONE === $import_processing_running ) {
 			return [ 'status' => 'done' ];
 		}
 
@@ -111,9 +120,15 @@ abstract class Abstract_Importer {
 	 * calls  read_x functions for elements it finds
 	 *
 	 * @param XMLReader $reader  path of the JSON file.
+	 * @param array     $extra Array of extra import configuration passed to the importer.
 	 */
 	abstract public static function process( $reader, $extra );
 
+	/**
+	 * Creates a group for the import that is passed to ActionScheduler.
+	 * 
+	 * The Action Scheduler group is used to package the items in this import together.
+	 */
 	public static function import_group() {
 
 		if ( self::$import_group ) {

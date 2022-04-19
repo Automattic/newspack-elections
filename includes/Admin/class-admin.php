@@ -6,6 +6,7 @@
  */
 
 namespace Newspack\Govpack\Admin;
+
 use Newspack\Govpack\Capabilities;
 
 use Exception;
@@ -15,6 +16,9 @@ use Exception;
  */
 class Admin {
 
+	/**
+	 * Register Hooks for usage in wp-admin.
+	 */
 	public static function hooks() {
 		\add_action( 'admin_menu', [ '\Newspack\Govpack\Admin\Menu', 'add_taxonomy_submenus' ], 10, 1 );
 		\add_action( 'after_setup_theme', [ __class__, 'create_menus' ], 100, 1 );
@@ -24,6 +28,11 @@ class Admin {
 		\add_action( 'block_categories_all', [ __class__, 'block_categories' ], 10, 2 );
 	}
 
+	/**
+	 * Callback that adds a Category to the Block Editor for Govpack
+	 * 
+	 * @param array $categories The existing Block Categories.
+	 */
 	public static function block_categories( $categories ) {
 		return array_merge(
 			$categories,
@@ -36,13 +45,9 @@ class Admin {
 		);
 	}
 	
-
-	public static function register_blocks() {
-		
-		//wp_enqueue_script("govpack-editor");
-		//wp_enqueue_style("govpack-editor-style");
-	}
-
+	/**
+	 * Creates the Govpack Menu in the Dashboard Navigation
+	 */
 	public static function create_menus() {
 
 		$menu = new \Newspack\Govpack\Admin\Menu();
@@ -61,16 +66,17 @@ class Admin {
 			$item->set_page_title( 'Import' )
 				->set_menu_title( 'Import' )
 				->set_menu_slug( 'govpack_import' )
-				->set_capability(Capabilities::CAN_IMPORT)
+				->set_capability( Capabilities::CAN_IMPORT )
 				->set_callback( [ '\Newspack\Govpack\Admin\Pages\Import', 'view' ] ) 
 		);
 
 		$menu->create();
 	}
 
+	/**
+	 * Register Govpack JS/CSS Assets for wp-admin 
+	 */
 	public static function register_assets() {
-
-		;
 
 		$file = GOVPACK_PLUGIN_FILE . 'dist/profile_table.asset.php';
 
@@ -81,7 +87,6 @@ class Admin {
 		wp_register_style(
 			'govpack-profile-table',
 			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/profile_table.css',
-			// $asset_data['dependencies'] ?? [],
 			$asset_data['version'] ?? '',
 			true
 		);
@@ -102,12 +107,14 @@ class Admin {
 		wp_register_style(
 			'govpack-editor-style',
 			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/editor.css',
-			// $asset_data['dependencies'] ?? [],
 			$asset_data['version'] ?? '',
 			true
 		);
 	}
 
+	/**
+	 * Conditionally Enqueue JS/CSS Assets depending on wp_screen
+	 */
 	public static function load_assets() {
 		
 		$screen = get_current_screen();
@@ -115,7 +122,7 @@ class Admin {
 			\wp_enqueue_style( 'govpack-profile-table' );
 		}
 
-		if ( true === $screen->is_block_editor() && "govpack_profiles" === $screen->post_type){
+		if ( true === $screen->is_block_editor() && 'govpack_profiles' === $screen->post_type ) {
 			\wp_enqueue_script( 'govpack-editor' );
 			\wp_enqueue_style( 'govpack-editor-style' );
 		}

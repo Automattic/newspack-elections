@@ -58,7 +58,7 @@ class Govpack {
 	 */
 	public static function hooks() {
 
-		// get capabilities setup first
+		// get capabilities setup first.
 		\Newspack\Govpack\Capabilities::hooks();
 
 		// Functions well need.

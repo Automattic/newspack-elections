@@ -287,24 +287,24 @@ class Importer {
 	}
 
 	/**
-	* Removes stored options from the last import
-	*/
+	 * Removes stored options from the last import
+	 */
 	public static function check_for_stuck_import() {
 
 		$progress_check = self::progress_check();
 
 		// no known import on the go
-		if(empty($progress_check)){
+		if ( empty( $progress_check ) ) {
 			return;
 		}
 
 		// there are no items left todo, reset the importer
-		if(0 === intval($progress_check["todo"])){
+		if ( 0 === intval( $progress_check['todo'] ) ) {
 			self::clean();
 			return;
 		}
 
-  	}
+	}
 
 	  
 
@@ -364,13 +364,13 @@ class Importer {
 		}
 
 
-		require_once(ABSPATH . 'wp-admin/includes/media.php');
-		require_once(ABSPATH . 'wp-admin/includes/file.php');
-		require_once(ABSPATH . 'wp-admin/includes/image.php');
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
 
 		$url = $post->image;
 	
-		try{
+		try {
 			
 			$sideload = \media_sideload_image( $url, $id, '', 'id' );
 
@@ -378,12 +378,11 @@ class Importer {
 				throw new \Exception( sprintf( 'Side load failed for profile %s', $id ) );
 			}
 
-			if (!\set_post_thumbnail( $id, $sideload ) ) {
+			if ( ! \set_post_thumbnail( $id, $sideload ) ) {
 				throw new \Exception( sprintf( 'Side load failed for to side post thumbnail/featured image for profile %s', $id ) );
-			}
-		
-		} catch(Exception $e){
-			error_log(print_r($e, true));
+			}       
+		} catch ( Exception $e ) {
+			error_log( print_r( $e, true ) );
 			return true;
 		}
 

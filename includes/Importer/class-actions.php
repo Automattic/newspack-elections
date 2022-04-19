@@ -404,8 +404,8 @@ class Actions {
 		
 		$data = [];
 
-		foreach($data_input as $key => $value){
-			$data[trim(strtolower($key))] = trim($value);
+		foreach ( $data_input as $key => $value ) {
+			$data[ trim( strtolower( $key ) ) ] = trim( $value );
 		}
 
 		$main_office      = self::get_address_from_open_states_data( $data['district_address'] );
@@ -482,9 +482,9 @@ class Actions {
 
 		foreach ( $taxonomy_map as $field => $taxonomy ) {
 			
-			if ( isset($data[ $field ])) {
+			if ( isset( $data[ $field ] ) ) {
 				self::assign_term_to_obj( $created_post_id, $data[ $field ], $taxonomy );
-				error_log("Attaching Term to Profile");
+				error_log( 'Attaching Term to Profile' );
 			}
 		}
 		
@@ -492,8 +492,8 @@ class Actions {
 
 		if ( $data['image'] ) {
 
-			error_log("Attempting to sideload Image");
-			error_log(print_r($data['image'], true));
+			error_log( 'Attempting to sideload Image' );
+			error_log( print_r( $data['image'], true ) );
 
 			
 			try {
@@ -515,7 +515,7 @@ class Actions {
 
 	public static function find_or_create_term( $term_name = null, $taxonomy = null ) {
 
-		require_once(ABSPATH . "wp-admin/includes/taxonomy.php");
+		require_once ABSPATH . 'wp-admin/includes/taxonomy.php';
 
 
 		if ( ! $term_name ) {
@@ -537,7 +537,7 @@ class Actions {
 		
 	}
 
-	public static function cleanup_import( ) {
+	public static function cleanup_import() {
 		\Newspack\Govpack\Importer\Importer::clean();
 	}
 }

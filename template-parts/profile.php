@@ -19,7 +19,7 @@ $classes = join(
 	) 
 );
 
-$availableWidths = [
+$available_widths = [
 	'small'  => [
 		'label'    => 'Small',
 		'value'    => 'small',
@@ -46,7 +46,7 @@ $availableWidths = [
 $styles = join(
 	' ',
 	[
-		'max-width:' . $availableWidths[ $attributes['width'] ?? 'full' ]['maxWidth'] . ';',
+		'max-width:' . $available_widths[ $attributes['width'] ?? 'full' ]['maxWidth'] . ';',
 	]
 );
 
@@ -55,10 +55,11 @@ $container_classes = join(
 	array_filter(
 		[ 
 			'wp-block-govpack-profile__container', 
-			( $attributes['avatarAlignment'] === 'right' ? 'wp-block-govpack-profile__container--right' : false ),
-			( $attributes['avatarAlignment'] === 'left' ? 'wp-block-govpack-profile__container--left' : false ),
-			( isset( $attributes['align'] ) && ( $attributes['align'] === 'center' ? 'wp-block-govpack-profile__container--align-center' : false ) ),
-			( $attributes['className'] === 'is-styled-center' ? 'wp-block-govpack-profile__container--center' : false ),
+			( 'right' === $attributes['avatarAlignment'] ? 'wp-block-govpack-profile__container--right' : false ),
+			( 'left' === $attributes['avatarAlignment'] ? 'wp-block-govpack-profile__container--left' : false ),
+			( 'is-styled-center' === $attributes['className'] ? 'wp-block-govpack-profile__container--center' : false ),
+			( isset( $attributes['align'] ) && ( 'center' === $attributes['align'] ? 'wp-block-govpack-profile__container--align-center' : false ) ),
+			
 		] 
 	) 
 );
@@ -73,40 +74,38 @@ $container_classes = join(
 		<div class="wp-block-govpack-profile__avatar">
 			<figure
 				style = "
-					border-radius: <?php echo $attributes['avatarBorderRadius']; ?>;
-					height:<?php echo $attributes['avatarSize']; ?>px;
-					width: <?php echo $attributes['avatarSize']; ?>px;
+					border-radius: <?php echo esc_attr( $attributes['avatarBorderRadius'] ); ?>;
+					height:<?php echo esc_attr( $attributes['avatarSize'] ); ?>px;
+					width: <?php echo esc_attr( $attributes['avatarSize'] ); ?>px;
 				"
 			>
-				<?php echo GP_Maybe_Link( wp_kses_post( get_the_post_thumbnail( $profile_data['id'] ) ), $profile_data['link'], $attributes['showProfileLink'] ); ?>
+				<?php echo esc_html( GP_Maybe_Link( wp_kses_post( get_the_post_thumbnail( $profile_data['id'] ) ), $profile_data['link'], $attributes['showProfileLink'] ) ); ?>
 			</figure>
 		</div>
 
 
-			<div class="wp-block-govpack-profile__info">
-				<div class="wp-block-govpack-profile__line">
-					<h3> <?php echo GP_Maybe_Link( $profile_data['name'], $profile_data['link'], $attributes['showProfileLink'] ); ?></h3>
+		<div class="wp-block-govpack-profile__info">
+			<div class="wp-block-govpack-profile__line">
+				<h3> <?php echo esc_html( GP_Maybe_Link( $profile_data['name'], $profile_data['link'], $attributes['showProfileLink'] ) ); ?></h3>
 
-					<?php 
-					if ( $attributes['showBio'] && $profile_data['bio'] ) {
-						echo $profile_data['bio'];
-					} 
-					?>
-
-				</div>
-				<?php
-					Row( $profile_data['legislative_body'], $attributes['showLegislativeBody'], );
-					Row( $profile_data['position'], $attributes['showPosition'] );
-					Row( $profile_data['party'], $attributes['showParty'] );
-					Row( $profile_data['state'], ( $attributes['showState'] && $profile_data['state'] ) );
-					Row( GP_Contacts( $profile_data, $attributes ), ( $attributes['showEmail'] || $attributes['showSocial'] && $profile_data['hasSocial'] ) );
-					Row( $profile_data['address']['default'], $attributes['showAddress'] );
-					Row( $profile_data['address']['secondary'], ( $attributes['showAddress'] && $show_secondary_address ) );
-					Row( GP_Websites( $profile_data['websites'] ), ( $attributes['showWebsites'] && $profile_data['hasWebsites'] ) );
-					
+				<?php 
+				if ( $attributes['showBio'] && $profile_data['bio'] ) {
+					echo esc_html( $profile_data['bio'] );
+				} 
 				?>
-			</div>
-		
 
+			</div>
+			<?php
+				gp_row( $profile_data['legislative_body'], $attributes['showLegislativeBody'], );
+				gp_row( $profile_data['position'], $attributes['showPosition'] );
+				gp_row( $profile_data['party'], $attributes['showParty'] );
+				gp_row( $profile_data['state'], ( $attributes['showState'] && $profile_data['state'] ) );
+				gp_row( GP_Contacts( $profile_data, $attributes ), ( $attributes['showEmail'] || $attributes['showSocial'] && $profile_data['hasSocial'] ) );
+				gp_row( $profile_data['address']['default'], $attributes['showAddress'] );
+				gp_row( $profile_data['address']['secondary'], ( $attributes['showAddress'] && $show_secondary_address ) );
+				gp_row( GP_Websites( $profile_data['websites'] ), ( $attributes['showWebsites'] && $profile_data['hasWebsites'] ) );
+				
+			?>
+		</div>
 	</div> <!-- end __container -->
 </aside>

@@ -1,6 +1,17 @@
 <?php
+/**
+ * Functions for Displaying Govpack Blocks in PHP Templates.
+ * 
+ * @package Govpack
+ */
 
-function Row( $value, $display ) {
+/**
+ * Utility Function that Outputs a row
+ * 
+ * @param string  $value The value to output.
+ * @param boolean $display Override to control if this row will output.
+ */
+function gp_row( $value, $display ) {
 
 	if ( ! $display ) {
 		return null;
@@ -10,59 +21,54 @@ function Row( $value, $display ) {
 		return null;
 	}
 
-	echo '<div class="wp-block-govpack-profile__line">' . $value . '</div>';
+	echo '<div class="wp-block-govpack-profile__line">' . esc_html( $value ) . '</div>';
 
 }
 
-function GP_Address( $profile_data, $type = 'main' ) {
-
-	// BUild an arry of address items that we can connect with a join(", ") to get nice formatting
-	$address   = [];
-	$address[] = ( $profile_data[ $type . '_office_address' ] ?? null );
-	$address[] = ( $profile_data[ $type . '_office_city' ] ?? null );
-	$address[] = ( $profile_data[ $type . '_office_county' ] ?? null );
-	$address[] = ( $profile_data[ $type . '_office_state' ] ?? null );
-	$address[] = ( $profile_data[ $type . '_office_zip' ] ?? null );
-
-	if ( $profile_data[ $type . '_phone' ] ) {
-		$address[] = ( '(' . $profile_data[ $type . '_phone' ] . ')' );
-	}
-	
-	$address = array_filter(
-		$address,
-		function( $line ) {
-			return ( ( ! $line ) && ! empty( $line ) && ( '' !== $line ) );
-		}
-	); 
-
-
-	return ( empty( $address ) ? null : join( ', ', $address ) );
+/**
+ * Utility Function that Outputs a link to a profile
+ * 
+ * @param string  $url The url to link to.
+ * @param boolean $title Name of the profile to link to eg More About {$title}.
+ */
+function gp_link( $url, $title ) {
+	return '<a href=' . esc_url( $url ) . '>More About ' . esc_html( $title ) . '</a>';
 }
 
-function GP_Link( $url, $title ) {
-	return '<a href=' . $url . '>More About ' . $title . '</a>';
-}
+/**
+ * Utility Function that conditionally Outputs a link to a profile around some other content
+ * 
+ * @param string  $content The content to wrap with a link.
+ * @param string  $url The URL to link to.
+ * @param boolean $use_link Condition control, outputs link if true.
+ */
+function gp_maybe_link( $content, $url, $use_link ) {
 
-function GP_Maybe_Link( $content, $url, $useLink ) {
-
-	if ( ! $useLink ) {
+	if ( ! $use_link ) {
 		return $content;
 	}
-	return '<a href=' . $url . '>' . $content . '</a>';
+	return '<a href=' . esc_url( $url ) . '>' . esc_html( $content ) . '</a>';
 }
 
-function GP_Websites( $websites ) {
+/**
+ * Utility Function that Outputs a links to the profile's websites.
+ * 
+ * Currently only supports the campaign & legislative websites
+ * 
+ * @param array $websites Data about websites from the profile.
+ */
+function gp_websites( $websites ) {
 
 	$campaign    = '';
 	$legislative = '';
 	$li          = '<li><a href="%s">%s</a></li>';
 
 	if ( $websites['campaign'] ) {
-		$campaign = sprintf( $li, $websites['campaign'], 'Campaign Website' );
+		$campaign = sprintf( $li, esc_url( $websites['campaign'] ), 'Campaign Website' );
 	}
 
 	if ( $websites['legislative'] ) {
-		$legislative = sprintf( $li, $websites['legislative'], 'Legislative Website' );
+		$legislative = sprintf( $li, esc_url( $websites['legislative'] ), 'Legislative Website' );
 	}
 
 	return sprintf(
@@ -78,7 +84,13 @@ function GP_Websites( $websites ) {
 
 }
 
-function GP_Contacts( $profile_data, $attributes ) {
+/**
+ * Utility Function that Outputs a Profiles Social and Email.
+ * 
+ * @param array $profile_data Data about the profile.
+ * @param array $attributes Attributes from the Block.
+ */
+function gp_contacts( $profile_data, $attributes ) {
 
 	$icons = [
 		'facebook'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/assets/images/facebook.svg' ),
@@ -105,7 +117,6 @@ function GP_Contacts( $profile_data, $attributes ) {
             </a>
         </li>";
 
-		unset( $classses );
 	}
 
 

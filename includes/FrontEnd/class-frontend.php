@@ -18,7 +18,6 @@ class FrontEnd {
 	 * Adds Hooks Specifically for the Frontend display
 	 */
 	public static function hooks() {
-
 		add_filter( 'newspack_can_show_post_thumbnail', [ __class__, 'newspack_can_show_post_thumbnail' ], 10, 1 );
 		add_filter( 'the_content', [ __class__, 'maybe_inject_profile_block' ], 7, 1 );
 	}
@@ -49,7 +48,7 @@ class FrontEnd {
 			return $the_content;
 		}
 	
-		return '<!-- wp:govpack/profile-self {"showName":true} /-->';
+		return \Newspack\Govpack\CPT\Profile::default_profile_content();
 	}
 }
 

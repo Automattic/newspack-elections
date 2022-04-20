@@ -55,8 +55,52 @@ class Profile extends \Newspack\Govpack\Post_Type {
 
 		add_filter( 'disable_months_dropdown', [ __CLASS__, 'disable_months_dropdown' ], 10, 2 );
 		add_filter( 'wpseo_enable_editor_features_' . self::CPT_SLUG, '__return_false' );
+
+		
+		add_filter( 'bulk_actions-edit-' . self::CPT_SLUG, [ __CLASS__, 'filter_bulk_actions' ], 10 );
+		add_filter( 'handle_bulk_actions-edit-' . self::CPT_SLUG, [ __CLASS__, 'handle_bulk_publish' ], 10, 3 );
+
 	}
 
+	/**
+	 * Publishes Posts with ID passed. Handle the bulk actions from List Table
+	 * 
+	 * @param string $sendback URL to redirect to.
+	 * @param string $doaction Bulk action we're doing.
+	 * @param array  $post_ids Array fof post IDs to publish.
+	 */
+	public static function handle_bulk_publish( $sendback, $doaction, $post_ids ) {
+
+		$published = 0;
+
+		foreach ( (array) $post_ids as $post_id ) {
+			
+			if ( ! current_user_can( 'publish_posts', $post_id ) ) {
+				wp_die( __( 'Sorry, you are not allowed to publish this item.' ) ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			}
+
+			wp_update_post(
+				[
+					'ID'          => $post_id,
+					'post_status' => 'publish',
+				]
+			);
+
+			$published++;
+		
+		}
+		return add_query_arg( 'published', $published, $sendback );
+	}
+
+	/**
+	 * Add Publish to the bulk actions
+	 * 
+	 * @param array $actions Bulk actions to filter.
+	 */
+	public static function filter_bulk_actions( $actions ) {
+		$actions['publish'] = 'Publish';
+		return $actions;
+	}
 	/**
 	 * Disabled The Months Dropdown in the WP_List_Table
 	 * 
@@ -1058,5 +1102,14 @@ class Profile extends \Newspack\Govpack\Post_Type {
 		];
 
 		return \Newspack\Govpack\Helpers::get_cached_query( $args, 'posts_govpack_profiles_' . $term_id );
+	}
+
+	/**
+	 * Get Default Profile Content.
+	 * 
+	 * The default block string for a profile.  Usually injected into the profile import before any content 
+	 */
+	public static function default_profile_content() {
+		return '<!-- wp:govpack/profile-self {"showName":true} /-->';
 	}
 }

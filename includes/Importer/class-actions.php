@@ -46,6 +46,7 @@ class Actions {
 		add_action( 'govpack_import_cleanup', [ self::instance(), 'cleanup_import' ] );
 		add_filter( 'govpack_import_openstates_links', [ self::instance(), 'explode_openstates_list' ] );
 		add_filter( 'govpack_import_openstates_sources', [ self::instance(), 'explode_openstates_list' ] );
+		add_filter( 'govpack_import_openstates_content', [ self::instance(), 'inject_block_in_content' ] );
 	}
 
 	/**
@@ -66,6 +67,21 @@ class Actions {
 		$this->process_term( $args, null );
 	}
 
+	/**
+	 * Action that fires to inject the default block in the content
+	 * 
+	 * @param array $content content from the imported.
+	 */
+	public static function inject_block_in_content( $content = null ) {
+		
+		// phpcs:ignore content is "" false null or nil.
+		if ( ! $content ) {
+			return \Newspack\Govpack\CPT\Profile::default_profile_content();
+		}
+
+		// inject it at the start.
+		return \Newspack\Govpack\CPT\Profile::default_profile_content() . $content;
+	}
 
 	/**
 	 * Does the term exist?
@@ -185,7 +201,7 @@ class Actions {
   
 		$post = [
 			'post_author'    => 0,
-			'post_content'   => $data['biography'],
+			'post_content'   => \apply_filters( 'govpack_import_openstates_content', $data['biography'] ),
 			'post_title'     => $data['name'],
 			'post_status'    => 'draft',
 			'post_type'      => 'govpack_profiles',

@@ -3,7 +3,6 @@
   "description": "Govpack TK",
   "type": "wordpress-plugin",
   "require": {
-    "cmb2/cmb2": "2.9.*",
     "pablo-sg-pacheco/wp-namespace-autoloader": "dev-master",
     "woocommerce/action-scheduler": "^3.4",
     "gargron/fileupload": "~1.4.0",
@@ -22,7 +21,6 @@
     "post-update-cmd": [ "vendor/bin/cghooks update" ]
   },
   "autoload": {
-    "files": ["vendor/cmb2/cmb2/init.php"],
     "psr-4": {
       "Newspack\\Govpack\\" : "includes/"
     }
@@ -35,6 +33,11 @@
       "commit-msg": [
         "cat $1 | ./node_modules/.bin/commitlint"
       ]
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
     }
   }
 }

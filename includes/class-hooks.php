@@ -64,7 +64,6 @@ class Hooks {
 		global $post;
 
 		$slugs = [
-			\Newspack\Govpack\CPT\Issue::CPT_SLUG,
 			\Newspack\Govpack\CPT\Profile::CPT_SLUG,
 		];
 
@@ -82,8 +81,6 @@ class Hooks {
 	 */
 	public static function wpseo_accessible_post_types( $post_types ) {
 		unset( $post_types[ \Newspack\Govpack\CPT\Profile::CPT_SLUG ] );
-		unset( $post_types[ \Newspack\Govpack\CPT\Issue::CPT_SLUG ] );
-
 		return $post_types;
 	}
 

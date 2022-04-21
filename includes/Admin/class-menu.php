@@ -2,7 +2,7 @@
 /**
  * Govpack
  *
- * @package Newspack
+ * @package Govpack
  */
 
 namespace Newspack\Govpack\Admin;
@@ -201,10 +201,8 @@ class Menu {
 					foreach ( $this->items as $item ) {
 						$item->create();
 					}
-
-			  
-
-				} 
+				},
+				9 
 			);
 		
 		} catch ( \Exception $e ) {

@@ -2,10 +2,10 @@
 /**
  * Govpack
  *
- * @package Newspack
+ * @package Govpack
  */
 
-namespace Newspack\Govpack;
+namespace Govpack;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -58,14 +58,15 @@ class Govpack {
 	 */
 	public static function hooks() {
 
-		// get capabilities setup first.
-		\Newspack\Govpack\Capabilities::hooks();
 
 		// Functions well need.
 		\Newspack\Govpack\CPT\AsTaxonomy::hooks();
 
 		// Custom Post Types.
 		\Newspack\Govpack\CPT\Profile::hooks();
+
+		// get capabilities setup first.
+		\Newspack\Govpack\Capabilities::hooks();
 
 		// Taxonomies.
 		\Newspack\Govpack\Tax\LegislativeBody::hooks();

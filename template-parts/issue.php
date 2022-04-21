@@ -2,7 +2,7 @@
 /**
  * Govpack issue template.
  *
- * @package Newspack
+ * @package Govpack
  */
 
 // $issue_data is defined elsewhere.

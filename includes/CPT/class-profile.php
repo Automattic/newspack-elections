@@ -2,11 +2,12 @@
 /**
  * Govpack
  *
- * @package Newspack
+ * @package Govpack
  */
 
 namespace Newspack\Govpack\CPT;
 
+use Newspack\Govpack\Capabilities;
 use \Newspack\Govpack\Helpers;
 
 /**
@@ -140,6 +141,9 @@ class Profile extends \Newspack\Govpack\Post_Type {
 	 * @return object|WP_Error
 	 */
 	public static function register_post_type() {
+
+	
+
 		return register_post_type( // phpcs:ignore WordPress.NamingConventions.ValidPostTypeSlug.NotStringLiteral
 			self::CPT_SLUG,
 			[
@@ -169,11 +173,11 @@ class Profile extends \Newspack\Govpack\Post_Type {
 				'menu_icon'    => 'dashicons-groups',
 				'rewrite'      => [
 					'slug'       => apply_filters( 'govpack_profile_filter_slug', 'profile' ),
-					'with_front' => 'false',
+					'with_front' => false,
 				],
 				'template'     => [
 					[ 'govpack/profile-self' ],
-				],
+				]
 			]
 		);
 	}

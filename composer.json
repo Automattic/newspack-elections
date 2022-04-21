@@ -22,7 +22,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Newspack\\Govpack\\" : "includes/"
+      "Govpack\\" : "includes/"
     }
   },
   "extra": {

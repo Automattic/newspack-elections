@@ -2,7 +2,7 @@
 /**
  * Govpack
  *
- * @package Newspack
+ * @package Govpack
  */
 
 namespace Newspack\Govpack\FrontEnd;

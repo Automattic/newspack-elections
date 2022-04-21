@@ -2,7 +2,7 @@
 /**
  * Govpack profile template.
  *
- * @package Newspack
+ * @package Govpack
  */
 
 // $profile_data is defined elsewhere.

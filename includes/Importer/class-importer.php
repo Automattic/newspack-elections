@@ -5,11 +5,11 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Importer;
+namespace Govpack\Importer;
 
 use Exception;
-use Newspack\Govpack\Govpack;
-use Newspack\Govpack\Capabilities;
+use Govpack\Govpack;
+use Govpack\Capabilities;
 
 /**
  * Register and handle the "USIO" Importer
@@ -111,7 +111,7 @@ class Importer {
 			'/import/sources',
 			[
 				'methods'             => 'GET',
-				'callback'            => [ '\Newspack\Govpack\Importer\OpenStates_Sources', 'urls' ],
+				'callback'            => [ '\Govpack\Importer\OpenStates_Sources', 'urls' ],
 				'permission_callback' => function () {
 				
 					return \current_user_can( Capabilities::CAN_IMPORT );
@@ -125,7 +125,7 @@ class Importer {
 			'/import/download',
 			[
 				'methods'             => 'POST',
-				'callback'            => [ '\Newspack\Govpack\Importer\OpenStates_Sources', 'download' ],
+				'callback'            => [ '\Govpack\Importer\OpenStates_Sources', 'download' ],
 				'permission_callback' => function () {
 					
 					return \current_user_can( Capabilities::CAN_IMPORT );

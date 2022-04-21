@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack;
+namespace Govpack;
 
 use \WP_CLI as WP_CLI;
 
@@ -26,32 +26,32 @@ class CLI extends \WP_CLI_Command {
 	 * @param array $assoc_args  Associative array of arguments.
 	 */
 	public function seed_taxonomies( $args, $assoc_args ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		$count = \Newspack\Govpack\Tax\County::seed();
+		$count = \Govpack\Tax\County::seed();
 		if ( $count ) {
 			WP_CLI::success( "Inserted {$count} counties" );
 		}
 
-		$count = \Newspack\Govpack\Tax\Installation::seed();
+		$count = \Govpack\Tax\Installation::seed();
 		if ( $count ) {
 			WP_CLI::success( "Inserted {$count} installation methods" );
 		}
 
-		$count = \Newspack\Govpack\Tax\LegislativeBody::seed();
+		$count = \Govpack\Tax\LegislativeBody::seed();
 		if ( $count ) {
 			WP_CLI::success( "Inserted {$count} legislative bodies" );
 		}
 
-		$count = \Newspack\Govpack\Tax\OfficeHolderStatus::seed();
+		$count = \Govpack\Tax\OfficeHolderStatus::seed();
 		if ( $count ) {
 			WP_CLI::success( "Inserted {$count} officeholder statuses" );
 		}
 
-		$count = \Newspack\Govpack\Tax\Party::seed();
+		$count = \Govpack\Tax\Party::seed();
 		if ( $count ) {
 			WP_CLI::success( "Inserted {$count} parties." );
 		}
 
-		$count = \Newspack\Govpack\Tax\State::seed();
+		$count = \Govpack\Tax\State::seed();
 		if ( $count ) {
 			WP_CLI::success( "Inserted {$count} states." );
 		}
@@ -101,11 +101,11 @@ class CLI extends \WP_CLI_Command {
 		$state  = $assoc_args['state'] ?? '';
 
 		if ( 'usio' === $source ) {
-			$importer = \Newspack\Govpack\Importer\UnitedStatesIO::make();
+			$importer = \Govpack\Importer\UnitedStatesIO::make();
 		} elseif ( 'openstates' === $source ) {
-			$importer = \Newspack\Govpack\Importer\OpenStates::make();
+			$importer = \Govpack\Importer\OpenStates::make();
 		} elseif ( 'govpack' === $source ) {
-			$importer = \Newspack\Govpack\Importer\Govpack::make();
+			$importer = \Govpack\Importer\Govpack::make();
 		} else {
 			WP_CLI::error( "Unsupported source type: $source" );
 		}
@@ -154,7 +154,7 @@ class CLI extends \WP_CLI_Command {
 			
 			try {
 
-				$importer = \Newspack\Govpack\Importer\Importer::make( $file );
+				$importer = \Govpack\Importer\Importer::make( $file );
 				$importer::import( $file, $dry_run );
 
 			} catch ( \Exception $e ) {
@@ -172,7 +172,7 @@ class CLI extends \WP_CLI_Command {
 	 * @param array $assoc_args  Associative array of arguments.
 	 */
 	public function progress( $args, $assoc_args ) {
-		$importer = \Newspack\Govpack\Importer\WXR::make();
+		$importer = \Govpack\Importer\WXR::make();
 		WP_CLI::line( $importer::progress() );
 	}
 
@@ -185,7 +185,7 @@ class CLI extends \WP_CLI_Command {
 	 * @param array $assoc_args  Associative array of arguments.
 	 */
 	public function clear( $args, $assoc_args ) {
-		WP_CLI::line( \Newspack\Govpack\Importer\Importer::clear() );
+		WP_CLI::line( \Govpack\Importer\Importer::clear() );
 	}
 
 	/**
@@ -207,7 +207,7 @@ class CLI extends \WP_CLI_Command {
 		$id = $args[0];
 
 		try {
-			\Newspack\Govpack\Importer\Importer::sideload( $id );
+			\Govpack\Importer\Importer::sideload( $id );
 			WP_CLI::line( sprintf( 'Sideloaded Image for profile %s', $id ) );
 
 		} catch ( \Exception $e ) {
@@ -221,8 +221,8 @@ class CLI extends \WP_CLI_Command {
 	 * Add CLI command.
 	 */
 	public static function init() {
-		WP_CLI::add_command( 'govpack import', '\Newspack\Govpack\CLI' );
-		WP_CLI::add_command( 'govpack purge', [ '\Newspack\Govpack\CLI', 'purge' ] );
+		WP_CLI::add_command( 'govpack import', '\Govpack\CLI' );
+		WP_CLI::add_command( 'govpack purge', [ '\Govpack\CLI', 'purge' ] );
 	}
 
 	
@@ -321,7 +321,7 @@ class CLI extends \WP_CLI_Command {
 	 * @param array $assoc_args  Associative array of arguments.
 	 */
 	public function clean( $args, $assoc_args ) {
-		WP_CLI::line( \Newspack\Govpack\Importer\Importer::clean() );
+		WP_CLI::line( \Govpack\Importer\Importer::clean() );
 	}
 		
 }

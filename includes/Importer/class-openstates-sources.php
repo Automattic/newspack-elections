@@ -5,12 +5,12 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Importer;
+namespace Govpack\Importer;
 
 /**
  * Register and handle the "USIO" Importer
  */
-class OpenStates_Sources extends \Newspack\Govpack\Importer\Abstracts\Abstract_Source {
+class OpenStates_Sources extends \Govpack\Importer\Abstracts\Abstract_Source {
 
 
 	/**

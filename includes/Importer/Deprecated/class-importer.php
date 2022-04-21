@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack;
+namespace Govpack;
 
 /**
  * Base class for importers
@@ -55,11 +55,11 @@ abstract class Importer {
 	 */
 	public static function make() {
 		if ( ! self::$loaded ) {
-			self::$state_list    = \Newspack\Govpack\Helpers::get_cached_taxonomy( \Newspack\Govpack\Tax\State::TAX_SLUG );
-			self::$party_list    = \Newspack\Govpack\Helpers::get_cached_taxonomy( \Newspack\Govpack\Tax\Party::TAX_SLUG );
-			self::$leg_body_list = \Newspack\Govpack\Helpers::get_cached_taxonomy( \Newspack\Govpack\Tax\LegislativeBody::TAX_SLUG );
+			self::$state_list    = \Govpack\Helpers::get_cached_taxonomy( \Govpack\Tax\State::TAX_SLUG );
+			self::$party_list    = \Govpack\Helpers::get_cached_taxonomy( \Govpack\Tax\Party::TAX_SLUG );
+			self::$leg_body_list = \Govpack\Helpers::get_cached_taxonomy( \Govpack\Tax\LegislativeBody::TAX_SLUG );
 
-			self::$state_abbrevations = \Newspack\Govpack\Helpers::states();
+			self::$state_abbrevations = \Govpack\Helpers::states();
 
 			self::$loaded = true;
 		}
@@ -107,7 +107,7 @@ abstract class Importer {
 					\WP_CLI::line( sprintf( 'Found data for %s %s.', $profile['first_name'], $profile['last_name'] ) );
 				}
 			} else {
-				$result = \Newspack\Govpack\CPT\Profile::create( $profile );
+				$result = \Govpack\CPT\Profile::create( $profile );
 				if ( defined( 'WP_CLI' ) && WP_CLI ) {
 					if ( 0 === $result || is_wp_error( $result ) ) {
 						\WP_CLI::error( sprintf( 'Failed to insert %s %s.', $profile['first_name'], $profile['last_name'] ) );

@@ -5,12 +5,12 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Importer;
+namespace Govpack\Importer;
 
 /**
  * Register and handle the "USIO" Importer
  */
-class UnitedStatesIO extends \Newspack\Govpack\Importer {
+class UnitedStatesIO extends \Govpack\Importer {
 
 	const LAST_NAME        = 0;
 	const FIRST_NAME       = 1;
@@ -94,11 +94,11 @@ class UnitedStatesIO extends \Newspack\Govpack\Importer {
 		];
 
 		if ( $data[ self::TWITTER ] ) {
-			$profile['twitter'] = \Newspack\Govpack\Helpers::TWITTER_BASE_URL . $data[ self::TWITTER ];
+			$profile['twitter'] = \Govpack\Helpers::TWITTER_BASE_URL . $data[ self::TWITTER ];
 		}
 
 		if ( $data[ self::FACEBOOK ] ) {
-			$profile['facebook'] = \Newspack\Govpack\Helpers::FACEBOOK_BASE_URL . $data[ self::FACEBOOK ];
+			$profile['facebook'] = \Govpack\Helpers::FACEBOOK_BASE_URL . $data[ self::FACEBOOK ];
 		}
 
 		return array_filter( $profile );

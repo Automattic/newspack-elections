@@ -5,9 +5,9 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack;
+namespace Govpack;
 
-use \Newspack\Govpack\Helpers;
+use \Govpack\Helpers;
 
 /**
  * Abstract class for registering and handling of custom post types.

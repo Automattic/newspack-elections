@@ -5,12 +5,12 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Importer;
+namespace Govpack\Importer;
 
 /**
  * Register and handle the "USIO" Importer
  */
-class GitHub_Sources extends \Newspack\Govpack\Importer\Abstracts\Abstract_Source {
+class GitHub_Sources extends \Govpack\Importer\Abstracts\Abstract_Source {
 
 
 	/**

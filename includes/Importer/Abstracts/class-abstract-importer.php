@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Importer\Abstracts;
+namespace Govpack\Importer\Abstracts;
 
 use Exception;
 
@@ -90,7 +90,7 @@ abstract class Abstract_Importer {
 		update_option( self::IMPORT_TEST_KEY, self::IMPORT_RUNNING );
 		
 
-		$file = \Newspack\Govpack\Importer\Importer::check_file( $file );
+		$file = \Govpack\Importer\Importer::check_file( $file );
 
 		$reader = static::create_reader( $file );
 		static::process( $reader, $extra );

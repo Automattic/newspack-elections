@@ -5,12 +5,12 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Tax;
+namespace Govpack\Tax;
 
 /**
  * Register and handle the "Profile" Taxonomy.
  */
-class Profile extends \Newspack\Govpack\Taxonomy {
+class Profile extends \Govpack\Taxonomy {
 
 	/**
 	 * Post Type slug. Used when registering and referencing

@@ -5,12 +5,12 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Importer;
+namespace Govpack\Importer;
 
 /**
  * Register and handle the "USIO" Importer
  */
-class Govpack extends \Newspack\Govpack\Importer {
+class Govpack extends \Govpack\Importer {
 
 	const GOVPACK_ID = 0;
 

@@ -5,12 +5,12 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Importer;
+namespace Govpack\Importer;
 
 /**
  * Register and handle the "OpenStates" Importer
  */
-class OpenStates extends \Newspack\Govpack\Importer {
+class OpenStates extends \Govpack\Importer {
 
 	const GOVPACK_ID       = 0;
 	const FULL_NAME        = 1;
@@ -291,15 +291,15 @@ class OpenStates extends \Newspack\Govpack\Importer {
 		];
 
 		if ( $data[ self::TWITTER ] ) {
-			$profile['twitter'] = \Newspack\Govpack\Helpers::TWITTER_BASE_URL . $data[21];
+			$profile['twitter'] = \Govpack\Helpers::TWITTER_BASE_URL . $data[21];
 		}
 
 		if ( $data[24] ) {
-			$profile['facebook'] = \Newspack\Govpack\Helpers::FACEBOOK_BASE_URL . $data[24];
+			$profile['facebook'] = \Govpack\Helpers::FACEBOOK_BASE_URL . $data[24];
 		}
 
 		if ( $data[23] ) {
-			$profile['instagram'] = \Newspack\Govpack\Helpers::INSTAGRAM_BASE_URL . $data[23];
+			$profile['instagram'] = \Govpack\Helpers::INSTAGRAM_BASE_URL . $data[23];
 		}
 
 		return array_filter( $profile );

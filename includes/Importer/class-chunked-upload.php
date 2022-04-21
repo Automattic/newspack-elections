@@ -5,12 +5,12 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Importer;
+namespace Govpack\Importer;
 
 use Exception;
 use WP_Error;
-use Newspack\Govpack\Govpack;
-use Newspack\Govpack\Capabilities;
+use Govpack\Govpack;
+use Govpack\Capabilities;
 
 /**
  * Handles Chunked Uploading via a REST Endpoint

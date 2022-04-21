@@ -5,12 +5,12 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Tax;
+namespace Govpack\Tax;
 
 /**
  * Register and handle the "State" Taxonomy.
  */
-class State extends \Newspack\Govpack\Taxonomy {
+class State extends \Govpack\Taxonomy {
 
 	/**
 	 * Post Type slug. Used when registering and referencing

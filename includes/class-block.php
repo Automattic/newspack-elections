@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack;
+namespace Govpack;
 
 defined( 'ABSPATH' ) || exit;
 

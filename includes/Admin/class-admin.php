@@ -5,9 +5,9 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Admin;
+namespace Govpack\Admin;
 
-use Newspack\Govpack\Capabilities;
+use Govpack\Capabilities;
 
 use Exception;
 
@@ -20,7 +20,7 @@ class Admin {
 	 * Register Hooks for usage in wp-admin.
 	 */
 	public static function hooks() {
-		\add_action( 'admin_menu', [ '\Newspack\Govpack\Admin\Menu', 'add_taxonomy_submenus' ], 10, 1 );
+		\add_action( 'admin_menu', [ '\Govpack\Admin\Menu', 'add_taxonomy_submenus' ], 10, 1 );
 		\add_action( 'admin_menu', [ __class__, 'create_menus' ], 1, 1 );
 		\add_action( 'enqueue_block_editor_assets', [ __class__, 'register_blocks' ], 1, 1 );
 		\add_action( 'admin_enqueue_scripts', [ __class__, 'register_assets' ], 100, 1 );
@@ -52,7 +52,7 @@ class Admin {
 
 		
 
-		$menu = new \Newspack\Govpack\Admin\Menu();
+		$menu = new \Govpack\Admin\Menu();
 
 		$menu->set_page_title( 'GovPack' )
 			->set_menu_title( 'GovPack' )
@@ -63,13 +63,13 @@ class Admin {
 				}
 			);
 
-		$item = new \Newspack\Govpack\Admin\Menu_Item();
+		$item = new \Govpack\Admin\Menu_Item();
 		$menu->add_item(
 			$item->set_page_title( 'Import' )
 				->set_menu_title( 'Import' )
 				->set_menu_slug( 'govpack_import' )
 				->set_capability( Capabilities::CAN_IMPORT )
-				->set_callback( [ '\Newspack\Govpack\Admin\Pages\Import', 'view' ] ) 
+				->set_callback( [ '\Govpack\Admin\Pages\Import', 'view' ] ) 
 		);
 
 		$menu->create();

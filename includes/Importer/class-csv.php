@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Importer;
+namespace Govpack\Importer;
 
 use Exception;
 use League\Csv\Reader;
@@ -13,7 +13,7 @@ use League\Csv\Reader;
 /**
  * Register and handle the "USIO" Importer
  */
-class CSV extends \Newspack\Govpack\Importer\Abstracts\Abstract_Importer {
+class CSV extends \Govpack\Importer\Abstracts\Abstract_Importer {
 
 
 	/**

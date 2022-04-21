@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\CPT;
+namespace Govpack\CPT;
 
 /**
  * Enable post types to be used as a taxonomy

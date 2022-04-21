@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Admin\Pages;
+namespace Govpack\Admin\Pages;
 
 /**
  * GovPack Class to Handle Import
@@ -18,7 +18,7 @@ class Import {
 	 */
 	public static function view() {
 
-		\Newspack\Govpack\Importer\Importer::check_for_stuck_import();
+		\Govpack\Importer\Importer::check_for_stuck_import();
 
 		wp_enqueue_script( 'govpack-importer' );
 		wp_enqueue_style( 'wp-components' );

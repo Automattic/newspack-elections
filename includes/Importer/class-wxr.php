@@ -5,14 +5,14 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Importer;
+namespace Govpack\Importer;
 
 use Exception, XMLReader, DOMNode;
-use Newspack\Govpack\Govpack;
+use Govpack\Govpack;
 /**
  * Register and handle the "USIO" Importer
  */
-class WXR extends \Newspack\Govpack\Importer\Abstracts\Abstract_Importer {
+class WXR extends \Govpack\Importer\Abstracts\Abstract_Importer {
 
 
 	/**

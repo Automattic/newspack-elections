@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Importer\Abstracts;
+namespace Govpack\Importer\Abstracts;
 
 use Exception;
 

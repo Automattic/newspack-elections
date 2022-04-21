@@ -5,14 +5,14 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Block;
+namespace Govpack\Block;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Register and handle the block.
  */
-class ProfileSelf extends \Newspack\Govpack\Block {
+class ProfileSelf extends \Govpack\Block {
 
 	/**
 	 * Registers the block.
@@ -24,7 +24,7 @@ class ProfileSelf extends \Newspack\Govpack\Block {
 		\register_block_type(
 			GOVPACK_PLUGIN_FILE . 'assets/js/src/editor/blocks/profile-self/block.json',
 			[
-				'render_callback' => [ '\Newspack\Govpack\CPT\Profile', 'shortcode_handler_self' ],
+				'render_callback' => [ '\Govpack\CPT\Profile', 'shortcode_handler_self' ],
 			]
 		);
 	}

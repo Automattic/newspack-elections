@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack;
+namespace Govpack;
 
 /**
  * WordPress filters and actions.
@@ -64,7 +64,7 @@ class Hooks {
 		global $post;
 
 		$slugs = [
-			\Newspack\Govpack\CPT\Profile::CPT_SLUG,
+			\Govpack\CPT\Profile::CPT_SLUG,
 		];
 
 		if ( in_array( $post->post_type, $slugs, true ) && locate_template( [ 'single-govpack.php' ] ) !== $template ) {
@@ -80,7 +80,7 @@ class Hooks {
 	 * @param array $post_types Post types registered with Yoast SEO.
 	 */
 	public static function wpseo_accessible_post_types( $post_types ) {
-		unset( $post_types[ \Newspack\Govpack\CPT\Profile::CPT_SLUG ] );
+		unset( $post_types[ \Govpack\CPT\Profile::CPT_SLUG ] );
 		return $post_types;
 	}
 
@@ -89,7 +89,7 @@ class Hooks {
 	 */
 	public static function register_sidebars() {
 		$sidebars = [
-			\Newspack\Govpack\CPT\Profile::CPT_SLUG => 'Govpack Profile',
+			\Govpack\CPT\Profile::CPT_SLUG => 'Govpack Profile',
 		];
 
 		foreach ( $sidebars as $slug => $name ) {
@@ -111,7 +111,7 @@ class Hooks {
 	 */
 	public static function admin_notices() {
 		$screen = get_current_screen();
-		if ( ! in_array( $screen->post_type, [ \Newspack\Govpack\CPT\Profile::CPT_SLUG, \Newspack\Govpack\CPT\Issue::CPT_SLUG ], true ) ) {
+		if ( ! in_array( $screen->post_type, [ \Govpack\CPT\Profile::CPT_SLUG, \Govpack\CPT\Issue::CPT_SLUG ], true ) ) {
 			return;
 		}
 

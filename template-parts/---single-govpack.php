@@ -29,10 +29,10 @@ get_header();
 			<?php
 			$current_post_type = get_post_type();
 
-			if ( \Newspack\Govpack\CPT\Profile::CPT_SLUG === $current_post_type ) {
-				$stories = \Newspack\Govpack\CPT\Profile::get_stories( get_the_ID() );
-			} elseif ( \Newspack\Govpack\CPT\Issue::CPT_SLUG === $current_post_type ) {
-				$stories = \Newspack\Govpack\CPT\Issue::get_stories( get_the_ID() );
+			if ( \Govpack\CPT\Profile::CPT_SLUG === $current_post_type ) {
+				$stories = \Govpack\CPT\Profile::get_stories( get_the_ID() );
+			} elseif ( \Govpack\CPT\Issue::CPT_SLUG === $current_post_type ) {
+				$stories = \Govpack\CPT\Issue::get_stories( get_the_ID() );
 			}
 
 			if ( isset( $stories ) ) :
@@ -58,7 +58,7 @@ get_header();
 			<?php
 				echo wp_kses_post( do_shortcode( '[govpack format=main id=' . get_the_ID() . ']' ) );
 				do_action( 'before_sidebar' );
-				dynamic_sidebar( \Newspack\Govpack\CPT\Profile::CPT_SLUG );
+				dynamic_sidebar( \Govpack\CPT\Profile::CPT_SLUG );
 				do_action( 'after_sidebar' );
 			?>
 		</aside><!-- #secondary -->

@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\ActionScheduler;
+namespace Govpack\ActionScheduler;
 
 /**
  * Installs the extended Args Table

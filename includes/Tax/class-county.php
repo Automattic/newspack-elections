@@ -5,12 +5,12 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Tax;
+namespace Govpack\Tax;
 
 /**
  * Register and handle the "County" Taxonomy.
  */
-class County extends \Newspack\Govpack\Taxonomy {
+class County extends \Govpack\Taxonomy {
 
 	/**
 	 * Post Type slug. Used when registering and referencing
@@ -189,7 +189,7 @@ class County extends \Newspack\Govpack\Taxonomy {
 			filter_input( INPUT_POST, 'fips', FILTER_SANITIZE_NUMBER_INT )
 		);
 
-		$states = \Newspack\Govpack\Helpers::states();
+		$states = \Govpack\Helpers::states();
 		$state  = filter_input( INPUT_POST, 'state', FILTER_SANITIZE_STRING );
 		if ( isset( $states[ $state ] ) ) {
 			update_term_meta(
@@ -208,7 +208,7 @@ class County extends \Newspack\Govpack\Taxonomy {
 	 * @param string $taxonomy The taxonomy slug.
 	 */
 	public static function add_form_fields( $taxonomy ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		$states = \Newspack\Govpack\Helpers::states();
+		$states = \Govpack\Helpers::states();
 		?>
 		<div class="form-field state-wrap">
 			<label for="state">State</label>

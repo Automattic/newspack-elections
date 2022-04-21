@@ -5,9 +5,9 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack;
+namespace Govpack;
 
-use Newspack\Govpack\CPT\Profile;
+use Govpack\CPT\Profile;
 
 /**
  * Register and handle the "Profile" Custom Post Type

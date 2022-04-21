@@ -49,7 +49,7 @@ class Govpack {
 	 */
 	public function __construct() {
 		add_action( 'after_setup_theme', [ __class__, 'hooks' ] );
-		add_action( 'plugins_loaded', [ '\Newspack\Govpack\ActionScheduler\ActionScheduler', 'hooks' ], 0 );
+		add_action( 'plugins_loaded', [ '\Govpack\ActionScheduler\ActionScheduler', 'hooks' ], 0 );
 
 	}
 
@@ -60,31 +60,31 @@ class Govpack {
 
 
 		// Functions well need.
-		\Newspack\Govpack\CPT\AsTaxonomy::hooks();
+		\Govpack\CPT\AsTaxonomy::hooks();
 
 		// Custom Post Types.
-		\Newspack\Govpack\CPT\Profile::hooks();
+		\Govpack\CPT\Profile::hooks();
 
 		// get capabilities setup first.
-		\Newspack\Govpack\Capabilities::hooks();
+		\Govpack\Capabilities::hooks();
 
 		// Taxonomies.
-		\Newspack\Govpack\Tax\LegislativeBody::hooks();
-		\Newspack\Govpack\Tax\OfficeHolderStatus::hooks();
-		\Newspack\Govpack\Tax\OfficeHolderTitle::hooks();
-		\Newspack\Govpack\Tax\Party::hooks();
-		\Newspack\Govpack\Tax\Profile::hooks();
-		\Newspack\Govpack\Tax\State::hooks();
+		\Govpack\Tax\LegislativeBody::hooks();
+		\Govpack\Tax\OfficeHolderStatus::hooks();
+		\Govpack\Tax\OfficeHolderTitle::hooks();
+		\Govpack\Tax\Party::hooks();
+		\Govpack\Tax\Profile::hooks();
+		\Govpack\Tax\State::hooks();
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			\Newspack\Govpack\CLI::init();
+			\Govpack\CLI::init();
 		}
 
-		\Newspack\Govpack\Importer\Importer::hooks();
-		\Newspack\Govpack\Admin\Admin::hooks();
-		\Newspack\Govpack\FrontEnd\FrontEnd::hooks();
+		\Govpack\Importer\Importer::hooks();
+		\Govpack\Admin\Admin::hooks();
+		\Govpack\FrontEnd\FrontEnd::hooks();
 
-		\Newspack\Govpack\Block\Profile::hooks();
-		\Newspack\Govpack\Block\ProfileSelf::hooks();
+		\Govpack\Block\Profile::hooks();
+		\Govpack\Block\ProfileSelf::hooks();
 	}
 }

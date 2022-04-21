@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Newspack\Govpack\Importer;
+namespace Govpack\Importer;
 
 use Exception;
 
@@ -76,11 +76,11 @@ class Actions {
 		
 		// phpcs:ignore content is "" false null or nil.
 		if ( ! $content ) {
-			return \Newspack\Govpack\CPT\Profile::default_profile_content();
+			return \Govpack\CPT\Profile::default_profile_content();
 		}
 
 		// inject it at the start.
-		return \Newspack\Govpack\CPT\Profile::default_profile_content() . $content;
+		return \Govpack\CPT\Profile::default_profile_content() . $content;
 	}
 
 	/**
@@ -337,6 +337,6 @@ class Actions {
 	 * Run a Cleanup  
 	 */
 	public static function cleanup_import() {
-		\Newspack\Govpack\Importer\Importer::clean();
+		\Govpack\Importer\Importer::clean();
 	}
 }

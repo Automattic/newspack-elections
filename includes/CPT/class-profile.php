@@ -177,7 +177,7 @@ class Profile extends \Govpack\Post_Type {
 				],
 				'template'     => [
 					[ 'govpack/profile-self' ],
-				]
+				],
 			]
 		);
 	}

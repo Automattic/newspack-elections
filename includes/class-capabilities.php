@@ -46,22 +46,22 @@ class Capabilities {
 	 * @param string $singular singular name for the post type, used to create capabilities.
 	 * @param string $plural plural name for the post type, used to create capabilities. If unset/null the will default to the singular with an 's' postfixed.
 	 */
-	public static function compile_post_type_capabilities($singular = 'post', $plural = null) {
+	public static function compile_post_type_capabilities( $singular = 'post', $plural = null ) {
 
 		// no plural? use signular with an s.
-		if(!$plural){
-			$plural = $plural . "s";
+		if ( ! $plural ) {
+			$plural = $plural . 's';
 		}
 
 		return [
-			'edit_post'      => "edit_$singular",
-			'read_post'      => "read_$singular",
-			'delete_post'        => "delete_$singular",
-			'edit_posts'         => "edit_$plural",
-			'edit_others_posts'  => "edit_others_$plural",
-			'publish_posts'      => "publish_$plural",
+			'edit_post'              => "edit_$singular",
+			'read_post'              => "read_$singular",
+			'delete_post'            => "delete_$singular",
+			'edit_posts'             => "edit_$plural",
+			'edit_others_posts'      => "edit_others_$plural",
+			'publish_posts'          => "publish_$plural",
 			'read_private_posts'     => "read_private_$plural",
-			'read'                   => "read",
+			'read'                   => 'read',
 			'delete_posts'           => "delete_$plural",
 			'delete_private_posts'   => "delete_private_$plural",
 			'delete_published_posts' => "delete_published_$plural",

@@ -35,7 +35,7 @@ class OpenStates_Sources extends \Govpack\Importer\Abstracts\Abstract_Source {
 		];
 
 		
-		foreach ( self::states as $abbr => $label ) {
+		foreach ( self::STATES as $abbr => $label ) {
 			$data['us-states']['items'][ strtolower( $abbr ) ] = [
 				'label' => $label,
 			];

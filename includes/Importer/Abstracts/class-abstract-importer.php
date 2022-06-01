@@ -92,8 +92,15 @@ abstract class Abstract_Importer {
 
 		$file = \Govpack\Importer\Importer::check_file( $file );
 
-		$reader = static::create_reader( $file );
-		static::process( $reader, $extra );
+		try{
+			$reader = static::create_reader( $file );
+			static::process( $reader, $extra );
+		} catch (Exception $e){
+		//	var_dump($e);
+		//	die();
+			$error_response = new \WP_Error("import-error", $e->getMessage());
+			return $error_response;
+		}
 
 
 		$response = [ 'status' => 'running' ];

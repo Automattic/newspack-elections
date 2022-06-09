@@ -46,7 +46,10 @@ class Actions {
 		add_action( 'govpack_import_cleanup', [ self::instance(), 'cleanup_import' ] );
 		add_filter( 'govpack_import_openstates_links', [ self::instance(), 'explode_openstates_list' ] );
 		add_filter( 'govpack_import_openstates_sources', [ self::instance(), 'explode_openstates_list' ] );
-		add_filter( 'govpack_import_openstates_content', [ self::instance(), 'inject_block_in_content' ] );
+
+		add_filter( 'govpack_import_content', [ self::instance(), 'wrap_content_in_block_grammar' ] );
+		add_filter( 'govpack_import_content', [ self::instance(), 'inject_block_in_content' ] );
+		
 	}
 
 	/**
@@ -81,6 +84,37 @@ class Actions {
 
 		// inject it at the start.
 		return \Govpack\CPT\Profile::default_profile_content() . $content;
+	}
+
+	/**
+	 * Action that fires to inject the default block in the content
+	 * 
+	 * @param array $content content from the imported.
+	 */
+	public static function wrap_content_in_block_grammar( $content = null ) {
+		
+		// phpcs:ignore content is "" false null or nil.
+		if ( ! $content ) {
+			return $content;
+		}
+
+		// convert all the spaces and new lines to paragraphs
+		$content = \wpautop($content);
+
+		// use str_replace to replace the <p> and </p> tags
+		$content = str_replace(
+			[
+				"<p>",
+				"</p>"
+			],
+			[
+				"<!-- wp:paragraph --> \r\n <p>",
+				"</p> \r\n <!-- /wp:paragraph -->"
+			],
+			$content
+		);
+
+		return $content;
 	}
 
 	/**
@@ -201,7 +235,7 @@ class Actions {
   
 		$post = [
 			'post_author'    => 0,
-			'post_content'   => \apply_filters( 'govpack_import_openstates_content', $data['biography'] ),
+			'post_content'   => \apply_filters( 'govpack_import_content', $data['biography'] ),
 			'post_title'     => $data['name'],
 			'post_status'    => 'draft',
 			'post_type'      => 'govpack_profiles',

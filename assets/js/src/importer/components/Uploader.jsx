@@ -23,7 +23,6 @@ const CHUNK_SIZE = 0.5 * 1024 * 1024;
 
 const Uploader = (props) => {
 
-    let [file, setFile] = useState()
     let [importData, setImportData] = useState()
     let [dataSources, setDataSources] = useState({})
     let [selectedSource, setSelectedSource] = useState("")
@@ -88,19 +87,20 @@ const Uploader = (props) => {
         
         
         if(!isUndefined(allowed) && !allowed.includes(file.type)){
-            setHasError(true)
-            setErrorMessage(errorCodes['filetype'])
+            props.setHasError(true)
+            props.setErrorMessage(errorCodes['filetype'])
             return false;
         }
         
-        setFile(file)
+        props.setFile(file)
 	};
 
     const onFilesUpload = (  ) => {
 
        
-
-        console.log(file)
+        const {
+			file
+		} = props
 
         let chunks = []
         let number_of_chunks = Math.ceil(file.size / CHUNK_SIZE)
@@ -193,7 +193,7 @@ const Uploader = (props) => {
         } ).then( ( res ) => {
             setIsDownloaded(1)
             props.updateStep(stage.PROCESSING)
-        } );
+        } );e
 
     }
 
@@ -212,8 +212,8 @@ const Uploader = (props) => {
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. In faucibus elit nec urna imperdiet, ut molestie orci viverra. Fusce interdum rutrum leo. Praesent non pretium purus, vel molestie orci. Cras hendrerit enim non dolor sollicitudin ultricies. 
                     </p>
 
-                    {hasError && (
-                        <Error message={errorMessage} />
+                    {props.hasError && (
+                        <Error message={props.errorMessage} />
                     )}
 
                     <HStack  
@@ -225,12 +225,12 @@ const Uploader = (props) => {
                             isPrimary={true}
                             onChange={ onFileChosen }
                             accept={allowed }
-                            disabled = {file}
+                            disabled = {props.file}
                         >
                             Choose File
                         </FormFileUpload>
 
-                        { file && (
+                        { props.file && (
                             <>
                                 <span
                                     style={{
@@ -238,12 +238,12 @@ const Uploader = (props) => {
                                         marginLeft : "0.5rem"
                                     }}
                                 >
-                                    {file.name}
+                                    {props.file.name}
                                 </span>
                                 <Button 
                                     variant="tertiary"
                                     onClick = { () => {
-                                        setFile(false)
+                                        props.setFile(false)
                                     }}
                                     icon = "no-alt"
                                     iconSize={12}

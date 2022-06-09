@@ -6,8 +6,9 @@ import stage from "./../stages"
 
 const Processing = (props) => {
 
-    const [hasError, setHasError] = useState(false)
+	const [hasError, setHasError] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
+
     let timeout = null
 
     const Tick = async () => {
@@ -22,8 +23,9 @@ const Processing = (props) => {
 
         } ).catch(( error, res ) => {
             console.log(error)
-            setHasError(true)
-            setErrorMessage(error.response.data.message)
+            props.setHasError(true)
+            props.setErrorMessage(error.response.data.message)
+			props.updateStep(stage.UPLOADER)
 
         })
     }
@@ -74,9 +76,6 @@ const Processing = (props) => {
         <div>
             <InfoPanel heading="Processing">
                 <p>Reading your file to make sure we can import it</p>
-                {hasError && (
-                    <Error message={errorMessage} />
-                )}
             </InfoPanel>
         </div>
     )

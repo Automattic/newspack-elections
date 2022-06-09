@@ -23,6 +23,11 @@ const Importer = () => {
     let [didInitialStatusCheck, setDidInitialStatusCheck] = useState(false)
     let [uploadProgress, setUploadProgress] = useState(0)
 
+	const [hasError, setHasError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
+
+	let [file, setFile] = useState()
+
     useEffect(() => {
 
         if(didInitialStatusCheck){
@@ -53,6 +58,10 @@ const Importer = () => {
         return (<Uploader 
             updateStep = {setStep}
             onUploadProgress = {setUploadProgress}
+			hasError = {hasError}
+			errorMessage = {errorMessage}
+			file = {file}
+			setFile = {setFile}
         />)
     }
 
@@ -65,6 +74,8 @@ const Importer = () => {
     if(step === stage.PROCESSING){
         return (<Processing 
             updateStep = {setStep}
+			setErrorMessage = {setErrorMessage}
+			setHasError = {setHasError}
         />)
     }
 

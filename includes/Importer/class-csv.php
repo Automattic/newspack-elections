@@ -31,9 +31,46 @@ class CSV extends \Govpack\Importer\Abstracts\Abstract_Importer {
 			throw new Exception( 'Could Not Open File to Parse' );
 		}
 
+		if(in_array("", $reader->getHeader())){
+			throw new Exception( 'Each column in your CSV needs to have a heading, there is at least 1 un-named column' );
+		}
+
+		self::has_required_columns($reader->getHeader());
+		
 		return $reader;
 	}
 
+	/**
+	 * checks that the CSV has the minimum required columns
+	 *
+	 * @param string $file  path of the JSON file.
+	 * @throws Exception Could Not Open File to Parse.
+	 */
+	public static function has_required_columns( $header ) {
+
+		$required = apply_filters("govpack_importer_required_columns", [
+			"name",
+			"current_chamber",
+			"title",
+			"status",
+		]);
+
+		$missing = [];
+
+		foreach($required as $column){
+			if(!in_array($column, $header)){
+				$missing[] = $column;
+			}
+		}
+
+		if( count($missing) > 0){
+			$missing_fields = join('", "', $missing);
+			throw new Exception( 'Your CSV is missing the some required fields ["' . $missing_fields . '"]' );
+			return false;
+		}
+
+		return true;
+	}
 
 	/**
 	 * Process Loop over WML file

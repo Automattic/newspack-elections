@@ -255,7 +255,7 @@ class CLI extends \WP_CLI_Command {
 			WP_CLI::line( sprintf( 'Purging Post Type : %s', $post_type ) );
 
 	   
-			$posts = new WP_Query(
+			$posts = new \WP_Query(
 				[
 					'post_type'      => 'govpack_profiles',
 					'post_status'    => 'any',

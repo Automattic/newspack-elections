@@ -46,13 +46,17 @@ class CSV extends \Govpack\Importer\Abstracts\Abstract_Importer {
 
 		update_option( 'govpack_import_group', self::import_group() );
 
+
 		foreach ( $reader->getRecords() as $offset => $record ) {
+
 
 			if ( \is_array( $extra ) ) {
 				$record = array_merge( $record, $extra );
 			} 
 			
 			as_enqueue_async_action( 'govpack_import_csv_profile', [ 'data' => $record ], self::import_group() );
+
+			$limit++;
 		}
 
 		as_enqueue_async_action( 'govpack_import_cleanup', [], self::import_group() );

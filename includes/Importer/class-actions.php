@@ -315,11 +315,11 @@ class Actions {
 
 
 		if ( ! $term_name ) {
-			return new WP_Error( 'No Term Provided to find or create' );
+			return new \WP_Error( 'No Term Provided to find or create' );
 		}
 
 		if ( ! $taxonomy ) {
-			return new WP_Error( 'No Taxonmy Provided to find or create in' );
+			return new \WP_Error( 'No Taxonmy Provided to find or create in' );
 		}
 
 
@@ -327,7 +327,10 @@ class Actions {
 
 		if ( ! $term ) {
 			$term = \wp_create_term( $term_name, $taxonomy );
+			$term = \get_term($term['term_id'], $taxonomy);
 		}
+		
+
 
 		return $term;
 		

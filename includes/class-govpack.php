@@ -84,7 +84,7 @@ class Govpack {
 		\Govpack\Admin\Admin::hooks();
 		\Govpack\FrontEnd\FrontEnd::hooks();
 
-		\Govpack\Block\Profile::hooks();
-		\Govpack\Block\ProfileSelf::hooks();
+		\Govpack\Block\Profile\Profile::hooks();
+		\Govpack\Block\ProfileSelf\ProfileSelf::hooks();
 	}
 }

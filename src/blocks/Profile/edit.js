@@ -14,9 +14,9 @@ import { withSelect, useSelect, select} from "@wordpress/data";
 
 import { AutocompleteWithSuggestions } from 'newspack-components';
 
-import ProfileDisplaySettings from './../../components/Panels/ProfileDisplaySettings.jsx'
+import ProfileDisplaySettings from '../../components/Panels/ProfileDisplaySettings.jsx'
 import ProfileAvatarPanel from '../../components/Panels/ProfileAvatarPanel';
-import SingleProfile from "./../../components/single-profile"
+import SingleProfile from "../../components/single-profile"
 import AvatarAlignmentToolBar from '../../components/Toolbars/AvatarAlignment.jsx';
 import BlockSizeAlignmentToolbar from '../../components/Toolbars/BlockSizeAlignmentToolbar.jsx';
 import ResetProfileToolbar from '../../components/Toolbars/ResetProfileToolbar.jsx';

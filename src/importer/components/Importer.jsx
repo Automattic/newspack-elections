@@ -13,13 +13,13 @@ import Importing from "./Importing.jsx"
 import Done from "./Done.jsx"
 
 
-
+import api from "@wordpress/api"
  
 
 
 const Importer = () => {
   
-    let [step, setStep] = useState(stage.UPLOADER);
+    let [step, setStep] = useState(stage.DONE);
     let [didInitialStatusCheck, setDidInitialStatusCheck] = useState(false)
     let [uploadProgress, setUploadProgress] = useState(0)
 

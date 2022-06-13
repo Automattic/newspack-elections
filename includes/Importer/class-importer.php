@@ -39,15 +39,18 @@ class Importer {
 		if ( file_exists( $file ) ) {
 			$asset_data = require_once $file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
 		}
-
 		
+		$script_handle = 'govpack-importer';
+
 		wp_register_script(
-			'govpack-importer',
+			$script_handle,
 			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/importer.js',
 			$asset_data['dependencies'] ?? [],
 			$asset_data['version'] ?? '',
 			true
 		);
+
+		wp_script_add_data($script_handle , "profiles_url", "aksgdkasjdh" );
 	}
 
 	/**

@@ -1,7 +1,13 @@
+import InfoPanel from "./InfoPanel";
+
 const Done = () => {
-    return (
+
+	console.log(wp.data.select('core'))
+	return (
         <div>
-            Done!
+            <InfoPanel heading="Done!">
+			Your import is complete. <a href="#">Visit your newly created available profiles</a>.
+            </InfoPanel>
         </div>
     )
 }

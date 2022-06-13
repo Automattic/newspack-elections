@@ -183,7 +183,8 @@ const cachePath = path.resolve( '.cache' );
             "wp.element" : "@wordpress/element",
             "@wordpress/i18n"   : "wp.i18n",
             "@wordpress/server-side-render" : "wp.serverSiderender",
-            "wp.icons" : "@wordpress/icons"
+            "wp.icons" : "@wordpress/icons",
+			"wp.api" : "@wordpress/api"
             
         }
 	};
@@ -232,8 +233,8 @@ function getUpdatedWebpackConfig(env, arg){
     */
     webpackConfig.entry = {}
     webpackConfig.entry.editor = path.join( __dirname, "src", 'editor', "index" )
-    webpackConfig.entry.profile_block = path.join( __dirname, "src", 'blocks', 'Profile', "index" )
-    webpackConfig.entry.profile_self_block = path.join( __dirname, "src", 'blocks', 'ProfileSelf', "index" )
+    webpackConfig.entry.profile_block = path.join( __dirname, "src", 'blocks', 'profile', "index" )
+    webpackConfig.entry.profile_self_block = path.join( __dirname, "src", 'blocks', 'profileself', "index" )
     webpackConfig.entry.importer = path.join( __dirname, "src", 'importer', "index" )
     webpackConfig.entry.admin = path.join( __dirname, 'src', "admin", 'index')
 	webpackConfig.entry.frontend = path.join( __dirname, 'src', "frontend", 'index')

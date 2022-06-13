@@ -16,10 +16,6 @@
     "brainmaestro/composer-git-hooks": "^2.8.5"
   },
   "license": "GPL-2.0-or-later",
-  "scripts": {
-    "post-install-cmd": [ "vendor/bin/cghooks add --no-lock" ],
-    "post-update-cmd": [ "vendor/bin/cghooks update" ]
-  },
   "autoload": {
     "psr-4": {
       "Govpack\\" : "includes/"

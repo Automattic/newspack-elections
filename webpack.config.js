@@ -231,11 +231,11 @@ function getUpdatedWebpackConfig(env, arg){
     }
     */
     webpackConfig.entry = {}
-    webpackConfig.entry.editor = path.join( __dirname, 'assets', 'js', "src", 'editor', "index" )
-    webpackConfig.entry.profile_block = path.join( __dirname, 'assets', 'js', "src", 'editor', 'blocks', 'profile', "index" )
-    webpackConfig.entry.profile_self_block = path.join( __dirname, 'assets', 'js', "src", 'editor', 'blocks', 'profile-self', "index" )
-    webpackConfig.entry.importer = path.join( __dirname, 'assets', 'js', "src", 'importer', "index" )
-    webpackConfig.entry.profile_table = path.join( __dirname, 'assets', 'css', "src", 'profile-table.scss')
+    webpackConfig.entry.editor = path.join( __dirname, "src", 'editor', "index" )
+    webpackConfig.entry.profile_block = path.join( __dirname, "src", 'blocks', 'Profile', "index" )
+    webpackConfig.entry.profile_self_block = path.join( __dirname, "src", 'blocks', 'ProfileSelf', "index" )
+    webpackConfig.entry.importer = path.join( __dirname, "src", 'importer', "index" )
+    webpackConfig.entry.admin = path.join( __dirname, 'src', "admin", 'index')
 
     // Runtime code for hot module replacement
     //webpackConfig.entry.hot = 'webpack/hot/dev-server.js',

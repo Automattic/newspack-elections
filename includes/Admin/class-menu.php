@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Govpack\Admin;
+namespace Govpack\Core\Admin;
 
 use Exception;
 
@@ -184,11 +184,11 @@ class Menu {
 				]
 			);
 
-			add_action(
+			\add_action(
 				'admin_menu',
 				function() {
 
-					add_menu_page( 
+					\add_menu_page( 
 						$this->page_title, 
 						$this->menu_title, 
 						$this->capability, 
@@ -217,7 +217,7 @@ class Menu {
 	 * @since 3.1.0
 	 */
 	public static function add_taxonomy_submenus() {
-		foreach ( get_taxonomies( [ 'show_ui' => true ], 'objects' ) as $tax ) {
+		foreach (\get_taxonomies( [ 'show_ui' => true ], 'objects' ) as $tax ) {
 
 			if ( ! isset( $tax->show_in_which_menu ) ) {
 				return;
@@ -227,7 +227,7 @@ class Menu {
 				continue;
 			}
   
-			add_submenu_page( $tax->show_in_which_menu, $tax->labels->name, $tax->labels->name, $tax->cap->manage_terms, "edit-tags.php?taxonomy=$tax->name&post_type=govpack" );
+			\add_submenu_page( $tax->show_in_which_menu, $tax->labels->name, $tax->labels->name, $tax->cap->manage_terms, "edit-tags.php?taxonomy=$tax->name&post_type=govpack" );
 		}
 	}
 

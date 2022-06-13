@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Govpack\Admin;
+namespace Govpack\Core\Admin;
 
 use Exception;
 

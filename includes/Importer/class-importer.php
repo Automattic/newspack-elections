@@ -5,11 +5,11 @@
  * @package Govpack
  */
 
-namespace Govpack\Importer;
+namespace Govpack\Core\Importer;
 
 use Exception;
-use Govpack\Govpack;
-use Govpack\Capabilities;
+use Govpack\Core\Govpack;
+use Govpack\Core\Capabilities;
 
 /**
  * Register and handle the "USIO" Importer

@@ -5,12 +5,12 @@
  * @package Govpack
  */
 
-namespace Govpack\Tax;
+
 
 /**
  * Register and handle the "City" Taxonomy.
  */
-class City extends \Govpack\Taxonomy {
+class City extends \Govpack\Core\Abstracts\Taxonomy {
 
 	/**
 	 * Post Type slug. Used when registering and referencing

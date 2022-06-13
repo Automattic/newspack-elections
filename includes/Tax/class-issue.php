@@ -5,12 +5,12 @@
  * @package Govpack
  */
 
-namespace Govpack\Tax;
+namespace Govpack\Core\Tax;
 
 /**
  * Register and handle the "Issue" Taxonomy.
  */
-class Issue extends \Govpack\Taxonomy {
+class Issue extends \Govpack\Core\Abstracts\Taxonomy {
 
 	/**
 	 * Taxonomy slug. Used when registering and referencing

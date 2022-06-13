@@ -107,7 +107,7 @@ abstract class Importer {
 					\WP_CLI::line( sprintf( 'Found data for %s %s.', $profile['first_name'], $profile['last_name'] ) );
 				}
 			} else {
-				$result = \Govpack\CPT\Profile::create( $profile );
+				$result = \Govpack\Core\CPT\Profile::create( $profile );
 				if ( defined( 'WP_CLI' ) && WP_CLI ) {
 					if ( 0 === $result || is_wp_error( $result ) ) {
 						\WP_CLI::error( sprintf( 'Failed to insert %s %s.', $profile['first_name'], $profile['last_name'] ) );

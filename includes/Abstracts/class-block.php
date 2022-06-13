@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Govpack\Abstracts;
+namespace Govpack\Core\Abstracts;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -29,4 +29,38 @@ abstract class Block {
 	 */
 	public static function register_script() {}
 
+
+	public static function get_block($block_name){
+		$block_registry   = \WP_Block_Type_Registry::get_instance();
+		$block            = $block_registry->get_registered( $block_name );
+		return $block;
+	}
+
+	public static function get_block_attributes($block_name){
+	
+		$block = self::get_block( $block_name );
+		return $block->attributes;
+	}
+
+	public static function get_block_attributes_with_default_values($block_name){
+	
+		$block = self::get_block( $block_name );
+		
+		$block_attributes = array_merge(
+			...array_map(
+				function( $key, $value ) {
+					return [ $key => $value['default'] ?? false ];
+				},
+				array_keys( $block->attributes ),
+				$block->attributes
+			)
+		);
+
+		return $block_attributes;
+	}
+	
+	public static function merge_attributes_with_block_defaults($block_name, $attributes){
+		$block_attributes = self::get_block_attributes_with_default_values($block_name);
+		return array_merge( $block_attributes, $attributes );
+	}
 }

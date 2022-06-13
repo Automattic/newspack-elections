@@ -5,12 +5,12 @@
  * @package Govpack
  */
 
-namespace Govpack\Tax;
+namespace Govpack\Core\Tax;
 
 /**
  * Register and handle the "Legislative_Body" Taxonomy.
  */
-class LegislativeBody extends \Govpack\Taxonomy {
+class LegislativeBody extends \Govpack\Core\Abstracts\Taxonomy {
 
 	/**
 	 * Post Type slug. Used when registering and referencing

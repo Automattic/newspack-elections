@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Govpack\CPT;
+namespace Govpack\Core\CPT;
 
 /**
  * Enable post types to be used as a taxonomy

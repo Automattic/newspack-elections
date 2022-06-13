@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Govpack\Importer;
+namespace Govpack\Core\Importer;
 
 /**
  * Register and handle the "OpenStates" Importer

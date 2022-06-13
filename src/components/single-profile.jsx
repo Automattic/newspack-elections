@@ -12,11 +12,11 @@ import {
 import { decodeEntities } from '@wordpress/html-entities';
 import { select} from "@wordpress/data";
 
-import FacebookIcon from "./../../../../images/facebook.svg"
-import TwitterIcon from "./../../../../images/twitter.svg"
-import LinkedinIcon from "./../../../../images/linkedin.svg"
-import EmailIcon from "./../../../../images/email.svg"
-import InstagramIcon from "./../../../../images/instagram.svg"
+import FacebookIcon from "./../images/facebook.svg"
+import TwitterIcon from "./../images/twitter.svg"
+import LinkedinIcon from "./../images/linkedin.svg"
+import EmailIcon from "./../images/email.svg"
+import InstagramIcon from "./../images/instagram.svg"
 
 /**
  * External dependencies

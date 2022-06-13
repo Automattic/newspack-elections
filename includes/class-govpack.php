@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Govpack;
+namespace Govpack\Core;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -48,8 +48,8 @@ class Govpack {
 	 * Inits the class and registeres the hooks call.
 	 */
 	public function __construct() {
-		add_action( 'after_setup_theme', [ __class__, 'hooks' ] );
-		add_action( 'plugins_loaded', [ '\Govpack\ActionScheduler\ActionScheduler', 'hooks' ], 0 );
+		\add_action( 'after_setup_theme', [ __class__, 'hooks' ] );
+		\add_action( 'plugins_loaded', [ '\Govpack\Core\ActionScheduler\ActionScheduler', 'hooks' ], 0 );
 
 	}
 
@@ -60,31 +60,31 @@ class Govpack {
 
 
 		// Functions well need.
-		\Govpack\CPT\AsTaxonomy::hooks();
+		\Govpack\Core\CPT\AsTaxonomy::hooks();
 
 		// Custom Post Types.
-		\Govpack\CPT\Profile::hooks();
+		\Govpack\Core\CPT\Profile::hooks();
 
 		// get capabilities setup first.
-		\Govpack\Capabilities::hooks();
+		\Govpack\Core\Capabilities::hooks();
 
 		// Taxonomies.
-		\Govpack\Tax\LegislativeBody::hooks();
-		\Govpack\Tax\OfficeHolderStatus::hooks();
-		\Govpack\Tax\OfficeHolderTitle::hooks();
-		\Govpack\Tax\Party::hooks();
-		\Govpack\Tax\Profile::hooks();
-		\Govpack\Tax\State::hooks();
+		\Govpack\Core\Tax\LegislativeBody::hooks();
+		\Govpack\Core\Tax\OfficeHolderStatus::hooks();
+		\Govpack\Core\Tax\OfficeHolderTitle::hooks();
+		\Govpack\Core\Tax\Party::hooks();
+		\Govpack\Core\Tax\Profile::hooks();
+		\Govpack\Core\Tax\State::hooks();
 
-		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			\Govpack\CLI::init();
+		if ( defined( 'WP_CLI' ) && \WP_CLI ) {
+			\Govpack\Core\CLI::init();
 		}
 
-		\Govpack\Importer\Importer::hooks();
-		\Govpack\Admin\Admin::hooks();
-		\Govpack\FrontEnd\FrontEnd::hooks();
+		\Govpack\Core\Importer\Importer::hooks();
+		\Govpack\Core\Admin\Admin::hooks();
+		\Govpack\Core\FrontEnd\FrontEnd::hooks();
 
-		\Govpack\Block\Profile\Profile::hooks();
-		\Govpack\Block\ProfileSelf\ProfileSelf::hooks();
+		\Govpack\Blocks\Profile\Profile::hooks();
+		\Govpack\Blocks\ProfileSelf\ProfileSelf::hooks();
 	}
 }

@@ -5,12 +5,12 @@
  * @package Govpack
  */
 
-namespace Govpack\Tax;
+namespace Govpack\Core\Tax;
 
 /**
  * Register and handle the "OfficeHolder_Status" Taxonomy.
  */
-class OfficeHolderTitle extends \Govpack\Taxonomy {
+class OfficeHolderTitle extends \Govpack\Core\Abstracts\Taxonomy {
 
 	/**
 	 * Post Type slug. Used when registering and referencing

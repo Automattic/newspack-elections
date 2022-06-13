@@ -94,11 +94,11 @@ function gp_websites( $websites ) {
 function gp_contacts( $profile_data, $attributes ) {
 
 	$icons = [
-		'facebook'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/assets/images/facebook.svg' ),
-		'twitter'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/assets/images/twitter.svg' ),
-		'linkedin'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/assets/images/linkedin.svg' ),
-		'instagram' => file_get_contents( GOVPACK_PLUGIN_FILE . '/assets/images/instagram.svg' ),
-		'email'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/assets/images/email.svg' ),
+		'facebook'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/facebook.svg' ),
+		'twitter'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/twitter.svg' ),
+		'linkedin'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/linkedin.svg' ),
+		'instagram' => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/instagram.svg' ),
+		'email'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/email.svg' ),
 	];
   
 	$icon = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';

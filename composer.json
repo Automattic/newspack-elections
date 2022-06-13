@@ -1,5 +1,5 @@
 {
-  "name": "automattic/govpack",
+  "name": "govpack/govpack",
   "description": "Govpack TK",
   "type": "wordpress-plugin",
   "require": {
@@ -22,7 +22,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Govpack\\" : "includes/"
+		"Govpack\\" : "includes/",
+		"Govpack\\Blocks\\" : "src/blocks/"
     }
   },
   "extra": {

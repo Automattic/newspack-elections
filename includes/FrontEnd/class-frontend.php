@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Govpack\FrontEnd;
+namespace Govpack\Core\FrontEnd;
 
 use Exception;
 
@@ -48,7 +48,7 @@ class FrontEnd {
 			return $the_content;
 		}
 	
-		return \Govpack\CPT\Profile::default_profile_content();
+		return \Govpack\Core\CPT\Profile::default_profile_content();
 	}
 }
 

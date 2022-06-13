@@ -5,12 +5,12 @@
  * @package Govpack
  */
 
-namespace Govpack\Tax;
+namespace Govpack\Core\Tax;
 
 /**
  * Register and handle the "State" Taxonomy.
  */
-class State extends \Govpack\Taxonomy {
+class State extends \Govpack\Core\Abstracts\Taxonomy {
 
 	/**
 	 * Post Type slug. Used when registering and referencing

@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Govpack;
+namespace Govpack\Core;
 
 use \WP_CLI as WP_CLI;
 

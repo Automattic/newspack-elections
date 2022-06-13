@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Govpack\Importer;
+namespace Govpack\Core\Importer;
 
 use Exception;
 
@@ -79,11 +79,11 @@ class Actions {
 		
 		// phpcs:ignore content is "" false null or nil.
 		if ( ! $content ) {
-			return \Govpack\CPT\Profile::default_profile_content();
+			return \Govpack\Core\CPT\Profile::default_profile_content();
 		}
 
 		// inject it at the start.
-		return \Govpack\CPT\Profile::default_profile_content() . $content;
+		return \Govpack\Core\CPT\Profile::default_profile_content() . $content;
 	}
 
 	/**

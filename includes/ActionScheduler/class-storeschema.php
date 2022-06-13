@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Govpack\ActionScheduler;
+namespace Govpack\Core\ActionScheduler;
 
 /**
  * Extends the ActionScheduler_StoreSchema so we can reused it for out overrides

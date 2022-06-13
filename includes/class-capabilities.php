@@ -5,7 +5,7 @@
  * @package Govpack
  */
 
-namespace Govpack;
+namespace Govpack\Core;
 
 defined( 'ABSPATH' ) || exit;
 

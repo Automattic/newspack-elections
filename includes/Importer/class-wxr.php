@@ -5,10 +5,10 @@
  * @package Govpack
  */
 
-namespace Govpack\Importer;
+namespace Govpack\Core\Importer;
 
 use Exception, XMLReader, DOMNode;
-use Govpack\Govpack;
+use Govpack\Core\Govpack;
 /**
  * Register and handle the "USIO" Importer
  */

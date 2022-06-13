@@ -5,15 +5,15 @@
  * @package Govpack
  */
 
-namespace Govpack\CPT;
+namespace Govpack\Core\CPT;
 
-use Govpack\Capabilities;
+use Govpack\Core\Capabilities;
 use \Govpack\Helpers;
 
 /**
  * Register and handle the "Profile" Custom Post Type
  */
-class Profile extends \Govpack\Post_Type {
+class Profile extends \Govpack\Core\Abstracts\Post_Type {
 
 	/**
 	 * Valid profile formats.
@@ -169,7 +169,7 @@ class Profile extends \Govpack\Post_Type {
 				'show_in_menu' => 'govpack',
 				'supports'     => [ 'revisions', 'thumbnail', 'editor', 'custom-fields', 'title', 'excerpt' ],
 				'taxonomies'   => [ 'post_tag' ],
-				'as_taxonomy'  => \Govpack\Tax\Profile::TAX_SLUG,
+				'as_taxonomy'  => \Govpack\Core\Tax\Profile::TAX_SLUG,
 				'menu_icon'    => 'dashicons-groups',
 				'rewrite'      => [
 					'slug'       => apply_filters( 'govpack_profile_filter_slug', 'profile' ),
@@ -257,11 +257,11 @@ class Profile extends \Govpack\Post_Type {
 	 * @param array $sortable_columns An array of sortable columns.
 	 */
 	public static function sortable_columns( $sortable_columns ) {
-		$sortable_columns[ 'taxonomy-' . \Govpack\Tax\State::TAX_SLUG ]              = 'State';
-		$sortable_columns[ 'taxonomy-' . \Govpack\Tax\Party::TAX_SLUG ]              = 'Party';
-		$sortable_columns[ 'taxonomy-' . \Govpack\Tax\LegislativeBody::TAX_SLUG ]    = 'Legislative Body';
-		$sortable_columns[ 'taxonomy-' . \Govpack\Tax\OfficeHolderStatus::TAX_SLUG ] = 'Office Holder Status';
-		$sortable_columns[ 'taxonomy-' . \Govpack\Tax\OfficeHolderTitle::TAX_SLUG ]  = 'Office Holder Title';
+		$sortable_columns[ 'taxonomy-' . \Govpack\Core\Tax\State::TAX_SLUG ]              = 'State';
+		$sortable_columns[ 'taxonomy-' . \Govpack\Core\Tax\Party::TAX_SLUG ]              = 'Party';
+		$sortable_columns[ 'taxonomy-' . \Govpack\Core\Tax\LegislativeBody::TAX_SLUG ]    = 'Legislative Body';
+		$sortable_columns[ 'taxonomy-' . \Govpack\Core\Tax\OfficeHolderStatus::TAX_SLUG ] = 'Office Holder Status';
+		$sortable_columns[ 'taxonomy-' . \Govpack\Core\Tax\OfficeHolderTitle::TAX_SLUG ]  = 'Office Holder Title';
 	
 		return $sortable_columns;
 	}
@@ -303,11 +303,11 @@ class Profile extends \Govpack\Post_Type {
 	 */
 	public static function post_table_filters( $post_type, $which ) {
 		
-		self::taxonomy_dropdown( \Govpack\Tax\LegislativeBody::TAX_SLUG, $post_type );
-		self::taxonomy_dropdown( \Govpack\Tax\State::TAX_SLUG, $post_type );
-		self::taxonomy_dropdown( \Govpack\Tax\Party::TAX_SLUG, $post_type );
-		self::taxonomy_dropdown( \Govpack\Tax\OfficeHolderStatus::TAX_SLUG, $post_type );
-		self::taxonomy_dropdown( \Govpack\Tax\OfficeHolderTitle::TAX_SLUG, $post_type );
+		self::taxonomy_dropdown( \Govpack\Core\Tax\LegislativeBody::TAX_SLUG, $post_type );
+		self::taxonomy_dropdown( \Govpack\Core\Tax\State::TAX_SLUG, $post_type );
+		self::taxonomy_dropdown( \Govpack\Core\Tax\Party::TAX_SLUG, $post_type );
+		self::taxonomy_dropdown( \Govpack\Core\Tax\OfficeHolderStatus::TAX_SLUG, $post_type );
+		self::taxonomy_dropdown( \Govpack\Core\Tax\OfficeHolderTitle::TAX_SLUG, $post_type );
 		
 	}
 
@@ -416,8 +416,6 @@ class Profile extends \Govpack\Post_Type {
 				<?php
 			}       
 		}
-
-		
 	}
 
 	/**
@@ -507,7 +505,7 @@ class Profile extends \Govpack\Post_Type {
 			return;
 		}
 
-		$term_objects = wp_get_post_terms( $profile_id, [ \Govpack\Tax\Party::TAX_SLUG, \Govpack\Tax\State::TAX_SLUG, \Govpack\Tax\LegislativeBody::TAX_SLUG ] );
+		$term_objects = wp_get_post_terms( $profile_id, [ \Govpack\Core\Tax\Party::TAX_SLUG, \Govpack\Core\Tax\State::TAX_SLUG, \Govpack\Core\Tax\LegislativeBody::TAX_SLUG ] );
 		$term_data    = array_reduce(
 			$term_objects,
 			function( $carry, $item ) {
@@ -535,9 +533,9 @@ class Profile extends \Govpack\Post_Type {
 				'primary'   => self::formatAddress( $profile_raw_meta_data, 'main' ) ?? null,
 				'secondary' => self::formatAddress( $profile_raw_meta_data, 'secondary' ) ?? null,
 			],
-			'party'            => $term_data[ \Govpack\Tax\Party::TAX_SLUG ] ?? '',
-			'state'            => $term_data[ \Govpack\Tax\State::TAX_SLUG ] ?? '',
-			'legislative_body' => $term_data[ \Govpack\Tax\LegislativeBody::TAX_SLUG ] ?? '',
+			'party'            => $term_data[ \Govpack\Core\Tax\Party::TAX_SLUG ] ?? '',
+			'state'            => $term_data[ \Govpack\Core\Tax\State::TAX_SLUG ] ?? '',
+			'legislative_body' => $term_data[ \Govpack\Core\Tax\LegislativeBody::TAX_SLUG ] ?? '',
 			'name'             => $profile_raw_data->post_title ?? '',
 			'bio'              => $profile_raw_data->post_excerpt ?? '',
 			'link'             => get_permalink( $profile_id ),
@@ -554,78 +552,7 @@ class Profile extends \Govpack\Post_Type {
 		return $profile_data;
 	}
 
-	/**
-	 * Shortcode handler for [govpack].
-	 *
-	 * @param array  $attributes    Array of shortcode attributes.
-	 * @param string $content Post content.
-	 *
-	 * @return string HTML for recipe shortcode.
-	 */
-	public static function shortcode_handler( $attributes, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 
-		if ( ! isset( $attributes['profileId'] ) ) {
-			return;
-		}
-
-		return self::load_block( 'govpack/profile', $attributes, $content, 'profile' );
-	}
-	
-	/**
-	 * Loads a block from display on the frontend/via render.
-	 *
-	 * @param string $block_name the name(or slug) of the block being output.
-	 * @param array  $attributes array of block attributes.
-	 * @param string $content Any HTML or content redurned form the block.
-	 * @param string $template The filename of teh template-part to use.
-	 */
-	public static function load_block( $block_name, $attributes, $content, $template ) {
-
-		if ( \is_admin() ) {
-			return false;
-		}
-	
-		$profile_data = self::get_data( $attributes['profileId'] );
-		if ( ! $profile_data ) {
-			return;
-		}
-
-		$block_registry   = \WP_Block_Type_Registry::get_instance();
-		$block            = $block_registry->get_registered( $block_name );
-		$block_attributes = array_merge(
-			...array_map(
-				function( $key, $value ) {
-					return [ $key => $value['default'] ?? false ];
-				},
-				array_keys( $block->attributes ),
-				$block->attributes
-			)
-		);
-
-		$attributes = array_merge( $block_attributes, $attributes );
-	 
-		require_once GOVPACK_PLUGIN_FILE . 'template-parts/functions.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
-
-		ob_start();
-		require GOVPACK_PLUGIN_FILE . 'template-parts/' . $template . '.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
-		$html = ob_get_clean();
-
-		return $html;
-
-	}
-	/**
-	 * Shortcode handler for [govpack].
-	 *
-	 * @param array  $attributes    Array of shortcode attributes.
-	 * @param string $content Post content.
-	 *
-	 * @return string HTML for recipe shortcode.
-	 */
-	public static function shortcode_handler_self( $attributes, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		
-		$attributes['profileId'] = get_queried_object_id();
-		return self::load_block( 'govpack/profile-self', $attributes, $content, 'profile-self' );
-	}
 
 	/**
 	 * Shortcode handler for [govpack].

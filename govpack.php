@@ -21,7 +21,10 @@ if ( ! defined( 'GOVPACK_PLUGIN_FILE' ) ) {
 
 // Define GOVPACK_PLUGIN_URL.
 if ( ! defined( 'GOVPACK_PLUGIN_URL' ) ) {
-	define( 'GOVPACK_PLUGIN_URL', plugin_dir_url( __DIR__ ) );
+	define( 'GOVPACK_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+}
+if ( ! defined( 'GOVPACK_PLUGIN_ASSETS_URL' ) ) {
+	define( 'GOVPACK_PLUGIN_ASSETS_URL', GOVPACK_PLUGIN_URL . "dist/" );
 }
 
 

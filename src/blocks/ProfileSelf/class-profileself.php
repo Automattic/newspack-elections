@@ -38,6 +38,22 @@ class ProfileSelf extends \Govpack\Blocks\Profile\Profile {
 		return self::load_block( 'govpack/profile-self', $attributes, $content, 'profile-self' );
 	}
 
+	/*
+	public static function enqueue_front_end_assets( ) {
+
+		add_action("enqueue_block_assets", [__class__, "enqueue_front_end_style"]);
+
+	}
 	
- 
+	public static function enqueue_front_end_style(){
+		wp_register_style(
+			"govpack-profile-self-style",
+			GOVPACK_PLUGIN_ASSETS_URL . "profile_self_block.css",
+			[],
+			1.00,
+			"screen"
+		);
+		wp_enqueue_style("govpack-profile-self-style");
+	}
+	*/
 }	

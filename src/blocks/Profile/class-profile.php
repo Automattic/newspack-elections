@@ -81,4 +81,16 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 
 	}
 
+	/*
+	public static function enqueue_front_end_style(){
+		wp_register_style(
+			"govpack-profile-style",
+			GOVPACK_PLUGIN_ASSETS_URL . "profile_block.css",
+			[],
+			1.00,
+			"screen"
+		);
+		wp_enqueue_style("govpack-profile-style");
+	}
+	*/
 }

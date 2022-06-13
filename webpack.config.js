@@ -236,7 +236,7 @@ function getUpdatedWebpackConfig(env, arg){
     webpackConfig.entry.profile_self_block = path.join( __dirname, "src", 'blocks', 'ProfileSelf', "index" )
     webpackConfig.entry.importer = path.join( __dirname, "src", 'importer', "index" )
     webpackConfig.entry.admin = path.join( __dirname, 'src', "admin", 'index')
-
+	webpackConfig.entry.frontend = path.join( __dirname, 'src', "frontend", 'index')
     // Runtime code for hot module replacement
     //webpackConfig.entry.hot = 'webpack/hot/dev-server.js',
     // Dev server client for web socket transport, hot and live reload logic

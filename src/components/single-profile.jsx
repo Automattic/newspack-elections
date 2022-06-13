@@ -122,7 +122,7 @@ const Link = (props) => {
 	if(!showProfileLink){
 		return props.children
 	}
-	return (<a href={href}>
+	return (<a href="#">
 	   {props.children}
 	</a>)
 }
@@ -316,9 +316,9 @@ const SingleProfile = (props) => {
 				<Photo 
 					display = {showAvatar} 
 					href= {profile.featured_image_thumbnail}
-					borderRadius= {avatarBorderRadius}
+					avatarBorderRadius= {avatarBorderRadius}
 					blockClassName = {blockClassName}
-					size = {avatarSize}
+					avatarSize = {avatarSize}
 					key = {"photo"}
 					LinkProps = {{
 						href : profile.link,

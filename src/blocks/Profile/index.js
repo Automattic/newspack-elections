@@ -24,9 +24,7 @@ registerBlockType( 'govpack/profile', {
 	keywords: [ 'govpack' ],
     styles: [
 		{ name: 'default', label:  'Default', isDefault: true },
-		{ name: 'center', label:  'Centered' },
-        { name: 'boxed', label:  'Boxed' },
-        { name: 'boxed_centered', label:  'Centered & Boxed' },
+        { name: 'boxed', label:  'Boxed' }
 	],
 	edit : Edit,
 	save() {

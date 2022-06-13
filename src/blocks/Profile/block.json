@@ -18,7 +18,7 @@
 		},
 		"avatarAlignment": {
 			"type": "string",
-			"default": "left"
+			"default": "center"
 		},
 		"avatarBorderRadius": {
 			"type": "string",
@@ -81,10 +81,12 @@
 			"default": true
 		},
         "align": {
-			"type": "string"
+			"type": "string",
+			"default": "left"
 		},
         "width": {
-			"type": "string"
+			"type": "string",
+			"default": "small"
 		}
 	}
 }

@@ -505,7 +505,15 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			return;
 		}
 
-		$term_objects = wp_get_post_terms( $profile_id, [ \Govpack\Core\Tax\Party::TAX_SLUG, \Govpack\Core\Tax\State::TAX_SLUG, \Govpack\Core\Tax\LegislativeBody::TAX_SLUG ] );
+		$term_objects = wp_get_post_terms(
+			$profile_id,
+			[ 
+				\Govpack\Core\Tax\Party::TAX_SLUG, 
+				\Govpack\Core\Tax\State::TAX_SLUG,
+				\Govpack\Core\Tax\LegislativeBody::TAX_SLUG,
+				\Govpack\Core\Tax\OfficeHolderTitle::TAX_SLUG,
+			] 
+		);
 		$term_data    = array_reduce(
 			$term_objects,
 			function( $carry, $item ) {
@@ -536,6 +544,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'party'            => $term_data[ \Govpack\Core\Tax\Party::TAX_SLUG ] ?? '',
 			'state'            => $term_data[ \Govpack\Core\Tax\State::TAX_SLUG ] ?? '',
 			'legislative_body' => $term_data[ \Govpack\Core\Tax\LegislativeBody::TAX_SLUG ] ?? '',
+			'position'         => $term_data[ \Govpack\Core\Tax\OfficeHolderTitle::TAX_SLUG ] ?? '',
 			'name'             => $profile_raw_data->post_title ?? '',
 			'bio'              => $profile_raw_data->post_excerpt ?? '',
 			'link'             => get_permalink( $profile_id ),

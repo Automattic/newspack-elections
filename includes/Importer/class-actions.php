@@ -98,18 +98,18 @@ class Actions {
 			return $content;
 		}
 
-		// convert all the spaces and new lines to paragraphs
-		$content = \wpautop($content);
+		// convert all the spaces and new lines to paragraphs.
+		$content = \wpautop( $content );
 
-		// use str_replace to replace the <p> and </p> tags
+		// use str_replace to replace the <p> and </p> tags.
 		$content = str_replace(
 			[
-				"<p>",
-				"</p>"
+				'<p>',
+				'</p>',
 			],
 			[
 				"<!-- wp:paragraph --> \r\n <p>",
-				"</p> \r\n <!-- /wp:paragraph -->"
+				"</p> \r\n <!-- /wp:paragraph -->",
 			],
 			$content
 		);
@@ -361,7 +361,7 @@ class Actions {
 
 		if ( ! $term ) {
 			$term = \wp_create_term( $term_name, $taxonomy );
-			$term = \get_term($term['term_id'], $taxonomy);
+			$term = \get_term( $term['term_id'], $taxonomy );
 		}
 		
 

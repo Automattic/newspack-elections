@@ -48,7 +48,7 @@ function gp_maybe_link( $content, $url, $use_link ) {
 	if ( ! $use_link ) {
 		return $content;
 	}
-	return '<a href=' . esc_url( $url ) . '>' . esc_html( $content ) . '</a>';
+	return '<a href=' . esc_url( $url ) . '>' . $content . '</a>';
 }
 
 /**

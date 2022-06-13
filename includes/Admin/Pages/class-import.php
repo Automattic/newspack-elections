@@ -23,7 +23,7 @@ class Import {
 		wp_enqueue_script( 'govpack-importer' );
 		wp_enqueue_style( 'wp-components' );
 		
-		wp_script_add_data('govpack-importer' , "profiles_url", "aksgdkasjdh" );
+		wp_script_add_data( 'govpack-importer', 'profiles_url', 'aksgdkasjdh' );
 		
 
 		include __DIR__ . './../Views/import.php';

@@ -217,7 +217,7 @@ class Menu {
 	 * @since 3.1.0
 	 */
 	public static function add_taxonomy_submenus() {
-		foreach (\get_taxonomies( [ 'show_ui' => true ], 'objects' ) as $tax ) {
+		foreach ( \get_taxonomies( [ 'show_ui' => true ], 'objects' ) as $tax ) {
 
 			if ( ! isset( $tax->show_in_which_menu ) ) {
 				return;

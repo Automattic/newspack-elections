@@ -50,7 +50,7 @@ class Importer {
 			true
 		);
 
-		wp_script_add_data($script_handle , "profiles_url", "aksgdkasjdh" );
+		wp_script_add_data( $script_handle, 'profiles_url', 'aksgdkasjdh' );
 	}
 
 	/**

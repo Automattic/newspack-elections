@@ -64,6 +64,9 @@ $container_classes = join(
 	) 
 );
 
+$show_secondary_address = ( isset( $profile_data['address']['secondary'] ) && 
+	( $profile_data['address']['secondary'] !== $profile_data['address']['default'] )
+);
 
 ?>
 
@@ -79,14 +82,14 @@ $container_classes = join(
 					width: <?php echo esc_attr( $attributes['avatarSize'] ); ?>px;
 				"
 			>
-				<?php echo esc_html( GP_Maybe_Link( wp_kses_post( get_the_post_thumbnail( $profile_data['id'] ) ), $profile_data['link'], $attributes['showProfileLink'] ) ); ?>
+				<?php echo GP_Maybe_Link( get_the_post_thumbnail( $profile_data['id'] ), $profile_data['link'], $attributes['showProfileLink'] );  //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</figure>
 		</div>
 
 
 		<div class="wp-block-govpack-profile__info">
 			<div class="wp-block-govpack-profile__line">
-				<h3> <?php echo esc_html( GP_Maybe_Link( $profile_data['name'], $profile_data['link'], $attributes['showProfileLink'] ) ); ?></h3>
+				<h3> <?php echo GP_Maybe_Link( $profile_data['name'], $profile_data['link'], $attributes['showProfileLink'] );  //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></h3>
 
 				<?php 
 				if ( $attributes['showBio'] && $profile_data['bio'] ) {

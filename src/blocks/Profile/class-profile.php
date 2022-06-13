@@ -7,8 +7,6 @@
 
 namespace Govpack\Blocks\Profile;
 
-
-
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -27,10 +25,10 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 		\register_block_type(
 			__DIR__ . '/block.json',
 			[
-				'render_callback' => [ '\Govpack\Core\CPT\Profile', 'shortcode_handler' ],
+				'render_callback' => [ __class__, 'render' ],
 			]
 		);
-	}	
+	}   
 
 	/**
 	 * Shortcode handler for [govpack].
@@ -40,11 +38,12 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 	 *
 	 * @return string HTML for recipe shortcode.
 	 */
-	public static function shortcode_handler( $attributes, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public static function render( $attributes, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 
-		if(!$attributes['profileId']){
+		if ( ! $attributes['profileId'] ) {
 			return;
 		}
+
 
 		return self::load_block( 'govpack/profile', $attributes, $content, 'profile' );
 	}
@@ -81,16 +80,4 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 
 	}
 
-	/*
-	public static function enqueue_front_end_style(){
-		wp_register_style(
-			"govpack-profile-style",
-			GOVPACK_PLUGIN_ASSETS_URL . "profile_block.css",
-			[],
-			1.00,
-			"screen"
-		);
-		wp_enqueue_style("govpack-profile-style");
-	}
-	*/
 }

@@ -91,6 +91,7 @@ class Admin {
 		wp_register_style(
 			'govpack-admin-style',
 			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/admin.css',
+			$asset_data['dependencies'] ?? '',
 			$asset_data['version'] ?? '',
 			true
 		);
@@ -98,6 +99,7 @@ class Admin {
 		wp_register_script(
 			'govpack-admin-script',
 			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/admin.js',
+			$asset_data['dependencies'] ?? '',
 			$asset_data['version'] ?? '',
 			true
 		);

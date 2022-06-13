@@ -345,7 +345,7 @@ const SingleProfile = (props) => {
                     <Row key="states" value={profile.state} display={showState}/>
                     <Row key="contact" value={<Contacts />} display={showEmail || (showSocial && profile.hasSocial)}/>
                     <Row key="address" value={profile.address.default} display={showAddress}/>
-					<Row key="secondaryaddress" value={profile.address.secondary} display={showSecondaryAddress}/>
+					<Row key="secondaryaddress" value={profile.address.secondary} display={showAddress}/>
 					<Row key="website" value={<Websites />} display={showWebsites && profile.hasWebsites}/>
                     <Row key="url" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
                 </div>

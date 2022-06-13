@@ -31,42 +31,44 @@ class CSV extends \Govpack\Importer\Abstracts\Abstract_Importer {
 			throw new Exception( 'Could Not Open File to Parse' );
 		}
 
-		if(in_array("", $reader->getHeader())){
+		if ( in_array( '', $reader->getHeader(), true ) ) {
 			throw new Exception( 'Each column in your CSV needs to have a heading, there is at least 1 un-named column' );
 		}
 
-		self::has_required_columns($reader->getHeader());
+		self::has_required_columns( $reader->getHeader() );
 		
 		return $reader;
 	}
 
 	/**
-	 * checks that the CSV has the minimum required columns
+	 * Checks that the CSV has the minimum required columns
 	 *
-	 * @param string $file  path of the JSON file.
-	 * @throws Exception Could Not Open File to Parse.
+	 * @param array $header array containeing the CSV colum headers.
+	 * @throws Exception Exception around the CSV missing a required column.
 	 */
 	public static function has_required_columns( $header ) {
 
-		$required = apply_filters("govpack_importer_required_columns", [
-			"name",
-			"current_chamber",
-			"title",
-			"status",
-		]);
+		$required = apply_filters(
+			'govpack_importer_required_columns',
+			[
+				'name',
+				'current_chamber',
+				'title',
+				'status',
+			]
+		);
 
 		$missing = [];
 
-		foreach($required as $column){
-			if(!in_array($column, $header)){
+		foreach ( $required as $column ) {
+			if ( ! in_array( $column, $header, true ) ) {
 				$missing[] = $column;
 			}
 		}
 
-		if( count($missing) > 0){
-			$missing_fields = join('", "', $missing);
+		if ( count( $missing ) > 0 ) {
+			$missing_fields = join( '", "', $missing );
 			throw new Exception( 'Your CSV is missing the some required fields ["' . $missing_fields . '"]' );
-			return false;
 		}
 
 		return true;
@@ -92,8 +94,6 @@ class CSV extends \Govpack\Importer\Abstracts\Abstract_Importer {
 			} 
 			
 			as_enqueue_async_action( 'govpack_import_csv_profile', [ 'data' => $record ], self::import_group() );
-
-			$limit++;
 		}
 
 		as_enqueue_async_action( 'govpack_import_cleanup', [], self::import_group() );

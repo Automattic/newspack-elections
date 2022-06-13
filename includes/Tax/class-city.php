@@ -5,8 +5,6 @@
  * @package Govpack
  */
 
-
-
 /**
  * Register and handle the "City" Taxonomy.
  */

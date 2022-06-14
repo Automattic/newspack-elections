@@ -13,7 +13,7 @@ use League\Csv\Reader;
 /**
  * Register and handle the "USIO" Importer
  */
-class CSV extends \Govpack\Importer\Abstracts\Abstract_Importer {
+class CSV extends \Govpack\Core\Importer\Abstracts\Abstract_Importer {
 
 
 	/**

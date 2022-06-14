@@ -90,7 +90,7 @@ abstract class Abstract_Importer {
 		update_option( self::IMPORT_TEST_KEY, self::IMPORT_RUNNING );
 		
 
-		$file = \Govpack\Importer\Importer::check_file( $file );
+		$file = \Govpack\Core\Importer\Importer::check_file( $file );
 
 		try {
 			$reader = static::create_reader( $file );

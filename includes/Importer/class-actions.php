@@ -374,6 +374,6 @@ class Actions {
 	 * Run a Cleanup  
 	 */
 	public static function cleanup_import() {
-		\Govpack\Importer\Importer::clean();
+		\Govpack\Core\Importer\Importer::clean();
 	}
 }

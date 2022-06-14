@@ -26,32 +26,32 @@ class CLI extends \WP_CLI_Command {
 	 * @param array $assoc_args  Associative array of arguments.
 	 */
 	public function seed_taxonomies( $args, $assoc_args ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		$count = \Govpack\Tax\County::seed();
+		$count = \Govpack\Core\Tax\County::seed();
 		if ( $count ) {
 			WP_CLI::success( "Inserted {$count} counties" );
 		}
 
-		$count = \Govpack\Tax\Installation::seed();
+		$count = \Govpack\Core\Tax\Installation::seed();
 		if ( $count ) {
 			WP_CLI::success( "Inserted {$count} installation methods" );
 		}
 
-		$count = \Govpack\Tax\LegislativeBody::seed();
+		$count = \Govpack\Core\Tax\LegislativeBody::seed();
 		if ( $count ) {
 			WP_CLI::success( "Inserted {$count} legislative bodies" );
 		}
 
-		$count = \Govpack\Tax\OfficeHolderStatus::seed();
+		$count = \Govpack\Core\Tax\OfficeHolderStatus::seed();
 		if ( $count ) {
 			WP_CLI::success( "Inserted {$count} officeholder statuses" );
 		}
 
-		$count = \Govpack\Tax\Party::seed();
+		$count = \Govpack\Core\Tax\Party::seed();
 		if ( $count ) {
 			WP_CLI::success( "Inserted {$count} parties." );
 		}
 
-		$count = \Govpack\Tax\State::seed();
+		$count = \Govpack\Core\Tax\State::seed();
 		if ( $count ) {
 			WP_CLI::success( "Inserted {$count} states." );
 		}
@@ -101,11 +101,11 @@ class CLI extends \WP_CLI_Command {
 		$state  = $assoc_args['state'] ?? '';
 
 		if ( 'usio' === $source ) {
-			$importer = \Govpack\Importer\UnitedStatesIO::make();
+			$importer = \Govpack\Core\Importer\UnitedStatesIO::make();
 		} elseif ( 'openstates' === $source ) {
-			$importer = \Govpack\Importer\OpenStates::make();
+			$importer = \Govpack\Core\Importer\OpenStates::make();
 		} elseif ( 'govpack' === $source ) {
-			$importer = \Govpack\Importer\Govpack::make();
+			$importer = \Govpack\Core\Importer\Govpack::make();
 		} else {
 			WP_CLI::error( "Unsupported source type: $source" );
 		}
@@ -154,7 +154,7 @@ class CLI extends \WP_CLI_Command {
 			
 			try {
 
-				$importer = \Govpack\Importer\Importer::make( $file );
+				$importer = \Govpack\Core\Importer\Importer::make( $file );
 				$importer::import( $file, $dry_run );
 
 			} catch ( \Exception $e ) {
@@ -172,7 +172,7 @@ class CLI extends \WP_CLI_Command {
 	 * @param array $assoc_args  Associative array of arguments.
 	 */
 	public function progress( $args, $assoc_args ) {
-		$importer = \Govpack\Importer\WXR::make();
+		$importer = \Govpack\Core\Importer\WXR::make();
 		WP_CLI::line( $importer::progress() );
 	}
 
@@ -185,7 +185,7 @@ class CLI extends \WP_CLI_Command {
 	 * @param array $assoc_args  Associative array of arguments.
 	 */
 	public function clear( $args, $assoc_args ) {
-		WP_CLI::line( \Govpack\Importer\Importer::clear() );
+		WP_CLI::line( \Govpack\Core\Importer\Importer::clear() );
 	}
 
 	/**
@@ -207,7 +207,7 @@ class CLI extends \WP_CLI_Command {
 		$id = $args[0];
 
 		try {
-			\Govpack\Importer\Importer::sideload( $id );
+			\Govpack\Core\Importer\Importer::sideload( $id );
 			WP_CLI::line( sprintf( 'Sideloaded Image for profile %s', $id ) );
 
 		} catch ( \Exception $e ) {
@@ -321,7 +321,7 @@ class CLI extends \WP_CLI_Command {
 	 * @param array $assoc_args  Associative array of arguments.
 	 */
 	public function clean( $args, $assoc_args ) {
-		WP_CLI::line( \Govpack\Importer\Importer::clean() );
+		WP_CLI::line( \Govpack\Core\Importer\Importer::clean() );
 	}
 		
 }

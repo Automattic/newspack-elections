@@ -55,9 +55,9 @@ abstract class Importer {
 	 */
 	public static function make() {
 		if ( ! self::$loaded ) {
-			self::$state_list    = \Govpack\Helpers::get_cached_taxonomy( \Govpack\Tax\State::TAX_SLUG );
-			self::$party_list    = \Govpack\Helpers::get_cached_taxonomy( \Govpack\Tax\Party::TAX_SLUG );
-			self::$leg_body_list = \Govpack\Helpers::get_cached_taxonomy( \Govpack\Tax\LegislativeBody::TAX_SLUG );
+			self::$state_list    = \Govpack\Helpers::get_cached_taxonomy( \Govpack\Core\Tax\State::TAX_SLUG );
+			self::$party_list    = \Govpack\Helpers::get_cached_taxonomy( \Govpack\Core\Tax\Party::TAX_SLUG );
+			self::$leg_body_list = \Govpack\Helpers::get_cached_taxonomy( \Govpack\Core\Tax\LegislativeBody::TAX_SLUG );
 
 			self::$state_abbrevations = \Govpack\Helpers::states();
 

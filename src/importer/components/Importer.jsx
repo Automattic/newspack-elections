@@ -19,7 +19,7 @@ import api from "@wordpress/api"
 
 const Importer = () => {
   
-    let [step, setStep] = useState(stage.DONE);
+    let [step, setStep] = useState(stage.UPLOADER);
     let [didInitialStatusCheck, setDidInitialStatusCheck] = useState(false)
     let [uploadProgress, setUploadProgress] = useState(0)
 

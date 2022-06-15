@@ -72,7 +72,11 @@
 			"type": "boolean",
 			"default": true
 		},
-        "showAddress": {
+        "showDistrictAddress": {
+			"type": "boolean",
+			"default": true
+		},
+		"showCapitolAddress": {
 			"type": "boolean",
 			"default": true
 		},

@@ -19,7 +19,8 @@ const ProfileDisplaySettings = (props) => {
         showState,
         showEmail,
         showSocial,
-        showAddress,
+        showCapitolAddress,
+		showDistrictAddress,
 		showName,
         showProfileLink,
 		showWebsites
@@ -92,9 +93,17 @@ const ProfileDisplaySettings = (props) => {
 
                         <PanelRow>
 						    <ToggleControl
-							    label={ __( 'Display Addresses', 'govpack-blocks' ) }
-							    checked={ showAddress }
-    							onChange={ () => setAttributes( { showAddress: ! showAddress } ) }
+							    label={ __( 'Display Capitol Addresses', 'govpack-blocks' ) }
+							    checked={ showCapitolAddress }
+    							onChange={ () => setAttributes( { showCapitolAddress: ! showCapitolAddress } ) }
+		    				/>
+	    				</PanelRow>
+
+						<PanelRow>
+						    <ToggleControl
+							    label={ __( 'Display District Addresses', 'govpack-blocks' ) }
+							    checked={ showDistrictAddress }
+    							onChange={ () => setAttributes( { showDistrictAddress: ! showDistrictAddress } ) }
 		    				/>
 	    				</PanelRow>
 

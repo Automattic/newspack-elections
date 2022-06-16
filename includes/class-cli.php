@@ -221,8 +221,9 @@ class CLI extends \WP_CLI_Command {
 	 * Add CLI command.
 	 */
 	public static function init() {
-		WP_CLI::add_command( 'govpack import', '\Govpack\CLI' );
-		WP_CLI::add_command( 'govpack purge', [ '\Govpack\CLI', 'purge' ] );
+		WP_CLI::add_command( 'govpack import', '\Govpack\Core\CLI' );
+		WP_CLI::add_command( 'govpack purge', [ '\Govpack\Core\CLI', 'purge' ] );
+		WP_CLI::add_command( 'govpack migrate', [ '\Govpack\Core\CLI', 'migrate' ] );
 	}
 
 	
@@ -322,6 +323,50 @@ class CLI extends \WP_CLI_Command {
 	 */
 	public function clean( $args, $assoc_args ) {
 		WP_CLI::line( \Govpack\Core\Importer\Importer::clean() );
+	}
+
+	/**
+	 * Clean stored data from the import process
+	 *
+	 * @subcommand migrate
+	 *
+	 * @param array $args        Array of command-line arguments.
+	 * @param array $assoc_args  Associative array of arguments.
+	 */
+	public function migrate( $args, $assoc_args ) {
+		
+		global $wpdb;
+
+		$levels = [
+			"main" => "capitol",
+			"secondary" => "district"
+		];
+		$keys = ["fax", "phone", "office_address", "office_city", "office_state", "office_zip"];
+
+		foreach($levels as $old_level => $new_level){
+			foreach($keys as $key){
+				$old_key = sprintf("%s_%s", $old_level, $key);
+				$new_key = sprintf("%s_%s", $new_level, $key);
+
+				$result = $wpdb->update( 
+					$wpdb->postmeta, 
+					["meta_key" => $new_key], 
+					["meta_key" => $old_key], 
+				);
+
+				if($result === false){
+					\WP_CLI::warning(sprintf("%s could not be changed to %s", $old_key, $new_key ));
+				}
+
+				if($result === 0){
+					\WP_CLI::warning(sprintf("%s could not be found", $old_key ));
+				}
+
+				if($result > 0){
+					\WP_CLI::log(sprintf("%s was changed to %s %d times", $old_key, $new_key, $result ));
+				}
+			}
+		}
 	}
 		
 }

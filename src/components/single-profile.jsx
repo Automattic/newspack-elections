@@ -75,9 +75,9 @@ function normalize_porfile(profile){
 		},
         hasSocial : !!(profile.meta?.twitter ?? profile.meta?.facebook ?? profile.meta?.linkedin ?? profile.meta?.instagram),
 		address : {
-			default 	: (createAddress("main") ?? createAddress("secondary") ?? null),
-			capitol 	: createAddress("main"),
-			district 	: createAddress("secondary")
+			default 	: (createAddress("capitol") ?? createAddress("district") ?? null),
+			capitol 	: createAddress("capitol"),
+			district 	: createAddress("district")
 		},
 		name : {
 			full 	: [profile.meta?.first_name, profile.meta?.last_name].join(" "),
@@ -297,7 +297,7 @@ const SingleProfile = (props) => {
 
     let bio = excerptElement.textContent || excerptElement.innerText || '';
 
-	const showSecondaryAddress = (!isEmpty(profile.address.secondary) && (profile.address.secondary !== profile.address.default))
+	
 
     return (
        <div className= {classnames(`${blockClassName}__container`, {

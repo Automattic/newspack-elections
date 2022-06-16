@@ -192,7 +192,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		self::register_meta( 'last_name' );
 
 		$address_fields = [ 'address', 'city', 'state', 'county', 'zip' ];
-		$address_types  = [ 'main_office', 'secondary_office' ];
+		$address_types  = [ 'capitol_office', 'district_office' ];
 
 		foreach ( $address_types as $type ) {
 			foreach ( $address_fields as $field ) {
@@ -537,9 +537,9 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'website'          => $profile_raw_meta_data['leg_url'][0] ?? '',
 			'biography'        => $profile_raw_meta_data['biography'][0] ?? '',
 			'address'          => [
-				'default'   => self::formatAddress( $profile_raw_meta_data, 'main' ) ?? self::formatAddress( $profile_raw_meta_data, 'secondary' ) ?? '',
-				'primary'   => self::formatAddress( $profile_raw_meta_data, 'main' ) ?? null,
-				'secondary' => self::formatAddress( $profile_raw_meta_data, 'secondary' ) ?? null,
+				'default'   => self::formatAddress( $profile_raw_meta_data, 'capitol' ) ?? self::formatAddress( $profile_raw_meta_data, 'district' ) ?? '',
+				'capitol'   => self::formatAddress( $profile_raw_meta_data, 'capitol' ) ?? null,
+				'district' => self::formatAddress( $profile_raw_meta_data, 'district' ) ?? null,
 			],
 			'party'            => $term_data[ \Govpack\Core\Tax\Party::TAX_SLUG ] ?? '',
 			'state'            => $term_data[ \Govpack\Core\Tax\State::TAX_SLUG ] ?? '',

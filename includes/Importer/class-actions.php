@@ -37,18 +37,18 @@ class Actions {
 	 * Adds Actions to Hooks 
 	 */
 	public static function hooks() {
-		add_action( 'govpack_import_category', [ self::instance(), 'make_term' ] );
-		add_action( 'govpack_import_tag', [ self::instance(), 'make_term' ] );
-		add_action( 'govpack_import_term', [ self::instance(), 'make_term' ] );
+		\add_action( 'govpack_import_category', [ self::instance(), 'make_term' ] );
+		\add_action( 'govpack_import_tag', [ self::instance(), 'make_term' ] );
+		\add_action( 'govpack_import_term', [ self::instance(), 'make_term' ] );
 		
 
-		add_action( 'govpack_import_csv_profile', [ self::instance(), 'make_profile_from_csv' ] );
-		add_action( 'govpack_import_cleanup', [ self::instance(), 'cleanup_import' ] );
-		add_filter( 'govpack_import_openstates_links', [ self::instance(), 'explode_openstates_list' ] );
-		add_filter( 'govpack_import_openstates_sources', [ self::instance(), 'explode_openstates_list' ] );
+		\add_action( 'govpack_import_csv_profile', [ self::instance(), 'make_profile_from_csv' ] );
+		\add_action( 'govpack_import_cleanup', [ self::instance(), 'cleanup_import' ] );
+		\add_filter( 'govpack_import_openstates_links', [ self::instance(), 'explode_openstates_list' ] );
+		\add_filter( 'govpack_import_openstates_sources', [ self::instance(), 'explode_openstates_list' ] );
 
-		add_filter( 'govpack_import_content', [ self::instance(), 'wrap_content_in_block_grammar' ] );
-		add_filter( 'govpack_import_content', [ self::instance(), 'inject_block_in_content' ] );
+		\add_filter( 'govpack_import_content', [ self::instance(), 'wrap_content_in_block_grammar' ] );
+		\add_filter( 'govpack_import_content', [ self::instance(), 'inject_block_in_content' ] );
 		
 	}
 
@@ -230,8 +230,8 @@ class Actions {
 			$data[ trim( strtolower( $key ) ) ] = trim( $value );
 		}
 
-		$main_office      = self::get_address_from_open_states_data( $data['district_address'] );
-		$secondary_office = self::get_address_from_open_states_data( $data['capitol_address'] );
+		$capitol_address      = self::get_address_from_open_states_data( $data['capitol_address'] );
+		$district_address = self::get_address_from_open_states_data( $data['district_address'] );
   
 		$post = [
 			'post_author'    => 0,
@@ -261,21 +261,21 @@ class Actions {
 				'instagram'                => $data['instagram'],
 				'facebook'                 => $data['facebook'],
 				
-				'main_phone'               => $data['district_voice'],
-				'secondary_phone'          => $data['capitol_voice'],
+				'district_phone'               => $data['district_voice'],
+				'capitol_phone'          => $data['capitol_voice'],
 
-				'main_fax'                 => $data['district_fax'],
-				'secondary_fax'            => $data['capitol_fax'],
+				'district_fax'                 	=> $data['district_fax'],
+				'capitol_fax'            		=> $data['capitol_fax'],
 
-				'main_office_address'      => $main_office['address'] ?? '',
-				'main_office_city'         => $main_office['city'] ?? '',
-				'main_office_state'        => $main_office['state'] ?? '',
-				'main_office_zip'          => $main_office['zip'] ?? '',
+				'capitol_office_address'      => $capitol_address['address'] ?? '',
+				'capitol_office_city'         => $capitol_address['city'] ?? '',
+				'capitol_office_state'        => $capitol_address['state'] ?? '',
+				'capitol_office_zip'          => $capitol_address['zip'] ?? '',
 
-				'secondary_office_address' => $secondary_office['address'] ?? '',
-				'secondary_office_city'    => $secondary_office['city'] ?? '',
-				'secondary_office_state'   => $secondary_office['state'] ?? '',
-				'secondary_office_zip'     => $secondary_office['zip'] ?? '',
+				'district_office_address' => $district_address['address'] ?? '',
+				'district_office_city'    => $district_address['city'] ?? '',
+				'district_office_state'   => $district_address['state'] ?? '',
+				'district_office_zip'     => $district_address['zip'] ?? '',
 
 				'image'                    => $data['image'],
 				'links'                    => \apply_filters( 'govpack_import_openstates_links', $data['links'] ),

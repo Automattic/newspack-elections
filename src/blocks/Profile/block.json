@@ -22,7 +22,7 @@
 		},
 		"avatarBorderRadius": {
 			"type": "string",
-			"default": "50%"
+			"default": "0%"
 		},
 		"avatarSize": {
 			"type": "number",

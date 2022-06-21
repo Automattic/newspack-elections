@@ -1,9 +1,13 @@
 // Using ESNext syntax
 //import { PluginSidebar, PluginSidebarMoreMenuItem } from '@wordpress/edit-post';
+import "./view.scss"
+
 import { registerPlugin } from '@wordpress/plugins';
 import { more } from '@wordpress/icons';
+import { useState } from 'react';
+import { dateI18n, __experimentalGetSettings as getSettings } from "@wordpress/date"
 
-import { TextControl, PanelRow, SelectControl, Spinner } from "@wordpress/components";
+import { TextControl, TextareaControl, DatePicker,PanelRow, SelectControl, Spinner, Dropdown, Button, BaseControl } from "@wordpress/components";
 
 import {GovPackSidebarPanel} from "./../../components/sidebar-panel"
  
@@ -50,13 +54,78 @@ const AboutPanel = (props) => {
             title="About"
             name="gov-profile-about"
         >
-            <PanelRow>
-                <PanelTextControl meta={props.meta} label = "First Name" meta_key="first_name" onChange={setPostMeta} />
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label = "Name" meta_key="name" onChange={setPostMeta} />
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label = "Prefix" meta_key="name_prefix" onChange={setPostMeta} />
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl meta={props.meta} label = "Last Name" meta_key="last_name" onChange={setPostMeta} />
+                <PanelTextControl meta={props.meta} label = "First Name" meta_key="name_first" onChange={setPostMeta} />
             </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label = "Middle Name" meta_key="name_middle" onChange={setPostMeta} />
+            </PanelRow>
+
+            <PanelRow>
+                <PanelTextControl meta={props.meta} label = "Last Name" meta_key="last_middle" onChange={setPostMeta} />
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label = "Suffix" meta_key="name_suffix" onChange={setPostMeta} />
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label = "Nickname" meta_key="nickname" onChange={setPostMeta} />
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label = "Occupation" meta_key="occupation" onChange={setPostMeta} />
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label = "Education" meta_key="education" onChange={setPostMeta} />
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label = "Gender" meta_key="gender" onChange={setPostMeta} />
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label = "Race" meta_key="race" onChange={setPostMeta} />
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label = "Ethnicity" meta_key="ethnicity" onChange={setPostMeta} />
+            </PanelRow>
+
+			<PanelRow>
+                <PanelDatePickerControl meta={props.meta} label = "Date of Birth" meta_key="date_of_birth" onChange={setPostMeta} />
+            </PanelRow>
+
+			<PanelRow>
+                <PanelDatePickerControl meta={props.meta} label = "Date of Death" meta_key="date_of_death" onChange={setPostMeta} />
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label = "Party" meta_key="party" onChange={setPostMeta} />
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label = "State" meta_key="state" onChange={setPostMeta} />
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label = "Status" meta_key="status" onChange={setPostMeta} />
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label = "District" meta_key="district" onChange={setPostMeta} />
+            </PanelRow>
+
 
         </GovPackSidebarPanel>
     )
@@ -64,7 +133,7 @@ const AboutPanel = (props) => {
 
 const PanelTextControl = (props) => {
 
-	const {onChange, ...restProps} = props
+	const {onChange, meta, meta_key, ...restProps} = props
 
     return (
         <TextControl
@@ -78,6 +147,61 @@ const PanelTextControl = (props) => {
 			{...restProps}
 			
         />
+    )
+}
+
+const PanelTextareaControl = (props) => {
+
+	const {onChange, meta, ...restProps} = props
+
+    return (
+        <TextareaControl
+			
+            label = {props.label}
+            value={ props.meta?.[props.meta_key] ?? "" }
+            onChange={ ( value ) => {
+                onChange( { [props.meta_key]: value } )
+            }}
+			
+			{...restProps}
+			
+        />
+    )
+}
+
+const PanelDatePickerControl = (props) => {
+
+	const {onChange, meta, ...restProps} = props
+	const [ date, setDate ] = useState( new Date() );
+
+	let settings = getSettings()
+	
+
+	return (
+		<>
+			<span>{ props.label }</span>
+		
+			<Dropdown
+				renderToggle={ ( { isOpen, onToggle } ) => (
+					<Button
+						onClick={ onToggle }
+						aria-expanded={ isOpen }
+						variant="tertiary"
+					>
+						{dateI18n(settings.formats.date, date)}
+					</Button>
+				) }
+				renderContent={ ( { onClose } ) => (
+					<DatePicker
+						currentDate={ date }
+						onChange={ ( newDate ) => setDate( newDate ) }
+						onClose={ onClose }
+					/>
+				) }
+			/>
+
+		</>
+	
     )
 }
 
@@ -149,28 +273,48 @@ const OfficePanel = (props) => {
 
     return (
         <GovPackSidebarPanel 
-            title="Offices"
+            title="Office"
             name="gov-profile-office"
         >
-        
-            <PanelRow>
-                <PanelTextControl meta={props.meta} label= "Address" meta_key="capitol_office_address" onChange={setPostMeta}/>
-            </PanelRow>
-
-            <PanelRow>
-                <PanelTextControl meta={props.meta} label = "City" meta_key="capitol_office_city" onChange={setPostMeta}/>
-            </PanelRow>
-
-            <PanelRow>
-                <PanelTextControl meta={props.meta} label = "State" meta_key="capitol_office_state" onChange={setPostMeta}/>
-            </PanelRow>
-
-            <PanelRow>
-                <PanelTextControl meta={props.meta} label = "Zip" meta_key="capitol_office_zip" onChange={setPostMeta}/>
+			
+			<PanelRow>
+                <PanelTextareaControl meta={props.meta} label= "Address (Capitol)" meta_key="address_capitol" onChange={setPostMeta}/>
             </PanelRow>
 
 			<PanelRow>
-                <PanelTextControl meta={props.meta} label= "Phone" meta_key="capitol_phone" onChange={setPostMeta}/>
+                <PanelTextareaControl meta={props.meta} label= "Address (District)" meta_key="address_district" onChange={setPostMeta}/>
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextareaControl meta={props.meta} label= "Address (Campaign)" meta_key="address_campaign" onChange={setPostMeta}/>
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "Contact Form URL" meta_key="contact_form_url" onChange={setPostMeta}/>
+            </PanelRow>
+
+			<PanelRow>
+                <PanelDatePickerControl meta={props.meta} label= "Date assumed office" meta_key="date_assumed_office" onChange={setPostMeta}/>
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "Appointed by" meta_key="appointed_by" onChange={setPostMeta}/>
+            </PanelRow>
+
+			<PanelRow>
+                <PanelDatePickerControl meta={props.meta} label= "Date appointed" meta_key="appointed_date" onChange={setPostMeta}/>
+            </PanelRow>
+
+			<PanelRow>
+                <PanelDatePickerControl meta={props.meta} label= "Date confirmed" meta_key="confirmed_date" onChange={setPostMeta}/>
+            </PanelRow>
+
+			<PanelRow>
+                <PanelDatePickerControl meta={props.meta} label= "Date term ends" meta_key="term_end_data" onChange={setPostMeta}/>
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "Congress Year/Batch" meta_key="congress_year" onChange={setPostMeta}/>
             </PanelRow>
 
         </GovPackSidebarPanel>
@@ -181,6 +325,8 @@ const SecondaryOfficePanel = (props) => {
 
     let { setPostMeta } = props
 
+	return null
+	/*
     return (
         <GovPackSidebarPanel 
             title="District Office"
@@ -210,6 +356,7 @@ const SecondaryOfficePanel = (props) => {
 
         </GovPackSidebarPanel>
     )
+	*/
 }
 
 const PositionPanel = (props) => {
@@ -265,43 +412,108 @@ const PositionPanel = (props) => {
     )
 }
 
+const SocialPanel = (props) => {
+
+	let { setPostMeta } = props
+
+	return (
+        <GovPackSidebarPanel 
+            title="Social"
+            name="gov-profile-social"
+        >
+
+			<PanelRow>
+				<PanelTextControl meta={props.meta} label= "Twitter (Official)" meta_key="twitter_official" onChange={setPostMeta}/>
+			</PanelRow>
+			<PanelRow>
+				<PanelTextControl meta={props.meta} label= "Twitter (Personal)" meta_key="twitter_personal" onChange={setPostMeta}/>
+			</PanelRow>
+			<PanelRow>
+				<PanelTextControl meta={props.meta} label= "Twitter (Campaign)" meta_key="twitter_campaign" onChange={setPostMeta}/>
+			</PanelRow>
+
+			<PanelRow>
+				<PanelTextControl meta={props.meta} label= "Instagram (Official)" meta_key="Instagram_official" onChange={setPostMeta}/>
+			</PanelRow>
+			<PanelRow>
+				<PanelTextControl meta={props.meta} label= "Instagram (Personal)" meta_key="Instagram_personal" onChange={setPostMeta}/>
+			</PanelRow>
+			<PanelRow>
+				<PanelTextControl meta={props.meta} label= "Instagram (Campaign)" meta_key="Instagram_campaign" onChange={setPostMeta}/>
+			</PanelRow>
+
+			<PanelRow>
+				<PanelTextControl meta={props.meta} label= "facebook (Official)" meta_key="facebook_official" onChange={setPostMeta}/>
+			</PanelRow>
+			<PanelRow>
+				<PanelTextControl meta={props.meta} label= "facebook (Personal)" meta_key="facebook_personal" onChange={setPostMeta}/>
+			</PanelRow>
+			<PanelRow>
+				<PanelTextControl meta={props.meta} label= "facebook (Campaign)" meta_key="facebook_campaign" onChange={setPostMeta}/>
+			</PanelRow>
+
+			<PanelRow>
+				<PanelTextControl meta={props.meta} label= "LinkedIn" meta_key="linkedin" onChange={setPostMeta}/>
+			</PanelRow>
+		</GovPackSidebarPanel>
+	)
+}
+
 const CommunicationsPanel = (props) => {
 
     let { setPostMeta } = props
 
     return (
         <GovPackSidebarPanel 
-            title="Communications & Social"
+            title="Communications"
             name="gov-profile-communications"
         >
         
         
             <PanelRow>
+                <PanelTextControl meta={props.meta} label= "Email (Official)" meta_key="email_official" onChange={setPostMeta}/>
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "Email (Campaign)" meta_key="email_campaign" onChange={setPostMeta}/>
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "Email (Other)" meta_key="email_other" onChange={setPostMeta}/>
+            </PanelRow>
+
+			<PanelRow>
                 <PanelTextControl meta={props.meta} label= "Email" meta_key="email" onChange={setPostMeta}/>
             </PanelRow>
 
-            <PanelRow>
-                <PanelTextControl meta={props.meta} label= "Twitter" meta_key="twitter" onChange={setPostMeta}/>
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "Phone (District)" meta_key="phone_district" onChange={setPostMeta}/>
+            </PanelRow>
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "Phone (Campaign)" meta_key="phone_campaign" onChange={setPostMeta}/>
+            </PanelRow>
+			
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "Fax (District)" meta_key="fax_district" onChange={setPostMeta}/>
+            </PanelRow>
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "Fax (Campaign)" meta_key="fax_campaign" onChange={setPostMeta}/>
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label="Website (Personal)" meta_key="website_personal" onChange={setPostMeta} placeholder="https://"/>
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl meta={props.meta} label= "Facebook" meta_key="facebook" onChange={setPostMeta}/>
+                <PanelTextControl meta={props.meta} label="Website (Campaign)" meta_key="website_campaign" onChange={setPostMeta} placeholder="https://"/>
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl meta={props.meta} label= "LinkedIn" meta_key="linkedin" onChange={setPostMeta}/>
+                <PanelTextControl meta={props.meta} label="Website (Legislative)" meta_key="website_legislative" onChange={setPostMeta} placeholder="https://"/>
             </PanelRow>
 
-            <PanelRow>
-                <PanelTextControl meta={props.meta} label= "Instagram" meta_key="instagram" onChange={setPostMeta}/>
-            </PanelRow>
-
-            <PanelRow>
-                <PanelTextControl meta={props.meta} label= "Campaign Website" meta_key="campaign_url" onChange={setPostMeta} placeholder="https://"/>
-            </PanelRow>
-
-            <PanelRow>
-                <PanelTextControl meta={props.meta} label= "Legislative Website" meta_key="leg_url" onChange={setPostMeta} placeholder="https://"/>
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "RSS" meta_key="rss" onChange={setPostMeta}/>
             </PanelRow>
 
         </GovPackSidebarPanel>
@@ -348,6 +560,7 @@ const MetadataIdsPanel = (props) => {
 const ComposedAboutPanel = withPanel(AboutPanel)
 const ComposedOfficePanel = withPanel(OfficePanel)
 const ComposedCommunicationsPanel = withPanel(CommunicationsPanel)
+const ComposedSocialPanel = withPanel(SocialPanel)
 const ComposedMetadataIds = withPanel(MetadataIdsPanel)
 
 
@@ -358,6 +571,7 @@ const GovPackProfileSidebar = () => (
         <ComposedAboutPanel />
         <ComposedOfficePanel />
         <ComposedCommunicationsPanel />
+		<ComposedSocialPanel />
 		<ComposedMetadataIds />
     </>
 

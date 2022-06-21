@@ -149,7 +149,7 @@ const OfficePanel = (props) => {
 
     return (
         <GovPackSidebarPanel 
-            title="Capitol Office"
+            title="Offices"
             name="gov-profile-office"
         >
         
@@ -271,7 +271,7 @@ const CommunicationsPanel = (props) => {
 
     return (
         <GovPackSidebarPanel 
-            title="Communications"
+            title="Communications & Social"
             name="gov-profile-communications"
         >
         
@@ -308,12 +308,47 @@ const CommunicationsPanel = (props) => {
     )
 }
 
+const MetadataIdsPanel = (props) => {
+
+    let { setPostMeta } = props
+
+    return (
+        <GovPackSidebarPanel 
+            title="Metadata & IDS"
+            name="gov-metadataids-communications"
+        >
+			  <PanelRow>
+                <PanelTextControl meta={props.meta} label= "Govpack ID" meta_key="govpack_id" onChange={setPostMeta} placeholder="" disabled/>
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "FEC ID" meta_key="fec_ids" onChange={setPostMeta} placeholder="" disabled/>
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "US.IO ID" meta_key="usio_id" onChange={setPostMeta} placeholder="" disabled/>
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "Opensecrets ID" meta_key="opensecrets_id" onChange={setPostMeta} placeholder="" disabled/>
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "District OCDID" meta_key="district_ocd_ic" onChange={setPostMeta} placeholder="" disabled/>
+            </PanelRow>
+
+			<PanelRow>
+                <PanelTextControl meta={props.meta} label= "Open States ID" meta_key="openstates_id" onChange={setPostMeta} placeholder="" disabled/>
+            </PanelRow>
+
+		</GovPackSidebarPanel>
+	)
+}
 
 const ComposedAboutPanel = withPanel(AboutPanel)
 const ComposedOfficePanel = withPanel(OfficePanel)
-const ComposedSecondaryOfficePanel = withPanel(SecondaryOfficePanel)
-const ComposedPositionPanel = withPanel(PositionPanel)
 const ComposedCommunicationsPanel = withPanel(CommunicationsPanel)
+const ComposedMetadataIds = withPanel(MetadataIdsPanel)
 
 
 
@@ -322,8 +357,8 @@ const GovPackProfileSidebar = () => (
     <>
         <ComposedAboutPanel />
         <ComposedOfficePanel />
-        <ComposedSecondaryOfficePanel />
         <ComposedCommunicationsPanel />
+		<ComposedMetadataIds />
     </>
 
 );

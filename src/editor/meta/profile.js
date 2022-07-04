@@ -14,8 +14,7 @@ import {GovPackSidebarPanel} from "./../../components/sidebar-panel"
 import { compose } from "@wordpress/compose";
 import { withSelect, withDispatch, select } from "@wordpress/data";
 
-import {default as prefixes} from "./../../json/prefix.json"
-import {default as titles} from "./../../json/title.json"
+
 
 function withPanel(component) {
 

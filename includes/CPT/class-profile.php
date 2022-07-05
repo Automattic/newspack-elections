@@ -162,7 +162,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 					'not_found'          => __( 'No profiles found.', 'govpack' ),
 					'not_found_in_trash' => __( 'No profiles found in Trash.', 'govpack' ),
 				],
-				'has_archive'  => false,
+				'has_archive'  => true,
 				'public'       => true,
 				'show_in_rest' => true,
 				'show_ui'      => true,

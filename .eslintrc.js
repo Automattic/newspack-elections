@@ -26,5 +26,6 @@ module.exports = {
 		'jsdoc/require-returns': 'off',
 		// PHP vars from backend are in snake case
 		camelcase: 'off',
+		'react/jsx-no-undef': "on",
 	},
 };

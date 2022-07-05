@@ -165,3 +165,5 @@ function gp_contacts( $profile_data, $attributes ) {
 		$social ?? '',
 	);
 }
+
+

@@ -96,7 +96,9 @@
   "dependencies": {
     "@wordpress/icons": "^6.1.1",
     "axios": "^0.24.0",
-    "newspack-components": "^2.0.3"
+    "newspack-components": "^2.0.3",
+    "react-input-mask": "^2.0.4",
+    "react-router": "^6.3.0"
   },
   "devDependencies": {
     "@automattic/calypso-build": "^9.0.0",

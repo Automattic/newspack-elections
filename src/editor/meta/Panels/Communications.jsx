@@ -1,7 +1,7 @@
 import { TextControl, TextareaControl, DatePicker,PanelRow, SelectControl, Spinner, Dropdown, Button, BaseControl } from "@wordpress/components";
 
 import {GovPackSidebarPanel} from "./../../../components/sidebar-panel"
-import {PanelTextControl, PanelTextareaControl, PanelDatePickerControl, PanelFieldset} from "./../Controls"
+import {PanelTextControl, PanelTextareaControl, PanelDateControl, PanelFieldset} from "./../Controls"
 
 
 export const CommunicationsPanel = (props) => {
@@ -20,7 +20,6 @@ export const CommunicationsPanel = (props) => {
                 	<PanelTextControl meta={props.meta} label= "Email (Official)" meta_key="email_official" onChange={setPostMeta}/>
                 	<PanelTextControl meta={props.meta} label= "Email (Campaign)" meta_key="email_campaign" onChange={setPostMeta}/>
                 	<PanelTextControl meta={props.meta} label= "Email (Other)" meta_key="email_other" onChange={setPostMeta}/>
-                	<PanelTextControl meta={props.meta} label= "Email" meta_key="email" onChange={setPostMeta}/>
 				</PanelFieldset>
             </PanelRow>
 

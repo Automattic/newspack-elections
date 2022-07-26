@@ -187,34 +187,74 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	 */
 	public static function register_post_meta() {
 
-		self::register_meta( 'prefix' );
-		self::register_meta( 'first_name' );
-		self::register_meta( 'last_name' );
+		// About Panel
+		self::register_meta( 'name' );
+		self::register_meta( 'name_prefix' );
+		self::register_meta( 'name_first' );
+		self::register_meta( 'name_middle' );
+		self::register_meta( 'last_middle' );
+		self::register_meta( 'name_suffix' );
+		self::register_meta( 'nickname' );
+		self::register_meta( 'occupation' );
+		self::register_meta( 'education' );
+		self::register_meta( 'gender' );
+		self::register_meta( 'race' );
+		self::register_meta( 'ethnicity' );
+		self::register_meta( 'date_of_birth' );
+		self::register_meta( 'date_of_death' );
+		self::register_meta( 'status' );
+		self::register_meta( 'district' );
 
-		$address_fields = [ 'address', 'city', 'state', 'county', 'zip' ];
-		$address_types  = [ 'capitol_office', 'district_office' ];
+		// office panel
+		self::register_meta( 'address_capitol' );
+		self::register_meta( 'address_district' );
+		self::register_meta( 'address_campaign' );
+		self::register_meta( 'contact_form_url' );
+		self::register_meta( 'date_assumed_office' );
+		self::register_meta( 'appointed_by' );
+		self::register_meta( 'appointed_date' );
+		self::register_meta( 'confirmed_date' );
+		self::register_meta( 'term_end_data' );
+		self::register_meta( 'congress_year' );
 
-		foreach ( $address_types as $type ) {
-			foreach ( $address_fields as $field ) {
-				$slug = sprintf( '%s_%s', $type, $field );
+		// communications panel
+		self::register_meta( 'email_official' );
+		self::register_meta( 'email_campaign' );
+		self::register_meta( 'email_other' );
+
+		self::register_meta( 'phone_district' );
+		self::register_meta( 'phone_campaign' );
+
+		self::register_meta( 'fax_district' );
+		self::register_meta( 'fax_campaign' );
+
+		self::register_meta( 'website_personal' );
+		self::register_meta( 'website_campaign' );
+		self::register_meta( 'website_legislative' );
+		self::register_meta( 'rss' );
+
+		// Social Panel
+		$groups = ["facebook", "twitter", "instagram"];
+		$keys = ["official", "campaign", "personal"];
+
+		foreach ($groups as $group ) {
+			foreach ( $keys as $key ) {
+				$slug = sprintf( '%s_%s', $group, $key );
 				self::register_meta( $slug );
 			}
 		}
 
-		self::register_meta( 'position' );
-		self::register_meta( 'title' );
-
-		self::register_meta( 'main_phone' );
-		self::register_meta( 'secondary_phone' );
-		self::register_meta( 'email' );
-		self::register_meta( 'twitter' );
-		self::register_meta( 'instagram' );
-		self::register_meta( 'facebook' );
 		self::register_meta( 'linkedin' );
-		self::register_meta( 'leg_url' );
-		self::register_meta( 'campaign_url' );
-		
-	}
+
+		// meta and ID's panel
+		self::register_meta( 'govpack_id' );
+		self::register_meta( 'fec_idsRow' );
+		self::register_meta( 'usio_idRow' );
+		self::register_meta( 'opensecrets_id' );
+		self::register_meta( 'district_ocd_ic' );
+		self::register_meta( 'openstates_id' );
+
+	}	
 
 	/**
 	 * Register single Meta data for the post in the REST API 

@@ -1,16 +1,5 @@
-import { 
-    Button, 
-    FormFileUpload, 
-    __experimentalHStack as HStack,
-    __experimentalVStack as VStack,
-    __experimentalSurface as Surface,
-    __experimentalSpacer as Spacer,
-    __experimentalHeading as Heading,
-    Spinner,
-    SelectControl
-} from '@wordpress/components';
 import { decodeEntities } from '@wordpress/html-entities';
-import { select} from "@wordpress/data";
+
 
 import FacebookIcon from "./../images/facebook.svg"
 import TwitterIcon from "./../images/twitter.svg"
@@ -24,7 +13,7 @@ import InstagramIcon from "./../images/instagram.svg"
  import classnames from 'classnames';
  import { isArray, isEmpty, isUndefined, isNil } from 'lodash';
 
-
+ 
 
 function normalize_porfile(profile){
 
@@ -138,7 +127,6 @@ const Photo = (props) => {
 		LinkProps = {}
 	} = props
 
-	console.log(props)
 
 	if(!display || !href){
 		return null
@@ -197,10 +185,6 @@ const SingleProfile = (props) => {
         className
 
     } = attributes
-
-	console.log(profile)
-
-	console.log(showAvatar)
 
 
 	const Websites = (props) => {

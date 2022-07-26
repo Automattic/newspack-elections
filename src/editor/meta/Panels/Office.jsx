@@ -1,7 +1,7 @@
 import { PanelRow } from "@wordpress/components";
 
 import {GovPackSidebarPanel} from "./../../../components/sidebar-panel"
-import {PanelTextControl, PanelTextareaControl, PanelDatePickerControl, PanelFieldset} from "./../Controls"
+import {PanelTextControl, PanelTextareaControl, PanelDateControl, PanelFieldset} from "./../Controls"
 
 export const OfficePanel = (props) => {
 
@@ -30,7 +30,7 @@ export const OfficePanel = (props) => {
             </PanelRow>
 
 			<PanelRow>
-                <PanelDatePickerControl meta={props.meta} label= "Date assumed office" meta_key="date_assumed_office" onChange={setPostMeta}/>
+                <PanelDateControl meta={props.meta} label= "Date assumed office" meta_key="date_assumed_office" onChange={setPostMeta}/>
             </PanelRow>
 
 			<PanelRow>
@@ -38,15 +38,16 @@ export const OfficePanel = (props) => {
             </PanelRow>
 
 			<PanelRow>
-                <PanelDatePickerControl meta={props.meta} label= "Date appointed" meta_key="appointed_date" onChange={setPostMeta}/>
+                <PanelDateControl meta={props.meta} label= "Date appointed" meta_key="appointed_date" onChange={setPostMeta}/>
             </PanelRow>
 
 			<PanelRow>
-                <PanelDatePickerControl meta={props.meta} label= "Date confirmed" meta_key="confirmed_date" onChange={setPostMeta}/>
+                <PanelDateControl meta={props.meta} label= "Date confirmed" meta_key="confirmed_date" onChange={setPostMeta}/>
             </PanelRow>
+			 
 
 			<PanelRow>
-                <PanelDatePickerControl meta={props.meta} label= "Date term ends" meta_key="term_end_data" onChange={setPostMeta}/>
+                <PanelDateControl meta={props.meta} label= "Date term ends" meta_key="term_end_data" onChange={setPostMeta}/>
             </PanelRow>
 
 			<PanelRow>

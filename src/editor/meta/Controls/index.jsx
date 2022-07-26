@@ -1,9 +1,11 @@
 import { useState } from "react"
+import Moment from "moment"
 
 import { TextControl, TextareaControl, DatePicker, SelectControl, Spinner, Dropdown, Button } from "@wordpress/components";
 import { compose } from "@wordpress/compose";
 import { withSelect, } from "@wordpress/data";
 import { dateI18n, __experimentalGetSettings as getSettings } from "@wordpress/date"
+import {MaskedTextControl} from "./MaskedTextControl"
 
 
 export const PanelFieldset = ({legend = null, children}) => {
@@ -55,6 +57,7 @@ export const PanelTextareaControl = (props) => {
         />
     )
 }
+/*
 
 export const PanelDatePickerControl = (props) => {
 
@@ -91,6 +94,87 @@ export const PanelDatePickerControl = (props) => {
 	
     )
 }
+*/
+
+export const PanelDateControl = (props) => {
+
+	const {onChange, meta, ...restProps} = props
+	const [ date, setDate ] = useState( new Date() );
+	const [ inputValue, setInputValue ] = useState( null );
+	const [ isValid, setIsValid ] = useState( false );
+	const [ isTouched, setIsTouched ] = useState( false );
+
+	let settings = getSettings()
+	
+	console.log(props)
+
+	let dateValue = props.meta?.[props.meta_key]
+	if(dateValue){
+		dateValue = moment(parseInt(dateValue)).format("MM/DD/YYYY")
+	}
+	console.log(props.meta_key, dateValue)
+	return (
+		<MaskedTextControl
+			
+			label = {props.label}
+			value={	inputValue ?? dateValue ?? "" }
+			onChange={ ( value ) => {
+				console.log(value)
+				setInputValue(value)
+				let timestamp = moment(value, "MM/DD/YYYY", true)
+				if(timestamp.isValid()){
+					console.log("onchange")
+                	onChange( { [props.meta_key]: timestamp.valueOf().toString() } )
+					setIsValid(true)
+				} else {
+					setIsValid(false)
+				}
+            }}
+			placeholder = "05/31/2021"
+			help = "mm/dd/yyyy (eg 05/01/2021)"
+			maskProps = {{
+				mask : "99/99/9999",
+				alwaysShowMask : true,
+				permanents : [2, 5],
+			}}
+			isValid = {isValid}
+			isTouched = {isTouched}
+			onFocus={ () => {
+				setIsTouched(true)
+			} }
+			{...restProps}
+        />
+    )
+
+	/*
+
+	return (
+		<>
+			<span>{ props.label }</span>
+		
+			<Dropdown
+				renderToggle={ ( { isOpen, onToggle } ) => (
+					<Button
+						onClick={ onToggle }
+						aria-expanded={ isOpen }
+						variant="tertiary"
+					>
+						{dateI18n(settings.formats.date, date)}
+					</Button>
+				) }
+				renderContent={ ( { onClose } ) => (
+					<DatePicker
+						currentDate={ date }
+						onChange={ ( newDate ) => setDate( newDate ) }
+						onClose={ onClose }
+					/>
+				) }
+			/>
+
+		</>
+    )
+	*/
+}
 
 export const PanelSelectControl = (props) => {
     return (
@@ -98,6 +182,7 @@ export const PanelSelectControl = (props) => {
             label = {props.label}
             value={ props.meta?.[props.meta_key] ?? "" }
             onChange={ ( value ) => {
+
                 props.onChange( { [props.meta_key]: value } )
              } }
             options={ props.options }

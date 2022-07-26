@@ -16,3 +16,7 @@
   padding-right: 1rem;
   font-weight: 700;
 }
+
+.components-text-control__input .components-text-control__input--invalid {
+  border: 1px solid #ff0000;
+}

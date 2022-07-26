@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a1bc96bb6da8f3ecb08533c50cc6fbf0",
+    "content-hash": "c284d0841e87bacbfd6c3497851b8dee",
     "packages": [
         {
             "name": "gargron/fileupload",
@@ -225,6 +225,58 @@
                 "source": "https://github.com/woocommerce/action-scheduler/tree/3.4.2"
             },
             "time": "2022-06-08T15:46:07+00:00"
+        },
+        {
+            "name": "zerodahero/address-normalization",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zerodahero/address-normalization.git",
+                "reference": "0ae06662122af810f483274379b12abdd4bdeb7f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zerodahero/address-normalization/zipball/0ae06662122af810f483274379b12abdd4bdeb7f",
+                "reference": "0ae06662122af810f483274379b12abdd4bdeb7f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.5",
+                "symfony/var-dumper": "^4.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ZeroDaHero\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Zack Teska",
+                    "email": "zerodahero@gmail.com"
+                },
+                {
+                    "name": "Kieran Hartnett",
+                    "email": "khartnet@gmail.com"
+                }
+            ],
+            "description": "Converts mailing addresses into a normalized format",
+            "keywords": [
+                "address",
+                "mailing",
+                "normalization"
+            ],
+            "support": {
+                "source": "https://github.com/zerodahero/address-normalization/tree/2.1.1"
+            },
+            "time": "2020-01-20T22:23:32+00:00"
         }
     ],
     "packages-dev": [
@@ -1645,5 +1697,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.1.0"
 }

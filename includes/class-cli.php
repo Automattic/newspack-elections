@@ -133,8 +133,7 @@ class CLI extends \WP_CLI_Command {
 	 * : Set to false to actually run the command
 	 *
 	 * ## EXAMPLES
-	 * wp govpack import --source=openstates ak.csv --dry-run
-	 * wp govpack import --source=usio usa.csv
+	 * wp govpack import ak.csv --dry-run
 	 *
 	 * @subcommand import
 	 *
@@ -369,4 +368,50 @@ class CLI extends \WP_CLI_Command {
 		}
 	}
 		
+
+	/**
+	 * Import data from WXR.
+	 *
+	 * ## OPTIONS
+	 * <file>...
+	 * : The WXR file.
+	 *
+	 * [--dry-run]
+	 * : Set to false to actually run the command
+	 *
+	 * ## EXAMPLES
+	 * wp govpack import address ak.csv --dry-run
+	 *
+	 * @subcommand address
+	 *
+	 * @param array $args        Array of command-line arguments.
+	 * @param array $assoc_args  Associative array of arguments.
+	 */
+	public function address( $args, $assoc_args ) {
+
+	
+		if ( isset( $assoc_args['dry-run'] ) && 'true' === $assoc_args['dry-run'] ) {
+			$dry_run = true;
+			WP_CLI::line( '!!! Doing a dry-run, no profiles will be imported.' );
+		} else {
+			$dry_run = false;
+		
+		}
+
+		foreach ( $args as $file ) {	
+
+			
+			
+			try {
+
+				$importer = \Govpack\Core\Importer\Importer::make( $file );
+				var_dump($importer);
+				$importer::import( $file, $dry_run );
+
+			} catch ( \Exception $e ) {
+				WP_CLI::error( $e->getMessage() );
+			}
+		}
+
+	}
 }

@@ -104,8 +104,8 @@ $show_secondary_address = ( isset( $profile_data['address']['secondary'] ) &&
 				gp_row( $profile_data['party'], $attributes['showParty'] );
 				gp_row( $profile_data['state'], ( $attributes['showState'] && $profile_data['state'] ) );
 				gp_row( GP_Contacts( $profile_data, $attributes ), ( $attributes['showEmail'] || $attributes['showSocial'] && $profile_data['hasSocial'] ) );
-				gp_row( $profile_data['address']['default'], $attributes['showAddress'] );
-				gp_row( $profile_data['address']['secondary'], ( $attributes['showAddress'] && $show_secondary_address ) );
+				gp_row( $profile_data['address']['default'], $attributes['showCapitolAddress'] );
+				gp_row( $profile_data['address']['secondary'], ( $attributes['showDistrictAddress'] ) );
 				gp_row( GP_Websites( $profile_data['websites'] ), ( $attributes['showWebsites'] && $profile_data['hasWebsites'] ) );
 				
 			?>

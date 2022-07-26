@@ -154,23 +154,23 @@ const OfficePanel = (props) => {
         >
         
             <PanelRow>
-                <PanelTextControl meta={props.meta} label= "Address" meta_key="main_office_address" onChange={setPostMeta}/>
+                <PanelTextControl meta={props.meta} label= "Address" meta_key="capitol_office_address" onChange={setPostMeta}/>
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl meta={props.meta} label = "City" meta_key="main_office_city" onChange={setPostMeta}/>
+                <PanelTextControl meta={props.meta} label = "City" meta_key="capitol_office_city" onChange={setPostMeta}/>
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl meta={props.meta} label = "State" meta_key="main_office_state" onChange={setPostMeta}/>
+                <PanelTextControl meta={props.meta} label = "State" meta_key="capitol_office_state" onChange={setPostMeta}/>
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl meta={props.meta} label = "Zip" meta_key="main_office_zip" onChange={setPostMeta}/>
+                <PanelTextControl meta={props.meta} label = "Zip" meta_key="capitol_office_zip" onChange={setPostMeta}/>
             </PanelRow>
 
 			<PanelRow>
-                <PanelTextControl meta={props.meta} label= "Phone" meta_key="main_phone" onChange={setPostMeta}/>
+                <PanelTextControl meta={props.meta} label= "Phone" meta_key="capitol_phone" onChange={setPostMeta}/>
             </PanelRow>
 
         </GovPackSidebarPanel>
@@ -188,23 +188,23 @@ const SecondaryOfficePanel = (props) => {
         >
         
             <PanelRow>
-                <PanelTextControl meta={props.meta} label= "Address" meta_key="secondary_office_address" onChange={setPostMeta}/>
+                <PanelTextControl meta={props.meta} label= "Address" meta_key="district_office_address" onChange={setPostMeta}/>
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl meta={props.meta} label = "City" meta_key="secondary_office_city" onChange={setPostMeta}/>
+                <PanelTextControl meta={props.meta} label = "City" meta_key="district_office_city" onChange={setPostMeta}/>
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl meta={props.meta} label = "State" meta_key="secondary_office_state" onChange={setPostMeta}/>
+                <PanelTextControl meta={props.meta} label = "State" meta_key="district_office_state" onChange={setPostMeta}/>
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl meta={props.meta} label = "Zip" meta_key="secondary_office_zip" onChange={setPostMeta}/>
+                <PanelTextControl meta={props.meta} label = "Zip" meta_key="district_office_zip" onChange={setPostMeta}/>
             </PanelRow>
 
 			<PanelRow>
-                <PanelTextControl meta={props.meta} label= "Phone" meta_key="secondary_phone" onChange={setPostMeta}/>
+                <PanelTextControl meta={props.meta} label= "Phone" meta_key="district_phone" onChange={setPostMeta}/>
             </PanelRow>
 
 

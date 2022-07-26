@@ -22,7 +22,7 @@
 		},
 		"avatarBorderRadius": {
 			"type": "string",
-			"default": "50%"
+			"default": "0%"
 		},
 		"avatarSize": {
 			"type": "number",
@@ -72,7 +72,11 @@
 			"type": "boolean",
 			"default": true
 		},
-        "showAddress": {
+        "showDistrictAddress": {
+			"type": "boolean",
+			"default": true
+		},
+		"showCapitolAddress": {
 			"type": "boolean",
 			"default": true
 		},

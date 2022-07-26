@@ -75,9 +75,9 @@ function normalize_porfile(profile){
 		},
         hasSocial : !!(profile.meta?.twitter ?? profile.meta?.facebook ?? profile.meta?.linkedin ?? profile.meta?.instagram),
 		address : {
-			default 	: (createAddress("main") ?? createAddress("secondary") ?? null),
-			primary 	: createAddress("main"),
-			secondary 	: createAddress("secondary")
+			default 	: (createAddress("capitol") ?? createAddress("district") ?? null),
+			capitol 	: createAddress("capitol"),
+			district 	: createAddress("district")
 		},
 		name : {
 			full 	: [profile.meta?.first_name, profile.meta?.last_name].join(" "),
@@ -190,7 +190,8 @@ const SingleProfile = (props) => {
         showState,
         showEmail,
         showSocial,
-        showAddress,
+        showDistrictAddress,
+		showCapitolAddress,
 		showWebsites,
         showProfileLink,
         className
@@ -296,7 +297,7 @@ const SingleProfile = (props) => {
 
     let bio = excerptElement.textContent || excerptElement.innerText || '';
 
-	const showSecondaryAddress = (!isEmpty(profile.address.secondary) && (profile.address.secondary !== profile.address.default))
+	
 
     return (
        <div className= {classnames(`${blockClassName}__container`, {
@@ -344,8 +345,8 @@ const SingleProfile = (props) => {
                     <Row key="party" value={profile.party}  display={showParty}/>
                     <Row key="states" value={profile.state} display={showState}/>
                     <Row key="contact" value={<Contacts />} display={showEmail || (showSocial && profile.hasSocial)}/>
-                    <Row key="address" value={profile.address.default} display={showAddress}/>
-					<Row key="secondaryaddress" value={profile.address.secondary} display={showAddress}/>
+                    <Row key="address_district" value={profile.address.district} display={showDistrictAddress}/>
+					<Row key="address_capitol" value={profile.address.capitol} display={showCapitolAddress}/>
 					<Row key="website" value={<Websites />} display={showWebsites && profile.hasWebsites}/>
                     <Row key="url" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
                 </div>

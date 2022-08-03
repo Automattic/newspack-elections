@@ -29,8 +29,13 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
-    - name: Install dependencies
+    - name: Install Composer Dependencies
       run: composer install --prefer-dist --no-progress
+      
+    - name: Install NPM Dependencies
+      run: |
+        npm install
+        npx webpack
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md

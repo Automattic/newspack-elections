@@ -32,10 +32,19 @@ jobs:
     - name: Install Composer Dependencies
       run: composer install --prefer-dist --no-progress
       
+    - name: Cache NPM packages
+      id: npm-cache
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-php-${{ hashFiles('**/package.json') }}
+        restore-keys: |
+          ${{ runner.os }}-js-
+      
     - name: Install NPM Dependencies
       run: |
         npm install
-        npx webpack
+   
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md

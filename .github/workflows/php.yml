@@ -48,7 +48,20 @@ jobs:
     - name: Build NPM Dependencies
       run: |
         npm run build
-   
+    
+    - name: Zip It Up
+      run: |
+        git zip -r "${GITHUB_WORKSPACE}/release.zip" .
+
+    - name: Upload release asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ${GITHUB_WORKSPACE}
+        asset_name: release.zip
+        asset_content_type: application/zip
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md

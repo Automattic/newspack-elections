@@ -50,7 +50,9 @@ jobs:
     
     - name: Zip It Up
       run: |
-        zip -r "${GITHUB_WORKSPACE}/release.zip" . -x "./node_modules/*"
+        zip -r "${GITHUB_WORKSPACE}/release.zip" . -x @.distignore
+
+
 
     #- name: Create Release
     #  id: create_release

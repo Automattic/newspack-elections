@@ -47,7 +47,7 @@ jobs:
     
     - name: Build NPM Dependencies
       run: |
-        npm run start
+        npm run build
    
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"

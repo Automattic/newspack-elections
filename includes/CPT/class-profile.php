@@ -245,14 +245,28 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		}
 
 		self::register_meta( 'linkedin' );
+		self::register_meta( 'rumble' );
+		self::register_meta( 'gab' );
 
 		// meta and ID's panel
 		self::register_meta( 'govpack_id' );
-		self::register_meta( 'fec_idsRow' );
-		self::register_meta( 'usio_idRow' );
+		self::register_meta( 'fec_id' );
+		self::register_meta( 'usio_id' );
 		self::register_meta( 'opensecrets_id' );
-		self::register_meta( 'district_ocd_ic' );
+		self::register_meta( 'district_ocd_id' );
 		self::register_meta( 'openstates_id' );
+		self::register_meta( 'thomas_id' );
+		self::register_meta( 'lis_id' );
+		self::register_meta( 'cspan_id' );
+		self::register_meta( 'govtrack_id' );
+		self::register_meta( 'votesmart_id' );
+		self::register_meta( 'balletpedia_id' );
+		self::register_meta( 'washington_post_id' );
+		self::register_meta( 'icpsr_id' );
+		self::register_meta( 'wikipedia_id' );
+		self::register_meta( 'google_entity_id' );
+		self::register_meta( 'committee_id' );
+
 
 	}	
 

@@ -1,11 +1,11 @@
 import { PanelRow } from "@wordpress/components";
 
 import {GovPackSidebarPanel} from "./../../../components/sidebar-panel"
-import {PanelTextControl, PanelDateControl, PanelFieldset} from "./../Controls"
+import {PanelTextControl, PanelDateControl, PanelFieldset, PanelTaxonomyControl} from "./../Controls"
 
 export const AboutPanel = (props) => {
 
-    let { setPostMeta } = props
+    let { setPostMeta, setTerm, setSingleTerm } = props
 
     return (
         <GovPackSidebarPanel 
@@ -69,15 +69,27 @@ export const AboutPanel = (props) => {
             </PanelRow>
 
 			<PanelRow>
-                <PanelTextControl meta={props.meta} label = "Party" meta_key="party" onChange={setPostMeta} />
+                <PanelTaxonomyControl 
+					taxonomy="govpack_party" 
+					label = "Party"
+					onChange = {setSingleTerm}
+				/>
             </PanelRow>
 
 			<PanelRow>
-                <PanelTextControl meta={props.meta} label = "State" meta_key="state" onChange={setPostMeta} />
+                <PanelTaxonomyControl 
+					taxonomy="govpack_state" 
+					label = "State"
+					onChange = {setSingleTerm}
+				/>
             </PanelRow>
 
 			<PanelRow>
-                <PanelTextControl meta={props.meta} label = "Status" meta_key="status" onChange={setPostMeta} />
+                <PanelTaxonomyControl 
+					taxonomy="govpack_officeholder_status" 
+					label = "Status"
+					onChange = {setSingleTerm}
+				/>
             </PanelRow>
 
 			<PanelRow>

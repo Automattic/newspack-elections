@@ -22,6 +22,12 @@ export function withPanel(component) {
                     const _taxonomy = getTaxonomy(taxonomy)
 
                     dispatch( 'core/editor' ).editPost( { [ _taxonomy.rest_base ]: term } );
+                },
+				setSingleTerm(taxonomy, term ) {
+
+                    const { getTaxonomy } = select( 'core' );
+                    const _taxonomy = getTaxonomy(taxonomy)
+					dispatch( 'core/editor' ).editPost( { [ _taxonomy.rest_base ]: [parseInt(term)] } );
                 }
 
             };

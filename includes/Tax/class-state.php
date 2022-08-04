@@ -62,7 +62,7 @@ class State extends \Govpack\Core\Abstracts\Taxonomy {
 				'meta_box_cb'        => false,
 				'show_admin_column'  => true,
 				'show_in_rest'       => true,
-				'show_ui'            => true,
+				'show_ui'            => false,
 				'show_in_which_menu' => 'govpack',
 			]
 		);

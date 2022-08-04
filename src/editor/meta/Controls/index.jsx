@@ -211,7 +211,7 @@ export const RawPanelTaxonomyControl = (props) => {
                props.onChange(props.taxonomy, value)
             } }
             options={ options }
-            value = { props.post_terms ?? "" }
+            value = { props.post_terms[0] ?? "" }
         />
     )
 }

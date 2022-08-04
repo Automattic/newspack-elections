@@ -206,9 +206,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		self::register_meta( 'district' );
 
 		// office panel
-		self::register_meta( 'address_capitol' );
-		self::register_meta( 'address_district' );
-		self::register_meta( 'address_campaign' );
+	
 		self::register_meta( 'contact_form_url' );
 		self::register_meta( 'date_assumed_office' );
 		self::register_meta( 'appointed_by' );
@@ -221,10 +219,19 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		self::register_meta( 'email_official' );
 		self::register_meta( 'email_campaign' );
 		self::register_meta( 'email_other' );
+		self::register_meta( 'email_district' );
+		self::register_meta( 'email_legislative' );
+		self::register_meta( 'email_capitol' );
+		
+		self::register_meta( 'address_capitol' );
+		self::register_meta( 'address_district' );
+		self::register_meta( 'address_campaign' );
 
+		self::register_meta( 'phone_capitol' );
 		self::register_meta( 'phone_district' );
 		self::register_meta( 'phone_campaign' );
 
+		self::register_meta( 'fax_capitol' );
 		self::register_meta( 'fax_district' );
 		self::register_meta( 'fax_campaign' );
 

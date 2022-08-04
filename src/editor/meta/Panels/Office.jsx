@@ -12,23 +12,6 @@ export const OfficePanel = (props) => {
             title="Office"
             name="gov-profile-office"
         >
-			
-			<PanelRow>
-                <PanelTextareaControl meta={props.meta} label= "Address (Capitol)" meta_key="address_capitol" onChange={setPostMeta}/>
-            </PanelRow>
-
-			<PanelRow>
-                <PanelTextareaControl meta={props.meta} label= "Address (District)" meta_key="address_district" onChange={setPostMeta}/>
-            </PanelRow>
-
-			<PanelRow>
-                <PanelTextareaControl meta={props.meta} label= "Address (Campaign)" meta_key="address_campaign" onChange={setPostMeta}/>
-            </PanelRow>
-
-			<PanelRow>
-                <PanelTextControl meta={props.meta} label= "Contact Form URL" meta_key="contact_form_url" onChange={setPostMeta}/>
-            </PanelRow>
-
 			<PanelRow>
                 <PanelDateControl meta={props.meta} label= "Date assumed office" meta_key="date_assumed_office" onChange={setPostMeta}/>
             </PanelRow>

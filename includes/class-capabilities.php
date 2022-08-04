@@ -17,6 +17,7 @@ class Capabilities {
 
 
 	const CAN_IMPORT = 'govpack_import';
+	const CAN_EXPORT = 'govpack_export';
 	/**
 	 * Set up actions and filters.
 	 */
@@ -31,6 +32,7 @@ class Capabilities {
 	public static function add_capabilities() {
 		$admin = get_role( 'administrator' );
 		$admin->add_cap( self::CAN_IMPORT, true );
+		$admin->add_cap( self::CAN_EXPORT, true );
 	}
 
 	/**

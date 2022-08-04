@@ -74,6 +74,15 @@ class Admin {
 				->set_callback( [ '\Govpack\Core\Admin\Pages\Import', 'view' ] ) 
 		);
 
+		$item = new Menu_Item();
+		$menu->add_item(
+			$item->set_page_title( 'Export' )
+				->set_menu_title( 'Export' )
+				->set_menu_slug( 'govpack_export' )
+				->set_capability( Capabilities::CAN_EXPORT )
+				->set_callback( [ '\Govpack\Core\Admin\Pages\Export', 'view' ] ) 
+		);
+
 		$menu->create();
 	}
 

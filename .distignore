@@ -22,10 +22,11 @@ phpcs.xml.dist
 README.md
 PULL_REQUEST_TEMPLATE.md
 webpack.config.js
+gruntfile.js
 *.sql
 *.tar.gz
 *.zip
 ./node_modules/*
 ./tests
 ./bin
-./src
+./babel

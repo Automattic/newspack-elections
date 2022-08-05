@@ -8,6 +8,7 @@
 namespace Govpack\Core\Importer;
 
 use Exception;
+use Govpack\Core\CPT\Profile;
 
 /**
  * Register and handle the "USIO" Importer
@@ -224,68 +225,45 @@ class Actions {
 	 */
 	public static function make_profile_from_csv( $data_input ) {
 		
+
 		$data = [];
 
 		foreach ( $data_input as $key => $value ) {
 			$data[ trim( strtolower( $key ) ) ] = trim( $value );
 		}
 
-		$capitol_address      = self::get_address_from_open_states_data( $data['capitol_address'] );
-		$district_address = self::get_address_from_open_states_data( $data['district_address'] );
-  
+		$model = Profile::get_import_model();
+
+		
+		$meta = [];
+		$tax  = [];
 		$post = [
 			'post_author'    => 0,
-			'post_content'   => \apply_filters( 'govpack_import_content', $data['biography'] ),
-			'post_title'     => $data['name'],
 			'post_status'    => 'draft',
 			'post_type'      => 'govpack_profiles',
 			'comment_status' => 'closed',
-		  
-			'meta_input'     => [
-				'open_state_id'            => $data['id'],
-
-				'first_name'               => $data['given_name'],
-				'last_name'                => $data['family_name'],
-				'name'                     => $data['name'],
-				'gender'                   => $data['gender'],
-				'biography'                => $data['biography'],
-				'birth_date'               => $data['birth_date'],
-				'death_date'               => $data['death_date'],
-
-				'current_district'         => $data['current_district'],
-				'current_chamber'          => $data['current_chamber'],
-			   
-				'email'                    => $data['email'],
-				'twitter'                  => $data['twitter'],
-				'youtube'                  => $data['youtube'],
-				'instagram'                => $data['instagram'],
-				'facebook'                 => $data['facebook'],
-				
-				'district_phone'               => $data['district_voice'],
-				'capitol_phone'          => $data['capitol_voice'],
-
-				'district_fax'                 	=> $data['district_fax'],
-				'capitol_fax'            		=> $data['capitol_fax'],
-
-				'capitol_office_address'      => $capitol_address['address'] ?? '',
-				'capitol_office_city'         => $capitol_address['city'] ?? '',
-				'capitol_office_state'        => $capitol_address['state'] ?? '',
-				'capitol_office_zip'          => $capitol_address['zip'] ?? '',
-
-				'district_office_address' => $district_address['address'] ?? '',
-				'district_office_city'    => $district_address['city'] ?? '',
-				'district_office_state'   => $district_address['state'] ?? '',
-				'district_office_zip'     => $district_address['zip'] ?? '',
-
-				'image'                    => $data['image'],
-				'links'                    => \apply_filters( 'govpack_import_openstates_links', $data['links'] ),
-				'sources'                  => \apply_filters( 'govpack_import_openstates_sources', $data['sources'] ),
-				'extra'                    => $data['extra'] ?? '',
-
-			],   
 		];
- 
 
+		foreach ( $model as $key => $action ) {
+
+			if ( 'meta' === $action['type'] ) {
+				$meta[ $key ] = $data_input[ $action['key'] ];
+			}
+
+			if ( 'post' === $action['type'] ) {
+				$post[ $action['key'] ] = $data_input[ $key ];
+			}
+
+			if ( 'taxonomy' === $action['type'] ) {
+				$term                       = self::find_or_create_term( $data_input[ $key ], $action['taxonomy'] );
+				$tax[ $action['taxonomy'] ] = $term->term_id;
+			}
+		}
+
+		$post['post_title'] = $meta['name'];
+		$post['meta_input'] = $meta;
+		$post['tax_input']  = $tax;
+			
 		$resp = \wp_insert_post( $post );
 
 		if ( \is_wp_error( $resp ) ) {
@@ -294,23 +272,7 @@ class Actions {
 
 		$created_post_id = $resp;
 	   
-		$taxonomy_map = [
-			'current_party'   => 'govpack_party',
-			'state'           => 'govpack_state',
-			'current_chamber' => 'govpack_legislative_body',
-			'title'           => 'govpack_officeholder_title',
-			'status'          => 'govpack_officeholder_status',
-		];
-
-		foreach ( $taxonomy_map as $field => $taxonomy ) {
-			
-			if ( isset( $data[ $field ] ) ) {
-				self::assign_term_to_obj( $created_post_id, $data[ $field ], $taxonomy );
-			}
-		}
 		
-	
-
 		if ( $data['image'] ) {
 
 			try {

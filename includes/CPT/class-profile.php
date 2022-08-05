@@ -182,78 +182,83 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		);
 	}
 
-	public static function get_import_model(){
+	/**
+	 * Returns an array of keys for the data model and how to handle them in import
+	 *
+	 * @return array
+	 */
+	public static function get_import_model() {
 
 		$model = [];
 
-		foreach(self::get_meta_keys() as $key){
-			$model[$key] = [
-				"type" => "meta",
-				"key" => $key
+		foreach ( self::get_meta_keys() as $key ) {
+			$model[ $key ] = [
+				'type' => 'meta',
+				'key'  => $key,
 			];
 		}
 
 		$taxonomies = [
-			"status" => "govpack_officeholder_status",
-			"state" => "govpack_state",
-			"office" => "govpack_legislative_body",
+			'status' => 'govpack_officeholder_status',
+			'state'  => 'govpack_state',
+			'office' => 'govpack_legislative_body',
+			'party'  => 'govpack_party',
 		];
 
-		foreach($taxonomies as $key => $taxonomy){
-			$model[$key] = [
-				"type" => "taxonomy",
-				"key" => $key,
-				"taxonomy" => $taxonomy
+		foreach ( $taxonomies as $key => $taxonomy ) {
+			$model[ $key ] = [
+				'type'     => 'taxonomy',
+				'key'      => $key,
+				'taxonomy' => $taxonomy,
 			];
 		}
 		
 		$post_fields = [
-			"bio" => "post_content",
+			'bio' => 'post_content',
 		];
 
-		foreach($post_fields as $key => $attr){
-			$model[$key] = [
-				"type" => "post",
-				"key" => $attr
+		foreach ( $post_fields as $key => $attr ) {
+			$model[ $key ] = [
+				'type' => 'post',
+				'key'  => $attr,
 			];
 		}
 
-		foreach($post_fields as $key => $attr){
-			$model[$key] = [
-				"type" => "media",
-				"key" => "_thumbnail_id"
-			];
-		}
+		$model['photo'] = [
+			'type' => 'media',
+			'key'  => '_thumbnail_id',
+		];
 
-		return apply_filters("govpack_profile_import_model", $model);
+		return apply_filters( 'govpack_profile_import_model', $model );
 
 	}
 
-	public static function get_export_model(){
+	/**
+	 * Returns an array of keys for the data model and how to handle them in export
+	 *
+	 * @return array
+	 */
+	public static function get_export_model() {
 
 		$model = self::get_import_model();
 
-		$model["post_id"] = [
-			"type" => "post",
-			"key" => "ID"
+		$model['post_id'] = [
+			'type' => 'post',
+			'key'  => 'ID',
 		];
 
-		$model["post_status"] = [
-			"type" => "post",
-			"key" => "post_status"
+		$model['post_status'] = [
+			'type' => 'post',
+			'key'  => 'post_status',
 		];
 
-		$model["thumbnail_id"] = [
-			"type" => "post",
-			"key" => "_thumbnail_id"
+		$model['thumbnail_id'] = [
+			'type' => 'post',
+			'key'  => '_thumbnail_id',
 		];
 
-		$model["photo"] = [
-			"type" => "media",
-			"key" => "_thumbnail_id"
-		];
 
-		return apply_filters("govpack_profile_export_model", $model);
+		return apply_filters( 'govpack_profile_export_model', $model );
 	}
 
 	/**
@@ -262,7 +267,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	public static function get_meta_keys() {
 
 		$meta_keys = [
-			// About Panel
+			// About Panel.
 			'name',
 			'name_prefix',
 			'name_first',
@@ -280,7 +285,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'status',
 			'district',
 
-			// office panel
+			// office panel.
 			'contact_form_url',
 			'date_assumed_office',
 			'appointed_by',
@@ -289,7 +294,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'term_end_data',
 			'congress_year',
 
-			// communications panel
+			// communications panel.
 			'email_official',
 			'email_campaign',
 			'email_other',
@@ -319,7 +324,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'rumble',
 			'gab',
 
-			// meta and ID's panel
+			// meta and ID's panel.
 			'govpack_id',
 			'fec_id',
 			'usio_id',
@@ -336,21 +341,21 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'icpsr_id',
 			'wikipedia_id',
 			'google_entity_id',
-			'committee_id'
+			'committee_id',
 		];
 
-		// Social Panel
-		$groups = ["facebook", "twitter", "instagram"];
-		$keys = ["official", "campaign", "personal"];
+		// Social Panel.
+		$groups = [ 'facebook', 'twitter', 'instagram' ];
+		$keys   = [ 'official', 'campaign', 'personal' ];
 
-		foreach ($groups as $group ) {
+		foreach ( $groups as $group ) {
 			foreach ( $keys as $key ) {
-				$slug = sprintf( '%s_%s', $group, $key);
+				$slug        = sprintf( '%s_%s', $group, $key );
 				$meta_keys[] = $slug;
 			}
 		}
 		
-		return apply_filters("govpack_profile_meta_keys", $meta_keys);
+		return apply_filters( 'govpack_profile_meta_keys', $meta_keys );
 	}
 
 	/**
@@ -358,10 +363,10 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	 */
 	public static function register_post_meta() {
 
-		foreach(self::get_meta_keys() as $key){
+		foreach ( self::get_meta_keys() as $key ) {
 			self::register_meta( $key );
 		}
-	}	
+	}   
 
 	/**
 	 * Register single Meta data for the post in the REST API 
@@ -684,8 +689,8 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'website'          => $profile_raw_meta_data['leg_url'][0] ?? '',
 			'biography'        => $profile_raw_meta_data['biography'][0] ?? '',
 			'address'          => [
-				'default'   => self::formatAddress( $profile_raw_meta_data, 'capitol' ) ?? self::formatAddress( $profile_raw_meta_data, 'district' ) ?? '',
-				'capitol'   => self::formatAddress( $profile_raw_meta_data, 'capitol' ) ?? null,
+				'default'  => self::formatAddress( $profile_raw_meta_data, 'capitol' ) ?? self::formatAddress( $profile_raw_meta_data, 'district' ) ?? '',
+				'capitol'  => self::formatAddress( $profile_raw_meta_data, 'capitol' ) ?? null,
 				'district' => self::formatAddress( $profile_raw_meta_data, 'district' ) ?? null,
 			],
 			'party'            => $term_data[ \Govpack\Core\Tax\Party::TAX_SLUG ] ?? '',

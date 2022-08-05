@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Govpack
  *
@@ -19,13 +18,16 @@ use League\Csv\Writer;
  */
 class Export {
 
-	public static function hooks(){
+	/**
+	 * Adds Hooks used for exporting  
+	 */
+	public static function hooks() {
 		\add_action( 'rest_api_init', [ __class__, 'register_rest_endpoints' ] );
 		\add_action( 'admin_enqueue_scripts', [ __class__, 'register_scripts' ] );
 	}
 
 
-		/**
+	/**
 	 * Adds ASSETS used for importing  
 	 */
 	public static function register_scripts() {
@@ -63,11 +65,11 @@ class Export {
 				'methods'             => 'GET',
 				'callback'            => [
 					__class__,
-					'export',
+					'run_export',
 				],
 				'permission_callback' => function () {
 				
-					return \current_user_can( Capabilities::CAN_EXPORT);
+					return \current_user_can( Capabilities::CAN_EXPORT );
 
 				},
 			] 
@@ -75,49 +77,51 @@ class Export {
 	}
 
 	/**
-	 *  generate the csv
+	 *  Generate the csv
 	 */
-	public static function export() {
+	public static function run_export() {
 
-		$csv = Writer::createFromString();
-		$model = Profile::get_export_model();
-		$header = array_keys($model);
-		$csv->insertOne($header);
+		$csv    = Writer::createFromString();
+		$model  = Profile::get_export_model();
+		$header = array_keys( $model );
+		$csv->insertOne( $header );
 
 		$profiles = Profile::get_all();
 
-		foreach($profiles as $profile){
+		foreach ( $profiles as $profile ) {
 
 			
 			$data = [];
-			foreach($model as $key => $action ){
+			foreach ( $model as $key => $action ) {
 				
-				if($action['type'] === "taxonomy"){
+				if ( 'taxonomy' === $action['type'] ) {
 
 					$terms = get_the_terms( $profile, $action['taxonomy'] );
 
-					$labels = array_map( function($term){
-						return $term->name;
-					}, $terms);
+					$labels = array_map(
+						function( $term ) {
+							return $term->name;
+						},
+						$terms
+					);
 
-					$data[$key] = implode(";", $labels);
+					$data[ $key ] = implode( ';', $labels );
 
-				} elseif($action['type'] === "post") {
-					$data[$key] = $profile->{$action["key"]} ?? " ";
-				} elseif($action['type'] === "meta") {
-					$data[$key] = $profile->{$action["key"]} ?? " ";
-				} elseif($action['type'] === "media") {
-					$media_id = $profile->{$action["key"]};
-					if($media_id){
-						$data[$key] = wp_get_attachment_url( $media_id ); 
+				} elseif ( 'post' === $action['type'] ) {
+					$data[ $key ] = $profile->{$action['key']} ?? ' ';
+				} elseif ( 'meta' === $action['type'] ) {
+					$data[ $key ] = $profile->{$action['key']} ?? ' ';
+				} elseif ( 'media' === $action['type'] ) {
+					$media_id = $profile->{$action['key']};
+					if ( $media_id ) {
+						$data[ $key ] = wp_get_attachment_url( $media_id ); 
 					} else {
-						$data[$key] = "";
+						$data[ $key ] = '';
 					}
-				}
-			
+				}           
 			}
 
-			$csv->insertOne($data);
+			$csv->insertOne( $data );
 			
 		}
 

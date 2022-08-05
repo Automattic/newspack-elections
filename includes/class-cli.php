@@ -338,32 +338,32 @@ class CLI extends \WP_CLI_Command {
 		global $wpdb;
 
 		$levels = [
-			"main" => "capitol",
-			"secondary" => "district"
+			'main'      => 'capitol',
+			'secondary' => 'district',
 		];
-		$keys = ["fax", "phone", "office_address", "office_city", "office_state", "office_zip"];
+		$keys   = [ 'fax', 'phone', 'office_address', 'office_city', 'office_state', 'office_zip' ];
 
-		foreach($levels as $old_level => $new_level){
-			foreach($keys as $key){
-				$old_key = sprintf("%s_%s", $old_level, $key);
-				$new_key = sprintf("%s_%s", $new_level, $key);
+		foreach ( $levels as $old_level => $new_level ) {
+			foreach ( $keys as $key ) {
+				$old_key = sprintf( '%s_%s', $old_level, $key );
+				$new_key = sprintf( '%s_%s', $new_level, $key );
 
 				$result = $wpdb->update( 
 					$wpdb->postmeta, 
-					["meta_key" => $new_key], 
-					["meta_key" => $old_key], 
+					[ 'meta_key' => $new_key ], 
+					[ 'meta_key' => $old_key ], 
 				);
 
-				if($result === false){
-					\WP_CLI::warning(sprintf("%s could not be changed to %s", $old_key, $new_key ));
+				if ( false === $result ) {
+					\WP_CLI::warning( sprintf( '%s could not be changed to %s', $old_key, $new_key ) );
 				}
 
-				if($result === 0){
-					\WP_CLI::warning(sprintf("%s could not be found", $old_key ));
+				if ( 0 === $result ) {
+					\WP_CLI::warning( sprintf( '%s could not be found', $old_key ) );
 				}
 
-				if($result > 0){
-					\WP_CLI::log(sprintf("%s was changed to %s %d times", $old_key, $new_key, $result ));
+				if ( $result > 0 ) {
+					\WP_CLI::log( sprintf( '%s was changed to %s %d times', $old_key, $new_key, $result ) );
 				}
 			}
 		}

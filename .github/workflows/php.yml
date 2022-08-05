@@ -50,7 +50,7 @@ jobs:
 
     - name: Rename readme from md to txt
       run: |
-       mv readme.md readme.txt
+       mv README.md readme.txt
     
     - name: Zip It Up
       run: |

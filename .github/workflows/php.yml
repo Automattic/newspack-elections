@@ -47,6 +47,10 @@ jobs:
     - name: Build NPM Dependencies
       run: |
         npm run build
+
+    - name: Rename readme from md to txt
+      run: |
+       mv readme.md readme.txt
     
     - name: Zip It Up
       run: |

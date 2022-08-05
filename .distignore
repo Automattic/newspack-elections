@@ -29,4 +29,4 @@ gruntfile.js
 ./node_modules/*
 ./tests
 ./bin
-./babel
+babel

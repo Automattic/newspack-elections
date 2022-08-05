@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
-import apiFetch from "./../ApiFetch"
+import apiFetch from "./../../components/ApiFetch"
 import InfoPanel from "./InfoPanel";
-import Error from "./Error";
+import Error from "./../../components/Error";
 import stage from "./../stages"
 
 import {isUndefined} from "lodash"

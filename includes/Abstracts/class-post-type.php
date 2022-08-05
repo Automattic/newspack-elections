@@ -46,4 +46,20 @@ abstract class Post_Type {
 		unset( $columns['tags'] );
 		return $columns;
 	}
+
+	/**
+	 * Remove tags column from profile admin screen.
+	 *
+	 * @param string[] $columns The column header labels keyed by column ID.
+	 * @return array
+	 */
+	public static function get_all() {
+		$posts = new \WP_Query([
+			"post_type" => static::CPT_SLUG,
+			"post_status" => "all",
+			"posts_per_page" => -1
+		]);
+
+		return $posts->posts;
+	}
 }

@@ -182,6 +182,80 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		);
 	}
 
+	public static function get_import_model(){
+
+		$model = [];
+
+		foreach(self::get_meta_keys() as $key){
+			$model[$key] = [
+				"type" => "meta",
+				"key" => $key
+			];
+		}
+
+		$taxonomies = [
+			"status" => "govpack_officeholder_status",
+			"state" => "govpack_state",
+			"office" => "govpack_legislative_body",
+		];
+
+		foreach($taxonomies as $key => $taxonomy){
+			$model[$key] = [
+				"type" => "taxonomy",
+				"key" => $key,
+				"taxonomy" => $taxonomy
+			];
+		}
+		
+		$post_fields = [
+			"bio" => "post_content",
+		];
+
+		foreach($post_fields as $key => $attr){
+			$model[$key] = [
+				"type" => "post",
+				"key" => $attr
+			];
+		}
+
+		foreach($post_fields as $key => $attr){
+			$model[$key] = [
+				"type" => "media",
+				"key" => "_thumbnail_id"
+			];
+		}
+
+		return apply_filters("govpack_profile_import_model", $model);
+
+	}
+
+	public static function get_export_model(){
+
+		$model = self::get_import_model();
+
+		$model["post_id"] = [
+			"type" => "post",
+			"key" => "ID"
+		];
+
+		$model["post_status"] = [
+			"type" => "post",
+			"key" => "post_status"
+		];
+
+		$model["thumbnail_id"] = [
+			"type" => "post",
+			"key" => "_thumbnail_id"
+		];
+
+		$model["photo"] = [
+			"type" => "media",
+			"key" => "_thumbnail_id"
+		];
+
+		return apply_filters("govpack_profile_export_model", $model);
+	}
+
 	/**
 	 * Get all the meta keys we use 
 	 */

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 
 
 import stage from "./../stages"
-import apiFetch from "./../ApiFetch"
+import apiFetch from "./../../components/ApiFetch"
 
 import Checking from "./Checking.jsx"
 import Uploader from "./Uploader.jsx"

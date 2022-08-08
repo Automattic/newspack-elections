@@ -214,7 +214,10 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		}
 		
 		$post_fields = [
-			'bio' => 'post_content',
+			'bio' 			=> 'post_content',
+			'post_id'		=> 'ID',
+			'post_status' 	=> 'post_status',
+			'thumbnail_id' 	=> '_thumbnail_id',
 		];
 
 		foreach ( $post_fields as $key => $attr ) {
@@ -291,7 +294,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'appointed_by',
 			'appointed_date',
 			'confirmed_date',
-			'term_end_data',
+			'term_end_date',
 			'congress_year',
 
 			// communications panel.

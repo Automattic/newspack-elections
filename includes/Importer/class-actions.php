@@ -78,11 +78,16 @@ class Actions {
 	 */
 	public static function inject_block_in_content( $content = null ) {
 		
+		var_dump($content);
+		
 		// phpcs:ignore content is "" false null or nil.
 		if ( ! $content ) {
 			return \Govpack\Core\CPT\Profile::default_profile_content();
 		}
 
+		if(has_block("govpack/profile-self", $content)){
+			return $content;
+		}
 		// inject it at the start.
 		return \Govpack\Core\CPT\Profile::default_profile_content() . $content;
 	}
@@ -258,23 +263,33 @@ class Actions {
 				$term                       = self::find_or_create_term( $data_input[ $key ], $action['taxonomy'] );
 				$tax[ $action['taxonomy'] ] = $term->term_id;
 			}
+
+			if ( 'media' === $action['type'] ) {
+				// add key to meta to sore it for later processing
+				$meta[ $key ] = $data_input[ $key ];
+			}
+		}
+
+		if(!self::is_profile_update($post)){
+			$post['post_content'] = apply_filters("govpack_import_content", $post['post_content']);
 		}
 
 		$post['post_title'] = $meta['name'];
 		$post['meta_input'] = $meta;
 		$post['tax_input']  = $tax;
-			
-		$resp = \wp_insert_post( $post );
 
+
+		$resp = self::create_or_update($post);
+	
 		if ( \is_wp_error( $resp ) ) {
 			return; 
 		}
 
 		$created_post_id = $resp;
-	   
 		
-		if ( $data['image'] ) {
-
+		
+		if ( $data['photo'] ) {
+			
 			try {
 				Importer::sideload( $created_post_id );
 			} catch ( Exception $e ) {
@@ -283,6 +298,45 @@ class Actions {
 		}
 		
 		return true;
+	}
+
+	public static function create_or_update($post){
+		
+		if( self::is_profile_update($post) ){
+			$resp = wp_update_post($post);
+		} else {
+			$resp = wp_insert_post($post);
+		}
+
+		return $resp;
+	}
+
+	public static function is_profile_update($post){
+		if(
+			($post["ID"]) && 
+			(self::post_exists($post["ID"]))
+		) {
+			return true;
+		} 
+		
+		return false;
+		
+	}
+
+	/**
+	 * Determines if a post, identified by the specified ID, exist
+	 * within the WordPress database.
+	 * 
+	 * Note that this function uses the 'acme_' prefix to serve as an
+	 * example for how to use the function within a theme. If this were
+	 * to be within a class, then the prefix would not be necessary.
+	 *
+	 * @param    int    $id    The ID of the post to check
+	 * @return   bool          True if the post exists; otherwise, false.
+	 * @since    1.0.0
+	 */
+	public static function post_exists( $id ) {
+		return is_string( get_post_status( $id ) );
 	}
 
 	/**

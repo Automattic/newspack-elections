@@ -28,9 +28,8 @@ export const OfficePanel = (props) => {
                 <PanelDateControl meta={props.meta} label= "Date confirmed" meta_key="confirmed_date" onChange={setPostMeta}/>
             </PanelRow>
 			 
-
 			<PanelRow>
-                <PanelDateControl meta={props.meta} label= "Date term ends" meta_key="term_end_data" onChange={setPostMeta}/>
+                <PanelDateControl meta={props.meta} label= "Date term ends" meta_key="term_end_date" onChange={setPostMeta}/>
             </PanelRow>
 
 			<PanelRow>

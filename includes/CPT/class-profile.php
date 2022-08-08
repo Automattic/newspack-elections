@@ -214,10 +214,10 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		}
 		
 		$post_fields = [
-			'bio' 			=> 'post_content',
-			'post_id'		=> 'ID',
-			'post_status' 	=> 'post_status',
-			'thumbnail_id' 	=> '_thumbnail_id',
+			'bio'          => 'post_content',
+			'post_id'      => 'ID',
+			'post_status'  => 'post_status',
+			'thumbnail_id' => '_thumbnail_id',
 		];
 
 		foreach ( $post_fields as $key => $attr ) {

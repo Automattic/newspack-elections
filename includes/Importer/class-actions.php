@@ -77,15 +77,13 @@ class Actions {
 	 * @param array $content content from the imported.
 	 */
 	public static function inject_block_in_content( $content = null ) {
-		
-		var_dump($content);
-		
+
 		// phpcs:ignore content is "" false null or nil.
 		if ( ! $content ) {
 			return \Govpack\Core\CPT\Profile::default_profile_content();
 		}
 
-		if(has_block("govpack/profile-self", $content)){
+		if ( has_block( 'govpack/profile-self', $content ) ) {
 			return $content;
 		}
 		// inject it at the start.
@@ -265,13 +263,13 @@ class Actions {
 			}
 
 			if ( 'media' === $action['type'] ) {
-				// add key to meta to sore it for later processing
+				// add key to meta to sore it for later processing.
 				$meta[ $key ] = $data_input[ $key ];
 			}
 		}
 
-		if(!self::is_profile_update($post)){
-			$post['post_content'] = apply_filters("govpack_import_content", $post['post_content']);
+		if ( ! self::is_profile_update( $post ) ) {
+			$post['post_content'] = apply_filters( 'govpack_import_content', $post['post_content'] );
 		}
 
 		$post['post_title'] = $meta['name'];
@@ -279,7 +277,7 @@ class Actions {
 		$post['tax_input']  = $tax;
 
 
-		$resp = self::create_or_update($post);
+		$resp = self::create_or_update( $post );
 	
 		if ( \is_wp_error( $resp ) ) {
 			return; 
@@ -300,21 +298,36 @@ class Actions {
 		return true;
 	}
 
-	public static function create_or_update($post){
+
+	/**
+	 * Creates or Updates a post in the database
+	 * 
+	 * @param array $post Data passed from Importer.
+	 * @return int|WP_Error returns the post id if the change went through or a WP_Error if not.
+	 */
+	public static function create_or_update( $post ) {
 		
-		if( self::is_profile_update($post) ){
-			$resp = wp_update_post($post);
+		if ( self::is_profile_update( $post ) ) {
+			$resp = wp_update_post( $post );
 		} else {
-			$resp = wp_insert_post($post);
+			$resp = wp_insert_post( $post );
 		}
 
 		return $resp;
 	}
 
-	public static function is_profile_update($post){
-		if(
-			($post["ID"]) && 
-			(self::post_exists($post["ID"]))
+	/**
+	 * Detect if the post being imported is a new post or an update over an existsing post
+	 * 
+	 * Checks for the existance of "ID" in the post array and then looks for that post in the database
+	 * 
+	 * @param array $post Data passed from Importer.
+	 * @return bool true if the post exists, false if not
+	 */
+	public static function is_profile_update( $post ) {
+		if (
+			( $post['ID'] ) && 
+			( self::post_exists( $post['ID'] ) )
 		) {
 			return true;
 		} 
@@ -331,7 +344,7 @@ class Actions {
 	 * example for how to use the function within a theme. If this were
 	 * to be within a class, then the prefix would not be necessary.
 	 *
-	 * @param    int    $id    The ID of the post to check
+	 * @param    int $id    The ID of the post to check.
 	 * @return   bool          True if the post exists; otherwise, false.
 	 * @since    1.0.0
 	 */

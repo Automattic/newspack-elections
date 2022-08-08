@@ -69,7 +69,14 @@ function normalize_porfile(profile){
 			district 	: createAddress("district")
 		},
 		name : {
-			full 	: [profile.meta?.first_name, profile.meta?.last_name].join(" "),
+			name 	: profile.meta?.name,
+			full 	: [
+				profile.meta?.name_prefix, 
+				profile.meta?.name_first,
+				profile.meta?.name_middle, 
+				profile.meta?.name_last,
+				profile.meta?.name_suffix,
+			].join(" "),
 			first 	:  profile.meta?.first_name ?? null,
 			last 	:  profile.meta?.last_name ?? null
 		},
@@ -183,7 +190,12 @@ const SingleProfile = (props) => {
 		showCapitolAddress,
 		showWebsites,
         showProfileLink,
-        className
+        className,
+
+		showCapitolCommunicationDetails,
+		showDistrictCommunicationDetails,
+		showCampaignCommunicationDetails,
+		showOtherCommunicationDetails,
 
     } = attributes
 

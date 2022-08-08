@@ -29,7 +29,7 @@ export const AboutPanel = (props) => {
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl meta={props.meta} label = "Last Name" meta_key="last_middle" onChange={setPostMeta} />
+                <PanelTextControl meta={props.meta} label = "Last Name" meta_key="name_last" onChange={setPostMeta} />
             </PanelRow>
 
 			<PanelRow>

@@ -275,7 +275,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'name_prefix',
 			'name_first',
 			'name_middle',
-			'last_middle',
+			'name_last',
 			'name_suffix',
 			'nickname',
 			'occupation',

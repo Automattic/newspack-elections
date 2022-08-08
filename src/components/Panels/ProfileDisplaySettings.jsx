@@ -23,7 +23,12 @@ const ProfileDisplaySettings = (props) => {
 		showDistrictAddress,
 		showName,
         showProfileLink,
-		showWebsites
+		showWebsites,
+
+		showCapitolCommunicationDetails,
+		showDistrictCommunicationDetails,
+		showCampaignCommunicationDetails,
+		showOtherCommunicationDetails,
         
     } = attributes
 
@@ -76,13 +81,7 @@ const ProfileDisplaySettings = (props) => {
     							onChange={ () => setAttributes( { showState: ! showState } ) }
 		    				/>
 	    				</PanelRow>
-                        <PanelRow>
-						    <ToggleControl
-							    label={ __( 'Display Email', 'govpack-blocks' ) }
-							    checked={ showEmail }
-    							onChange={ () => setAttributes( { showEmail: ! showEmail } ) }
-		    				/>
-	    				</PanelRow>
+                        
                         <PanelRow>
 						    <ToggleControl
 							    label={ __( 'Display Social', 'govpack-blocks' ) }
@@ -112,6 +111,38 @@ const ProfileDisplaySettings = (props) => {
 							    label={ __( 'Display Websites', 'govpack-blocks' ) }
 							    checked={ showWebsites }
     							onChange={ () => setAttributes( { showWebsites: ! showWebsites } ) }
+		    				/>
+	    				</PanelRow>
+
+						<PanelRow>
+						    <ToggleControl
+							    label={ __( 'Display Capitol Communications', 'govpack-blocks' ) }
+							    checked={ showCapitolCommunicationDetails }
+    							onChange={ () => setAttributes( { showCapitolCommunicationDetails: ! showCapitolCommunicationDetails } ) }
+		    				/>
+	    				</PanelRow>
+
+						<PanelRow>
+						    <ToggleControl
+							    label={ __( 'Display District Communication', 'govpack-blocks' ) }
+							    checked={ showDistrictCommunicationDetails }
+    							onChange={ () => setAttributes( { showDistrictCommunicationDetails: ! showDistrictCommunicationDetails } ) }
+		    				/>
+	    				</PanelRow>
+
+						<PanelRow>
+						    <ToggleControl
+							    label={ __( 'Display Campaign Communication', 'govpack-blocks' ) }
+							    checked={ showCampaignCommunicationDetails }
+    							onChange={ () => setAttributes( { showCampaignCommunicationDetails: ! showCampaignCommunicationDetails } ) }
+		    				/>
+	    				</PanelRow>
+
+						<PanelRow>
+						    <ToggleControl
+							    label={ __( 'Display Other Communication', 'govpack-blocks' ) }
+							    checked={ showOtherCommunicationDetails }
+    							onChange={ () => setAttributes( { showOtherCommunicationDetails: ! showOtherCommunicationDetails } ) }
 		    				/>
 	    				</PanelRow>
 

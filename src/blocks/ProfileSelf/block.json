@@ -74,6 +74,22 @@
         "align": {
 			"type": "string",
             "default": ""
+		},
+		"showCapitolCommunicationDetails": {
+			"type": "boolean",
+			"default": true
+		},
+		"showDistrictCommunicationDetails": {
+			"type": "boolean",
+			"default": true
+		},
+		"showCampaignCommunicationDetails": {
+			"type": "boolean",
+			"default": true
+		},
+		"showOtherCommunicationDetails": {
+			"type": "boolean",
+			"default": true
 		}
 	}
 }

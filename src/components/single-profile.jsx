@@ -6,6 +6,8 @@ import TwitterIcon from "./../images/twitter.svg"
 import LinkedinIcon from "./../images/linkedin.svg"
 import EmailIcon from "./../images/email.svg"
 import InstagramIcon from "./../images/instagram.svg"
+import PhoneIcon from "./../images/phone.svg"
+import FaxIcon from "./../images/fax.svg"
 
 /**
  * External dependencies
@@ -85,7 +87,28 @@ function normalize_porfile(profile){
 			legislative : profile.meta?.leg_url ?? null,
 		},
 		hasWebsites : !!(profile.meta?.campaign_url ?? profile.meta?.leg_url),
-        bio : decodeEntities(profile.excerpt?.rendered ?? profile.excerpt ?? null)
+        bio : decodeEntities(profile.excerpt?.rendered ?? profile.excerpt ?? null),
+		comms : {
+			capitol : {
+				email : profile.meta?.email_capitol,
+				phone : profile.meta?.phone_capitol,
+				fax : profile.meta?.fax_capitol,
+				address : profile.meta?.address_capitol,
+			},
+			district : {
+				email : profile.meta?.email_district,
+				phone : profile.meta?.phone_district,
+				fax : profile.meta?.fax_district,
+				address : profile.meta?.address_district,
+			},
+			campaign : {
+				email : profile.meta?.email_campaign,
+				phone : profile.meta?.phone_campaign,
+				fax : profile.meta?.fax_campaign,
+				address : profile.meta?.address_campaign,
+			},
+			other : {}
+		}
     }
 }
 
@@ -166,9 +189,7 @@ const SingleProfile = (props) => {
         showSelf = false
     } = props
 
-	console.log(profile)
     profile = normalize_porfile(profile)
-	console.log(profile)
 
     const {
         showAvatar, 
@@ -225,7 +246,7 @@ const SingleProfile = (props) => {
             <li className={classnames(`${blockClassName}__contact`, {
                 [`${blockClassName}__contact--hide-label`] : true
             })}>
-                <a href={props.href} className={`${blockClassName}__link`}>
+                <a href={props.href} className={`${blockClassName}__link`} title={props.tooltip ?? props.label ?? ""}>
                     {props.icon && (
                         <span className={`${blockClassName}__contact__icon ${blockClassName}__contact__icon`}>{props.icon}</span>
                     )}
@@ -240,13 +261,7 @@ const SingleProfile = (props) => {
            
             <div className={`${blockClassName}__contacts`}>
                 <ul>
-                    { showEmail && (
-                        <Contact 
-							href={`mailto:${profile.link}`}
-							label = "email"
-							icon = { <EmailIcon />}
-						/>
-                    )}
+                  
 
                     { showSocial && (
                         <>
@@ -288,6 +303,54 @@ const SingleProfile = (props) => {
         )
     }
 
+
+	const Comms = (props) => {
+
+		const {
+			label = "Comms"
+		} = props
+
+		console.log(props)
+		return (
+			<div className={`${blockClassName}__contacts`}>
+				{label}:
+				
+				{props.data && (
+					<ul>
+						{ props.data.phone && (
+                                <Contact 
+									href={`tel:${props.data.phone}`} 
+									tooltip = {`${label} Phone : ${props.data.phone}`} 
+									label = "Phone"  
+									icon = { <PhoneIcon />}
+								/>
+								
+                            )}
+						
+						{ props.data.fax && (
+                                <Contact 
+									href={`tel:${props.data.fax}`} 
+									tooltip = {`${label} Fax : ${props.data.fax}`} 
+									label = "Fax" 
+									icon = { <FaxIcon />}
+								/>
+								
+                            )}
+
+						{ props.data.email && (
+                                <Contact 
+									href={`tel:${props.data.email}`} 
+									tooltip = {`${label} Email : ${props.data.email}`} 
+									label = "Email" 
+									icon = { <EmailIcon />}
+								/>
+								
+                            )}
+					</ul>
+				)}
+			</div>
+		)
+	}
 	const maxWidth = (align !== "full" ? props.availableWidths.find( (w) => w.value === width)?.maxWidth : false)
     const excerptElement = document.createElement( 'div' );
     excerptElement.innerHTML = profile.bio;
@@ -341,11 +404,17 @@ const SingleProfile = (props) => {
                     <Row key="pos" value={profile.position}  display={showPosition}/>
                     <Row key="party" value={profile.party}  display={showParty}/>
                     <Row key="states" value={profile.state} display={showState}/>
-                    <Row key="contact" value={<Contacts />} display={showEmail || (showSocial && profile.hasSocial)}/>
+                    <Row key="contact" value={<Contacts />} display={(showSocial && profile.hasSocial)}/>
                     <Row key="address_district" value={profile.address.district} display={showDistrictAddress}/>
 					<Row key="address_capitol" value={profile.address.capitol} display={showCapitolAddress}/>
 					<Row key="website" value={<Websites />} display={showWebsites && profile.hasWebsites}/>
                     <Row key="url" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
+
+					<Row key="comms_capitol" value={<Comms data={profile.comms.capitol} label="Capitol"/>} display={showCapitolCommunicationDetails}/>
+					<Row key="comms_district" value={<Comms data={profile.comms.district} label="District"/>} display={showDistrictCommunicationDetails}/>
+					<Row key="comms_campaign" value={<Comms data={profile.comms.campaign} label="Campaign"/>} display={showCampaignCommunicationDetails}/>
+					<Row key="comms_other" value={<Comms data={profile.comms.other} label="Other"/>} display={showOtherCommunicationDetails}/>
+
                 </div>
             </div>  
      

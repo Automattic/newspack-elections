@@ -319,7 +319,8 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 
 			'website_personal',
 			'website_campaign',
-			'website_legislative',
+			'website_district',
+			'website_capitol',
 			'rss',
 
 

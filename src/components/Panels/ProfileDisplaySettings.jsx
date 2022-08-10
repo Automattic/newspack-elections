@@ -29,6 +29,8 @@ const ProfileDisplaySettings = (props) => {
 		showDistrictCommunicationDetails,
 		showCampaignCommunicationDetails,
 		showOtherCommunicationDetails,
+
+
         
     } = attributes
 
@@ -90,21 +92,6 @@ const ProfileDisplaySettings = (props) => {
 		    				/>
 	    				</PanelRow>
 
-                        <PanelRow>
-						    <ToggleControl
-							    label={ __( 'Display Capitol Addresses', 'govpack-blocks' ) }
-							    checked={ showCapitolAddress }
-    							onChange={ () => setAttributes( { showCapitolAddress: ! showCapitolAddress } ) }
-		    				/>
-	    				</PanelRow>
-
-						<PanelRow>
-						    <ToggleControl
-							    label={ __( 'Display District Addresses', 'govpack-blocks' ) }
-							    checked={ showDistrictAddress }
-    							onChange={ () => setAttributes( { showDistrictAddress: ! showDistrictAddress } ) }
-		    				/>
-	    				</PanelRow>
 
 						<PanelRow>
 						    <ToggleControl

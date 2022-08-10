@@ -11,6 +11,8 @@ import { compose } from "@wordpress/compose";
 
 import ProfileDisplaySettings from './../../components/Panels/ProfileDisplaySettings.jsx'
 import ProfileAvatarPanel from '../../components/Panels/ProfileAvatarPanel';
+import ProfileCommsPanel from '../../components/Panels/ProfileCommsPanel'
+import ProfileCommsOtherPanel from '../../components/Panels/ProfileCommsOtherPanel'
 
 import SingleProfile from "./../../components/single-profile"
 import AvatarAlignmentToolBar from '../../components/Toolbars/AvatarAlignment.jsx';
@@ -221,6 +223,10 @@ function RawEdit( props ) {
             <InspectorControls>
                 <ProfileAvatarPanel attributes = {attributes} setAttributes = {setAttributes} showSizeControl = {false} showRadiusControl = {false} />
                 <ProfileDisplaySettings attributes = {attributes} setAttributes = {setAttributes} showBioControl = {false} showLinkControl = {false} />
+				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedCapitolCommunicationDetails"} setAttributes = {setAttributes} title="Capitol Communications" display={attributes.showCapitolCommunicationDetails} />
+				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedCampaignCommunicationDetails"} setAttributes = {setAttributes} title="Campaign Communications" display={attributes.showCampaignCommunicationDetails} />
+				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedDistrictCommunicationDetails"} setAttributes = {setAttributes} title="District Communications" display={attributes.showDistrictCommunicationDetails} />
+				<ProfileCommsOtherPanel attributes = {attributes} parentAttributeKey={"selectedOtherCommunicationDetails"} setAttributes = {setAttributes} title="Other Communications" display={attributes.showOtherCommunicationDetails} />
             </InspectorControls>
 
 			{ isLoading ? (

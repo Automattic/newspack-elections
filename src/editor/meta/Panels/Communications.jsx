@@ -19,6 +19,7 @@ export const CommunicationsPanel = (props) => {
 					<PanelTextControl meta={props.meta} label= "Phone (Capitol)" meta_key="phone_capitol" onChange={setPostMeta}/>
                 	<PanelTextControl meta={props.meta} label= "Email (Capitol)" meta_key="email_capitol" onChange={setPostMeta}/>
                 	<PanelTextControl meta={props.meta} label= "Fax (Capitol)" meta_key="fax_capitol" onChange={setPostMeta}/>
+					<PanelTextControl meta={props.meta} label= "Website (Capitol)" meta_key="website_capitol" onChange={setPostMeta}/>
 					
 				</PanelFieldset>
             </PanelRow>
@@ -28,6 +29,7 @@ export const CommunicationsPanel = (props) => {
 					<PanelTextControl meta={props.meta} label= "Phone (District)" meta_key="phone_district" onChange={setPostMeta}/>
                 	<PanelTextControl meta={props.meta} label= "Email (District)" meta_key="email_official" onChange={setPostMeta}/>
                 	<PanelTextControl meta={props.meta} label= "Fax (District)" meta_key="fax_district" onChange={setPostMeta}/>
+					<PanelTextControl meta={props.meta} label= "Website (District)" meta_key="website_district" onChange={setPostMeta}/>
 				</PanelFieldset>
             </PanelRow>
 
@@ -37,14 +39,13 @@ export const CommunicationsPanel = (props) => {
 					<PanelTextControl meta={props.meta} label= "Email (Campaign)" meta_key="email_campaign" onChange={setPostMeta}/>
                 	<PanelTextControl meta={props.meta} label= "Phone (Campaign)" meta_key="phone_campaign" onChange={setPostMeta}/>
 					<PanelTextControl meta={props.meta} label= "Fax (Campaign)" meta_key="fax_campaign" onChange={setPostMeta}/>
+					<PanelTextControl meta={props.meta} label= "Website (Campaign)" meta_key="website_campaign" onChange={setPostMeta}/>
 					
 				</PanelFieldset>
             </PanelRow>
 			
 			<PanelRow>
 				<PanelFieldset legend="Other">
-					<PanelTextControl meta={props.meta} label="Website (Legislative)" meta_key="website_legislative" onChange={setPostMeta} placeholder="https://"/>
-					<PanelTextControl meta={props.meta} label= "Website (Campaign)" meta_key="website_campaign" onChange={setPostMeta} placeholder="https://"/>
 					<PanelTextControl meta={props.meta} label="Website (Personal)" meta_key="website_personal" onChange={setPostMeta} placeholder="https://"/>
 					<PanelTextControl meta={props.meta} label= "Email (Other)" meta_key="email_other" onChange={setPostMeta}/>
 					<PanelTextControl meta={props.meta} label= "RSS" meta_key="rss" onChange={setPostMeta} placeholder="https://"/>

@@ -7,6 +7,7 @@ import LinkedinIcon from "./../images/linkedin.svg"
 import EmailIcon from "./../images/email.svg"
 import InstagramIcon from "./../images/instagram.svg"
 import PhoneIcon from "./../images/phone.svg"
+import WebIcon from "./../images/globe.svg"
 import FaxIcon from "./../images/fax.svg"
 
 /**
@@ -94,20 +95,27 @@ function normalize_porfile(profile){
 				phone : profile.meta?.phone_capitol,
 				fax : profile.meta?.fax_capitol,
 				address : profile.meta?.address_capitol,
+				website : profile.meta?.website_capitol,
 			},
 			district : {
 				email : profile.meta?.email_district,
 				phone : profile.meta?.phone_district,
 				fax : profile.meta?.fax_district,
 				address : profile.meta?.address_district,
+				website : profile.meta?.website_district,
 			},
 			campaign : {
 				email : profile.meta?.email_campaign,
 				phone : profile.meta?.phone_campaign,
 				fax : profile.meta?.fax_campaign,
 				address : profile.meta?.address_campaign,
+				website : profile.meta?.website_campaign,
 			},
-			other : {}
+			other : {
+				email_other :  profile.meta?.email_other,
+				rss :  profile.meta?.rss,
+				contact_form_url :  profile.meta?.contact_form_url,
+			}
 		}
     }
 }
@@ -218,6 +226,11 @@ const SingleProfile = (props) => {
 		showCampaignCommunicationDetails,
 		showOtherCommunicationDetails,
 
+		selectedCapitolCommunicationDetails,
+		selectedDistrictCommunicationDetails,
+		selectedCampaignCommunicationDetails,
+		selectedOtherCommunicationDetails,
+
     } = attributes
 
 
@@ -310,14 +323,14 @@ const SingleProfile = (props) => {
 			label = "Comms"
 		} = props
 
-		console.log(props)
+
 		return (
-			<div className={`${blockClassName}__contacts`}>
-				{label}:
+			<div className={`${blockClassName}__comms`}>
+				<div className={`${blockClassName}__comms-label`}>{label}:</div>
 				
-				{props.data && (
-					<ul>
-						{ props.data.phone && (
+				{props.data && (<>
+					<ul className={`${blockClassName}__comms-icons`}>
+						{ props.data.phone && props.show.showPhone && (
                                 <Contact 
 									href={`tel:${props.data.phone}`} 
 									tooltip = {`${label} Phone : ${props.data.phone}`} 
@@ -327,7 +340,7 @@ const SingleProfile = (props) => {
 								
                             )}
 						
-						{ props.data.fax && (
+						{ props.data.fax && props.show.showFax &&(
                                 <Contact 
 									href={`tel:${props.data.fax}`} 
 									tooltip = {`${label} Fax : ${props.data.fax}`} 
@@ -337,7 +350,7 @@ const SingleProfile = (props) => {
 								
                             )}
 
-						{ props.data.email && (
+						{ props.data.email && props.show.showEmail &&(
                                 <Contact 
 									href={`tel:${props.data.email}`} 
 									tooltip = {`${label} Email : ${props.data.email}`} 
@@ -345,12 +358,60 @@ const SingleProfile = (props) => {
 									icon = { <EmailIcon />}
 								/>
 								
-                            )}
+                        )}
+
+						{ props.data.website && props.show.showWebsite &&(
+                                <Contact 
+									href={props.data.website} 
+									tooltip = {`${label} Website : ${props.data.website}`} 
+									label = "Website" 
+									icon = { <WebIcon />}
+								/>
+								
+                        )}
 					</ul>
-				)}
+
+					{ props.data.address && props.show.showAddress && (
+						<address className={classnames(`${blockClassName}__contact`, {
+							[`${blockClassName}__contact--hide-label`] : true,
+							[`${blockClassName}__contact--address`] : true
+						})}>
+							{props.data.address}
+						</address>
+					) }
+
+					</>)}
 			</div>
 		)
 	}
+
+
+	const CommsOther = (props) => {
+
+		const {
+			label = "Comms",
+			data
+		} = props
+
+		console.log(data)
+
+		return (
+			<div className={`${blockClassName}__comms`}>
+				<div className={`${blockClassName}__comms-label`}>{label}:</div>
+				
+				{props.data && (
+					<dl className={`${blockClassName}__comms-other`}>
+						{Object.keys(data).filter((key) => {
+							return !!data[key]
+						}).map( (key, value) => (<>
+							<dt>{key}</dt>
+							<dd>{data[key]}</dd>
+						</>))}
+					</dl>)}
+			</div>
+		)
+	}
+
 	const maxWidth = (align !== "full" ? props.availableWidths.find( (w) => w.value === width)?.maxWidth : false)
     const excerptElement = document.createElement( 'div' );
     excerptElement.innerHTML = profile.bio;
@@ -371,9 +432,6 @@ const SingleProfile = (props) => {
            maxWidth : maxWidth ?? "none"
        }}
        >
-
-    
-         
 				<Photo 
 					display = {showAvatar} 
 					href= {profile.featured_image_thumbnail}
@@ -410,10 +468,10 @@ const SingleProfile = (props) => {
 					<Row key="website" value={<Websites />} display={showWebsites && profile.hasWebsites}/>
                     <Row key="url" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
 
-					<Row key="comms_capitol" value={<Comms data={profile.comms.capitol} label="Capitol"/>} display={showCapitolCommunicationDetails}/>
-					<Row key="comms_district" value={<Comms data={profile.comms.district} label="District"/>} display={showDistrictCommunicationDetails}/>
-					<Row key="comms_campaign" value={<Comms data={profile.comms.campaign} label="Campaign"/>} display={showCampaignCommunicationDetails}/>
-					<Row key="comms_other" value={<Comms data={profile.comms.other} label="Other"/>} display={showOtherCommunicationDetails}/>
+					<Row key="comms_capitol" value={<Comms data={profile.comms.capitol} label="Capitol" show={selectedCapitolCommunicationDetails}/>} display={showCapitolCommunicationDetails} />
+					<Row key="comms_district" value={<Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />
+					<Row key="comms_campaign" value={<Comms data={profile.comms.campaign} label="Campaign" show={selectedCampaignCommunicationDetails}/>} display={showCampaignCommunicationDetails} />
+					<Row key="comms_other" value={<CommsOther data={profile.comms.other} label="Other" show={selectedOtherCommunicationDetails}/>} display={showOtherCommunicationDetails} />
 
                 </div>
             </div>  

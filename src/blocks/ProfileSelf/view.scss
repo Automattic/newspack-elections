@@ -4,6 +4,7 @@
 
 
     &__contacts ul,
+	&__comms ul,
     &__container {
         display: flex;  
         flex-direction: row;
@@ -29,6 +30,42 @@
         }
 
     }
+
+	&__comms{
+		display: flex;
+		flex-wrap: wrap;
+
+		&-icons{
+			width: auto !important; //todo rafctor
+		}
+	}
+
+	&__comms-other{
+		width: 100%;
+		margin-top:0;
+		
+		dt,dd{
+			font-size: 0.8rem;
+			float:left;
+			margin: 0;
+		}
+
+	
+
+		dt{
+			clear:left;
+
+			&:after{
+				display:inline-block;
+				content: ": ";
+				margin-right:.5em;
+			}
+		}
+	}
+
+	&__comms-label{
+		margin-right: 1rem;
+	}
 
 	&__contact {
 
@@ -64,9 +101,14 @@
             }
         }
 
+		&--address{
+			width:100%;
+		}
     }
 
 	.editor-styles-wrapper &__contacts,
+	.editor-styles-wrapper &__comms,
+	&__comms,
     &__contacts{
 
         ul{

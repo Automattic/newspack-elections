@@ -79,17 +79,51 @@
 			"type": "boolean",
 			"default": true
 		},
+		"selectedCapitolCommunicationDetails": {
+			"type": "object",
+			"default": {
+				"showPhone" : true,
+				"showFax" : true,
+				"showEmail" : true,
+				"showAddress" : true,
+				"showWebsite" : true
+			}
+		},
 		"showDistrictCommunicationDetails": {
 			"type": "boolean",
 			"default": true
+		},
+		"selectedDistrictCommunicationDetails": {
+			"type": "object",
+			"default": {
+				"showPhone" : true,
+				"showFax" : true,
+				"showEmail" : true,
+				"showAddress" : true,
+				"showWebsite" : true
+			}
 		},
 		"showCampaignCommunicationDetails": {
 			"type": "boolean",
 			"default": true
 		},
+		"selectedCampaignCommunicationDetails": {
+			"type": "object",
+			"default": {
+				"showPhone" : true,
+				"showFax" : true,
+				"showEmail" : true,
+				"showAddress" : true,
+				"showWebsite" : true
+			}
+		},
 		"showOtherCommunicationDetails": {
 			"type": "boolean",
 			"default": true
+		},
+		"selectedOtherCommunicationDetails": {
+			"type": "object",
+			"default": {}
 		}
 	}
 }

@@ -42,35 +42,35 @@ const ProfileCommsPanel = (props) => {
 			<PanelBody title={ title }>
 				<PanelRow>
 					<ToggleControl
-						label={ __( 'Display Phone', 'newspack-blocks' ) }
+						label={ __( 'Display Phone', 'govpack' ) }
 						checked={ showPhone ?? true }
 						onChange={ () => setSubAttributes( { showPhone: ! showPhone } ) }
 					/>
 				</PanelRow>
 				<PanelRow>
 					<ToggleControl
-						label={ __( 'Display Fax', 'newspack-blocks' ) }
+						label={ __( 'Display Fax', 'govpack' ) }
 						checked={ showFax ?? true }
 						onChange={ () => setSubAttributes( { showFax: ! showFax } ) }
 					/>
 				</PanelRow>
 				<PanelRow>
 					<ToggleControl
-						label={ __( 'Display Email', 'newspack-blocks' ) }
+						label={ __( 'Display Email', 'govpack' ) }
 						checked={ showEmail ?? true }
 						onChange={ () => setSubAttributes( { showEmail: ! showEmail } ) }
 					/>
 				</PanelRow>
 				<PanelRow>
 					<ToggleControl
-						label={ __( 'Display Address', 'newspack-blocks' ) }
+						label={ __( 'Display Address', 'govpack' ) }
 						checked={ showAddress ?? true }
 						onChange={ () => setSubAttributes( { showAddress: ! showAddress } ) }
 					/>
 				</PanelRow>
 				<PanelRow>
 					<ToggleControl
-						label={ __( 'Display webiste', 'newspack-blocks' ) }
+						label={ __( 'Display webiste', 'govpack' ) }
 						checked={ showAddress ?? true }
 						onChange={ () => setSubAttributes( { showWebsite: ! showWebsite } ) }
 					/>

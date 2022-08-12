@@ -20,7 +20,7 @@ const ResetProfileToolbar = (props) => {
                 controls={ [
                     {
                         icon: <Icon icon={ postAuthor } />,
-                        title: __( 'Modify Selection', 'newspack-blocks' ),
+                        title: __( 'Modify Selection', 'govpack' ),
                         onClick: () => {
                             setAttributes( { profileId: 0 } );
                             setProfile( null );

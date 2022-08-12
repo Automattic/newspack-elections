@@ -28,7 +28,7 @@ class Import {
 		wp_add_inline_script(
 			'govpack-importer',
 			'var govpack_importer_options = ' . 
-			json_encode( [ 'profiles_path' => admin_url( 'edit.php?post_type=' . Profile::CPT_SLUG ) ] ),
+			wp_json_encode( [ 'profiles_path' => admin_url( 'edit.php?post_type=' . Profile::CPT_SLUG ) ] ),
 			'before' 
 		);
 		

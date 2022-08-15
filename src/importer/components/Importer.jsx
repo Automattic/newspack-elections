@@ -17,7 +17,9 @@ import api from "@wordpress/api"
  
 
 
-const Importer = () => {
+const Importer = (props) => {
+
+
   
     let [step, setStep] = useState(stage.UPLOADER);
     let [didInitialStatusCheck, setDidInitialStatusCheck] = useState(false)
@@ -86,7 +88,7 @@ const Importer = () => {
     }
 
     if(step === stage.DONE){
-        return (<Done />)
+        return (<Done clickThrough = {props.options.profiles_path} />)
     }
     
 }

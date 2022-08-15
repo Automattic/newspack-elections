@@ -59,18 +59,19 @@
 			"type": "boolean",
 			"default": true
 		},
+		"selectedSocial": {
+			"type": "object",
+			"default": {
+				"showOfficial" : true,
+				"showCampaign" : true,
+				"showPersonal" : true
+			}
+		},
         "showEmail": {
 			"type": "boolean",
 			"default": true
 		},
-        "showDistrictAddress": {
-			"type": "boolean",
-			"default": true
-		},
-		"showCapitolAddress": {
-			"type": "boolean",
-			"default": true
-		},
+      
         "align": {
 			"type": "string",
             "default": ""

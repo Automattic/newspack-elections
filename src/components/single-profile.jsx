@@ -60,12 +60,23 @@ function normalize_porfile(profile){
         email :  decodeEntities(profile.meta?.email ?? null),
         link :  profile.link,
 		social : {
-        	twitter :  profile.meta?.twitter,
-        	facebook :  profile.meta?.facebook,
-        	linkedin :  profile.meta?.linkedin,
-			instagram :  profile.meta?.instagram
+        	official : {
+				twitter : profile.meta?.twitter_official ?? null,
+				facebook : profile.meta?.facebook_official ?? null,
+				instagram : profile.meta?.instagram_official ?? null
+			},
+			campaign :  {
+				twitter : profile.meta?.twitter_campaign ?? null,
+				facebook : profile.meta?.facebook_campaign ?? null,
+				instagram : profile.meta?.instagram_campaign ?? null
+			},
+			personal :  {
+				twitter : profile.meta?.twitter_personal ?? null,
+				facebook : profile.meta?.facebook_personal ?? null,
+				instagram : profile.meta?.instagram_personal ?? null
+			},
 		},
-        hasSocial : !!(profile.meta?.twitter ?? profile.meta?.facebook ?? profile.meta?.linkedin ?? profile.meta?.instagram),
+
 		address : {
 			default 	: (createAddress("capitol") ?? createAddress("district") ?? null),
 			capitol 	: createAddress("capitol"),
@@ -112,9 +123,18 @@ function normalize_porfile(profile){
 				website : profile.meta?.website_campaign,
 			},
 			other : {
-				email_other :  profile.meta?.email_other,
-				rss :  profile.meta?.rss,
-				contact_form_url :  profile.meta?.contact_form_url,
+				email_other :  {
+					label : "Email (Other)",
+					value : profile.meta?.email_other,
+				},
+				rss :  {
+					label : "RSS Feed URL",
+					value : profile.meta?.rss
+				}, 
+				contact_form_url : {
+					label : "Contact Form URL",
+					value : profile.meta?.contact_form_url
+				}
 			}
 		}
     }
@@ -133,7 +153,7 @@ const Row = (props) => {
     }
 
     return (
-        <div className="wp-block-govpack-profile__line">
+        <div className="wp-block-govpack-profile__line" role="listitem">
             {value}
         </div>
     )
@@ -213,10 +233,8 @@ const SingleProfile = (props) => {
         showPosition,
         showParty,
         showState,
-        showEmail,
         showSocial,
-        showDistrictAddress,
-		showCapitolAddress,
+		selectedSocial,
 		showWebsites,
         showProfileLink,
         className,
@@ -233,27 +251,8 @@ const SingleProfile = (props) => {
 
     } = attributes
 
-
-	const Websites = (props) => {
-		return (
-			<div className={`${blockClassName}__contacts`}>
-				<ul>
-				{ profile.websites.campaign && (
-					<li>
-						<a href={profile.websites.campaign}>Campaign Website</a>
-					</li>
-				)}
-
-				{ profile.websites.legislative && (
-					<li>
-						<a href={profile.websites.legislative}>Legislative Website</a>
-					</li>
-				)}
-				</ul>
-			</div>
-		)
-    }
-
+	
+	
 	const Contact = (props) => {
         return (
             <li className={classnames(`${blockClassName}__contact`, {
@@ -269,48 +268,61 @@ const SingleProfile = (props) => {
         )
     }
 
-    const Contacts = (props) => {
+    const SocialMedia = (props) => {
+
+		const SocialRow = (props) => {
+
+			const {
+				show = true,
+				label
+			} = props
+
+			if(!show){
+				return null;
+			}
+
+			return (
+				<li className={`${blockClassName}__social_group`}>
+					<div className={`${blockClassName}__label`}>{label}: </div>
+					<ul className='inline-list'>
+						{ props.services.facebook && (
+							<Contact 
+								href={props.services.facebook} 
+								label = "Facebook"
+								icon = { <FacebookIcon />}
+							/>
+						)}
+
+						{ props.services.twitter && (
+							<Contact 
+								href={props.services.twitter} 
+								label = "Twitter" 
+								icon = { <TwitterIcon />}
+							/>
+						)}
+
+						{ props.services.instagram && (
+							<Contact 
+								href={props.services.instagram} 
+								label = "Instagram" 
+								icon = { <InstagramIcon />}
+							/>
+						)}
+					</ul>
+				</li>
+			)
+		}
+
+		
+		
+
         return (
            
-            <div className={`${blockClassName}__contacts`}>
-                <ul>
-                  
-
-                    { showSocial && (
-                        <>
-                            { profile.social.facebook && (
-                                <Contact 
-								 	href={profile.facebook} 
-								 	label = "FB"
-									icon = { <FacebookIcon />}
-							 	/>
-                            )}
-
-                            { profile.social.twitter && (
-                                <Contact 
-									href={profile.twitter} 
-									label = "Tw" 
-									icon = { <TwitterIcon />}
-								/>
-                            )}
-
-                            { profile.social.linkedin && (
-                                <Contact 
-									href={profile.linkedin} 
-									label = "Li" 
-									icon = { <LinkedinIcon />}
-								/>
-                            )}
-
-							{ profile.social.instagram && (
-                                <Contact 
-									href={profile.instagram} 
-									label = "In" 
-									icon = { <InstagramIcon />}
-								/>
-                            )}
-                        </>
-                    )}
+            <div className={`${blockClassName}__social`}>
+                <ul className={`${blockClassName}__services`}>
+					<SocialRow services={props.data.official} show={props.show.showOfficial} label="Offical" />
+					<SocialRow services={props.data.campaign} show={props.show.showCampaign} label="Campaign" />
+					<SocialRow services={props.data.personal} show={props.show.showPersonal} label="Personal" />
                 </ul>
             </div>
         )
@@ -326,10 +338,10 @@ const SingleProfile = (props) => {
 
 		return (
 			<div className={`${blockClassName}__comms`}>
-				<div className={`${blockClassName}__comms-label`}>{label}:</div>
+				<div className={`${blockClassName}__label`}>{label}:</div>
 				
 				{props.data && (<>
-					<ul className={`${blockClassName}__comms-icons`}>
+					<ul className={`${blockClassName}__comms-icons inline-list`}>
 						{ props.data.phone && props.show.showPhone && (
                                 <Contact 
 									href={`tel:${props.data.phone}`} 
@@ -393,20 +405,19 @@ const SingleProfile = (props) => {
 			data
 		} = props
 
-		console.log(data)
 
 		return (
-			<div className={`${blockClassName}__comms`}>
-				<div className={`${blockClassName}__comms-label`}>{label}:</div>
+			<div className={`${blockClassName}__comms-other`}>
+				<div className={`${blockClassName}__label`}>{label}:</div>
 				
 				{props.data && (
-					<dl className={`${blockClassName}__comms-other`}>
+					<dl className={`${blockClassName}__comms-other key-pair-list`} role="list">
 						{Object.keys(data).filter((key) => {
 							return !!data[key]
-						}).map( (key, value) => (<>
-							<dt>{key}</dt>
-							<dd>{data[key]}</dd>
-						</>))}
+						}).map( (key, value) => (<div key={key} className="key-pair-list__group" role="listitem">
+							<dt className="key-pair-list__key" role="term">{data[key].label}</dt>
+							<dd className="key-pair-list__value">{data[key].value}</dd>
+						</div>))}
 					</dl>)}
 			</div>
 		)
@@ -418,7 +429,9 @@ const SingleProfile = (props) => {
 
     let bio = excerptElement.textContent || excerptElement.innerText || '';
 
+	const doShowSocial = selectedSocial.showOfficial || selectedSocial.showCampaign || selectedSocial.showPersonal
 	
+	console.log("doShowSocial", doShowSocial)
 
     return (
        <div className= {classnames(`${blockClassName}__container`, {
@@ -431,6 +444,7 @@ const SingleProfile = (props) => {
        style = {{
            maxWidth : maxWidth ?? "none"
        }}
+	   role="list"
        >
 				<Photo 
 					display = {showAvatar} 
@@ -447,7 +461,7 @@ const SingleProfile = (props) => {
 
             
                 <div className={`${blockClassName}__info`}>
-                    <div className={`${blockClassName}__line`}>
+                    <div className={`${blockClassName}__line`} role="listitem">
                         {showName && (
                             <h3><Link>{profile.name.full}</Link></h3>
                         )}
@@ -462,17 +476,14 @@ const SingleProfile = (props) => {
                     <Row key="pos" value={profile.position}  display={showPosition}/>
                     <Row key="party" value={profile.party}  display={showParty}/>
                     <Row key="states" value={profile.state} display={showState}/>
-                    <Row key="contact" value={<Contacts />} display={(showSocial && profile.hasSocial)}/>
-                    <Row key="address_district" value={profile.address.district} display={showDistrictAddress}/>
-					<Row key="address_capitol" value={profile.address.capitol} display={showCapitolAddress}/>
-					<Row key="website" value={<Websites />} display={showWebsites && profile.hasWebsites}/>
-                    <Row key="url" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
 
+                    <Row key="social" value={<SocialMedia data={profile.social} label="Social Media" show={selectedSocial}/>} display={(showSocial && doShowSocial)}/>
 					<Row key="comms_capitol" value={<Comms data={profile.comms.capitol} label="Capitol" show={selectedCapitolCommunicationDetails}/>} display={showCapitolCommunicationDetails} />
 					<Row key="comms_district" value={<Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />
 					<Row key="comms_campaign" value={<Comms data={profile.comms.campaign} label="Campaign" show={selectedCampaignCommunicationDetails}/>} display={showCampaignCommunicationDetails} />
 					<Row key="comms_other" value={<CommsOther data={profile.comms.other} label="Other" show={selectedOtherCommunicationDetails}/>} display={showOtherCommunicationDetails} />
 
+					<Row key="url" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
                 </div>
             </div>  
      

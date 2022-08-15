@@ -11,7 +11,16 @@
         width:100%;
     }
 
-    
+    .inline-list{
+		margin: 0;
+		padding: 0;
+		list-style: none;
+
+		> li {
+			float: left;
+		}
+	}
+
     &__container {
 
         $element : &;
@@ -63,7 +72,7 @@
 		}
 	}
 
-	&__comms-label{
+	&__label{
 		margin-right: 1rem;
 	}
 
@@ -106,8 +115,14 @@
 		}
     }
 
+	&__social_group{
+		display: flex;
+	}
+
 	.editor-styles-wrapper &__contacts,
 	.editor-styles-wrapper &__comms,
+	.editor-styles-wrapper &__social,
+	&__social,
 	&__comms,
     &__contacts{
 

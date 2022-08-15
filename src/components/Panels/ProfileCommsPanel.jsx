@@ -19,7 +19,7 @@ const ProfileCommsPanel = (props) => {
         showEmail,
         showFax,
         showAddress,
-		showWebiste,
+		showWebsite,
     } = attributes[parentAttributeKey]
 
 
@@ -70,8 +70,8 @@ const ProfileCommsPanel = (props) => {
 				</PanelRow>
 				<PanelRow>
 					<ToggleControl
-						label={ __( 'Display webiste', 'govpack' ) }
-						checked={ showAddress ?? true }
+						label={ __( 'Display Website', 'govpack' ) }
+						checked={ showWebsite ?? true }
 						onChange={ () => setSubAttributes( { showWebsite: ! showWebsite } ) }
 					/>
 				</PanelRow>

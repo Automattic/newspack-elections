@@ -167,3 +167,156 @@ function gp_contacts( $profile_data, $attributes ) {
 }
 
 
+function gp_social_media( $profile_data, $attributes ) {
+
+	$template = '<div class="wp-block-govpack-profile__social">
+		<ul class=\"wp-block-govpack-profile__services">
+		%s
+		</ul>
+		</div>';
+
+	$content = "";
+
+	if($attributes["selectedSocial"]["showOfficial"]){
+		$content .= gp_social_media_row("Official", $profile_data["social"]["official"]);
+	}
+
+	if($attributes["selectedSocial"]["showCampaign"]){
+		$content .= gp_social_media_row("Campaign", $profile_data["social"]["campaign"]);
+	}
+
+	if($attributes["selectedSocial"]["showPersonal"]){
+		$content .= gp_social_media_row("Personal", $profile_data["social"]["personal"]);
+	}
+
+	return sprintf($template, $content); 
+
+}
+
+function gp_social_media_row($label, $links = []){
+
+
+	$outer_template = 
+		'<li class="wp-block-govpack-profile__social_group">
+			<div class="wp-block-govpack-profile__label">%s: </div>
+			<ul class="inline-list">
+				%s
+			</ul>
+		</li>';
+
+	$content = "";
+
+	$services = [ 'facebook', 'twitter', 'linkedin', 'instagram' ];
+
+	$icons = [
+		'facebook'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/facebook.svg' ),
+		'twitter'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/twitter.svg' ),
+		'linkedin'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/linkedin.svg' ),
+		'instagram' => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/instagram.svg' ),
+		'email'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/email.svg' ),
+	];
+
+	foreach ( $services as $service ) {
+		if ( ! isset( $links[ $service ] ) || ! $links[ $service ] ) {
+			continue;
+		}
+
+		$classes = [
+			'wp-block-govpack-profile__contact',
+			'wp-block-govpack-profile__contact--hide-label',
+			"wp-block-govpack-profile__contact--{$service}",
+		];
+
+		$classes = join( ' ', $classes );
+
+		$icon = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
+		$contact_icon = sprintf( $icon, $service, $icons[ $service ] );
+
+		$content      .=  
+		"<li class=\"{$classes} \">
+			<a href=\"{$links[$service]}\" class=\"wp-block-govpack-profile__contact__link\">
+				{$contact_icon}
+				<span class=\"wp-block-govpack-profile__contact__label\">{$service}</span>
+			</a>
+		</li>";
+
+	}
+
+
+
+	return sprintf($outer_template, $label, $content); 
+}
+
+function gp_contact_info($label, $links, $attrs){
+	$outer_template = '<div class="wp-block-govpack-profile__comms">
+		<div class="wp-block-govpack-profile__label">%s:</div>
+			<ul class="wp-block-govpack-profile__comms-icons inline-list">
+				%s
+			</ul>
+			%s
+		</div>
+	</div>';
+
+	$icons = [
+		'phone'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/phone.svg' ),
+		'fax'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/fax.svg' ),
+		'website'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/globe.svg' ),
+		'email'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/email.svg' ),
+	];
+
+	$services = [ 
+		'email' => "showEmail",
+		'phone'  => "showPhone",
+		'fax' => "showFax",
+		'website' => "showWebsite",
+	];
+
+	$content = "";
+
+	foreach ( $services as $service => $show) {
+
+		//no data, dont show it
+		if ( ! isset( $links[ $service ] ) || ! $links[ $service ] ) {
+			continue;
+		}
+
+		//show control might be disabled
+		if(!$attrs[$show]){
+			continue;
+		}
+
+		$classes = [
+			'wp-block-govpack-profile__contact',
+			'wp-block-govpack-profile__contact--hide-label',
+			"wp-block-govpack-profile__contact--{$service}",
+		];
+
+		$classes = join( ' ', $classes );
+
+		$icon = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
+		$contact_icon = sprintf( $icon, $service, $icons[ $service ] );
+
+		$content      .=  
+		"<li class=\"{$classes} \">
+			<a href=\"{$links[$service]}\" class=\"wp-block-govpack-profile__contact__link\">
+				{$contact_icon}
+				<span class=\"wp-block-govpack-profile__contact__label\">{$service}</span>
+			</a>
+		</li>";
+
+	}
+
+	$address = "";
+	if($attrs["showAddress"]){
+		$classes = [
+			'wp-block-govpack-profile__contact',
+			'wp-block-govpack-profile__contact--hide-label',
+			"wp-block-govpack-profile__contact--address",
+		];
+		$classes = join( ' ', $classes );	
+		$address = sprintf('<address class="%s">%s</address>', $classes, $links["address"]);
+	}
+
+
+	return sprintf($outer_template, $label, $content, $address); 
+}

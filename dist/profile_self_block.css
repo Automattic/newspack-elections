@@ -32,6 +32,7 @@
 .wp-block-govpack-profile-self__comms-other {
   width: 100%;
   margin-top: 0;
+  overflow: auto;
 }
 .wp-block-govpack-profile-self__comms-other dt, .wp-block-govpack-profile-self__comms-other dd {
   font-size: 0.8rem;

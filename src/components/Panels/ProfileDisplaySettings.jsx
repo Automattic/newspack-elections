@@ -17,21 +17,16 @@ const ProfileDisplaySettings = (props) => {
         showPosition,
         showParty,
         showState,
-        showEmail,
+
         showSocial,
-        showCapitolAddress,
-		showDistrictAddress,
 		showName,
         showProfileLink,
-		showWebsites,
 
 		showCapitolCommunicationDetails,
 		showDistrictCommunicationDetails,
 		showCampaignCommunicationDetails,
 		showOtherCommunicationDetails,
 
-
-        
     } = attributes
 
     return (
@@ -89,15 +84,6 @@ const ProfileDisplaySettings = (props) => {
 							    label={ __( 'Display Social', 'govpack-blocks' ) }
 							    checked={ showSocial }
     							onChange={ () => setAttributes( { showSocial: ! showSocial } ) }
-		    				/>
-	    				</PanelRow>
-
-
-						<PanelRow>
-						    <ToggleControl
-							    label={ __( 'Display Websites', 'govpack-blocks' ) }
-							    checked={ showWebsites }
-    							onChange={ () => setAttributes( { showWebsites: ! showWebsites } ) }
 		    				/>
 	    				</PanelRow>
 

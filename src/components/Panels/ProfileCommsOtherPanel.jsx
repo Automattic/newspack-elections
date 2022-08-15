@@ -2,22 +2,24 @@ import { __ } from '@wordpress/i18n';
 import {Panel, PanelBody, PanelRow, ToggleControl, BaseControl, ButtonGroup, Button} from '@wordpress/components';
 import {__experimentalUnitControl as UnitControl} from '@wordpress/components';
 
-
+import { normalize_profile } from '../NormaliseProfile';
 
 const ProfileCommsOtherPanel = (props) => {
 
-    const {
+    let {
 		title,
         attributes,
         setAttributes,
 		display = true,
-		parentAttributeKey
+		parentAttributeKey,
+		profile
     } = props
 
 	if(!display){
 		return null
 	}
 
+	profile = normalize_profile(profile)
 	console.log(attributes[parentAttributeKey])
 
 	const setSubAttributes = (attrs) => {
@@ -33,9 +35,17 @@ const ProfileCommsOtherPanel = (props) => {
     return (
 		<Panel>
 			<PanelBody title={ title }>
-				<PanelRow>
-					Hita
-				</PanelRow>
+
+				{Object.keys(profile.comms.other).map( (key) => (
+					<PanelRow>
+						<ToggleControl
+							label={ profile.comms.other[key].label}
+							checked={  attributes[parentAttributeKey][key] ?? true }
+							onChange={ () => setSubAttributes( { [key]: !(attributes[parentAttributeKey][key] ?? true) } ) }
+						/>
+					</PanelRow>
+				))}
+			
 			</PanelBody>
 		</Panel>
 	)

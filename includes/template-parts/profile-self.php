@@ -90,15 +90,16 @@ $show_name              = ( isset( $profile_data['name'] ) && $attributes['showN
 				<h1> <?php echo esc_html( $profile_data['name'] ); ?></h1>
 			<?php } ?>
 			<?php
-			die("?");
+			
 				gp_row( $profile_data['legislative_body'], $attributes['showLegislativeBody'], );
 				gp_row( $profile_data['position'], $attributes['showPosition'] );
 				gp_row( $profile_data['party'], $attributes['showParty'] );
 				gp_row( $profile_data['state'], ( $attributes['showState'] && $profile_data['state'] ) );
-			//	gp_row( gp_contacts( $profile_data, $attributes ), ( $attributes['showEmail'] || $attributes['showSocial'] && $profile_data['hasSocial'] ) );
-			//	gp_row( $profile_data['address']['default'], $attributes['showDistrictAddress'] );
-			//	gp_row( $profile_data['address']['secondary'], ( $attributes['showCapitolAddress'] ) );
-			//	gp_row( gp_websites( $profile_data['websites'] ), ( $attributes['showWebsites'] && $profile_data['hasWebsites'] ) );
+				gp_row( gp_social_media( $profile_data, $attributes ), ( $attributes['showSocial'] && $profile_data['hasSocial'] ) );
+				gp_row( gp_contact_info( 'Capitol', $profile_data['comms']['capitol'], $attributes['selectedCapitolCommunicationDetails'] ), $attributes['showCapitolCommunicationDetails'] );
+				gp_row( gp_contact_info( 'District', $profile_data['comms']['district'], $attributes['selectedDistrictCommunicationDetails'] ), $attributes['showDistrictCommunicationDetails'] );
+				gp_row( gp_contact_info( 'Campaign', $profile_data['comms']['campaign'], $attributes['selectedCampaignCommunicationDetails'] ), $attributes['showCampaignCommunicationDetails'] );
+		
 				
 			?>
 		</div>

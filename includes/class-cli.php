@@ -398,14 +398,13 @@ class CLI extends \WP_CLI_Command {
 		
 		}
 
-		foreach ( $args as $file ) {	
+		foreach ( $args as $file ) {    
 
 			
 			
 			try {
 
 				$importer = \Govpack\Core\Importer\Importer::make( $file );
-				var_dump($importer);
 				$importer::import( $file, $dry_run );
 
 			} catch ( \Exception $e ) {

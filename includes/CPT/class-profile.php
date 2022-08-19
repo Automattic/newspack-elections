@@ -708,72 +708,72 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				'campaign'    => $profile_raw_meta_data['campaign_url'][0] ?? '',
 				'legislative' => $profile_raw_meta_data['leg_url'][0] ?? '',
 			],
-			'social' => [
-				"official" => [
-					"facebook" => $profile_raw_meta_data['facebook_official'][0] ?? null,
-					"twitter" => $profile_raw_meta_data['twitter_official'][0] ?? null,
-					"instagram" => $profile_raw_meta_data['instagram_official'][0] ?? null,
+			'social'           => [
+				'official' => [
+					'facebook'  => $profile_raw_meta_data['facebook_official'][0] ?? null,
+					'twitter'   => $profile_raw_meta_data['twitter_official'][0] ?? null,
+					'instagram' => $profile_raw_meta_data['instagram_official'][0] ?? null,
 				], 
-				"personal" => [
-					"facebook" => $profile_raw_meta_data['facebook_personal'][0] ?? null,
-					"twitter" => $profile_raw_meta_data['twitter_personal'][0] ?? null,
-					"instagram" => $profile_raw_meta_data['instagram_personal'][0] ?? null,
+				'personal' => [
+					'facebook'  => $profile_raw_meta_data['facebook_personal'][0] ?? null,
+					'twitter'   => $profile_raw_meta_data['twitter_personal'][0] ?? null,
+					'instagram' => $profile_raw_meta_data['instagram_personal'][0] ?? null,
 				], 
-				"campaign" => [
-					"facebook" => $profile_raw_meta_data['facebook_campaign'][0] ?? null,
-					"twitter" => $profile_raw_meta_data['twitter_campaign'][0] ?? null,
-					"instagram" => $profile_raw_meta_data['instagram_campaign'][0] ?? null,
+				'campaign' => [
+					'facebook'  => $profile_raw_meta_data['facebook_campaign'][0] ?? null,
+					'twitter'   => $profile_raw_meta_data['twitter_campaign'][0] ?? null,
+					'instagram' => $profile_raw_meta_data['instagram_campaign'][0] ?? null,
 				],
 			],
-			"comms" => [
-				"capitol" => [
-					"email" => $profile_raw_meta_data['email_capitol'][0] ?? null,
-					"phone" => $profile_raw_meta_data['phone_capitol'][0] ?? null,
-					"fax" => $profile_raw_meta_data['fax_capitol'][0] ?? null,
-					"address" => $profile_raw_meta_data['address_capitol'][0] ?? null,
-					"website" => $profile_raw_meta_data['website_capitol'][0] ?? null,
+			'comms'            => [
+				'capitol'  => [
+					'email'   => $profile_raw_meta_data['email_capitol'][0] ?? null,
+					'phone'   => $profile_raw_meta_data['phone_capitol'][0] ?? null,
+					'fax'     => $profile_raw_meta_data['fax_capitol'][0] ?? null,
+					'address' => $profile_raw_meta_data['address_capitol'][0] ?? null,
+					'website' => $profile_raw_meta_data['website_capitol'][0] ?? null,
 				],
-				"district" => [
-					"email" => $profile_raw_meta_data['email_district'][0] ?? null,
-					"phone" => $profile_raw_meta_data['phone_district'][0] ?? null,
-					"fax" => $profile_raw_meta_data['fax_district'][0] ?? null,
-					"address" => $profile_raw_meta_data['address_district'][0] ?? null,
-					"website" => $profile_raw_meta_data['website_district'][0] ?? null,
+				'district' => [
+					'email'   => $profile_raw_meta_data['email_district'][0] ?? null,
+					'phone'   => $profile_raw_meta_data['phone_district'][0] ?? null,
+					'fax'     => $profile_raw_meta_data['fax_district'][0] ?? null,
+					'address' => $profile_raw_meta_data['address_district'][0] ?? null,
+					'website' => $profile_raw_meta_data['website_district'][0] ?? null,
 				],
-				"campaign" => [
-					"email" => $profile_raw_meta_data['email_campaign'][0] ?? null,
-					"phone" => $profile_raw_meta_data['phone_campaign'][0] ?? null,
-					"fax" => $profile_raw_meta_data['fax_campaign'][0] ?? null,
-					"address" => $profile_raw_meta_data['address_campaign'][0] ?? null,
-					"website" => $profile_raw_meta_data['website_campaign'][0] ?? null,
+				'campaign' => [
+					'email'   => $profile_raw_meta_data['email_campaign'][0] ?? null,
+					'phone'   => $profile_raw_meta_data['phone_campaign'][0] ?? null,
+					'fax'     => $profile_raw_meta_data['fax_campaign'][0] ?? null,
+					'address' => $profile_raw_meta_data['address_campaign'][0] ?? null,
+					'website' => $profile_raw_meta_data['website_campaign'][0] ?? null,
 				],
-				"other" => [
-					"email_other" =>  [
-						"label" => "Email (Other)",
-						"value" => $profile_raw_meta_data['email_other,'][0] ?? null
+				'other'    => [
+					'email_other'      => [
+						'label' => 'Email (Other)',
+						'value' => $profile_raw_meta_data['email_other,'][0] ?? null,
 					],
-					"rss" =>  [
-						"label" => "RSS Feed URL",
-						"value" => $profile_raw_meta_data['rss'][0] ?? null
+					'rss'              => [
+						'label' => 'RSS Feed URL',
+						'value' => $profile_raw_meta_data['rss'][0] ?? null,
 					], 
-					"contact_form_url" => [
-						"label" => "Contact Form URL",
-						"value" => $profile_raw_meta_data['contact_form_url'][0] ?? null
-					]
-				]
-			]
+					'contact_form_url' => [
+						'label' => 'Contact Form URL',
+						'value' => $profile_raw_meta_data['contact_form_url'][0] ?? null,
+					],
+				],
+			],
 		];
 
 
-		$profile_data['name']        = join( ' ', [ $profile_data['first_name'], $profile_data['last_name'] ] );
+		$profile_data['name'] = join( ' ', [ $profile_data['first_name'], $profile_data['last_name'] ] );
 		
 		$profile_data['hasWebsites'] = ( $profile_data['websites']['campaign'] ?? $profile_data['websites']['legislative'] ?? false );
 
 		
 
-		$profile_data['social'] = array_map('array_filter', $profile_data['social']);
-		$profile_data['social'] = array_filter($profile_data['social']);
-		$profile_data['hasSocial']   = !( empty($profile_data['social']['official']) && empty($profile_data['social']['personal']) && empty($profile_data['social']['campaign']) ?? false );
+		$profile_data['social']    = array_map( 'array_filter', $profile_data['social'] );
+		$profile_data['social']    = array_filter( $profile_data['social'] );
+		$profile_data['hasSocial'] = ! ( empty( $profile_data['social']['official'] ) && empty( $profile_data['social']['personal'] ) && empty( $profile_data['social']['campaign'] ) ?? false );
 			
 		return $profile_data;
 	}

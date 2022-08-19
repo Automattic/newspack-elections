@@ -166,7 +166,12 @@ function gp_contacts( $profile_data, $attributes ) {
 	);
 }
 
-
+/**
+ * Utility Function that Outputs a Profiles's Social Media Sections
+ * 
+ * @param array $profile_data Data about the profile.
+ * @param array $attributes Attributes from the Block.
+ */
 function gp_social_media( $profile_data, $attributes ) {
 
 	$template = '<div class="wp-block-govpack-profile__social">
@@ -175,25 +180,31 @@ function gp_social_media( $profile_data, $attributes ) {
 		</ul>
 		</div>';
 
-	$content = "";
+	$content = '';
 
-	if($attributes["selectedSocial"]["showOfficial"]){
-		$content .= gp_social_media_row("Official", $profile_data["social"]["official"]);
+	if ( $attributes['selectedSocial']['showOfficial'] ) {
+		$content .= gp_social_media_row( 'Official', $profile_data['social']['official'] );
 	}
 
-	if($attributes["selectedSocial"]["showCampaign"]){
-		$content .= gp_social_media_row("Campaign", $profile_data["social"]["campaign"]);
+	if ( $attributes['selectedSocial']['showCampaign'] ) {
+		$content .= gp_social_media_row( 'Campaign', $profile_data['social']['campaign'] );
 	}
 
-	if($attributes["selectedSocial"]["showPersonal"]){
-		$content .= gp_social_media_row("Personal", $profile_data["social"]["personal"]);
+	if ( $attributes['selectedSocial']['showPersonal'] ) {
+		$content .= gp_social_media_row( 'Personal', $profile_data['social']['personal'] );
 	}
 
-	return sprintf($template, $content); 
+	return sprintf( $template, $content ); 
 
 }
 
-function gp_social_media_row($label, $links = []){
+/**
+ * Utility Function that Outputs a Profiles's Social Media Row
+ * 
+ * @param string $label Row label to shoe.
+ * @param array  $links Links for social media profiles.
+ */
+function gp_social_media_row( $label, $links = [] ) {
 
 
 	$outer_template = 
@@ -204,7 +215,7 @@ function gp_social_media_row($label, $links = []){
 			</ul>
 		</li>';
 
-	$content = "";
+	$content = '';
 
 	$services = [ 'facebook', 'twitter', 'linkedin', 'instagram' ];
 
@@ -229,10 +240,10 @@ function gp_social_media_row($label, $links = []){
 
 		$classes = join( ' ', $classes );
 
-		$icon = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
+		$icon         = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
 		$contact_icon = sprintf( $icon, $service, $icons[ $service ] );
 
-		$content      .=  
+		$content .=  
 		"<li class=\"{$classes} \">
 			<a href=\"{$links[$service]}\" class=\"wp-block-govpack-profile__contact__link\">
 				{$contact_icon}
@@ -244,10 +255,17 @@ function gp_social_media_row($label, $links = []){
 
 
 
-	return sprintf($outer_template, $label, $content); 
+	return sprintf( $outer_template, $label, $content ); 
 }
 
-function gp_contact_info($label, $links, $attrs){
+/**
+ * Utility Function that Outputs a Profiles's Contact Sections
+ * 
+ * @param array $label label for the section being output.
+ * @param array $links Data about the profile.
+ * @param array $attrs Attributes from the Block.
+ */
+function gp_contact_info( $label, $links, $attrs ) {
 	$outer_template = '<div class="wp-block-govpack-profile__comms">
 		<div class="wp-block-govpack-profile__label">%s:</div>
 			<ul class="wp-block-govpack-profile__comms-icons inline-list">
@@ -258,30 +276,30 @@ function gp_contact_info($label, $links, $attrs){
 	</div>';
 
 	$icons = [
-		'phone'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/phone.svg' ),
-		'fax'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/fax.svg' ),
-		'website'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/globe.svg' ),
-		'email'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/email.svg' ),
+		'phone'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/phone.svg' ),
+		'fax'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/fax.svg' ),
+		'website' => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/globe.svg' ),
+		'email'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/email.svg' ),
 	];
 
 	$services = [ 
-		'email' => "showEmail",
-		'phone'  => "showPhone",
-		'fax' => "showFax",
-		'website' => "showWebsite",
+		'email'   => 'showEmail',
+		'phone'   => 'showPhone',
+		'fax'     => 'showFax',
+		'website' => 'showWebsite',
 	];
 
-	$content = "";
+	$content = '';
 
-	foreach ( $services as $service => $show) {
+	foreach ( $services as $service => $show ) {
 
-		//no data, dont show it
+		// no data, dont show it.
 		if ( ! isset( $links[ $service ] ) || ! $links[ $service ] ) {
 			continue;
 		}
 
-		//show control might be disabled
-		if(!$attrs[$show]){
+		// show control might be disabled.
+		if ( ! $attrs[ $show ] ) {
 			continue;
 		}
 
@@ -293,10 +311,10 @@ function gp_contact_info($label, $links, $attrs){
 
 		$classes = join( ' ', $classes );
 
-		$icon = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
+		$icon         = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
 		$contact_icon = sprintf( $icon, $service, $icons[ $service ] );
 
-		$content      .=  
+		$content .=  
 		"<li class=\"{$classes} \">
 			<a href=\"{$links[$service]}\" class=\"wp-block-govpack-profile__contact__link\">
 				{$contact_icon}
@@ -306,17 +324,17 @@ function gp_contact_info($label, $links, $attrs){
 
 	}
 
-	$address = "";
-	if($attrs["showAddress"]){
+	$address = '';
+	if ( $attrs['showAddress'] ) {
 		$classes = [
 			'wp-block-govpack-profile__contact',
 			'wp-block-govpack-profile__contact--hide-label',
-			"wp-block-govpack-profile__contact--address",
+			'wp-block-govpack-profile__contact--address',
 		];
-		$classes = join( ' ', $classes );	
-		$address = sprintf('<address class="%s">%s</address>', $classes, $links["address"]);
+		$classes = join( ' ', $classes );   
+		$address = sprintf( '<address class="%s">%s</address>', $classes, $links['address'] );
 	}
 
 
-	return sprintf($outer_template, $label, $content, $address); 
+	return sprintf( $outer_template, $label, $content, $address ); 
 }

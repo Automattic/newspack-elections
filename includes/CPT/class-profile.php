@@ -162,7 +162,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 					'not_found'          => __( 'No profiles found.', 'govpack' ),
 					'not_found_in_trash' => __( 'No profiles found in Trash.', 'govpack' ),
 				],
-				'has_archive'  => false,
+				'has_archive'  => true,
 				'public'       => true,
 				'show_in_rest' => true,
 				'show_ui'      => true,
@@ -183,38 +183,194 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	}
 
 	/**
+	 * Returns an array of keys for the data model and how to handle them in import
+	 *
+	 * @return array
+	 */
+	public static function get_import_model() {
+
+		$model = [];
+
+		foreach ( self::get_meta_keys() as $key ) {
+			$model[ $key ] = [
+				'type' => 'meta',
+				'key'  => $key,
+			];
+		}
+
+		$taxonomies = [
+			'status' => 'govpack_officeholder_status',
+			'state'  => 'govpack_state',
+			'office' => 'govpack_legislative_body',
+			'party'  => 'govpack_party',
+		];
+
+		foreach ( $taxonomies as $key => $taxonomy ) {
+			$model[ $key ] = [
+				'type'     => 'taxonomy',
+				'key'      => $key,
+				'taxonomy' => $taxonomy,
+			];
+		}
+		
+		$post_fields = [
+			'bio'          => 'post_content',
+			'post_id'      => 'ID',
+			'post_status'  => 'post_status',
+			'thumbnail_id' => '_thumbnail_id',
+		];
+
+		foreach ( $post_fields as $key => $attr ) {
+			$model[ $key ] = [
+				'type' => 'post',
+				'key'  => $attr,
+			];
+		}
+
+		$model['photo'] = [
+			'type' => 'media',
+			'key'  => '_thumbnail_id',
+		];
+
+		return apply_filters( 'govpack_profile_import_model', $model );
+
+	}
+
+	/**
+	 * Returns an array of keys for the data model and how to handle them in export
+	 *
+	 * @return array
+	 */
+	public static function get_export_model() {
+
+		$model = self::get_import_model();
+
+		$model['post_id'] = [
+			'type' => 'post',
+			'key'  => 'ID',
+		];
+
+		$model['post_status'] = [
+			'type' => 'post',
+			'key'  => 'post_status',
+		];
+
+		$model['thumbnail_id'] = [
+			'type' => 'post',
+			'key'  => '_thumbnail_id',
+		];
+
+
+		return apply_filters( 'govpack_profile_export_model', $model );
+	}
+
+	/**
+	 * Get all the meta keys we use 
+	 */
+	public static function get_meta_keys() {
+
+		$meta_keys = [
+			// About Panel.
+			'name',
+			'name_prefix',
+			'name_first',
+			'name_middle',
+			'name_last',
+			'name_suffix',
+			'nickname',
+			'occupation',
+			'education',
+			'gender',
+			'race',
+			'ethnicity',
+			'date_of_birth',
+			'date_of_death',
+			'status',
+			'district',
+
+			// office panel.
+			'contact_form_url',
+			'date_assumed_office',
+			'appointed_by',
+			'appointed_date',
+			'confirmed_date',
+			'term_end_date',
+			'congress_year',
+
+			// communications panel.
+			'email_official',
+			'email_campaign',
+			'email_other',
+			'email_district',
+			'email_legislative',
+			'email_capitol',
+			
+			'address_capitol',
+			'address_district',
+			'address_campaign',
+
+			'phone_capitol',
+			'phone_district',
+			'phone_campaign',
+
+			'fax_capitol',
+			'fax_district',
+			'fax_campaign',
+
+			'website_personal',
+			'website_campaign',
+			'website_district',
+			'website_capitol',
+			'rss',
+
+
+			'linkedin',
+			'rumble',
+			'gab',
+
+			// meta and ID's panel.
+			'govpack_id',
+			'fec_id',
+			'usio_id',
+			'opensecrets_id',
+			'district_ocd_id',
+			'openstates_id',
+			'thomas_id',
+			'lis_id',
+			'cspan_id',
+			'govtrack_id',
+			'votesmart_id',
+			'balletpedia_id',
+			'washington_post_id',
+			'icpsr_id',
+			'wikipedia_id',
+			'google_entity_id',
+			'committee_id',
+		];
+
+		// Social Panel.
+		$groups = [ 'facebook', 'twitter', 'instagram' ];
+		$keys   = [ 'official', 'campaign', 'personal' ];
+
+		foreach ( $groups as $group ) {
+			foreach ( $keys as $key ) {
+				$slug        = sprintf( '%s_%s', $group, $key );
+				$meta_keys[] = $slug;
+			}
+		}
+		
+		return apply_filters( 'govpack_profile_meta_keys', $meta_keys );
+	}
+
+	/**
 	 * Register Meta data for the post in the REST API 
 	 */
 	public static function register_post_meta() {
 
-		self::register_meta( 'prefix' );
-		self::register_meta( 'first_name' );
-		self::register_meta( 'last_name' );
-
-		$address_fields = [ 'address', 'city', 'state', 'county', 'zip' ];
-		$address_types  = [ 'capitol_office', 'district_office' ];
-
-		foreach ( $address_types as $type ) {
-			foreach ( $address_fields as $field ) {
-				$slug = sprintf( '%s_%s', $type, $field );
-				self::register_meta( $slug );
-			}
+		foreach ( self::get_meta_keys() as $key ) {
+			self::register_meta( $key );
 		}
-
-		self::register_meta( 'position' );
-		self::register_meta( 'title' );
-
-		self::register_meta( 'main_phone' );
-		self::register_meta( 'secondary_phone' );
-		self::register_meta( 'email' );
-		self::register_meta( 'twitter' );
-		self::register_meta( 'instagram' );
-		self::register_meta( 'facebook' );
-		self::register_meta( 'linkedin' );
-		self::register_meta( 'leg_url' );
-		self::register_meta( 'campaign_url' );
-		
-	}
+	}   
 
 	/**
 	 * Register single Meta data for the post in the REST API 
@@ -537,8 +693,8 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'website'          => $profile_raw_meta_data['leg_url'][0] ?? '',
 			'biography'        => $profile_raw_meta_data['biography'][0] ?? '',
 			'address'          => [
-				'default'   => self::formatAddress( $profile_raw_meta_data, 'capitol' ) ?? self::formatAddress( $profile_raw_meta_data, 'district' ) ?? '',
-				'capitol'   => self::formatAddress( $profile_raw_meta_data, 'capitol' ) ?? null,
+				'default'  => self::formatAddress( $profile_raw_meta_data, 'capitol' ) ?? self::formatAddress( $profile_raw_meta_data, 'district' ) ?? '',
+				'capitol'  => self::formatAddress( $profile_raw_meta_data, 'capitol' ) ?? null,
 				'district' => self::formatAddress( $profile_raw_meta_data, 'district' ) ?? null,
 			],
 			'party'            => $term_data[ \Govpack\Core\Tax\Party::TAX_SLUG ] ?? '',
@@ -552,12 +708,73 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				'campaign'    => $profile_raw_meta_data['campaign_url'][0] ?? '',
 				'legislative' => $profile_raw_meta_data['leg_url'][0] ?? '',
 			],
+			'social' => [
+				"official" => [
+					"facebook" => $profile_raw_meta_data['facebook_official'][0] ?? null,
+					"twitter" => $profile_raw_meta_data['twitter_official'][0] ?? null,
+					"instagram" => $profile_raw_meta_data['instagram_official'][0] ?? null,
+				], 
+				"personal" => [
+					"facebook" => $profile_raw_meta_data['facebook_personal'][0] ?? null,
+					"twitter" => $profile_raw_meta_data['twitter_personal'][0] ?? null,
+					"instagram" => $profile_raw_meta_data['instagram_personal'][0] ?? null,
+				], 
+				"campaign" => [
+					"facebook" => $profile_raw_meta_data['facebook_campaign'][0] ?? null,
+					"twitter" => $profile_raw_meta_data['twitter_campaign'][0] ?? null,
+					"instagram" => $profile_raw_meta_data['instagram_campaign'][0] ?? null,
+				],
+			],
+			"comms" => [
+				"capitol" => [
+					"email" => $profile_raw_meta_data['email_capitol'][0] ?? null,
+					"phone" => $profile_raw_meta_data['phone_capitol'][0] ?? null,
+					"fax" => $profile_raw_meta_data['fax_capitol'][0] ?? null,
+					"address" => $profile_raw_meta_data['address_capitol'][0] ?? null,
+					"website" => $profile_raw_meta_data['website_capitol'][0] ?? null,
+				],
+				"district" => [
+					"email" => $profile_raw_meta_data['email_district'][0] ?? null,
+					"phone" => $profile_raw_meta_data['phone_district'][0] ?? null,
+					"fax" => $profile_raw_meta_data['fax_district'][0] ?? null,
+					"address" => $profile_raw_meta_data['address_district'][0] ?? null,
+					"website" => $profile_raw_meta_data['website_district'][0] ?? null,
+				],
+				"campaign" => [
+					"email" => $profile_raw_meta_data['email_campaign'][0] ?? null,
+					"phone" => $profile_raw_meta_data['phone_campaign'][0] ?? null,
+					"fax" => $profile_raw_meta_data['fax_campaign'][0] ?? null,
+					"address" => $profile_raw_meta_data['address_campaign'][0] ?? null,
+					"website" => $profile_raw_meta_data['website_campaign'][0] ?? null,
+				],
+				"other" => [
+					"email_other" =>  [
+						"label" => "Email (Other)",
+						"value" => $profile_raw_meta_data['email_other,'][0] ?? null
+					],
+					"rss" =>  [
+						"label" => "RSS Feed URL",
+						"value" => $profile_raw_meta_data['rss'][0] ?? null
+					], 
+					"contact_form_url" => [
+						"label" => "Contact Form URL",
+						"value" => $profile_raw_meta_data['contact_form_url'][0] ?? null
+					]
+				]
+			]
 		];
 
+
 		$profile_data['name']        = join( ' ', [ $profile_data['first_name'], $profile_data['last_name'] ] );
-		$profile_data['hasSocial']   = ( $profile_data['facebook'] ?? $profile_data['instagram'] ?? $profile_data['twitter'] ?? $profile_data['linkedin'] ?? false );
+		
 		$profile_data['hasWebsites'] = ( $profile_data['websites']['campaign'] ?? $profile_data['websites']['legislative'] ?? false );
 
+		
+
+		$profile_data['social'] = array_map('array_filter', $profile_data['social']);
+		$profile_data['social'] = array_filter($profile_data['social']);
+		$profile_data['hasSocial']   = !( empty($profile_data['social']['official']) && empty($profile_data['social']['personal']) && empty($profile_data['social']['campaign']) ?? false );
+			
 		return $profile_data;
 	}
 
@@ -599,3 +816,5 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		return '<!-- wp:govpack/profile-self {"showName":true} /-->';
 	}
 }
+
+

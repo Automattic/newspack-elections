@@ -1,0 +1,28 @@
+.components-panel__row {
+	.components-base-control {
+		width: 100%;
+	}
+}
+
+.components-panel__fieldset {
+	padding:1rem;
+	border:1px solid #ddd;
+	margin-bottom: 1rem;
+
+	.components-base-control{
+		margin-bottom: .5rem;
+	}
+}
+
+.components-panel__legend {
+	padding-left:1rem;
+	padding-right:1rem;
+	font-weight: 700;
+	
+}
+
+.components-text-control__input{
+	& &--invalid {
+		border: 1px solid #ff0000;
+	}
+}

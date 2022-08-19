@@ -1,2 +1,2 @@
-import './meta/profile.js';
+import './meta/profile.jsx';
 

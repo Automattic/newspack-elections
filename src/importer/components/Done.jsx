@@ -1,12 +1,13 @@
 import InfoPanel from "./InfoPanel";
 
-const Done = () => {
+const Done = (props) => {
 
-	console.log(wp.data.select('core'))
+	console.log(props)
+
 	return (
         <div>
             <InfoPanel heading="Done!">
-			Your import is complete. <a href="#">Visit your newly created available profiles</a>.
+			Your import is complete. <a href={props.clickThrough}>Visit your newly created available profiles</a>.
             </InfoPanel>
         </div>
     )

@@ -4,22 +4,21 @@
 import { __ } from '@wordpress/i18n';
 
 import { InspectorControls, useBlockProps} from '@wordpress/block-editor';
-import { Placeholder, Spinner } from '@wordpress/components';
+import { Spinner } from '@wordpress/components';
 import { useRef, useState, useEffect } from '@wordpress/element';
-import { Icon, postAuthor } from '@wordpress/icons';
-import apiFetch from '@wordpress/api-fetch';
-import { addQueryArgs } from '@wordpress/url';
 import { withSelect, useSelect, select} from "@wordpress/data";
-import { useEntityProp, getEditedEntityRecord, getEntitiesConfig} from '@wordpress/core-data';
 import { compose } from "@wordpress/compose";
 
 import ProfileDisplaySettings from './../../components/Panels/ProfileDisplaySettings.jsx'
 import ProfileAvatarPanel from '../../components/Panels/ProfileAvatarPanel';
+import ProfileCommsPanel from '../../components/Panels/ProfileCommsPanel'
+import ProfileCommsOtherPanel from '../../components/Panels/ProfileCommsOtherPanel'
+import ProfileCommsSocialPanel from '../../components/Panels/ProfileCommsSocialPanel'
 
 import SingleProfile from "./../../components/single-profile"
 import AvatarAlignmentToolBar from '../../components/Toolbars/AvatarAlignment.jsx';
 
-import {isNil, isUndefined, isEmpty} from "lodash"
+import {isNil, isEmpty} from "lodash"
 
 
 
@@ -85,7 +84,6 @@ function useLoaded(props){
 function RawEdit( props ) {
 
 	const loaded = useLoaded(props)
-	console.log("LOADED", loaded)
 	const [ isLoading, setIsLoading ] = useState( true );
     const ref = useRef();
 	const blockProps = useBlockProps( { ref } );
@@ -104,7 +102,6 @@ function RawEdit( props ) {
 
 		// if stillLoading is false (ie - we finished loading) then set that react state
 		if(!stillLoading){
-			console.log("loaded", loaded)
 			setIsLoading(false)
 		}
 
@@ -227,6 +224,11 @@ function RawEdit( props ) {
             <InspectorControls>
                 <ProfileAvatarPanel attributes = {attributes} setAttributes = {setAttributes} showSizeControl = {false} showRadiusControl = {false} />
                 <ProfileDisplaySettings attributes = {attributes} setAttributes = {setAttributes} showBioControl = {false} showLinkControl = {false} />
+				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedCapitolCommunicationDetails"} setAttributes = {setAttributes} title="Capitol Communications" display={attributes.showCapitolCommunicationDetails} />
+				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedCampaignCommunicationDetails"} setAttributes = {setAttributes} title="Campaign Communications" display={attributes.showCampaignCommunicationDetails} />
+				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedDistrictCommunicationDetails"} setAttributes = {setAttributes} title="District Communications" display={attributes.showDistrictCommunicationDetails} />
+				<ProfileCommsOtherPanel attributes = {attributes} parentAttributeKey={"selectedOtherCommunicationDetails"} setAttributes = {setAttributes} title="Other Communications" display={attributes.showOtherCommunicationDetails} profile={profile}/>
+				<ProfileCommsSocialPanel attributes = {attributes} parentAttributeKey={"selectedSocial"} setAttributes = {setAttributes} title="Social" display={attributes.showSocial} />
             </InspectorControls>
 
 			{ isLoading ? (

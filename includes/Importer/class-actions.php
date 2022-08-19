@@ -8,6 +8,7 @@
 namespace Govpack\Core\Importer;
 
 use Exception;
+use Govpack\Core\CPT\Profile;
 
 /**
  * Register and handle the "USIO" Importer
@@ -76,12 +77,15 @@ class Actions {
 	 * @param array $content content from the imported.
 	 */
 	public static function inject_block_in_content( $content = null ) {
-		
+
 		// phpcs:ignore content is "" false null or nil.
 		if ( ! $content ) {
 			return \Govpack\Core\CPT\Profile::default_profile_content();
 		}
 
+		if ( has_block( 'govpack/profile-self', $content ) ) {
+			return $content;
+		}
 		// inject it at the start.
 		return \Govpack\Core\CPT\Profile::default_profile_content() . $content;
 	}
@@ -224,95 +228,66 @@ class Actions {
 	 */
 	public static function make_profile_from_csv( $data_input ) {
 		
+
 		$data = [];
 
 		foreach ( $data_input as $key => $value ) {
 			$data[ trim( strtolower( $key ) ) ] = trim( $value );
 		}
 
-		$capitol_address      = self::get_address_from_open_states_data( $data['capitol_address'] );
-		$district_address = self::get_address_from_open_states_data( $data['district_address'] );
-  
+		$model = Profile::get_import_model();
+
+		
+		$meta = [];
+		$tax  = [];
 		$post = [
 			'post_author'    => 0,
-			'post_content'   => \apply_filters( 'govpack_import_content', $data['biography'] ),
-			'post_title'     => $data['name'],
 			'post_status'    => 'draft',
 			'post_type'      => 'govpack_profiles',
 			'comment_status' => 'closed',
-		  
-			'meta_input'     => [
-				'open_state_id'            => $data['id'],
-
-				'first_name'               => $data['given_name'],
-				'last_name'                => $data['family_name'],
-				'name'                     => $data['name'],
-				'gender'                   => $data['gender'],
-				'biography'                => $data['biography'],
-				'birth_date'               => $data['birth_date'],
-				'death_date'               => $data['death_date'],
-
-				'current_district'         => $data['current_district'],
-				'current_chamber'          => $data['current_chamber'],
-			   
-				'email'                    => $data['email'],
-				'twitter'                  => $data['twitter'],
-				'youtube'                  => $data['youtube'],
-				'instagram'                => $data['instagram'],
-				'facebook'                 => $data['facebook'],
-				
-				'district_phone'               => $data['district_voice'],
-				'capitol_phone'          => $data['capitol_voice'],
-
-				'district_fax'                 	=> $data['district_fax'],
-				'capitol_fax'            		=> $data['capitol_fax'],
-
-				'capitol_office_address'      => $capitol_address['address'] ?? '',
-				'capitol_office_city'         => $capitol_address['city'] ?? '',
-				'capitol_office_state'        => $capitol_address['state'] ?? '',
-				'capitol_office_zip'          => $capitol_address['zip'] ?? '',
-
-				'district_office_address' => $district_address['address'] ?? '',
-				'district_office_city'    => $district_address['city'] ?? '',
-				'district_office_state'   => $district_address['state'] ?? '',
-				'district_office_zip'     => $district_address['zip'] ?? '',
-
-				'image'                    => $data['image'],
-				'links'                    => \apply_filters( 'govpack_import_openstates_links', $data['links'] ),
-				'sources'                  => \apply_filters( 'govpack_import_openstates_sources', $data['sources'] ),
-				'extra'                    => $data['extra'] ?? '',
-
-			],   
 		];
- 
 
-		$resp = \wp_insert_post( $post );
+		foreach ( $model as $key => $action ) {
 
+			if ( 'meta' === $action['type'] ) {
+				$meta[ $key ] = $data_input[ $action['key'] ];
+			}
+
+			if ( 'post' === $action['type'] ) {
+				$post[ $action['key'] ] = $data_input[ $key ];
+			}
+
+			if ( 'taxonomy' === $action['type'] ) {
+				$term                       = self::find_or_create_term( $data_input[ $key ], $action['taxonomy'] );
+				$tax[ $action['taxonomy'] ] = $term->term_id;
+			}
+
+			if ( 'media' === $action['type'] ) {
+				// add key to meta to sore it for later processing.
+				$meta[ $key ] = $data_input[ $key ];
+			}
+		}
+
+		if ( ! self::is_profile_update( $post ) ) {
+			$post['post_content'] = apply_filters( 'govpack_import_content', $post['post_content'] );
+		}
+
+		$post['post_title'] = $meta['name'];
+		$post['meta_input'] = $meta;
+		$post['tax_input']  = $tax;
+
+
+		$resp = self::create_or_update( $post );
+	
 		if ( \is_wp_error( $resp ) ) {
 			return; 
 		}
 
 		$created_post_id = $resp;
-	   
-		$taxonomy_map = [
-			'current_party'   => 'govpack_party',
-			'state'           => 'govpack_state',
-			'current_chamber' => 'govpack_legislative_body',
-			'title'           => 'govpack_officeholder_title',
-			'status'          => 'govpack_officeholder_status',
-		];
-
-		foreach ( $taxonomy_map as $field => $taxonomy ) {
-			
-			if ( isset( $data[ $field ] ) ) {
-				self::assign_term_to_obj( $created_post_id, $data[ $field ], $taxonomy );
-			}
-		}
 		
-	
-
-		if ( $data['image'] ) {
-
+		
+		if ( $data['photo'] ) {
+			
 			try {
 				Importer::sideload( $created_post_id );
 			} catch ( Exception $e ) {
@@ -321,6 +296,60 @@ class Actions {
 		}
 		
 		return true;
+	}
+
+
+	/**
+	 * Creates or Updates a post in the database
+	 * 
+	 * @param array $post Data passed from Importer.
+	 * @return int|WP_Error returns the post id if the change went through or a WP_Error if not.
+	 */
+	public static function create_or_update( $post ) {
+		
+		if ( self::is_profile_update( $post ) ) {
+			$resp = wp_update_post( $post );
+		} else {
+			$resp = wp_insert_post( $post );
+		}
+
+		return $resp;
+	}
+
+	/**
+	 * Detect if the post being imported is a new post or an update over an existsing post
+	 * 
+	 * Checks for the existance of "ID" in the post array and then looks for that post in the database
+	 * 
+	 * @param array $post Data passed from Importer.
+	 * @return bool true if the post exists, false if not
+	 */
+	public static function is_profile_update( $post ) {
+		if (
+			( $post['ID'] ) && 
+			( self::post_exists( $post['ID'] ) )
+		) {
+			return true;
+		} 
+		
+		return false;
+		
+	}
+
+	/**
+	 * Determines if a post, identified by the specified ID, exist
+	 * within the WordPress database.
+	 * 
+	 * Note that this function uses the 'acme_' prefix to serve as an
+	 * example for how to use the function within a theme. If this were
+	 * to be within a class, then the prefix would not be necessary.
+	 *
+	 * @param    int $id    The ID of the post to check.
+	 * @return   bool          True if the post exists; otherwise, false.
+	 * @since    1.0.0
+	 */
+	public static function post_exists( $id ) {
+		return is_string( get_post_status( $id ) );
 	}
 
 	/**

@@ -24,10 +24,11 @@ class Admin {
 	public static function hooks() {
 		\add_action( 'admin_menu', [ '\Govpack\Core\Admin\Menu', 'add_taxonomy_submenus' ], 10, 1 );
 		\add_action( 'admin_menu', [ __class__, 'create_menus' ], 1, 1 );
-		\add_action( 'enqueue_block_editor_assets', [ __class__, 'register_blocks' ], 1, 1 );
 		\add_action( 'admin_enqueue_scripts', [ __class__, 'register_assets' ], 100, 1 );
 		\add_action( 'admin_enqueue_scripts', [ __class__, 'load_assets' ], 101, 1 );
 		\add_action( 'block_categories_all', [ __class__, 'block_categories' ], 10, 2 );
+
+		\add_action( 'after_setup_theme', [ '\Govpack\Core\Admin\Export', 'hooks' ], 11, 1 );
 	}
 
 	/**
@@ -72,6 +73,15 @@ class Admin {
 				->set_menu_slug( 'govpack_import' )
 				->set_capability( Capabilities::CAN_IMPORT )
 				->set_callback( [ '\Govpack\Core\Admin\Pages\Import', 'view' ] ) 
+		);
+
+		$item = new Menu_Item();
+		$menu->add_item(
+			$item->set_page_title( 'Export' )
+				->set_menu_title( 'Export' )
+				->set_menu_slug( 'govpack_export' )
+				->set_capability( Capabilities::CAN_EXPORT )
+				->set_callback( [ '\Govpack\Core\Admin\Pages\Export', 'view' ] ) 
 		);
 
 		$menu->create();

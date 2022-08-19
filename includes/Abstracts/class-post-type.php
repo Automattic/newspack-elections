@@ -46,4 +46,21 @@ abstract class Post_Type {
 		unset( $columns['tags'] );
 		return $columns;
 	}
+
+	/**
+	 * Get All posts in a post type. Use sparingly.
+	 *
+	 * @return array
+	 */
+	public static function get_all() {
+		$posts = new \WP_Query(
+			[
+				'post_type'      => static::CPT_SLUG,
+				'post_status'    => 'all',
+				'posts_per_page' => -1,
+			]
+		);
+
+		return $posts->posts;
+	}
 }

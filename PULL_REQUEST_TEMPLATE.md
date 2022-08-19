@@ -1,8 +1,5 @@
 ### All Submissions:
 
-* [ ] Have you followed the [Newspack Contributing guideline](https://github.com/Automattic/newspack-plugin/blob/master/.github/CONTRIBUTING.md)?
-* [ ] Does your code follow the [WordPress' coding standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/) and [VIP Go coding standards](https://vip.wordpress.com/documentation/vip-go/code-review-blockers-warnings-notices/)?
-* [ ] Have you checked to ensure there aren't other open [Pull Requests](../../pulls) for the same update/change?
 
 <!-- Mark completed items with an [x] -->
 

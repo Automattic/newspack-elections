@@ -1,10 +1,10 @@
 <?php
 /**
  * Plugin Name:     Govpack
- * Plugin URI:      https://newspack.pub
- * Description:     Govpack TK
- * Author:          Paul Schreiber
- * Author URI:      https://newspack.pub
+ * Plugin URI:      https://govpack.org/
+ * Description:     Govpack
+ * Author:          Govpack, poweredbycoffee, thefuturewasnow
+ * Author URI:      https://govpack.org/
  * Text Domain:     govpack
  * Domain Path:     /languages
  * Version:         0.0.0

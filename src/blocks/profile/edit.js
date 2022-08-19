@@ -9,18 +9,20 @@ import { Icon, postAuthor, } from '@wordpress/icons';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 import { decodeEntities } from '@wordpress/html-entities';
-import { withSelect, useSelect, select} from "@wordpress/data";
-
 
 import { AutocompleteWithSuggestions } from 'newspack-components';
 
 import ProfileDisplaySettings from '../../components/Panels/ProfileDisplaySettings.jsx'
 import ProfileAvatarPanel from '../../components/Panels/ProfileAvatarPanel';
-import SingleProfile from "../../components/single-profile"
+import ProfileCommsPanel from '../../components/Panels/ProfileCommsPanel'
+import ProfileCommsOtherPanel from '../../components/Panels/ProfileCommsOtherPanel'
+import ProfileCommsSocialPanel from '../../components/Panels/ProfileCommsSocialPanel'
+
 import AvatarAlignmentToolBar from '../../components/Toolbars/AvatarAlignment.jsx';
 import BlockSizeAlignmentToolbar from '../../components/Toolbars/BlockSizeAlignmentToolbar.jsx';
 import ResetProfileToolbar from '../../components/Toolbars/ResetProfileToolbar.jsx';
 
+import SingleProfile from "./../../components/single-profile"
 
 /**
  * @param {Object} props The component properties.
@@ -31,7 +33,7 @@ import ResetProfileToolbar from '../../components/Toolbars/ResetProfileToolbar.j
 const units = [
 	{
 		value: '%',
-		label: '%',
+		label: '%',  
 	},
 	{
 		value: 'px',
@@ -51,37 +53,37 @@ const units = [
 export const avatarSizeOptions = [
 	{
 		value: 72,
-		label: /* translators: label for small avatar size option */ __( 'Small', 'newspack-blocks' ),
+		label: /* translators: label for small avatar size option */ __( 'Small', 'govpack' ),
 		shortName: /* translators: abbreviation for small avatar size option */ __(
 			'S',
-			'newspack-blocks'
+			'govpack'
 		),
 	},
 	{
 		value: 128,
-		label: /* translators: label for medium avatar size option */ __( 'Medium', 'newspack-blocks' ),
+		label: /* translators: label for medium avatar size option */ __( 'Medium', 'govpack' ),
 		shortName: /* translators: abbreviation for medium avatar size option */ __(
 			'M',
-			'newspack-blocks'
+			'govpack'
 		),
 	},
 	{
 		value: 192,
-		label: /* translators: label for large avatar size option */ __( 'Large', 'newspack-blocks' ),
+		label: /* translators: label for large avatar size option */ __( 'Large', 'govpack' ),
 		shortName: /* translators: abbreviation for large avatar size option */ __(
 			'L',
-			'newspack-blocks'
+			'govpack'
 		),
 	},
 	{
 		value: 256,
 		label: /* translators: label for extra-large avatar size option */ __(
 			'Extra-large',
-			'newspack-blocks'
+			'govpack'
 		),
 		shortName: /* translators: abbreviation for extra-large avatar size option  */ __(
 			'XL',
-			'newspack-blocks'
+			'govpack'
 		),
 	},
 ];
@@ -176,7 +178,7 @@ function Edit( props ) {
 			if ( ! _profile ) {
 				throw sprintf(
 					/* translators: Error text for when no authors are found. */
-					__( 'No profile found for ID %s.', 'newspack-blocks' ),
+					__( 'No profile found for ID %s.', 'govpack' ),
 					profileId
 				);
 			}
@@ -190,7 +192,7 @@ function Edit( props ) {
 					e ||
 					sprintf(
 						/* translators: Error text for when no authors are found. */
-						__( 'No profile found for ID %s.', 'newspack-blocks' ),
+						__( 'No profile found for ID %s.', 'govpack' ),
 						profileId
 					)
 			);
@@ -207,6 +209,11 @@ function Edit( props ) {
             <InspectorControls>
                 <ProfileAvatarPanel attributes = {attributes} setAttributes = {setAttributes} showSizeControl = {true} showRadiusControl = {true} />
                 <ProfileDisplaySettings attributes = {attributes} setAttributes = {setAttributes} showBioControl = {true} showLinkControl = {true} />
+				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedCapitolCommunicationDetails"} setAttributes = {setAttributes} title="Capitol Communications" display={attributes.showCapitolCommunicationDetails} />
+				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedCampaignCommunicationDetails"} setAttributes = {setAttributes} title="Campaign Communications" display={attributes.showCampaignCommunicationDetails} />
+				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedDistrictCommunicationDetails"} setAttributes = {setAttributes} title="District Communications" display={attributes.showDistrictCommunicationDetails} />
+				<ProfileCommsOtherPanel attributes = {attributes} parentAttributeKey={"selectedOtherCommunicationDetails"} setAttributes = {setAttributes} title="Other Communications" display={attributes.showOtherCommunicationDetails} profile={profile}/>
+				<ProfileCommsSocialPanel attributes = {attributes} parentAttributeKey={"selectedSocial"} setAttributes = {setAttributes} title="Social" display={attributes.showSocial} />
             </InspectorControls>
                               
             { profile ? (
@@ -233,16 +240,16 @@ function Edit( props ) {
             >   
                 { isLoading && (
 						<div className="is-loading">
-							{ __( 'Fetching profile info…', 'newspack-blocks' ) }
+							{ __( 'Fetching profile info…', 'govpack' ) }
 							<Spinner />
 						</div>
 				) }
                 { ! isLoading && (
                     <AutocompleteWithSuggestions
-                        label={ __( 'Search for an author to display', 'newspack-blocks' ) }
+                        label={ __( 'Search for an author to display', 'govpack' ) }
                         help={ __(
                             'Begin typing name, click autocomplete result to select.',
-                            'newspack-blocks'
+                            'govpack'
                         ) }
 
                         fetchSuggestions={ async ( search = null, offset = 0 ) => {

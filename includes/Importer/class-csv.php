@@ -52,8 +52,6 @@ class CSV extends \Govpack\Core\Importer\Abstracts\Abstract_Importer {
 			'govpack_importer_required_columns',
 			[
 				'name',
-				'current_chamber',
-				'title',
 				'status',
 			]
 		);
@@ -85,6 +83,7 @@ class CSV extends \Govpack\Core\Importer\Abstracts\Abstract_Importer {
 
 		update_option( 'govpack_import_group', self::import_group() );
 
+		$use_action_scheduler = false;
 
 		foreach ( $reader->getRecords() as $offset => $record ) {
 
@@ -93,10 +92,16 @@ class CSV extends \Govpack\Core\Importer\Abstracts\Abstract_Importer {
 				$record = array_merge( $record, $extra );
 			} 
 			
-			as_enqueue_async_action( 'govpack_import_csv_profile', [ 'data' => $record ], self::import_group() );
+			if ( $use_action_scheduler ) {
+				as_enqueue_async_action( 'govpack_import_csv_profile', [ 'data' => $record ], self::import_group() );
+			} else {
+				Actions::make_profile_from_csv( $record );
+			}
 		}
 
-		as_enqueue_async_action( 'govpack_import_cleanup', [], self::import_group() );
+		if ( $use_action_scheduler ) {
+			as_enqueue_async_action( 'govpack_import_cleanup', [], self::import_group() );
+		}
 
 	}
 

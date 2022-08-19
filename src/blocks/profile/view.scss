@@ -1,4 +1,7 @@
-.wp-block-govpack-profile {
+
+
+
+.wp-block-govpack-profile{
 
     $block : &;
 
@@ -110,9 +113,11 @@
 	.editor-styles-wrapper &__contacts,
 	.editor-styles-wrapper &__comms,
 	.editor-styles-wrapper &__social,
+	.editor-styles-wrapper &__services,
 	&__social,
 	&__comms,
-    &__contacts{
+    &__contacts,
+	&__services{
 
         ul{
             margin:0;
@@ -228,3 +233,4 @@
         margin-top: 0 !important;
     }
 }
+

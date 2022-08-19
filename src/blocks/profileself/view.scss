@@ -1,3 +1,5 @@
+@use "./../profile/view.scss";
+
 .wp-block-govpack-profile-self {
 
     $block : &;
@@ -78,8 +80,9 @@
 	}
 
 	&__contact {
-
+		
         $elm : &;
+		
 
         &__link,
         a{

@@ -3045,15 +3045,15 @@ svg.newspack--success {
 .wp-block-govpack-profile__social_group {
   display: flex;
 }
-.editor-styles-wrapper .wp-block-govpack-profile__contacts ul, .editor-styles-wrapper .wp-block-govpack-profile__comms ul, .editor-styles-wrapper .wp-block-govpack-profile__social ul, .wp-block-govpack-profile__social ul, .wp-block-govpack-profile__comms ul, .wp-block-govpack-profile__contacts ul {
+.editor-styles-wrapper .wp-block-govpack-profile__contacts ul, .editor-styles-wrapper .wp-block-govpack-profile__comms ul, .editor-styles-wrapper .wp-block-govpack-profile__social ul, .editor-styles-wrapper .wp-block-govpack-profile__services ul, .wp-block-govpack-profile__social ul, .wp-block-govpack-profile__comms ul, .wp-block-govpack-profile__contacts ul, .wp-block-govpack-profile__services ul {
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.editor-styles-wrapper .wp-block-govpack-profile__contacts ul li, .editor-styles-wrapper .wp-block-govpack-profile__comms ul li, .editor-styles-wrapper .wp-block-govpack-profile__social ul li, .wp-block-govpack-profile__social ul li, .wp-block-govpack-profile__comms ul li, .wp-block-govpack-profile__contacts ul li {
+.editor-styles-wrapper .wp-block-govpack-profile__contacts ul li, .editor-styles-wrapper .wp-block-govpack-profile__comms ul li, .editor-styles-wrapper .wp-block-govpack-profile__social ul li, .editor-styles-wrapper .wp-block-govpack-profile__services ul li, .wp-block-govpack-profile__social ul li, .wp-block-govpack-profile__comms ul li, .wp-block-govpack-profile__contacts ul li, .wp-block-govpack-profile__services ul li {
   margin-right: 0.5rem;
 }
-.editor-styles-wrapper .wp-block-govpack-profile__contacts ul li:last-of-type, .editor-styles-wrapper .wp-block-govpack-profile__comms ul li:last-of-type, .editor-styles-wrapper .wp-block-govpack-profile__social ul li:last-of-type, .wp-block-govpack-profile__social ul li:last-of-type, .wp-block-govpack-profile__comms ul li:last-of-type, .wp-block-govpack-profile__contacts ul li:last-of-type {
+.editor-styles-wrapper .wp-block-govpack-profile__contacts ul li:last-of-type, .editor-styles-wrapper .wp-block-govpack-profile__comms ul li:last-of-type, .editor-styles-wrapper .wp-block-govpack-profile__social ul li:last-of-type, .editor-styles-wrapper .wp-block-govpack-profile__services ul li:last-of-type, .wp-block-govpack-profile__social ul li:last-of-type, .wp-block-govpack-profile__comms ul li:last-of-type, .wp-block-govpack-profile__contacts ul li:last-of-type, .wp-block-govpack-profile__services ul li:last-of-type {
   margin-right: 0;
 }
 .wp-block-govpack-profile__avatar {

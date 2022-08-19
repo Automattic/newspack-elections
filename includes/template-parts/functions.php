@@ -266,13 +266,13 @@ function gp_social_media_row( $label, $links = [] ) {
  * @param array $attrs Attributes from the Block.
  */
 function gp_contact_info( $label, $links, $attrs ) {
-	$outer_template = '<div class="wp-block-govpack-profile__comms">
+	$outer_template = '
+	<div class="wp-block-govpack-profile__comms">
 		<div class="wp-block-govpack-profile__label">%s:</div>
 			<ul class="wp-block-govpack-profile__comms-icons inline-list">
 				%s
 			</ul>
 			%s
-		</div>
 	</div>';
 
 	$icons = [

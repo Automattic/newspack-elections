@@ -40,13 +40,18 @@ $available_widths = [
 		'value'    => 'full',
 		'maxWidth' => '100%',
 	],
+	'auto' => [
+		'label'    => 'Auto',
+		'value'    => 'auto',
+		'maxWidth' => 'auto',
+	]
 ];
 
 
 $styles = join(
 	' ',
 	[
-		'max-width:' . $available_widths[ $attributes['width'] ?? 'full' ]['maxWidth'] . ';',
+		'max-width:' . $available_widths[ $attributes['width'] ?? 'auto' ]['maxWidth'] . ';',
 	]
 );
 
@@ -80,7 +85,7 @@ $show_name              = ( isset( $profile_data['name'] ) && $attributes['showN
 		<?php if ( $show_photo ) { ?>
 		<div class="wp-block-govpack-profile-self__avatar">
 			<figure>
-				<?php echo wp_kses_post( GP_Maybe_Link( get_the_post_thumbnail( $profile_data['id'] ), $profile_data['link'], false ) ); ?>
+				<?php echo wp_kses_post( GP_Maybe_Link( "<img src=" . get_the_post_thumbnail_url( $profile_data['id'], "full" ) ." />", $profile_data['link'], false ) ); ?>
 			</figure>
 		</div>
 		<?php } ?>

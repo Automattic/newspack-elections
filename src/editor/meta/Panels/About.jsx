@@ -68,6 +68,7 @@ export const AboutPanel = (props) => {
                 <PanelDateControl meta={props.meta} label = "Date of Death" meta_key="date_of_death" onChange={setPostMeta} />
             </PanelRow>
 
+			{/** 
 			<PanelRow>
                 <PanelTaxonomyControl 
 					taxonomy="govpack_party" 
@@ -91,7 +92,8 @@ export const AboutPanel = (props) => {
 					onChange = {setSingleTerm}
 				/>
             </PanelRow>
-
+			*/}
+			
 			<PanelRow>
                 <PanelTextControl meta={props.meta} label = "District" meta_key="district" onChange={setPostMeta} />
             </PanelRow>

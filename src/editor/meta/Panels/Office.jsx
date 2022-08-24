@@ -31,11 +31,11 @@ export const OfficePanel = (props) => {
 			<PanelRow>
                 <PanelDateControl meta={props.meta} label= "Date term ends" meta_key="term_end_date" onChange={setPostMeta}/>
             </PanelRow>
-
+			{/**
 			<PanelRow>
                 <PanelTextControl meta={props.meta} label= "Congress Year/Batch" meta_key="congress_year" onChange={setPostMeta}/>
             </PanelRow>
-
+			 */}
         </GovPackSidebarPanel>
     )
 }

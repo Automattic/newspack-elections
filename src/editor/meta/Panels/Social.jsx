@@ -38,6 +38,14 @@ export const SocialPanel = (props) => {
 			</PanelRow>
 
 			<PanelRow>
+				<PanelFieldset legend={"Youtube"} >	
+					<PanelTextControl meta={props.meta} placeholder="https://" label= "YouTube (Official)" meta_key="youtube_official" onChange={setPostMeta}/>
+					<PanelTextControl meta={props.meta} placeholder="https://" label= "YouTube (Personal)" meta_key="youtube_personal" onChange={setPostMeta}/>
+					<PanelTextControl meta={props.meta} placeholder="https://" label= "YouTube (Campaign)" meta_key="youtube_campaign" onChange={setPostMeta}/>
+				</PanelFieldset>
+			</PanelRow>
+
+			<PanelRow>
 				<PanelFieldset legend={"Other"} >
 					<PanelTextControl meta={props.meta} placeholder="https://" label= "LinkedIn" meta_key="linkedin" onChange={setPostMeta}/>
 					<PanelTextControl meta={props.meta} placeholder="https://" label= "Rumble" meta_key="rumble" onChange={setPostMeta}/>

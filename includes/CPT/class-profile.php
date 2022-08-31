@@ -203,6 +203,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'state'  => 'govpack_state',
 			'office' => 'govpack_legislative_body',
 			'party'  => 'govpack_party',
+			'title'  => 'govpack_officeholder_title',
 		];
 
 		foreach ( $taxonomies as $key => $taxonomy ) {
@@ -349,7 +350,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		];
 
 		// Social Panel.
-		$groups = [ 'facebook', 'twitter', 'instagram' ];
+		$groups = [ 'facebook', 'twitter', 'instagram', 'youtube' ];
 		$keys   = [ 'official', 'campaign', 'personal' ];
 
 		foreach ( $groups as $group ) {

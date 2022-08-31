@@ -182,15 +182,15 @@ function gp_social_media( $profile_data, $attributes ) {
 
 	$content = '';
 
-	if ( $attributes['selectedSocial']['showOfficial'] ) {
+	if ( $attributes['selectedSocial']['showOfficial'] && isset($profile_data['social']['official']) ) {
 		$content .= gp_social_media_row( 'Official', $profile_data['social']['official'] );
 	}
 
-	if ( $attributes['selectedSocial']['showCampaign'] ) {
+	if ( $attributes['selectedSocial']['showCampaign']  && isset($profile_data['social']['campaign']) ) {
 		$content .= gp_social_media_row( 'Campaign', $profile_data['social']['campaign'] );
 	}
 
-	if ( $attributes['selectedSocial']['showPersonal'] ) {
+	if ( $attributes['selectedSocial']['showPersonal']  && isset($profile_data['social']['personal']) ) {
 		$content .= gp_social_media_row( 'Personal', $profile_data['social']['personal'] );
 	}
 

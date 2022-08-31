@@ -272,7 +272,8 @@ class Actions {
 			}
 
 			if ( 'post' === $action['type'] ) {
-				if(isset( $data[ $action['key'] ])){
+				
+				if(isset( $data[ $key ])){
 					$post[ $action['key'] ] = $data[ $key ];
 				}
 			}
@@ -296,6 +297,7 @@ class Actions {
 
 		self::$log->debug("Terms for new entity", $tax);
 
+
 		if ( ! self::is_profile_update( $post ) ) {
 			$post['post_content'] = apply_filters( 'govpack_import_content', $post['post_content'] );
 		}
@@ -304,6 +306,7 @@ class Actions {
 		$post['meta_input'] = $meta;
 		//$post['tax_input']  = $tax;
 
+		
 		$resp = self::create_or_update( $post );
 
 		self::$log->debug(sprintf("Created profile %d", $resp), $post, $resp);
@@ -328,7 +331,7 @@ class Actions {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 

@@ -692,11 +692,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'facebook'         => $profile_raw_meta_data['facebook'][0] ?? '',
 			'website'          => $profile_raw_meta_data['leg_url'][0] ?? '',
 			'biography'        => $profile_raw_meta_data['biography'][0] ?? '',
-			'address'          => [
-				'default'  => self::formatAddress( $profile_raw_meta_data, 'capitol' ) ?? self::formatAddress( $profile_raw_meta_data, 'district' ) ?? '',
-				'capitol'  => self::formatAddress( $profile_raw_meta_data, 'capitol' ) ?? null,
-				'district' => self::formatAddress( $profile_raw_meta_data, 'district' ) ?? null,
-			],
+			
 			'party'            => $term_data[ \Govpack\Core\Tax\Party::TAX_SLUG ] ?? '',
 			'state'            => $term_data[ \Govpack\Core\Tax\State::TAX_SLUG ] ?? '',
 			'legislative_body' => $term_data[ \Govpack\Core\Tax\LegislativeBody::TAX_SLUG ] ?? '',

@@ -9,6 +9,7 @@ namespace Govpack\Core\Importer;
 
 use Exception;
 use Govpack\Core\CPT\Profile;
+use Govpack\Core\Logger;
 
 /**
  * Register and handle the "USIO" Importer
@@ -22,6 +23,14 @@ class Actions {
 	 */
 	protected static $instance = null;
 
+
+	/**
+	 * Log
+	 * 
+	 * @var Actions $instance
+	 */
+	protected static $log = null;
+
 	/**
 	 * Returns static instance of class.
 	 *
@@ -34,6 +43,10 @@ class Actions {
 		return self::$instance;
 	}
 
+	public function __construct()
+	{
+		self::$log = new Logger("Import Log", "govpack-import.log");
+	}
 	/**
 	 * Adds Actions to Hooks 
 	 */
@@ -50,6 +63,7 @@ class Actions {
 
 		\add_filter( 'govpack_import_content', [ self::instance(), 'wrap_content_in_block_grammar' ] );
 		\add_filter( 'govpack_import_content', [ self::instance(), 'inject_block_in_content' ] );
+		
 		
 	}
 
@@ -146,8 +160,7 @@ class Actions {
 	 * @param array $data Term data. (Return empty to skip.).
 	 */
 	protected function process_term( $data ) {
-		
-
+	
 		if ( empty( $data ) ) {
 			return false;
 		}
@@ -228,7 +241,10 @@ class Actions {
 	 */
 	public static function make_profile_from_csv( $data_input ) {
 		
+		
 
+		self::$log->debug("New Import Record");
+	
 		$data = [];
 
 		foreach ( $data_input as $key => $value ) {
@@ -250,23 +266,35 @@ class Actions {
 		foreach ( $model as $key => $action ) {
 
 			if ( 'meta' === $action['type'] ) {
-				$meta[ $key ] = $data_input[ $action['key'] ];
+				if(isset( $data[ $action['key'] ])){
+					$meta[ $key ] = $data[ $action['key'] ];
+				}
 			}
 
 			if ( 'post' === $action['type'] ) {
-				$post[ $action['key'] ] = $data_input[ $key ];
+				if(isset( $data[ $action['key'] ])){
+					$post[ $action['key'] ] = $data[ $key ];
+				}
 			}
 
 			if ( 'taxonomy' === $action['type'] ) {
-				$term                       = self::find_or_create_term( $data_input[ $key ], $action['taxonomy'] );
-				$tax[ $action['taxonomy'] ] = $term->term_id;
+
+				self::$log->debug(sprintf("find or create term %s in taxinomy %s", $data[ $key ], $action['taxonomy'] ));
+				$term  = self::find_or_create_term( $data[ $key ], $action['taxonomy'] );
+				
+				if(!is_wp_error($term)){
+					$tax[ $action['taxonomy'] ] = [$term->term_id];
+				}
 			}
 
 			if ( 'media' === $action['type'] ) {
+				
 				// add key to meta to sore it for later processing.
-				$meta[ $key ] = $data_input[ $key ];
+				$meta[ $key ] = $data[ $key ];
 			}
 		}
+
+		self::$log->debug("Terms for new entity", $tax);
 
 		if ( ! self::is_profile_update( $post ) ) {
 			$post['post_content'] = apply_filters( 'govpack_import_content', $post['post_content'] );
@@ -274,23 +302,29 @@ class Actions {
 
 		$post['post_title'] = $meta['name'];
 		$post['meta_input'] = $meta;
-		$post['tax_input']  = $tax;
-
+		//$post['tax_input']  = $tax;
 
 		$resp = self::create_or_update( $post );
-	
+
+		self::$log->debug(sprintf("Created profile %d", $resp), $post, $resp);
+
 		if ( \is_wp_error( $resp ) ) {
 			return; 
+		}
+
+		foreach($tax as $taxonomy => $tags){
+			wp_set_post_terms( $resp, $tags, $taxonomy );
 		}
 
 		$created_post_id = $resp;
 		
 		
-		if ( $data['photo'] ) {
+		if ( $data['image'] ) {
 			
 			try {
-				Importer::sideload( $created_post_id );
+				Importer::sideload( $created_post_id, "image" );
 			} catch ( Exception $e ) {
+				var_dump($e);
 				return false;
 			}
 		}
@@ -308,8 +342,10 @@ class Actions {
 	public static function create_or_update( $post ) {
 		
 		if ( self::is_profile_update( $post ) ) {
+			self::$log->info("Update existing profile");
 			$resp = wp_update_post( $post );
 		} else {
+			self::$log->info("Insert New profile");
 			$resp = wp_insert_post( $post );
 		}
 

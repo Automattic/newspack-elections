@@ -227,7 +227,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			];
 		}
 
-		$model['photo'] = [
+		$model['image'] = [
 			'type' => 'media',
 			'key'  => '_thumbnail_id',
 		];
@@ -681,8 +681,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 
 		$profile_data = [ // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 			'id'               => $profile_id,
-			'first_name'       => $profile_raw_meta_data['first_name'][0] ?? '',
-			'last_name'        => $profile_raw_meta_data['last_name'][0] ?? '',
+			
 			'title'            => $profile_raw_meta_data['title'][0] ?? '',
 			'phone'            => $profile_raw_meta_data['main_phone'][0] ?? '',
 			'twitter'          => $profile_raw_meta_data['twitter'][0] ?? '',
@@ -702,7 +701,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'legislative_body' => $term_data[ \Govpack\Core\Tax\LegislativeBody::TAX_SLUG ] ?? '',
 			'position'         => $term_data[ \Govpack\Core\Tax\OfficeHolderTitle::TAX_SLUG ] ?? '',
 			'name'             => $profile_raw_data->post_title ?? '',
-			'bio'              => $profile_raw_data->post_excerpt ?? '',
+			'bio'              => get_the_excerpt($profile_raw_data) ?? '',
 			'link'             => get_permalink( $profile_id ),
 			'websites'         => [
 				'campaign'    => $profile_raw_meta_data['campaign_url'][0] ?? '',
@@ -762,15 +761,21 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 					],
 				],
 			],
+			"name" => [
+				"name" 	=> $profile_raw_meta_data['name'][0] ?? null,
+				"full" 	=> implode(" ", [
+					$profile_raw_meta_data['name_prefix'][0] ?? null,
+					$profile_raw_meta_data['name_first'][0] ?? null,
+					$profile_raw_meta_data['name_middle'][0] ?? null,
+					$profile_raw_meta_data['name_last'][0] ?? null,
+					$profile_raw_meta_data['name_suffix'][0] ?? null,
+				]),
+				"first" 	=>  $profile_raw_meta_data['name_first'][0] ?? null ?? null,
+				"last" 	=>  $profile_raw_meta_data['name_last'][0] ?? null ?? null
+				],
 		];
-
-
-		$profile_data['name'] = join( ' ', [ $profile_data['first_name'], $profile_data['last_name'] ] );
 		
 		$profile_data['hasWebsites'] = ( $profile_data['websites']['campaign'] ?? $profile_data['websites']['legislative'] ?? false );
-
-		
-
 		$profile_data['social']    = array_map( 'array_filter', $profile_data['social'] );
 		$profile_data['social']    = array_filter( $profile_data['social'] );
 		$profile_data['hasSocial'] = ! ( empty( $profile_data['social']['official'] ) && empty( $profile_data['social']['personal'] ) && empty( $profile_data['social']['campaign'] ) ?? false );

@@ -362,10 +362,9 @@ class Importer {
 	 * @param integer $id Post ID to lookup and sideload.
 	 * @throws \Exception Profile errors.
 	 */
-	public static function sideload( $id = null ) {
+	public static function sideload( $id = null, $meta_key = "photo" ) {
 
-		
-
+	
 		if ( ! $id ) {
 			throw new \Exception( 'No Profile ID given' );
 		}
@@ -379,21 +378,24 @@ class Importer {
 			throw new \Exception( sprintf( 'No Profile with ID %s exists', $id ) );
 		}
 
-		if ( ! $post->photo ) {
-			throw new \Exception( sprintf( 'Profile %s Does not have an `image` meta field', $id ) );
+		if ( ! $post->{$meta_key} ) {
+			throw new \Exception( sprintf( 'Profile %s Does not have an `%s` meta field', $id, $meta_key ) );
 		}
 
-		if ( ! \wp_http_validate_url( $post->photo ) ) {
+		if ( ! \wp_http_validate_url( $post->{$meta_key} ) ) {
 			throw new \Exception( sprintf( 'Image meta field for profile %s does not contain a valid url', $id ) );
 		}
+
+		
+		
 
 
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
 
-		$url = $post->photo;
-
+		$url = $post->{$meta_key};
+	
 		try {
 			
 			$sideload = \media_sideload_image( $url, $id, '', 'id' );
@@ -406,7 +408,6 @@ class Importer {
 				throw new \Exception( sprintf( 'Side load failed for to side post thumbnail/featured image for profile %s', $id ) );
 			}       
 		} catch ( Exception $e ) {
-			
 			return true;
 		}
 

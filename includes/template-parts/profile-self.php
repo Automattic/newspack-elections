@@ -92,7 +92,7 @@ $show_name              = ( isset( $profile_data['name'] ) && $attributes['showN
 
 		<div class="wp-block-govpack-profile-self__info">
 			<?php if ( $show_name ) { ?>
-				<h1> <?php echo esc_html( $profile_data['name'] ); ?></h1>
+				<h3> <?php echo esc_html( $profile_data['name']["full"] ); ?></h3>
 			<?php } ?>
 			<?php
 			

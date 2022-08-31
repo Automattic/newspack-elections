@@ -83,7 +83,11 @@
       
         "align": {
 			"type": "string",
-            "default": ""
+            "default": "left"
+		},
+		"width": {
+			"type": "string",
+            "default": "small"
 		},
 		"showCapitolCommunicationDetails": {
 			"type": "boolean",

@@ -3,6 +3,9 @@ import { isArray, isEmpty, isUndefined, isNil } from 'lodash';
 
 export function normalize_profile(profile){
 
+	if(isNil(profile)){
+		return {}
+	}
     const featured_image = profile?._embedded?.["wp:featuredmedia"]?.[0] ?? null
     const getFromEmbedded = (tax) => {
         if(isArray(profile[tax]) && !isEmpty(profile[tax]) && (isArray(profile._embedded?.["wp:term"]))){

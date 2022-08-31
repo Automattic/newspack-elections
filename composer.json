@@ -7,7 +7,8 @@
     "woocommerce/action-scheduler": "^3.4",
     "gargron/fileupload": "~1.4.0",
     "league/csv": "^9.7",
-    "zerodahero/address-normalization": "^2.1"
+    "zerodahero/address-normalization": "^2.1",
+    "monolog/monolog": "^2.8"
   },
   "require-dev": {
     "automattic/vipwpcs": "^2.2",

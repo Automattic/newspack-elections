@@ -59,7 +59,7 @@ const Importing = (props) => {
         <div>
             <InfoPanel heading="Importing">
 				{ (done === 0) && (
-					<p>Your Import have been queued and will start shortly</p>
+					<p>Your Import have been queued and will start shortly (this can take upto a minute)</p>
 				) }
                 <progress style={{
 					width:"100%",

@@ -325,7 +325,7 @@ function gp_contact_info( $label, $links, $attrs ) {
 	}
 
 	$address = '';
-	if ( $attrs['showAddress'] ) {
+	if ( $attrs['showAddress'] && $links['address'] ) {
 		$classes = [
 			'wp-block-govpack-profile__contact',
 			'wp-block-govpack-profile__contact--hide-label',
@@ -335,6 +335,9 @@ function gp_contact_info( $label, $links, $attrs ) {
 		$address = sprintf( '<address class="%s">%s</address>', $classes, $links['address'] );
 	}
 
+	if( !$content && !$address ) {
+		return null;
+	}
 
 	return sprintf( $outer_template, $label, $content, $address ); 
 }

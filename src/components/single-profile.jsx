@@ -157,7 +157,7 @@ const SingleProfile = (props) => {
 				label
 			} = props
 
-			if(!show){
+			if(!show || !(props.services.facebook || props.services.twitter || props.services.instagram)){
 				return null;
 			}
 

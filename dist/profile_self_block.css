@@ -151,10 +151,15 @@
   justify-content: center;
 }
 .wp-block-govpack-profile.is-style-boxed_centered, .wp-block-govpack-profile.is-style-boxed {
-  padding: 2rem;
+  padding: 1.5rem;
   border: 1px solid rgba(0, 0, 0, 0.04);
   background-color: rgba(0, 0, 0, 0.02);
   margin-top: 0 !important;
+  word-break: normal;
+}
+
+.wp-block-column .wp-block-govpack-profile {
+  margin-right: 0;
 }
 
 .wp-block-govpack-profile-self__contacts ul, .wp-block-govpack-profile-self__comms ul, .wp-block-govpack-profile-self__container {

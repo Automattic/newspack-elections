@@ -83,7 +83,7 @@ class CSV extends \Govpack\Core\Importer\Abstracts\Abstract_Importer {
 
 		update_option( 'govpack_import_group', self::import_group() );
 
-		$use_action_scheduler = false;
+		$use_action_scheduler = true;
 
 		foreach ( $reader->getRecords() as $offset => $record ) {
 

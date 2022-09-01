@@ -109,6 +109,10 @@ export function normalize_profile(profile){
 				website : profile.meta?.website_campaign,
 			},
 			other : {
+				website_other :  {
+					label : "Website (Personal)",
+					value : profile.meta?.website_personal,
+				},				
 				email_other :  {
 					label : "Email (Other)",
 					value : profile.meta?.email_other,

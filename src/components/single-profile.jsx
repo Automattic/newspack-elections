@@ -157,7 +157,7 @@ const SingleProfile = (props) => {
 				label
 			} = props
 
-			if(!show){
+			if(!show || !(props.services.facebook || props.services.twitter || props.services.instagram)){
 				return null;
 			}
 
@@ -215,6 +215,9 @@ const SingleProfile = (props) => {
 			label = "Comms"
 		} = props
 
+		if( !( props.data.phone || props.data.fax || props.data.email || props.data.website || props.data.address ) ){
+			return null;
+		}
 
 		return (
 			<div className={`${blockClassName}__comms`}>
@@ -277,15 +280,12 @@ const SingleProfile = (props) => {
 		)
 	}
 
-
 	const CommsOther = (props) => {
 
 		const {
 			label = "Comms",
 			data
-		} = props
-
-		console.log(props.show)
+		} = props		
 
 		return (
 			<div className={`${blockClassName}__comms-other`}>
@@ -294,7 +294,7 @@ const SingleProfile = (props) => {
 				{props.data && (
 					<dl className={`${blockClassName}__comms-other key-pair-list`} role="list">
 						{Object.keys(data).filter((key) => {
-							return !!data[key]
+							return !!data[key] && data[key].value
 						}).filter( (key) => {
 							return (props.show[key] ?? true)
 						}).map( (key, value) => (<div key={key} className="key-pair-list__group" role="listitem">
@@ -306,15 +306,24 @@ const SingleProfile = (props) => {
 		)
 	}
 
+	function hasCommsData(item){
+		return item.phone || item.fax || item.email || item.website || item.address;
+	}
+
+	function hasCommsOtherData(item){
+		return Object.keys(item).filter((key) => {
+			return item[key].value;
+		}).length;
+		// return item.length;
+	}	
+
 	const maxWidth = (align !== "full" ? props.availableWidths.find( (w) => w.value === width)?.maxWidth : false)
     const excerptElement = document.createElement( 'div' );
     excerptElement.innerHTML = profile.bio;
 
     let bio = excerptElement.textContent || excerptElement.innerText || '';
 
-	const doShowSocial = selectedSocial.showOfficial || selectedSocial.showCampaign || selectedSocial.showPersonal
-	
-	console.log("doShowSocial", doShowSocial)
+	const doShowSocial = selectedSocial.showOfficial || selectedSocial.showCampaign || selectedSocial.showPersonal;		
 
     return (
        <div className= {classnames(`${blockClassName}__container`, {
@@ -361,10 +370,10 @@ const SingleProfile = (props) => {
                     <Row key="states" value={profile.state} display={showState}/>
 
                     <Row key="social" value={<SocialMedia data={profile.social} label="Social Media" show={selectedSocial}/>} display={(showSocial && doShowSocial)}/>
-					<Row key="comms_capitol" value={<Comms data={profile.comms.capitol} label="Capitol" show={selectedCapitolCommunicationDetails}/>} display={showCapitolCommunicationDetails} />
-					<Row key="comms_district" value={<Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />
-					<Row key="comms_campaign" value={<Comms data={profile.comms.campaign} label="Campaign" show={selectedCampaignCommunicationDetails}/>} display={showCampaignCommunicationDetails} />
-					<Row key="comms_other" value={<CommsOther data={profile.comms.other} label="Other" show={selectedOtherCommunicationDetails}/>} display={showOtherCommunicationDetails} />
+					<Row key="comms_capitol" value={hasCommsData(profile.comms.capitol) && <Comms data={profile.comms.capitol} label="Capitol" show={selectedCapitolCommunicationDetails}/>} display={showCapitolCommunicationDetails} />
+					<Row key="comms_district" value={hasCommsData(profile.comms.district) && <Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />
+					<Row key="comms_campaign" value={hasCommsData(profile.comms.campaign) && <Comms data={profile.comms.campaign} label="Campaign" show={selectedCampaignCommunicationDetails}/>} display={showCampaignCommunicationDetails} />
+					<Row key="comms_other" value={hasCommsOtherData(profile.comms.other) && <CommsOther data={profile.comms.other} label="Other" show={selectedOtherCommunicationDetails}/>} display={showOtherCommunicationDetails} />
 
 					<Row key="url" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
                 </div>

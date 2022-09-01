@@ -7,7 +7,7 @@ const Done = (props) => {
 	return (
         <div>
             <InfoPanel heading="Done!">
-			Your import is complete. <a href={props.clickThrough}>Visit your newly created available profiles</a>.
+			Your import is complete. <a href={props.clickThrough}>Click here to see your imported profiles</a>.
             </InfoPanel>
         </div>
     )

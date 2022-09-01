@@ -57,7 +57,7 @@ class Actions {
 		
 
 		\add_action( 'govpack_import_csv_profile', [ self::instance(), 'make_profile_from_csv' ] );
-		\add_action( 'govpack_import_cleanup', [ self::instance(), 'cleanup_import' ] );
+		//\add_action( 'govpack_import_cleanup', [ self::instance(), 'cleanup_import' ] );
 		\add_filter( 'govpack_import_openstates_links', [ self::instance(), 'explode_openstates_list' ] );
 		\add_filter( 'govpack_import_openstates_sources', [ self::instance(), 'explode_openstates_list' ] );
 

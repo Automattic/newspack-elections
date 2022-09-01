@@ -209,7 +209,7 @@ const Uploader = (props) => {
                       spacing="4"
                 >  
                     <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In faucibus elit nec urna imperdiet, ut molestie orci viverra. Fusce interdum rutrum leo. Praesent non pretium purus, vel molestie orci. Cras hendrerit enim non dolor sollicitudin ultricies. 
+                    Please select a <code>.csv</code> file that has the same fields as our template. You can <a target="_blank" href="https://bit.ly/3B22gzA">download a copy of that template here</a>. If you need help, please contact <a href="mailto:hello@govpack.org">hello@govpack.org</a>. Your import file doesn’t have to include data for each field, but importing will not function properly if you change the column headers.
                     </p>
 
                     {props.hasError && (

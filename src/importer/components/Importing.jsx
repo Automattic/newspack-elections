@@ -59,7 +59,7 @@ const Importing = (props) => {
         <div>
             <InfoPanel heading="Importing">
 				{ (done === 0) && (
-					<p>Your Import have been queued and will start shortly (this can take upto a minute)</p>
+					<p>Your data is getting ready to import and will start shortly. Please be patient as this could take a few minutes while assets are created in your media library and profiles are generated.</p>
 				) }
                 <progress style={{
 					width:"100%",

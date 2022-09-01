@@ -227,10 +227,14 @@
 
     &.is-style-boxed_centered,
     &.is-style-boxed{
-        padding:2rem;
+        padding:1.5rem;
         border:1px solid rgba(0,0,0,0.04);
         background-color:rgba(0,0,0,0.02);
         margin-top: 0 !important;
+		word-break: normal;
     }
 }
 
+.wp-block-column .wp-block-govpack-profile{
+	margin-right:0;
+}

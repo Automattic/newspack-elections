@@ -349,15 +349,11 @@ function gp_contact_other( $label, $links, $attrs ) {
 		<dl class="wp-block-govpack-profile__comms-other key-pair-list">
 			%s
 		</dl>
-	</div>';
-
-	array_filter( $links, function( $item ) {
-		return $item['value'];
-	});
+	</div>';	
 
 	$content = '';
 	foreach( $links as $key => $link ) {
-		if( isset( $attrs[ $key ] ) && $link['value']) {
+		if( isset( $attrs[ $key ] ) && $attrs[ $key ] && $link['value'] ) {
 			$content .= sprintf( '<dt class="key-pair-list__key" role="term">%s</dt><dd class="key-pair-list__value">%s</dd>', $link['label'], $link['value'] );
 		}
 	}

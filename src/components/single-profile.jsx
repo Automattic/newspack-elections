@@ -313,8 +313,7 @@ const SingleProfile = (props) => {
 	function hasCommsOtherData(item){
 		return Object.keys(item).filter((key) => {
 			return item[key].value;
-		}).length;
-		// return item.length;
+		}).length;		
 	}	
 
 	const maxWidth = (align !== "full" ? props.availableWidths.find( (w) => w.value === width)?.maxWidth : false)

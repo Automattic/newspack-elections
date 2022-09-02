@@ -314,9 +314,17 @@ function gp_contact_info( $label, $links, $attrs ) {
 		$icon         = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
 		$contact_icon = sprintf( $icon, $service, $icons[ $service ] );
 
+		if(($service === "phone") || ($service === "fax") ){
+			$protocol = "tel:";
+		} else if($service === "email"){
+			$protocol = "mailto:";
+		} else {
+			$protocol = ""; // web has no protocol as it should come from the url itself
+		}
+
 		$content .=  
 		"<li class=\"{$classes} \">
-			<a href=\"{$links[$service]}\" class=\"wp-block-govpack-profile__contact__link\">
+			<a href=\"{$protocol}{$links[$service]}\" class=\"wp-block-govpack-profile__contact__link\">
 				{$contact_icon}
 				<span class=\"wp-block-govpack-profile__contact__label\">{$service}</span>
 			</a>

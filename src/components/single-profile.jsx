@@ -247,7 +247,7 @@ const SingleProfile = (props) => {
 
 						{ props.data.email && props.show.showEmail &&(
                                 <Contact 
-									href={`tel:${props.data.email}`} 
+									href={`mailto:${props.data.email}`} 
 									tooltip = {`${label} Email : ${props.data.email}`} 
 									label = "Email" 
 									icon = { <EmailIcon />}

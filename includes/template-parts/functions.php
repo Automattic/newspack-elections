@@ -269,10 +269,10 @@ function gp_contact_info( $label, $links, $attrs ) {
 	$outer_template = '
 	<div class="wp-block-govpack-profile__comms">
 		<div class="wp-block-govpack-profile__label">%s:</div>
-			<ul class="wp-block-govpack-profile__comms-icons inline-list">
-				%s
-			</ul>
+		<ul class="wp-block-govpack-profile__comms-icons inline-list">
 			%s
+		</ul>
+		%s
 	</div>';
 
 	$icons = [
@@ -340,4 +340,31 @@ function gp_contact_info( $label, $links, $attrs ) {
 	}
 
 	return sprintf( $outer_template, $label, $content, $address ); 
+}
+
+function gp_contact_other( $label, $links, $attrs ) {
+	$outer_template = '
+	<div class="wp-block-govpack-profile__comms-other">
+		<div class="wp-block-govpack-profile__label">%s:</div>
+		<dl class="wp-block-govpack-profile__comms-other key-pair-list">
+			%s
+		</dl>
+	</div>';
+
+	array_filter( $links, function( $item ) {
+		return $item['value'];
+	});
+
+	$content = '';
+	foreach( $links as $key => $link ) {
+		if( isset( $attrs[ $key ] ) && $link['value']) {
+			$content .= sprintf( '<dt class="key-pair-list__key" role="term">%s</dt><dd class="key-pair-list__value">%s</dd>', $link['label'], $link['value'] );
+		}
+	}
+
+	if( !$content ) {
+		return null;
+	}
+
+	return sprintf( $outer_template, $label, $content );
 }

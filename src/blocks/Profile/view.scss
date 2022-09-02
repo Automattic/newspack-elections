@@ -163,6 +163,7 @@
     &__avatar {
 
         margin-right:1rem;
+        width:50%;
 
         figure {
             margin: 0 auto;
@@ -176,6 +177,10 @@
     			object-position: center;
             }
         }
+    }
+
+    &__info {
+        width:50%;
     }
 
     &__contact {

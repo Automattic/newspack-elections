@@ -26,6 +26,9 @@
     &__container {
 
         $element : &;
+
+        flex-direction: column;
+
         &--right {
             flex-direction: row-reverse;
 
@@ -33,6 +36,10 @@
                 margin-right:0;
                 margin-left:1rem;
             }
+        }
+
+        &--left {
+            flex-direction: row;
         }
 
         &--align-center{

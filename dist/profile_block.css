@@ -3078,6 +3078,7 @@ svg.newspack--success {
 }
 .wp-block-govpack-profile__avatar {
   margin-right: 1rem;
+  width: 50%;
 }
 .wp-block-govpack-profile__avatar figure {
   margin: 0 auto;
@@ -3089,6 +3090,9 @@ svg.newspack--success {
   height: 100%;
   object-fit: cover;
   object-position: center;
+}
+.wp-block-govpack-profile__info {
+  width: 50%;
 }
 .wp-block-govpack-profile__contact__link,
 .wp-block-govpack-profile__contact a {

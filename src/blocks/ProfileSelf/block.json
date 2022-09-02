@@ -19,6 +19,14 @@
 			"type": "string",
 			"default": "left"
 		},
+		"avatarBorderRadius": {
+			"type": "string",
+			"default": "0%"
+		},
+		"avatarSize": {
+			"type": "number",
+			"default": 128
+		},		
 		"avatarHideDefault": {
 			"type": "boolean",
 			"default": false

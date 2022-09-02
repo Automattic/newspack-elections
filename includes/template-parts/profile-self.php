@@ -43,7 +43,7 @@ $available_widths = [
 	'auto' => [
 		'label'    => 'Auto',
 		'value'    => 'auto',
-		'maxWidth' => 'auto',
+		'maxWidth' => 'none',
 	]
 ];
 
@@ -55,7 +55,14 @@ $styles = join(
 	]
 );
 
-
+$photo_styles = join(
+	' ',
+	[
+		'border-radius: ' . $attributes['avatarBorderRadius'] . ';',
+		'width:' . $attributes['avatarSize'] . 'px;',
+		'height:' . $attributes['avatarSize'] . 'px;',
+	]
+);
 
 $container_classes = join(
 	' ',
@@ -70,13 +77,11 @@ $container_classes = join(
 	) 
 );
 
-
 $show_photo             = ( has_post_thumbnail( $profile_data['id'] ) && $attributes['showAvatar'] );
 $show_secondary_address = ( isset( $profile_data['address']['secondary'] ) && 
 	( $profile_data['address']['secondary'] !== $profile_data['address']['default'] )
 );
 $show_name              = ( isset( $profile_data['name'] ) && $attributes['showName'] );
-
 ?>
 
 <aside class="<?php echo esc_attr( $classes ); ?>" style="<?php echo esc_attr( $styles ); ?>">
@@ -84,7 +89,7 @@ $show_name              = ( isset( $profile_data['name'] ) && $attributes['showN
 	   
 		<?php if ( $show_photo ) { ?>
 		<div class="wp-block-govpack-profile-self__avatar">
-			<figure>
+			<figure style="<?php echo esc_attr( $photo_styles ) ?>">
 				<?php echo wp_kses_post( GP_Maybe_Link( "<img src=" . get_the_post_thumbnail_url( $profile_data['id'], "full" ) ." />", $profile_data['link'], false ) ); ?>
 			</figure>
 		</div>
@@ -103,8 +108,8 @@ $show_name              = ( isset( $profile_data['name'] ) && $attributes['showN
 				gp_row( gp_social_media( $profile_data, $attributes ), ( $attributes['showSocial'] && $profile_data['hasSocial'] ) );
 				gp_row( gp_contact_info( 'Capitol', $profile_data['comms']['capitol'], $attributes['selectedCapitolCommunicationDetails'] ), $attributes['showCapitolCommunicationDetails'] );
 				gp_row( gp_contact_info( 'District', $profile_data['comms']['district'], $attributes['selectedDistrictCommunicationDetails'] ), $attributes['showDistrictCommunicationDetails'] );
-				gp_row( gp_contact_info( 'Campaign', $profile_data['comms']['campaign'], $attributes['selectedCampaignCommunicationDetails'] ), $attributes['showCampaignCommunicationDetails'] );
-		
+				gp_row( gp_contact_info( 'Campaign', $profile_data['comms']['campaign'], $attributes['selectedCampaignCommunicationDetails'] ), $attributes['showCampaignCommunicationDetails'] );				
+				gp_row( gp_contact_other( 'Other', $profile_data['comms']['other'], $attributes['selectedOtherCommunicationDetails'] ), $attributes['showOtherCommunicationDetails'] );
 				
 			?>
 		</div>

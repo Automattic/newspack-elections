@@ -114,10 +114,10 @@ $show_secondary_address = ( isset( $profile_data['address']['secondary'] ) &&
 				gp_row( gp_contact_info( 'Capitol', $profile_data['comms']['capitol'], $attributes['selectedCapitolCommunicationDetails'] ), $attributes['showCapitolCommunicationDetails'] );
 				gp_row( gp_contact_info( 'District', $profile_data['comms']['district'], $attributes['selectedDistrictCommunicationDetails'] ), $attributes['showDistrictCommunicationDetails'] );
 				gp_row( gp_contact_info( 'Campaign', $profile_data['comms']['campaign'], $attributes['selectedCampaignCommunicationDetails'] ), $attributes['showCampaignCommunicationDetails'] );
+				gp_row( gp_contact_other( 'Other', $profile_data['comms']['other'], $attributes['selectedOtherCommunicationDetails'] ), $attributes['showOtherCommunicationDetails'] );
 				gp_row( gp_maybe_link("More About " . $profile_data['name']["full"], $profile_data['link'], $attributes['showProfileLink']) , $attributes['showProfileLink'] );
-		
-				
-			?>
+
+			?>			
 		</div>
 	</div> <!-- end __container -->
 </aside>

@@ -744,9 +744,13 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 					'website' => $profile_raw_meta_data['website_campaign'][0] ?? null,
 				],
 				'other'    => [
+					'website_other'      => [
+						'label' => 'Website (Personal)',
+						'value' => $profile_raw_meta_data['website_personal'][0] ?? null,
+					],					
 					'email_other'      => [
 						'label' => 'Email (Other)',
-						'value' => $profile_raw_meta_data['email_other,'][0] ?? null,
+						'value' => $profile_raw_meta_data['email_other'][0] ?? null,
 					],
 					'rss'              => [
 						'label' => 'RSS Feed URL',

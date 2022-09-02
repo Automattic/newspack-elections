@@ -43,7 +43,7 @@ $available_widths = [
 	'auto' => [
 		'label'    => 'Auto',
 		'value'    => 'auto',
-		'maxWidth' => 'auto',
+		'maxWidth' => 'none',
 	]
 ];
 

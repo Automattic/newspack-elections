@@ -29,13 +29,30 @@
 		display: flex;
 		flex-wrap: wrap;
 
+        .aligncenter & {
+            justify-content: center;
+            align-items: center;
+        }
+
+        .alignright & {
+            justify-content: flex-end;
+        }
+
 		&-icons{
-			flex-grow: 1;
-		}
+            flex-grow: 1;
+
+            .aligncenter &, .alignright & {
+			    flex-grow: 0;
+            }
+		}        
 
 		address {
 			width: 100%;
 			flex-grow: 1;
+
+            .alignright & {
+                text-align: right;
+            }
 		}
 	}
 
@@ -108,6 +125,15 @@
 
 	&__social_group{
 		display: flex;
+
+        .aligncenter & {
+            justify-content: center;
+            align-items: center;
+        }
+
+        .alignright & {
+            justify-content: flex-end;
+        }
 	}
 
 	.editor-styles-wrapper &__contacts,
@@ -196,6 +222,10 @@
 
         &:first-of-type{
             padding-top:0rem;
+        }
+
+        .alignright & {
+            text-align: right;
         }
     }
 

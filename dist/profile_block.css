@@ -3055,10 +3055,16 @@ svg.newspack--success {
   margin-left: auto;
   margin-right: auto;
 }
+.wp-block-govpack-profile__container--align-center .wp-block-govpack-profile__social_group, .wp-block-govpack-profile__container--align-center .wp-block-govpack-profile__comms {
+  justify-content: center;
+}
+.wp-block-govpack-profile__container--align-center .wp-block-govpack-profile__comms-icons {
+  flex-grow: 0;
+}
 .wp-block-govpack-profile__social_group {
   display: flex;
 }
-.aligncenter .wp-block-govpack-profile__social_group {
+.wp-block-govpack-profile__social_group .aligncenter {
   justify-content: center;
   align-items: center;
 }

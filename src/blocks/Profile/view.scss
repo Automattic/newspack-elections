@@ -118,7 +118,15 @@
 
         &--align-center{
             margin-left: auto;
-            margin-right: auto;
+            margin-right: auto;            
+
+            #{$block}__social_group, #{$block}__comms{
+                justify-content: center;                
+            }
+
+            #{$block}__comms-icons{
+                flex-grow: 0;
+            }
         }
 
     }
@@ -126,7 +134,7 @@
 	&__social_group{
 		display: flex;
 
-        .aligncenter & {
+        .aligncenter {
             justify-content: center;
             align-items: center;
         }

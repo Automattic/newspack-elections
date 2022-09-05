@@ -45,6 +45,14 @@
         &--align-center{
             margin-left: auto;
             margin-right: auto;
+
+            #{$block}__social_group, #{$block}__comms{
+                justify-content: center;
+            }
+
+            .wp-block-govpack-profile__line {
+                text-align: center;
+            }
         }
 
     }

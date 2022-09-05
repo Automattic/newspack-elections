@@ -61,6 +61,15 @@
 		margin-top:0;
 		overflow: auto;
 
+        .aligncenter & {
+            text-align: center;
+
+            dt,dd {
+                float: none;
+                padding: 0;
+            }
+        }
+
 		dt,dd{
 			font-size: 0.8rem;
 			float:left;
@@ -127,6 +136,15 @@
             #{$block}__comms-icons{
                 flex-grow: 0;
             }
+
+            #{$block}__comms-other {
+                text-align: center;
+
+                dt,dd {
+                    float: none;
+                    padding: 0;
+                }
+            }
         }
 
     }
@@ -134,7 +152,7 @@
 	&__social_group{
 		display: flex;
 
-        .aligncenter {
+        .aligncenter & {
             justify-content: center;
             align-items: center;
         }

@@ -53,6 +53,14 @@
             .wp-block-govpack-profile__line {
                 text-align: center;
             }
+
+            #{$block}__comms-other{
+
+                dt,dd {
+                    float: none;
+                    padding: 0;
+                }
+            }
         }
 
     }
@@ -136,6 +144,10 @@
 
 	&__social_group{
 		display: flex;
+
+        .aligncenter &{
+            justify-content: center;
+        }
 	}
 
 	.editor-styles-wrapper &__contacts,

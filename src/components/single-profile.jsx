@@ -331,6 +331,7 @@ const SingleProfile = (props) => {
             [`${blockClassName}__container--left`] : (avatarAlignment === "left"),
             [`${blockClassName}__container--center`] : (className === "is-styled-center"),
             [`${blockClassName}__container--align-center`] : (align === "center"),
+			[`${blockClassName}__container--align-right`] : (align === "right"),
             [`${blockClassName}__container--show-self`] : showSelf,
        })}
        style = {{

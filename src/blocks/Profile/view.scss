@@ -73,10 +73,8 @@
 		dt,dd{
 			font-size: 0.8rem;
 			float:left;
-			margin: 0;
+			margin: 0;   
 		}
-
-	
 
 		dt{
 			clear:left;
@@ -87,6 +85,13 @@
 				margin-right:.5em;
 			}
 		}
+
+        dd{
+            .alignright & {
+                float: right;
+            }
+        }
+
 	}
 
 	&__label{
@@ -127,7 +132,7 @@
 
         &--align-center{
             margin-left: auto;
-            margin-right: auto;            
+            margin-right: auto;
 
             #{$block}__social_group, #{$block}__comms{
                 justify-content: center;                
@@ -143,6 +148,15 @@
                 dt,dd {
                     float: none;
                     padding: 0;
+                }
+            }
+        }
+
+        &--align-right{
+            #{$block}__comms-other {                
+
+                dd {
+                    float: right;                    
                 }
             }
         }

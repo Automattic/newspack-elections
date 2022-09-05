@@ -42,8 +42,6 @@ $available_widths = [
 	],
 ];
 
-
-
 $styles = join(
 	' ',
 	[
@@ -60,6 +58,7 @@ $container_classes = join(
 			( 'left' === $attributes['avatarAlignment'] ? 'wp-block-govpack-profile__container--left' : false ),
 			( 'is-styled-center' === $attributes['className'] ? 'wp-block-govpack-profile__container--center' : false ),
 			( isset( $attributes['align'] ) && ( 'center' === $attributes['align'] ? 'wp-block-govpack-profile__container--align-center' : false ) ),
+			( isset( $attributes['align'] ) && ( 'right' === $attributes['align'] ? 'wp-block-govpack-profile__container--align-right' : false ) ),
 			
 		] 
 	) 

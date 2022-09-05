@@ -63,6 +63,25 @@
             }
         }
 
+        &--align-right{
+
+            #{$block}__social_group, #{$block}__comms{
+                justify-content: flex-end;
+            }
+
+            .wp-block-govpack-profile__line {
+                text-align: right;
+            }
+
+            #{$block}__comms-other{
+
+                dd {
+                    float: right;                    
+                }
+            }
+
+        }
+
     }
 
 	&__comms{
@@ -85,10 +104,8 @@
 			margin: 0;
 		}
 
-	
-
 		dt{
-			clear:left;
+			clear:left;           
 
 			&:after{
 				display:inline-block;
@@ -96,6 +113,13 @@
 				margin-right:.5em;
 			}
 		}
+
+        dd{
+            .alignright & {
+                float: right;
+            }
+        }
+        
 	}
 
 	&__label{

@@ -63,6 +63,9 @@
   content: ": ";
   margin-right: 0.5em;
 }
+.alignright .wp-block-govpack-profile__comms-other dd {
+  float: right;
+}
 .wp-block-govpack-profile__label {
   margin-right: 1rem;
 }
@@ -103,6 +106,9 @@
 .wp-block-govpack-profile__container--align-center .wp-block-govpack-profile__comms-other dt, .wp-block-govpack-profile__container--align-center .wp-block-govpack-profile__comms-other dd {
   float: none;
   padding: 0;
+}
+.wp-block-govpack-profile__container--align-right .wp-block-govpack-profile__comms-other dd {
+  float: right;
 }
 .wp-block-govpack-profile__social_group {
   display: flex;
@@ -249,6 +255,15 @@
   float: none;
   padding: 0;
 }
+.wp-block-govpack-profile-self__container--align-right .wp-block-govpack-profile-self__social_group, .wp-block-govpack-profile-self__container--align-right .wp-block-govpack-profile-self__comms {
+  justify-content: flex-end;
+}
+.wp-block-govpack-profile-self__container--align-right .wp-block-govpack-profile__line {
+  text-align: right;
+}
+.wp-block-govpack-profile-self__container--align-right .wp-block-govpack-profile-self__comms-other dd {
+  float: right;
+}
 .wp-block-govpack-profile-self__comms {
   display: flex;
   flex-wrap: wrap;
@@ -273,6 +288,9 @@
   display: inline-block;
   content: ": ";
   margin-right: 0.5em;
+}
+.alignright .wp-block-govpack-profile-self__comms-other dd {
+  float: right;
 }
 .wp-block-govpack-profile-self__label {
   margin-right: 1rem;

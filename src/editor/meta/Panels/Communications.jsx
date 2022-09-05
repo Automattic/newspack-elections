@@ -27,7 +27,7 @@ export const CommunicationsPanel = (props) => {
 				<PanelFieldset legend="District">
 					<PanelTextareaControl meta={props.meta} label= "Address (District)" meta_key="address_district" onChange={setPostMeta}/>
 					<PanelTextControl meta={props.meta} label= "Phone (District)" meta_key="phone_district" onChange={setPostMeta}/>
-                	<PanelTextControl meta={props.meta} label= "Email (District)" meta_key="email_official" onChange={setPostMeta}/>
+                	<PanelTextControl meta={props.meta} label= "Email (District)" meta_key="email_district" onChange={setPostMeta}/>
                 	<PanelTextControl meta={props.meta} label= "Fax (District)" meta_key="fax_district" onChange={setPostMeta}/>
 					<PanelTextControl meta={props.meta} label= "Website (District)" meta_key="website_district" onChange={setPostMeta}/>
 				</PanelFieldset>

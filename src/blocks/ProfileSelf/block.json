@@ -85,6 +85,10 @@
 			"type": "string",
             "default": ""
 		},
+		"width": {
+			"type": "string",
+            "default": "small"
+		},		
 		"showCapitolCommunicationDetails": {
 			"type": "boolean",
 			"default": true

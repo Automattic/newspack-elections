@@ -17,6 +17,7 @@ import ProfileCommsSocialPanel from '../../components/Panels/ProfileCommsSocialP
 
 import SingleProfile from "./../../components/single-profile"
 import AvatarAlignmentToolBar from '../../components/Toolbars/AvatarAlignment.jsx';
+import BlockSizeAlignmentToolbar from '../../components/Toolbars/BlockSizeAlignmentToolbar.jsx';
 
 import {isNil, isEmpty} from "lodash"
 
@@ -235,10 +236,11 @@ function RawEdit( props ) {
 					<Spinner />
 				</div>
 			) : (
-				<>
+				<>				
 					{showAvatar &&  'is-style-center' !== attributes.className &&(
 						<AvatarAlignmentToolBar  attributes = {attributes} setAttributes = {setAttributes} />
 					)}
+					<BlockSizeAlignmentToolbar attributes={attributes} setAttributes={setAttributes} />                            			
 					<SingleProfile blockClassName="wp-block-govpack-profile-self" profile={profile} attributes={ attributes } availableWidths = {availableWidths} showSelf = {true} />
 				</>
 			) }

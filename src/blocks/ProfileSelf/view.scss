@@ -26,6 +26,9 @@
     &__container {
 
         $element : &;
+
+        flex-direction: column;
+
         &--right {
             flex-direction: row-reverse;
 
@@ -35,9 +38,29 @@
             }
         }
 
+        &--left {
+            flex-direction: row;
+        }
+
         &--align-center{
             margin-left: auto;
             margin-right: auto;
+
+            #{$block}__social_group, #{$block}__comms{
+                justify-content: center;
+            }
+
+            .wp-block-govpack-profile__line {
+                text-align: center;
+            }
+
+            #{$block}__comms-other{
+
+                dt,dd {
+                    float: none;
+                    padding: 0;
+                }
+            }
         }
 
     }
@@ -121,6 +144,10 @@
 
 	&__social_group{
 		display: flex;
+
+        .aligncenter &{
+            justify-content: center;
+        }
 	}
 
 	.editor-styles-wrapper &__contacts,

@@ -286,7 +286,6 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'ethnicity',
 			'date_of_birth',
 			'date_of_death',
-			'status',
 			'district',
 
 			// office panel.
@@ -669,6 +668,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				\Govpack\Core\Tax\State::TAX_SLUG,
 				\Govpack\Core\Tax\LegislativeBody::TAX_SLUG,
 				\Govpack\Core\Tax\OfficeHolderTitle::TAX_SLUG,
+				\Govpack\Core\Tax\OfficeHolderStatus::TAX_SLUG,
 			] 
 		);
 		$term_data    = array_reduce(
@@ -697,6 +697,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'state'            => $term_data[ \Govpack\Core\Tax\State::TAX_SLUG ] ?? '',
 			'legislative_body' => $term_data[ \Govpack\Core\Tax\LegislativeBody::TAX_SLUG ] ?? '',
 			'position'         => $term_data[ \Govpack\Core\Tax\OfficeHolderTitle::TAX_SLUG ] ?? '',
+			'status'         => $term_data[ \Govpack\Core\Tax\OfficeHolderStatus::TAX_SLUG ] ?? '',
 			'name'             => $profile_raw_data->post_title ?? '',
 			'bio'              => get_the_excerpt($profile_raw_data) ?? '',
 			'link'             => get_permalink( $profile_id ),
@@ -775,6 +776,8 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				"last" 	=>  $profile_raw_meta_data['name_last'][0] ?? null ?? null
 				],
 		];
+
+		
 		
 		$profile_data['hasWebsites'] = ( $profile_data['websites']['campaign'] ?? $profile_data['websites']['legislative'] ?? false );
 		$profile_data['social']    = array_map( 'array_filter', $profile_data['social'] );

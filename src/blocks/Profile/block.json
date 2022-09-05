@@ -32,6 +32,10 @@
 			"type": "boolean",
 			"default": true
 		},
+		"showStatus": {
+			"type": "boolean",
+			"default": true
+		},
 		"showWebsites": {
 			"type": "boolean",
 			"default": true
@@ -60,10 +64,7 @@
 			"type": "boolean",
 			"default": true
 		},
-        "showStatus": {
-			"type": "boolean",
-			"default": true
-		},
+    
         "showSocial": {
 			"type": "boolean",
 			"default": true

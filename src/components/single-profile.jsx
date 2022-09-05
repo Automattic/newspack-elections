@@ -116,6 +116,7 @@ const SingleProfile = (props) => {
         showSocial,
 		selectedSocial,
 		showWebsites,
+		showStatus,
         showProfileLink,
         className,
 
@@ -366,6 +367,7 @@ const SingleProfile = (props) => {
                     <Row key="leg_body" value={profile.legislative_body} display={showLegislativeBody}/>
                     <Row key="pos" value={profile.position}  display={showPosition}/>
                     <Row key="party" value={profile.party}  display={showParty}/>
+					<Row key="status" value={profile.status} display={showStatus}/>
                     <Row key="states" value={profile.state} display={showState}/>
 
                     <Row key="social" value={<SocialMedia data={profile.social} label="Social Media" show={selectedSocial}/>} display={(showSocial && doShowSocial)}/>

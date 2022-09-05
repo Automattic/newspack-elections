@@ -59,6 +59,7 @@
 			"type": "boolean",
 			"default": true
 		},
+		
         "showStatus": {
 			"type": "boolean",
 			"default": true

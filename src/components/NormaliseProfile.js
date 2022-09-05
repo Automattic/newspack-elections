@@ -43,6 +43,7 @@ export function normalize_profile(profile){
         position : getFromEmbedded("govpack_officeholder_title")?.name ?? null,
         state : getFromEmbedded("govpack_state")?.name ?? null,
         party : getFromEmbedded("govpack_party")?.name ?? null,
+		status : getFromEmbedded("govpack_officeholder_status")?.name ?? null,
         email :  decodeEntities(profile.meta?.email ?? null),
         link :  profile.link,
 		social : {

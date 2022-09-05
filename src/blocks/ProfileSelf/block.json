@@ -23,10 +23,7 @@
 			"type": "string",
 			"default": "0%"
 		},
-		"avatarSize": {
-			"type": "number",
-			"default": 128
-		},		
+		
 		"avatarHideDefault": {
 			"type": "boolean",
 			"default": false
@@ -83,11 +80,11 @@
       
         "align": {
 			"type": "string",
-            "default": ""
+            "default": "full"
 		},
 		"width": {
 			"type": "string",
-            "default": "small"
+            "default": "full"
 		},		
 		"showCapitolCommunicationDetails": {
 			"type": "boolean",

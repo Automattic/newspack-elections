@@ -221,7 +221,7 @@ function RawEdit( props ) {
     return (
         <div { ...blockProps }>
             <InspectorControls>
-                <ProfileAvatarPanel attributes = {attributes} setAttributes = {setAttributes} showSizeControl = {true} showRadiusControl = {true} />
+                <ProfileAvatarPanel attributes = {attributes} setAttributes = {setAttributes} showSizeControl = {false} showRadiusControl = {true} />
                 <ProfileDisplaySettings attributes = {attributes} setAttributes = {setAttributes} showBioControl = {true} showLinkControl = {false} />
 				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedCapitolCommunicationDetails"} setAttributes = {setAttributes} title="Capitol Communications" display={attributes.showCapitolCommunicationDetails} />
 				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedCampaignCommunicationDetails"} setAttributes = {setAttributes} title="Campaign Communications" display={attributes.showCampaignCommunicationDetails} />
@@ -240,7 +240,7 @@ function RawEdit( props ) {
 					{showAvatar &&  'is-style-center' !== attributes.className &&(
 						<AvatarAlignmentToolBar  attributes = {attributes} setAttributes = {setAttributes} />
 					)}
-					<BlockSizeAlignmentToolbar attributes={attributes} setAttributes={setAttributes} />                            			
+					{/*<BlockSizeAlignmentToolbar attributes={attributes} setAttributes={setAttributes} />*/}	
 					<SingleProfile blockClassName="wp-block-govpack-profile-self" profile={profile} attributes={ attributes } availableWidths = {availableWidths} showSelf = {true} />
 				</>
 			) }

@@ -4,7 +4,6 @@
  * Plugin URI:      https://govpack.org/
  * Description:     Govpack
  * Author:          Govpack, poweredbycoffee, thefuturewasnow
- * Author URI:      https://govpack.org/
  * Text Domain:     govpack
  * Domain Path:     /languages
  * Version:         0.0.0

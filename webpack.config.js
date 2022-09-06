@@ -233,9 +233,9 @@ function getUpdatedWebpackConfig(env, arg){
     */
     webpackConfig.entry = {}
     webpackConfig.entry.editor = path.join( __dirname, "src", 'editor', "index" )
-    webpackConfig.entry.profile_block = path.join( __dirname, "src", 'blocks', 'profile', "index" )
-    webpackConfig.entry.profile_self_block = path.join( __dirname, "src", 'blocks', 'profileself', "index" )
-	webpackConfig.entry.profile_self_unregister_block = path.join( __dirname, "src", 'blocks', 'profileself', "unregister-block" )
+    webpackConfig.entry.profile_block = path.join( __dirname, "src", 'blocks', 'Profile', "index" )
+    webpackConfig.entry.profile_self_block = path.join( __dirname, "src", 'blocks', 'ProfileSelf', "index" )
+	webpackConfig.entry.profile_self_unregister_block = path.join( __dirname, "src", 'blocks', 'ProfileSelf', "unregister-block" )
     webpackConfig.entry.importer = path.join( __dirname, "src", 'importer', "index" )
     webpackConfig.entry.admin = path.join( __dirname, 'src', "admin", 'index')
 	webpackConfig.entry.frontend = path.join( __dirname, 'src', "frontend", 'index')

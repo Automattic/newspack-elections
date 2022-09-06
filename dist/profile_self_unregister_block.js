@@ -10,13 +10,13 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/blocks/profileself/unregister-block.js":
+/***/ "./src/blocks/ProfileSelf/unregister-block.js":
 /*!****************************************************!*\
-  !*** ./src/blocks/profileself/unregister-block.js ***!
+  !*** ./src/blocks/ProfileSelf/unregister-block.js ***!
   \****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ \"@wordpress/blocks\");\n/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/dom-ready */ \"@wordpress/dom-ready\");\n/* harmony import */ var _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_1__);\n\n\n_wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_1___default()(function () {\n  if ('govpack_profiles' !== unregister_profile_self_block_data.current_post_type) {\n    (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.unregisterBlockType)('govpack/profile-self');\n  }\n});\n\n//# sourceURL=webpack://Govpack/./src/blocks/profileself/unregister-block.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ \"@wordpress/blocks\");\n/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/dom-ready */ \"@wordpress/dom-ready\");\n/* harmony import */ var _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_1__);\n\n\n_wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_1___default()(function () {\n  if ('govpack_profiles' !== unregister_profile_self_block_data.current_post_type) {\n    (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.unregisterBlockType)('govpack/profile-self');\n  }\n});\n\n//# sourceURL=webpack://Govpack/./src/blocks/ProfileSelf/unregister-block.js?");
 
 /***/ }),
 
@@ -112,7 +112,7 @@ module.exports = window["wp"]["domReady"];
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/blocks/profileself/unregister-block.js");
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/blocks/ProfileSelf/unregister-block.js");
 /******/ 	var __webpack_export_target__ = window;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });

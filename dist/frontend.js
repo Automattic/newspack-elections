@@ -10,23 +10,23 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/blocks/profile/view.scss":
+/***/ "./src/blocks/Profile/view.scss":
 /*!**************************************!*\
-  !*** ./src/blocks/profile/view.scss ***!
+  !*** ./src/blocks/Profile/view.scss ***!
   \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extract-plugin\n\n\n//# sourceURL=webpack://Govpack/./src/blocks/profile/view.scss?");
+eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extract-plugin\n\n\n//# sourceURL=webpack://Govpack/./src/blocks/Profile/view.scss?");
 
 /***/ }),
 
-/***/ "./src/blocks/profileself/view.scss":
+/***/ "./src/blocks/ProfileSelf/view.scss":
 /*!******************************************!*\
-  !*** ./src/blocks/profileself/view.scss ***!
+  !*** ./src/blocks/ProfileSelf/view.scss ***!
   \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extract-plugin\n\n\n//# sourceURL=webpack://Govpack/./src/blocks/profileself/view.scss?");
+eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extract-plugin\n\n\n//# sourceURL=webpack://Govpack/./src/blocks/ProfileSelf/view.scss?");
 
 /***/ }),
 
@@ -36,7 +36,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extr
   \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _blocks_profile_view_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../blocks/profile/view.scss */ \"./src/blocks/profile/view.scss\");\n/* harmony import */ var _blocks_profileself_view_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../blocks/profileself/view.scss */ \"./src/blocks/profileself/view.scss\");\n\n\n\n//# sourceURL=webpack://Govpack/./src/frontend/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _blocks_Profile_view_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../blocks/Profile/view.scss */ \"./src/blocks/Profile/view.scss\");\n/* harmony import */ var _blocks_ProfileSelf_view_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../blocks/ProfileSelf/view.scss */ \"./src/blocks/ProfileSelf/view.scss\");\n\n\n\n//# sourceURL=webpack://Govpack/./src/frontend/index.js?");
 
 /***/ })
 

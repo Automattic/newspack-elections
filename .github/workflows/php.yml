@@ -54,7 +54,7 @@ jobs:
     
     - name: Zip It Up
       run: |
-        zip -r "${GITHUB_WORKSPACE}/release.zip" . -x @.distignore
+        zip -r "${GITHUB_WORKSPACE}/govpack.zip" . -x @.distignore
 
 
 

@@ -4,7 +4,7 @@ Donate link: https://buy.stripe.com/8wM3cNh2ugU9cdW288
 Tags: politics, US, elections, democracy, local government, Gutenberg
 Requires at least: 5.9
 Tested up to: 6.0
-Stable tag: TBD
+Stable tag: 1.0.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html

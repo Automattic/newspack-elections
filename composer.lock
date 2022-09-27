@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f8f1c241ac3a2a6c91d4fbdbb46e24bc",
+    "content-hash": "15b0a68268180008b43ce01f9b80ecff",
     "packages": [
         {
             "name": "gargron/fileupload",

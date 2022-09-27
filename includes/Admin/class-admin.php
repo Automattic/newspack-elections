@@ -115,7 +115,7 @@ class Admin {
 
 		wp_register_style(
 			'govpack-admin-style',
-			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/admin.css',
+			GOVPACK_PLUGIN_ASSETS_URL . 'admin.css',
 			$asset_data['dependencies'] ?? '',
 			$asset_data['version'] ?? '',
 			true
@@ -123,13 +123,14 @@ class Admin {
 
 		wp_register_script(
 			'govpack-admin-script',
-			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/admin.js',
+			GOVPACK_PLUGIN_ASSETS_URL . 'admin.js',
 			$asset_data['dependencies'] ?? '',
 			$asset_data['version'] ?? '',
 			true
 		);
 
-		$file = GOVPACK_PLUGIN_FILE . 'govpack/dist/editor.asset.php';
+
+		$file = GOVPACK_PLUGIN_FILE . 'dist/editor.asset.php';
 
 		if ( file_exists( $file ) ) {
 			$asset_data = require_once $file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
@@ -137,14 +138,14 @@ class Admin {
 
 		wp_register_script(
 			'govpack-editor',
-			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/editor.js',
+			GOVPACK_PLUGIN_ASSETS_URL . 'editor.js',
 			$asset_data['dependencies'] ?? [],
 			$asset_data['version'] ?? '',
 			true
 		);
 		wp_register_style(
 			'govpack-editor-style',
-			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/editor.css',
+			GOVPACK_PLUGIN_ASSETS_URL . 'editor.css',
 			$asset_data['version'] ?? '',
 			true
 		);

@@ -11,7 +11,7 @@ const getProductionConfig = function(env, arg){
 	config.mode = "production"
 	config.devtool = false
 	config.optimization.minimize = true
-	config.plugins.push( new BundleAnalyzerPlugin())
+	//config.plugins.push( new BundleAnalyzerPlugin())
 	return config
 }
 

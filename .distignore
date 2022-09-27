@@ -3,9 +3,10 @@
 .*ignore
 .*rc*
 *.config.js
-.git
-.github
+.git/*
+.github/*
 .circleci
+.cache/*
 .DS_Store
 Thumbs.db
 composer.json
@@ -29,4 +30,4 @@ gruntfile.js
 ./node_modules/*
 ./tests
 ./bin
-babel
+./babel/*

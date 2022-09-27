@@ -2,6 +2,7 @@
   "name": "govpack/govpack",
   "description": "Govpack TK",
   "type": "wordpress-plugin",
+  "version" : "1.0.1",
   "require": {
     "pablo-sg-pacheco/wp-namespace-autoloader": "dev-master",
     "woocommerce/action-scheduler": "^3.4",

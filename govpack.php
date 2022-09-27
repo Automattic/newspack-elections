@@ -1,13 +1,13 @@
 <?php
 /**
- * Plugin Name:     Govpack
- * Plugin URI:      https://govpack.org/
- * Description:     Govpack
- * Author:          Govpack, poweredbycoffee, thefuturewasnow
- * Author URI:      https://govpack.org/
- * Text Domain:     govpack
- * Domain Path:     /languages
- * Version:         0.0.0
+ * Plugin Name:       Govpack
+ * Plugin URI:        https://govpack.org/
+ * Description:       Govpack
+ * Author:            Govpack, poweredbycoffee, thefuturewasnow
+ * Text Domain:       govpack
+ * Domain Path:       /languages
+ * Version:           1.0.1
+ * Requires at least: 5.9 
  *
  * @package         Govpack
  */

@@ -42,9 +42,11 @@ class Importer {
 		
 		$script_handle = 'govpack-importer';
 
+		
+
 		wp_register_script(
 			$script_handle,
-			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/importer.js',
+			GOVPACK_PLUGIN_ASSETS_URL . 'importer.js',
 			$asset_data['dependencies'] ?? [],
 			$asset_data['version'] ?? '',
 			true

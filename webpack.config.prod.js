@@ -4,6 +4,8 @@
 /* eslint-disable import/no-nodejs-modules */
 
 
+const getUpdatedWebpackConfig = require("./webpack.config.js")
+
 const getProductionConfig = function(env, arg){
 	let config = getUpdatedWebpackConfig(env, arg)
 	config.mode = "production"

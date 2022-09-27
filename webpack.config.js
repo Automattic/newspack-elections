@@ -21,7 +21,9 @@ const { responseInterceptor } = require('http-proxy-middleware');
 
 //const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
-process.env.NODE_ENV = "development"
+//process.env.NODE_ENV = "development"
+
+console.log(process.env.NODE_ENV)
 /**
  * Internal variables
  */
@@ -178,13 +180,14 @@ const cachePath = path.resolve( '.cache' );
              '@wordpress/blocks': 'wp.blocks',
             "wp.apiFetch" : "@wordpress/api-fetch",
             "@wordpress/block-editor" : "wp.blockEditor",
-            "wp.components" : "@wordpress/components",
+            "@wordpress/components" : "wp.components",
             "@wordpress/data" : "wp.data",
             "wp.element" : "@wordpress/element",
             "@wordpress/i18n"   : "wp.i18n",
             "@wordpress/server-side-render" : "wp.serverSiderender",
             "wp.icons" : "@wordpress/icons",
-			"wp.api" : "@wordpress/api"
+			"@wordpress/api" : "wp.api",
+			"@wordpress/plugins" : "wp.plugins"
             
         }
 	};
@@ -196,41 +199,6 @@ function getUpdatedWebpackConfig(env, arg){
 
     let webpackConfig = getWebpackConfig(env, arg)
 
-    /*
-    webpackConfig.devServer = {
-        allowedHosts: 'all',
-        port: 8080,
-        devMiddleware: {
-            index: true, // specify to enable root proxying
-            publicPath: '/content/plugins/govpack/dist',
-        },
-        server: 'https',
-        hot: true,
- 
-        proxy: [{
-            context : ["/**", "!/content/plugins/govpack/dist/**" ],
-            target: 'https://govpack.cup',
-            secure: false,
-            autoRewrite : true,
-            hostRewrite: true,
-            followRedirects: false,
-            cookieDomainRewrite: "localhost:8080",
-    
-            selfHandleResponse: true,
-            onProxyRes:responseInterceptor(async (responseBuffer, proxyRes, req, res) => {
-                if( proxyRes.headers &&
-                    proxyRes.headers[ 'content-type' ] &&
-                    proxyRes.headers[ 'content-type' ].match( 'text/html|application/json' ) ) {
-                
-                    const response = responseBuffer.toString('utf8'); // convert buffer to string
-                    return response.replace(/govpack.cup/gm, `localhost:8080`);
-                }
-
-                return responseBuffer
-            })
-        }]        
-    }
-    */
     webpackConfig.entry = {}
     webpackConfig.entry.editor = path.join( __dirname, "src", 'editor', "index" )
     webpackConfig.entry.profile_block = path.join( __dirname, "src", 'blocks', 'Profile', "index" )
@@ -239,12 +207,7 @@ function getUpdatedWebpackConfig(env, arg){
     webpackConfig.entry.importer = path.join( __dirname, "src", 'importer', "index" )
     webpackConfig.entry.admin = path.join( __dirname, 'src', "admin", 'index')
 	webpackConfig.entry.frontend = path.join( __dirname, 'src', "frontend", 'index')
-    // Runtime code for hot module replacement
-    //webpackConfig.entry.hot = 'webpack/hot/dev-server.js',
-    // Dev server client for web socket transport, hot and live reload logic
-    //webpackConfig.entry.client = 'webpack-dev-server/client/index.js?hot=true&live-reload=true',
 
-    console.log(webpackConfig.module)
 
     return webpackConfig
 }   

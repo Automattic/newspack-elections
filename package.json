@@ -8,7 +8,7 @@
     "start": "npm run dev",
     "dev": "calypso-build --watch --env WP",
     "serve": "calypso-build serve --env WP",
-    "build": "calypso-build --config='./webpack.config.js' --env WP",
+    "build": "calypso-build --config='./webpack.config.prod.js' --env WP",
     "clean": "rm -rf dist/",
     "lint": "npm-run-all --parallel lint:*",
     "lint:js": "eslint --ext .js,.jsx assets/js/src",
@@ -146,6 +146,7 @@
     "url-regex": "^5.0.0",
     "util": "^0.12.4",
     "webpack": "^5.46.0",
+    "webpack-bundle-analyzer": "^4.6.1",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^4.7.4"
   }

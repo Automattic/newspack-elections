@@ -207,7 +207,7 @@ const SingleProfile = (props) => {
            
             <div className={`${blockClassName}__social`}>
                 <ul className={`${blockClassName}__services`}>
-					<SocialRow services={props.data.official} show={props.show.showOfficial} label="Offical" />
+					<SocialRow services={props.data.official} show={props.show.showOfficial} label="Official" />
 					<SocialRow services={props.data.campaign} show={props.show.showCampaign} label="Campaign" />
 					<SocialRow services={props.data.personal} show={props.show.showPersonal} label="Personal" />
                 </ul>

@@ -10,7 +10,7 @@ import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 import { decodeEntities } from '@wordpress/html-entities';
 
-import { AutocompleteWithSuggestions } from 'newspack-components';
+import AutocompleteWithSuggestions from '../../components/AutocompleteWithSuggestions.jsx'
 
 import ProfileDisplaySettings from '../../components/Panels/ProfileDisplaySettings.jsx'
 import ProfileAvatarPanel from '../../components/Panels/ProfileAvatarPanel';
@@ -248,7 +248,7 @@ function Edit( props ) {
 				) }
                 { ! isLoading && (
                     <AutocompleteWithSuggestions
-                        label={ __( 'Search for an author to display', 'govpack' ) }
+                        label={ __( 'Search for a profile to display', 'govpack' ) }
                         help={ __(
                             'Begin typing name, click autocomplete result to select.',
                             'govpack'

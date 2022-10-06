@@ -16,6 +16,7 @@ const TranspileConfig = require( '@automattic/calypso-build/webpack/transpile' )
 const { cssNameFromFilename, shouldTranspileDependency } = require( '@automattic/calypso-build/webpack/util' );
 // const { workerCount } = require( './webpack.common' ); // todo: shard...
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const { responseInterceptor } = require('http-proxy-middleware');
 
@@ -168,7 +169,7 @@ const cachePath = path.resolve( '.cache' );
 				),
 				global: 'window',
 			} ),
-			
+			new BundleAnalyzerPlugin(),
 			new DuplicatePackageCheckerPlugin(),
 			...( env.WP ? [ new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ) ] : [] ),
             new MiniCssExtractPlugin(),
@@ -178,14 +179,14 @@ const cachePath = path.resolve( '.cache' );
             React : "React",
             ReactDOM : "ReactDOM",
              '@wordpress/blocks': 'wp.blocks',
-            "wp.apiFetch" : "@wordpress/api-fetch",
+			 "@wordpress/api-fetch":"wp.apiFetch",
             "@wordpress/block-editor" : "wp.blockEditor",
             "@wordpress/components" : "wp.components",
             "@wordpress/data" : "wp.data",
-            "wp.element" : "@wordpress/element",
+            "@wordpress/element" : "wp.element",
             "@wordpress/i18n"   : "wp.i18n",
             "@wordpress/server-side-render" : "wp.serverSiderender",
-            "wp.icons" : "@wordpress/icons",
+            "@wordpress/icons" : "wp.icons",
 			"@wordpress/api" : "wp.api",
 			"@wordpress/plugins" : "wp.plugins"
             

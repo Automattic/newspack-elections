@@ -3,7 +3,7 @@
  */
 /* eslint-disable import/no-nodejs-modules */
 
-
+//const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const getUpdatedWebpackConfig = require("./webpack.config.js")
 
 const getProductionConfig = function(env, arg){

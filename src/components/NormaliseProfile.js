@@ -46,6 +46,7 @@ export function normalize_profile(profile){
 		status : getFromEmbedded("govpack_officeholder_status")?.name ?? null,
         email :  decodeEntities(profile.meta?.email ?? null),
         link :  profile.link,
+		district :  profile.meta?.district ?? null,
 		social : {
         	official : {
 				twitter : profile.meta?.twitter_official ?? null,

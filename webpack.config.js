@@ -178,15 +178,15 @@ const cachePath = path.resolve( '.cache' );
         externals : {
             React : "React",
             ReactDOM : "ReactDOM",
-             '@wordpress/blocks': 'wp.blocks',
-			 "@wordpress/api-fetch":"wp.apiFetch",
+            '@wordpress/blocks': 'wp.blocks',
+			"@wordpress/api-fetch":"wp.apiFetch",
             "@wordpress/block-editor" : "wp.blockEditor",
             "@wordpress/components" : "wp.components",
             "@wordpress/data" : "wp.data",
             "@wordpress/element" : "wp.element",
             "@wordpress/i18n"   : "wp.i18n",
             "@wordpress/server-side-render" : "wp.serverSiderender",
-            "@wordpress/icons" : "wp.icons",
+            "wp.icons" : "@wordpress/icons",
 			"@wordpress/api" : "wp.api",
 			"@wordpress/plugins" : "wp.plugins"
             

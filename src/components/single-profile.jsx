@@ -16,28 +16,11 @@ import FaxIcon from "./../images/fax.svg"
  import classnames from 'classnames';
 
 import { normalize_profile } from './NormaliseProfile';
+import ProfileCommsPanel from "./Panels/ProfileCommsPanel"
  
 
 
 
-const Row = (props) => {
-
-    const {display, value} = props
-
-    if(!display){
-        return null
-    }
-
-    if(!value){
-        return null
-    }
-
-    return (
-        <div className="wp-block-govpack-profile__line" role="listitem">
-            {value}
-        </div>
-    )
-}
 
 const Link = (props) => {
 
@@ -113,6 +96,7 @@ const SingleProfile = (props) => {
         showPosition,
         showParty,
         showState,
+		showDistrict,
         showSocial,
 		selectedSocial,
 		showWebsites,
@@ -132,6 +116,28 @@ const SingleProfile = (props) => {
 
     } = attributes
 
+	const Row = (props) => {
+
+		const {display, value, id} = props
+	
+		if(!display){
+			return null
+		}
+	
+		if(!value){
+			return null
+		}
+		
+		const classes = classnames(`${blockClassName}__line`, {
+			[`${blockClassName}--${id}`] : (id ?? false)
+		} )
+	
+		return (
+			<div className={classes} role="listitem">
+				{value}
+			</div>
+		)
+	}
 	
 	
 	const Contact = (props) => {
@@ -354,7 +360,7 @@ const SingleProfile = (props) => {
 
             
                 <div className={`${blockClassName}__info`}>
-                    <div className={`${blockClassName}__line`} role="listitem">
+                    <div className={`${blockClassName}__line ${blockClassName}__line--name`} role="listitem">
                         {showName && (
                             <h3><Link>{profile.name.full}</Link></h3>
                         )}
@@ -365,19 +371,20 @@ const SingleProfile = (props) => {
                         )}
                         
                     </div>
-                    <Row key="leg_body" value={profile.legislative_body} display={showLegislativeBody}/>
-                    <Row key="pos" value={profile.position}  display={showPosition}/>
-                    <Row key="party" value={profile.party}  display={showParty}/>
-					<Row key="status" value={profile.status} display={showStatus}/>
-                    <Row key="states" value={profile.state} display={showState}/>
+                    <Row key="leg_body" id="leg_body" value={profile.legislative_body} display={showLegislativeBody}/>
+                    <Row key="pos" id="position" value={profile.position}  display={showPosition}/>
+                    <Row key="party" id="party" value={profile.party}  display={showParty}/>
+					<Row key="district" id="district" value={profile.district}  display={showDistrict}/>
+					<Row key="status" id="status" value={profile.status} display={showStatus}/>
+                    <Row key="states" id="states" value={profile.state} display={showState}/>
 
-                    <Row key="social" value={<SocialMedia data={profile.social} label="Social Media" show={selectedSocial}/>} display={(showSocial && doShowSocial)}/>
-					<Row key="comms_capitol" value={hasCommsData(profile.comms.capitol) && <Comms data={profile.comms.capitol} label="Capitol" show={selectedCapitolCommunicationDetails}/>} display={showCapitolCommunicationDetails} />
-					<Row key="comms_district" value={hasCommsData(profile.comms.district) && <Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />
-					<Row key="comms_campaign" value={hasCommsData(profile.comms.campaign) && <Comms data={profile.comms.campaign} label="Campaign" show={selectedCampaignCommunicationDetails}/>} display={showCampaignCommunicationDetails} />
-					<Row key="comms_other" value={hasCommsOtherData(profile.comms.other) && <CommsOther data={profile.comms.other} label="Other" show={selectedOtherCommunicationDetails}/>} display={showOtherCommunicationDetails} />
+                    <Row key="social" id="social" value={<SocialMedia data={profile.social} label="Social Media" show={selectedSocial}/>} display={(showSocial && doShowSocial)}/>
+					<Row key="comms_capitol" id="comms_capitol" value={hasCommsData(profile.comms.capitol) && <Comms data={profile.comms.capitol} label="Capitol" show={selectedCapitolCommunicationDetails}/>} display={showCapitolCommunicationDetails} />
+					<Row key="comms_district" id="comms_district" value={hasCommsData(profile.comms.district) && <Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />
+					<Row key="comms_campaign" id="comms_campaign" value={hasCommsData(profile.comms.campaign) && <Comms data={profile.comms.campaign} label="Campaign" show={selectedCampaignCommunicationDetails}/>} display={showCampaignCommunicationDetails} />
+					<Row key="comms_other" id="comms_other" value={hasCommsOtherData(profile.comms.other) && <CommsOther data={profile.comms.other} label="Other" show={selectedOtherCommunicationDetails}/>} display={showOtherCommunicationDetails} />
 
-					<Row key="url" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
+					<Row key="url" id="more_about" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
                 </div>
             </div>  
      

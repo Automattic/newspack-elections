@@ -11,7 +11,7 @@
  * @param string  $value The value to output.
  * @param boolean $display Override to control if this row will output.
  */
-function gp_row( $value, $display ) {
+function gp_row( $id = "", $value, $display ) {
 
 	if ( ! $display ) {
 		return null;
@@ -22,7 +22,7 @@ function gp_row( $value, $display ) {
 	}
 
 	// No escaping here. $value here needs to handle HTML beyond what wp_kses can realistically handle. Escaping should be done before passing to this function.
-	echo '<div class="wp-block-govpack-profile__line">' . $value . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo '<div id="govpack-profile-block-'. $id .'" class="wp-block-govpack-profile__line wp-block-govpack-profile__line--'.$id.'">' . $value . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 }
 

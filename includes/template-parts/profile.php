@@ -105,17 +105,18 @@ $show_secondary_address = ( isset( $profile_data['address']['secondary'] ) &&
 
 			</div>
 			<?php
-				gp_row( $profile_data['legislative_body'], $attributes['showLegislativeBody'], );
-				gp_row( $profile_data['position'], $attributes['showPosition'] );
-				gp_row( $profile_data['party'], $attributes['showParty'] );
-				gp_row( $profile_data['state'], ( $attributes['showState'] && $profile_data['state'] ) );
-				gp_row( $profile_data['status'], ( $attributes['showStatus'] && $profile_data['status'] ) );
-				gp_row( gp_social_media( $profile_data, $attributes ), ( $attributes['showSocial'] && $profile_data['hasSocial'] ) );
-				gp_row( gp_contact_info( 'Capitol', $profile_data['comms']['capitol'], $attributes['selectedCapitolCommunicationDetails'] ), $attributes['showCapitolCommunicationDetails'] );
-				gp_row( gp_contact_info( 'District', $profile_data['comms']['district'], $attributes['selectedDistrictCommunicationDetails'] ), $attributes['showDistrictCommunicationDetails'] );
-				gp_row( gp_contact_info( 'Campaign', $profile_data['comms']['campaign'], $attributes['selectedCampaignCommunicationDetails'] ), $attributes['showCampaignCommunicationDetails'] );
-				gp_row( gp_contact_other( 'Other', $profile_data['comms']['other'], $attributes['selectedOtherCommunicationDetails'] ), $attributes['showOtherCommunicationDetails'] );
-				gp_row( gp_maybe_link("More About " . $profile_data['name']["full"], $profile_data['link'], $attributes['showProfileLink']) , $attributes['showProfileLink'] );
+				gp_row( "leg_body", $profile_data['legislative_body'], $attributes['showLegislativeBody'], );
+				gp_row( "position", $profile_data['position'], $attributes['showPosition'] );
+				gp_row( "party",$profile_data['party'], $attributes['showParty'] );
+				gp_row( "district", $profile_data['district'], ( $attributes['showDistrict'] && $profile_data['district'] ) );
+				gp_row( "state", $profile_data['state'], ( $attributes['showState'] && $profile_data['state'] ) );
+				gp_row( "status", $profile_data['status'], ( $attributes['showStatus'] && $profile_data['status'] ) );
+				gp_row( "social", gp_social_media( $profile_data, $attributes ), ( $attributes['showSocial'] && $profile_data['hasSocial'] ) );
+				gp_row( "comms_capitol", gp_contact_info( 'Capitol', $profile_data['comms']['capitol'], $attributes['selectedCapitolCommunicationDetails'] ), $attributes['showCapitolCommunicationDetails'] );
+				gp_row( "comms_district", gp_contact_info( 'District', $profile_data['comms']['district'], $attributes['selectedDistrictCommunicationDetails'] ), $attributes['showDistrictCommunicationDetails'] );
+				gp_row( "comms_campaign", gp_contact_info( 'Campaign', $profile_data['comms']['campaign'], $attributes['selectedCampaignCommunicationDetails'] ), $attributes['showCampaignCommunicationDetails'] );
+				gp_row( "comms_other", gp_contact_other( 'Other', $profile_data['comms']['other'], $attributes['selectedOtherCommunicationDetails'] ), $attributes['showOtherCommunicationDetails'] );
+				gp_row( "more_about", gp_maybe_link("More About " . $profile_data['name']["full"], $profile_data['link'], $attributes['showProfileLink']) , $attributes['showProfileLink'] );
 
 			?>			
 		</div>

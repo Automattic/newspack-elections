@@ -52,6 +52,10 @@
 			"type": "boolean",
 			"default": true
 		},
+		"showDistrict": {
+			"type": "boolean",
+			"default": false
+		},
         "showState": {
 			"type": "boolean",
 			"default": true

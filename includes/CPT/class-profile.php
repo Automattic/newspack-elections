@@ -692,6 +692,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'facebook'         => $profile_raw_meta_data['facebook'][0] ?? '',
 			'website'          => $profile_raw_meta_data['leg_url'][0] ?? '',
 			'biography'        => $profile_raw_meta_data['biography'][0] ?? '',
+			'district'        => $profile_raw_meta_data['district'][0] ?? '',
 			
 			'party'            => $term_data[ \Govpack\Core\Tax\Party::TAX_SLUG ] ?? '',
 			'state'            => $term_data[ \Govpack\Core\Tax\State::TAX_SLUG ] ?? '',

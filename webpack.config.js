@@ -169,7 +169,6 @@ const cachePath = path.resolve( '.cache' );
 				),
 				global: 'window',
 			} ),
-			new BundleAnalyzerPlugin(),
 			new DuplicatePackageCheckerPlugin(),
 			...( env.WP ? [ new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ) ] : [] ),
             new MiniCssExtractPlugin(),

@@ -55,7 +55,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		\add_action( 'restrict_manage_posts', [ __CLASS__, 'post_table_filters' ], 10, 2 );
 
 		add_filter( 'disable_months_dropdown', [ __CLASS__, 'disable_months_dropdown' ], 10, 2 );
-		add_filter( 'wpseo_enable_editor_features_' . self::CPT_SLUG, '__return_false' );
+		//add_filter( 'wpseo_enable_editor_features_' . self::CPT_SLUG, '__return_false' );
 
 		
 		add_filter( 'bulk_actions-edit-' . self::CPT_SLUG, [ __CLASS__, 'filter_bulk_actions' ], 10 );

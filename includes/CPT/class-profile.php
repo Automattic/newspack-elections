@@ -146,7 +146,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 
 		return register_post_type( // phpcs:ignore WordPress.NamingConventions.ValidPostTypeSlug.NotStringLiteral
 			self::CPT_SLUG,
-			[
+			\apply_filters("govpack_register_post_type_profile", [
 				'labels'       => [
 					'name'               => _x( 'Profiles', 'post type general name', 'govpack' ),
 					'singular_name'      => _x( 'Profile', 'post type singular name', 'govpack' ),
@@ -167,7 +167,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				'show_in_rest' => true,
 				'show_ui'      => true,
 				'show_in_menu' => 'govpack',
-				'supports'     => [ 'revisions', 'thumbnail', 'editor', 'custom-fields', 'title', 'excerpt' ],
+				'supports'     => [ 'revisions', 'thumbnail', 'editor', 'custom-fields', 'title', 'excerpt', 'author'],
 				'taxonomies'   => [ 'post_tag' ],
 				'as_taxonomy'  => \Govpack\Core\Tax\Profile::TAX_SLUG,
 				'menu_icon'    => 'dashicons-groups',
@@ -178,7 +178,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				'template'     => [
 					[ 'govpack/profile-self' ],
 				],
-			]
+			])
 		);
 	}
 

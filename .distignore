@@ -34,3 +34,7 @@ tests
 bin
 babel
 /.git
+/.github
+/.circleci
+/.cache
+/.DS_Store

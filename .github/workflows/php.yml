@@ -10,12 +10,10 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
+    
     - uses: actions/checkout@v3
-
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
@@ -56,17 +54,6 @@ jobs:
       run: |
         zip -r "${GITHUB_WORKSPACE}/govpack.zip" . -x @.distignore
 
-
-
-    #- name: Create Release
-    #  id: create_release
-    #  uses: elgohr/Github-Release-Action@v4
-    #  env:
-    #    GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-    #  with:
-    #    title: Messgae?
-
-
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
@@ -78,9 +65,3 @@ jobs:
       env: 
         GITHUB_REPOSITORY: "govpack-wp/govpack-plugin"
 
-
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
-
-    # - name: Run test suite
-    #   run: composer run-script test

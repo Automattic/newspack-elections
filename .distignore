@@ -23,6 +23,7 @@ phpcs.xml.dist
 README.md
 PULL_REQUEST_TEMPLATE.md
 webpack.config.js
+webpack.config.prod.js
 gruntfile.js
 *.sql
 *.tar.gz
@@ -32,3 +33,4 @@ node_modules
 tests
 bin
 babel
+/.git

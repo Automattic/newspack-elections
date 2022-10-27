@@ -28,7 +28,7 @@ gruntfile.js
 *.tar.gz
 *.zip
 ./node_modules/*
-/node_modules
-./tests
-./bin
-./babel/*
+node_modules
+tests
+bin
+babel

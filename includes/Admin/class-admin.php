@@ -26,7 +26,7 @@ class Admin {
 		\add_action( 'admin_menu', [ __class__, 'create_menus' ], 1, 1 );
 		\add_action( 'admin_enqueue_scripts', [ __class__, 'register_assets' ], 100, 1 );
 		\add_action( 'admin_enqueue_scripts', [ __class__, 'load_assets' ], 101, 1 );
-		\add_action( 'block_categories_all', [ __class__, 'block_categories' ], 10, 2 );				
+		\add_action( 'block_categories_all', [ __class__, 'block_categories' ], 10, 2 );                
 		\add_action( 'enqueue_block_editor_assets', [ __class__, 'enqueue_block_editor_assets' ] );
 
 		\add_action( 'after_setup_theme', [ '\Govpack\Core\Admin\Export', 'hooks' ], 11, 1 );
@@ -40,7 +40,7 @@ class Admin {
 		wp_enqueue_script(
 			'unregister-profile-self-block',
 			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/profile_self_unregister_block.js',
-			array( 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' )
+			[ 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ]
 		);
 
 		wp_localize_script( 'unregister-profile-self-block', 'unregister_profile_self_block_data', [ 'current_post_type' => $screen->post_type ] );

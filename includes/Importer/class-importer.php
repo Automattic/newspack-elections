@@ -364,7 +364,7 @@ class Importer {
 	 * @param integer $id Post ID to lookup and sideload.
 	 * @throws \Exception Profile errors.
 	 */
-	public static function sideload( $id = null, $meta_key = "photo" ) {
+	public static function sideload( $id = null, $meta_key = 'photo' ) {
 
 	
 		if ( ! $id ) {

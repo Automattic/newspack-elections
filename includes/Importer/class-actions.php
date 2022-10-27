@@ -43,9 +43,8 @@ class Actions {
 		return self::$instance;
 	}
 
-	public function __construct()
-	{
-		self::$log = new Logger("Import Log", "govpack-import.log");
+	public function __construct() {
+		 self::$log = new Logger( 'Import Log', 'govpack-import.log' );
 	}
 	/**
 	 * Adds Actions to Hooks 
@@ -57,7 +56,7 @@ class Actions {
 		
 
 		\add_action( 'govpack_import_csv_profile', [ self::instance(), 'make_profile_from_csv' ] );
-		//\add_action( 'govpack_import_cleanup', [ self::instance(), 'cleanup_import' ] );
+		// \add_action( 'govpack_import_cleanup', [ self::instance(), 'cleanup_import' ] );
 		\add_filter( 'govpack_import_openstates_links', [ self::instance(), 'explode_openstates_list' ] );
 		\add_filter( 'govpack_import_openstates_sources', [ self::instance(), 'explode_openstates_list' ] );
 
@@ -243,7 +242,7 @@ class Actions {
 		
 		
 
-		self::$log->debug("New Import Record");
+		self::$log->debug( 'New Import Record' );
 	
 		$data = [];
 
@@ -266,25 +265,25 @@ class Actions {
 		foreach ( $model as $key => $action ) {
 
 			if ( 'meta' === $action['type'] ) {
-				if(isset( $data[ $action['key'] ])){
+				if ( isset( $data[ $action['key'] ] ) ) {
 					$meta[ $key ] = $data[ $action['key'] ];
 				}
 			}
 
 			if ( 'post' === $action['type'] ) {
 				
-				if(isset( $data[ $key ])){
+				if ( isset( $data[ $key ] ) ) {
 					$post[ $action['key'] ] = $data[ $key ];
 				}
 			}
 
 			if ( 'taxonomy' === $action['type'] ) {
 
-				self::$log->debug(sprintf("find or create term %s in taxinomy %s", $data[ $key ], $action['taxonomy'] ));
-				$term  = self::find_or_create_term( $data[ $key ], $action['taxonomy'] );
+				self::$log->debug( sprintf( 'find or create term %s in taxinomy %s', $data[ $key ], $action['taxonomy'] ) );
+				$term = self::find_or_create_term( $data[ $key ], $action['taxonomy'] );
 				
-				if(!is_wp_error($term)){
-					$tax[ $action['taxonomy'] ] = [$term->term_id];
+				if ( ! is_wp_error( $term ) ) {
+					$tax[ $action['taxonomy'] ] = [ $term->term_id ];
 				}
 			}
 
@@ -295,7 +294,7 @@ class Actions {
 			}
 		}
 
-		self::$log->debug("Terms for new entity", $tax);
+		self::$log->debug( 'Terms for new entity', $tax );
 
 
 		if ( ! self::is_profile_update( $post ) ) {
@@ -304,18 +303,18 @@ class Actions {
 
 		$post['post_title'] = $meta['name'];
 		$post['meta_input'] = $meta;
-		//$post['tax_input']  = $tax;
+		// $post['tax_input']  = $tax;
 
 		
 		$resp = self::create_or_update( $post );
 
-		self::$log->debug(sprintf("Created profile %d", $resp), $post, $resp);
+		self::$log->debug( sprintf( 'Created profile %d', $resp ), $post, $resp );
 
 		if ( \is_wp_error( $resp ) ) {
 			return; 
 		}
 
-		foreach($tax as $taxonomy => $tags){
+		foreach ( $tax as $taxonomy => $tags ) {
 			wp_set_post_terms( $resp, $tags, $taxonomy );
 		}
 
@@ -325,9 +324,9 @@ class Actions {
 		if ( $data['image'] ) {
 			
 			try {
-				Importer::sideload( $created_post_id, "image" );
+				Importer::sideload( $created_post_id, 'image' );
 			} catch ( Exception $e ) {
-				var_dump($e);
+				var_dump( $e );
 				return false;
 			}
 		}
@@ -345,10 +344,10 @@ class Actions {
 	public static function create_or_update( $post ) {
 		
 		if ( self::is_profile_update( $post ) ) {
-			self::$log->info("Update existing profile");
+			self::$log->info( 'Update existing profile' );
 			$resp = wp_update_post( $post );
 		} else {
-			self::$log->info("Insert New profile");
+			self::$log->info( 'Insert New profile' );
 			$resp = wp_insert_post( $post );
 		}
 

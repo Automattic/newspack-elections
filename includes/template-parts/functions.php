@@ -8,6 +8,7 @@
 /**
  * Utility Function that Outputs a row
  * 
+ * @param string  $id The html ID to output.
  * @param string  $value The value to output.
  * @param boolean $display Override to control if this row will output.
  */
@@ -314,12 +315,12 @@ function gp_contact_info( $label, $links, $attrs ) {
 		$icon         = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
 		$contact_icon = sprintf( $icon, $service, $icons[ $service ] );
 
-		if ( ( $service === 'phone' ) || ( $service === 'fax' ) ) {
+		if ( ( 'phone' === $service ) || ( 'fax' === $service ) ) {
 			$protocol = 'tel:';
-		} elseif ( $service === 'email' ) {
+		} elseif ( 'email' === $service ) {
 			$protocol = 'mailto:';
 		} else {
-			$protocol = ''; // web has no protocol as it should come from the url itself
+			$protocol = ''; // web has no protocol as it should come from the url itself.
 		}
 
 		$content .=  
@@ -350,6 +351,13 @@ function gp_contact_info( $label, $links, $attrs ) {
 	return sprintf( $outer_template, $label, $content, $address ); 
 }
 
+/**
+ * Utility Function that Outputs a Profiles's Contact Other
+ * 
+ * @param array $label label for the section being output.
+ * @param array $links Data about the profile.
+ * @param array $attrs Attributes from the Block.
+ */
 function gp_contact_other( $label, $links, $attrs ) {
 	$outer_template = '
 	<div class="wp-block-govpack-profile__comms-other">

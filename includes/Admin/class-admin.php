@@ -32,7 +32,9 @@ class Admin {
 		\add_action( 'after_setup_theme', [ '\Govpack\Core\Admin\Export', 'hooks' ], 11, 1 );
 	}
 
-
+	/**
+	 * Register Block Assets.
+	 */
 	public static function enqueue_block_editor_assets() {
 
 		$screen = get_current_screen();
@@ -40,7 +42,9 @@ class Admin {
 		wp_enqueue_script(
 			'unregister-profile-self-block',
 			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/profile_self_unregister_block.js',
-			[ 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ]
+			[ 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ],
+			1,
+			true
 		);
 
 		wp_localize_script( 'unregister-profile-self-block', 'unregister_profile_self_block_data', [ 'current_post_type' => $screen->post_type ] );

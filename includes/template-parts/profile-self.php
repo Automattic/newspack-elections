@@ -59,8 +59,6 @@ $photo_styles = join(
 	' ',
 	[
 		'border-radius: ' . $attributes['avatarBorderRadius'] . ';',
-		// 'width:' . $attributes['avatarSize'] . 'px;',
-		// 'height:' . $attributes['avatarSize'] . 'px;',
 	]
 );
 

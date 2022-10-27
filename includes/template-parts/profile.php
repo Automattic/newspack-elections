@@ -89,8 +89,7 @@ $show_secondary_address = ( isset( $profile_data['address']['secondary'] ) &&
 
 		<div class="wp-block-govpack-profile__info">
 			<div class="wp-block-govpack-profile__line">
-				
-			<?php 
+			<?php
 			if ( $attributes['showName'] && $profile_data['name']['full'] ) {
 				?>
 					<h3> <?php echo GP_Maybe_Link( $profile_data['name']['full'], $profile_data['link'], $attributes['showProfileLink'] );  //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></h3>
@@ -119,7 +118,7 @@ $show_secondary_address = ( isset( $profile_data['address']['secondary'] ) &&
 				gp_row( 'more_about', gp_maybe_link( 'More About ' . $profile_data['name']['full'], $profile_data['link'], $attributes['showProfileLink'] ), $attributes['showProfileLink'] );
 
 			?>
-						
+
 		</div>
 	</div> <!-- end __container -->
 </aside>

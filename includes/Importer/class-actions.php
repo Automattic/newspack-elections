@@ -43,9 +43,15 @@ class Actions {
 		return self::$instance;
 	}
 
+	/**
+	 * Construct Actions for Import. Craetes the logger mainly.
+	 *
+	 * @return void
+	 */
 	public function __construct() {
-		 self::$log = new Logger( 'Import Log', 'govpack-import.log' );
+		self::$log = new Logger( 'Import Log', 'govpack-import.log' );
 	}
+
 	/**
 	 * Adds Actions to Hooks 
 	 */
@@ -56,7 +62,6 @@ class Actions {
 		
 
 		\add_action( 'govpack_import_csv_profile', [ self::instance(), 'make_profile_from_csv' ] );
-		// \add_action( 'govpack_import_cleanup', [ self::instance(), 'cleanup_import' ] );
 		\add_filter( 'govpack_import_openstates_links', [ self::instance(), 'explode_openstates_list' ] );
 		\add_filter( 'govpack_import_openstates_sources', [ self::instance(), 'explode_openstates_list' ] );
 
@@ -303,8 +308,6 @@ class Actions {
 
 		$post['post_title'] = $meta['name'];
 		$post['meta_input'] = $meta;
-		// $post['tax_input']  = $tax;
-
 		
 		$resp = self::create_or_update( $post );
 
@@ -326,7 +329,6 @@ class Actions {
 			try {
 				Importer::sideload( $created_post_id, 'image' );
 			} catch ( Exception $e ) {
-				var_dump( $e );
 				return false;
 			}
 		}

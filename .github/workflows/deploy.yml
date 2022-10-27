@@ -59,6 +59,7 @@ jobs:
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         ASSETS_DIR: "assets"
+        SLUG: "govpack"
         
     - name: Rename Zip for Github
       run: |

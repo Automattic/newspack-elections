@@ -71,7 +71,7 @@ jobs:
         # note you'll typically need to create a personal access token
         # with permissions to create releases in the other repo
         token: ${{ secrets.RELEASE_TOKEN }}
-        files: "${GITHUB_WORKSPACE}/govpack.zip"
+        files: "govpack.zip"
       env: 
         GITHUB_REPOSITORY: "govpack-wp/govpack-plugin"
 

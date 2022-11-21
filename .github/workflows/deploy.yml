@@ -1,9 +1,11 @@
-name: WordPress Plugin Build and Release
+name: WordPress Plugin Build and Release to WP.ORG
 
 on:
   push:
     tags:
       - "v*.*.*"
+    tags-ignore:        
+      - "v*.*.*-*"
 
 permissions:
   contents: read

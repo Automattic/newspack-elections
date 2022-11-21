@@ -1,10 +1,10 @@
-name: WordPress Plugin Build and Release to WP.ORG
+name: Create a release for GitHub when NOT deploying to WP.ORG
 
 on:
   push:
     tags:
-      - "v*.*.*"
-      - "!v*.*.*-*"
+      - "v*.*.*-*"
+      - "!v*.*.*"
 permissions:
   contents: read
 
@@ -50,16 +50,16 @@ jobs:
       run: |
        mv README.md readme.txt
     
-    - name: WordPress Plugin Deploy
-      id: deploy
-      uses: 10up/action-wordpress-plugin-deploy@stable
-      with:
-        generate-zip: true
-      env:
-        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-        ASSETS_DIR: "assets"
-        SLUG: "govpack"
+    #- name: WordPress Plugin Deploy
+    #  id: deploy
+    #  uses: 10up/action-wordpress-plugin-deploy@stable
+    #  with:
+    #    generate-zip: true
+    #  env:
+    #    SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+    #    SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+    #    ASSETS_DIR: "assets"
+    #    SLUG: "govpack"
         
     #- name: Rename Zip for Github
     #  run: |

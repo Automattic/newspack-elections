@@ -60,9 +60,9 @@ jobs:
     #    ASSETS_DIR: "assets"
     #    SLUG: "govpack"
         
-    #- name: Rename Zip for Github
-    #  run: |
-    #      mv ${{steps.deploy.outputs.zip-path}} ${GITHUB_WORKSPACE}/govpack.zip
+    - name: Create a Zip
+      run: |
+          zip -r "${GITHUB_WORKSPACE}/govpack.zip" . -x @.distignore
 
     - name: Release
       uses: softprops/action-gh-release@v1
@@ -71,7 +71,7 @@ jobs:
         # note you'll typically need to create a personal access token
         # with permissions to create releases in the other repo
         token: ${{ secrets.RELEASE_TOKEN }}
-        files: ${{ steps.deploy.outputs.zip-path }}
+        files: ${GITHUB_WORKSPACE}/govpack.zip
       env: 
         GITHUB_REPOSITORY: "govpack-wp/govpack-plugin"
 

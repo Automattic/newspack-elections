@@ -91,6 +91,7 @@ const SingleProfile = (props) => {
         width,
 
         showName,
+        showAge,
         showBio,
         showLegislativeBody,
         showPosition,
@@ -363,6 +364,9 @@ const SingleProfile = (props) => {
                     <div className={`${blockClassName}__line ${blockClassName}__line--name`} role="listitem">
                         {showName && (
                             <h3><Link>{profile.name.full}</Link></h3>
+                        )}
+                        {showAge && (
+                          <div>Age: {profile.age}</div>
                         )}
                         {showBio && profile.bio && (
                             <>

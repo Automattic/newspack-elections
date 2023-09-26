@@ -636,6 +636,14 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		return ( empty( $address ) ? null : join( $seperator, $address ) );
 	}
 
+	static function age_from_epoc($dob){
+
+		$today = new \DateTime();
+		$dateOfBirth = new \DateTime();
+		$dateOfBirth->setTimestamp(($dob / 1000)); //js timestime is milliseconds, we just want seconds since epoc
+		$diff = $dateOfBirth->diff($today);
+		return sprintf("%d Years", $diff->y);
+	}
 
 	/**
 	 * Fetch profile data into an array. Used for shortcode and block.
@@ -693,7 +701,8 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'website'          => $profile_raw_meta_data['leg_url'][0] ?? '',
 			'biography'        => $profile_raw_meta_data['biography'][0] ?? '',
 			'district'         => $profile_raw_meta_data['district'][0] ?? '',
-			
+			'age'              => self::age_from_epoc($profile_raw_meta_data['date_of_birth'][0] ?? false),
+
 			'party'            => $term_data[ \Govpack\Core\Tax\Party::TAX_SLUG ] ?? '',
 			'state'            => $term_data[ \Govpack\Core\Tax\State::TAX_SLUG ] ?? '',
 			'legislative_body' => $term_data[ \Govpack\Core\Tax\LegislativeBody::TAX_SLUG ] ?? '',

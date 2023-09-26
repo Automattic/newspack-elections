@@ -1,5 +1,5 @@
 import { decodeEntities } from '@wordpress/html-entities';
-import { isArray, isEmpty, isUndefined, isNil } from 'lodash';
+import { isArray, isEmpty, isNil } from 'lodash';
 
 export function normalize_profile(profile){
 
@@ -36,13 +36,20 @@ export function normalize_profile(profile){
 	}
 
   const getAgeFromEpoch = (dateOfBirthMs) => {
+	if(dateOfBirthMs === 0){
+		return null;
+	}
+
+	if(dateOfBirthMs === "0"){
+		return null;
+	}
     // dateOfBirth is in milliseconds since the epoch.
     let today = new Date();
     let dateOfBirth = new Date(Number(dateOfBirthMs));
     // Did the birthday pass this month yet?
     let birthdayThisYearYet = (today.getMonth() > dateOfBirth.getMonth() ||
                                (today.getMonth() == dateOfBirth.getMonth() && today.getDate() >= dateOfBirth.getDate()));
-    return today.getFullYear() - dateOfBirth.getFullYear() - (birthdayThisYearYet ? 0 : 1);
+    return today.getFullYear() - dateOfBirth.getFullYear() - (birthdayThisYearYet ? 0 : 1) + " Years";
   }
 
     return {
@@ -92,7 +99,7 @@ export function normalize_profile(profile){
 			first 	:  profile.meta?.first_name ?? null,
 			last 	:  profile.meta?.last_name ?? null
 		},
-        age : getAgeFromEpoch(Number(profile.meta?.date_of_birth)),
+        age : getAgeFromEpoch(Number(profile.meta?.date_of_birth)) ?? null,
 		websites : {
 			campaign : profile.meta?.campaign_url ?? null,
 			legislative : profile.meta?.leg_url ?? null,

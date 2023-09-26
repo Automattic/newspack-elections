@@ -42,7 +42,7 @@
 		},
         "showAge": {
 			"type": "boolean",
-			"default": true
+			"default": false
 		},
         "showLegislativeBody": {
 			"type": "boolean",

@@ -365,9 +365,7 @@ const SingleProfile = (props) => {
                         {showName && (
                             <h3><Link>{profile.name.full}</Link></h3>
                         )}
-                        {showAge && (
-                          <div>Age: {profile.age}</div>
-                        )}
+
                         {showBio && profile.bio && (
                             <>
                                 <div>{bio}</div>
@@ -375,6 +373,7 @@ const SingleProfile = (props) => {
                         )}
                         
                     </div>
+					<Row key="age" id="age" value={profile.age} display={showAge}/>
                     <Row key="leg_body" id="leg_body" value={profile.legislative_body} display={showLegislativeBody}/>
                     <Row key="pos" id="position" value={profile.position}  display={showPosition}/>
                     <Row key="party" id="party" value={profile.party}  display={showParty}/>

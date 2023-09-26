@@ -9,6 +9,7 @@ const ProfileDisplaySettings = (props) => {
         setAttributes,
         showBioControl = true,
         showLinkControl = true,
+		profile
     } = props
 
     const {
@@ -31,6 +32,8 @@ const ProfileDisplaySettings = (props) => {
 		showOtherCommunicationDetails,
 
     } = attributes
+
+	const disableAgeToggle = _.isEmpty(profile.meta.date_of_birth)
 
     return (
         <Panel>
@@ -56,6 +59,8 @@ const ProfileDisplaySettings = (props) => {
 							    label={ __( 'Display Age', 'govpack-blocks' ) }
 							    checked={ showAge }
     							onChange={ () => setAttributes( { showAge: ! showAge } ) }
+								disabled = {disableAgeToggle}
+								help = { (disableAgeToggle) ? "Date of Birth Required" : null}
 		    				/>
 	    				</PanelRow>
                         <PanelRow>

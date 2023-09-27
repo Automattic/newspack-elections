@@ -36,13 +36,7 @@ export function normalize_profile(profile){
 	}
 
   const getAgeFromEpoch = (dateOfBirthMs) => {
-	if(dateOfBirthMs === 0){
-		return null;
-	}
-
-	if(dateOfBirthMs === "0"){
-		return null;
-	}
+	
     // dateOfBirth is in milliseconds since the epoch.
     let today = new Date();
     let dateOfBirth = new Date(Number(dateOfBirthMs));
@@ -99,7 +93,7 @@ export function normalize_profile(profile){
 			first 	:  profile.meta?.first_name ?? null,
 			last 	:  profile.meta?.last_name ?? null
 		},
-        age : getAgeFromEpoch(Number(profile.meta?.date_of_birth)) ?? null,
+        age : profile.meta?.date_of_birth ? getAgeFromEpoch(Number(profile.meta?.date_of_birth)) : null,
 		websites : {
 			campaign : profile.meta?.campaign_url ?? null,
 			legislative : profile.meta?.leg_url ?? null,

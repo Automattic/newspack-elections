@@ -8,10 +8,11 @@
 /**
  * Utility Function that Outputs a row
  * 
+ * @param string  $id The html ID to output.
  * @param string  $value The value to output.
  * @param boolean $display Override to control if this row will output.
  */
-function gp_row( $id = "", $value, $display ) {
+function gp_row( $id = '', $value, $display ) {
 
 	if ( ! $display ) {
 		return null;
@@ -22,7 +23,7 @@ function gp_row( $id = "", $value, $display ) {
 	}
 
 	// No escaping here. $value here needs to handle HTML beyond what wp_kses can realistically handle. Escaping should be done before passing to this function.
-	echo '<div id="govpack-profile-block-'. $id .'" class="wp-block-govpack-profile__line wp-block-govpack-profile__line--'.$id.'">' . $value . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo '<div id="govpack-profile-block-' . $id . '" class="wp-block-govpack-profile__line wp-block-govpack-profile__line--' . $id . '">' . $value . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 }
 
@@ -182,15 +183,15 @@ function gp_social_media( $profile_data, $attributes ) {
 
 	$content = '';
 
-	if ( $attributes['selectedSocial']['showOfficial'] && isset($profile_data['social']['official']) ) {
+	if ( $attributes['selectedSocial']['showOfficial'] && isset( $profile_data['social']['official'] ) ) {
 		$content .= gp_social_media_row( 'Official', $profile_data['social']['official'] );
 	}
 
-	if ( $attributes['selectedSocial']['showCampaign']  && isset($profile_data['social']['campaign']) ) {
+	if ( $attributes['selectedSocial']['showCampaign'] && isset( $profile_data['social']['campaign'] ) ) {
 		$content .= gp_social_media_row( 'Campaign', $profile_data['social']['campaign'] );
 	}
 
-	if ( $attributes['selectedSocial']['showPersonal']  && isset($profile_data['social']['personal']) ) {
+	if ( $attributes['selectedSocial']['showPersonal'] && isset( $profile_data['social']['personal'] ) ) {
 		$content .= gp_social_media_row( 'Personal', $profile_data['social']['personal'] );
 	}
 
@@ -314,12 +315,12 @@ function gp_contact_info( $label, $links, $attrs ) {
 		$icon         = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
 		$contact_icon = sprintf( $icon, $service, $icons[ $service ] );
 
-		if(($service === "phone") || ($service === "fax") ){
-			$protocol = "tel:";
-		} else if($service === "email"){
-			$protocol = "mailto:";
+		if ( ( 'phone' === $service ) || ( 'fax' === $service ) ) {
+			$protocol = 'tel:';
+		} elseif ( 'email' === $service ) {
+			$protocol = 'mailto:';
 		} else {
-			$protocol = ""; // web has no protocol as it should come from the url itself
+			$protocol = ''; // web has no protocol as it should come from the url itself.
 		}
 
 		$content .=  
@@ -343,13 +344,20 @@ function gp_contact_info( $label, $links, $attrs ) {
 		$address = sprintf( '<address class="%s">%s</address>', $classes, $links['address'] );
 	}
 
-	if( !$content && !$address ) {
+	if ( ! $content && ! $address ) {
 		return null;
 	}
 
 	return sprintf( $outer_template, $label, $content, $address ); 
 }
 
+/**
+ * Utility Function that Outputs a Profiles's Contact Other
+ * 
+ * @param array $label label for the section being output.
+ * @param array $links Data about the profile.
+ * @param array $attrs Attributes from the Block.
+ */
 function gp_contact_other( $label, $links, $attrs ) {
 	$outer_template = '
 	<div class="wp-block-govpack-profile__comms-other">
@@ -357,16 +365,16 @@ function gp_contact_other( $label, $links, $attrs ) {
 		<dl class="wp-block-govpack-profile__comms-other key-pair-list">
 			%s
 		</dl>
-	</div>';	
+	</div>';    
 
 	$content = '';
-	foreach( $links as $key => $link ) {
-		if( isset( $attrs[ $key ] ) && $attrs[ $key ] && $link['value'] ) {
+	foreach ( $links as $key => $link ) {
+		if ( isset( $attrs[ $key ] ) && $attrs[ $key ] && $link['value'] ) {
 			$content .= sprintf( '<dt class="key-pair-list__key" role="term">%s</dt><dd class="key-pair-list__value">%s</dd>', $link['label'], $link['value'] );
 		}
 	}
 
-	if( !$content ) {
+	if ( ! $content ) {
 		return null;
 	}
 

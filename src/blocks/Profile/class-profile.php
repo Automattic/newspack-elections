@@ -66,13 +66,13 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 	
 		if ( ! $profile_data ) {
 			return;
-		}		
+		}       
 
 		$attributes = self::merge_attributes_with_block_defaults( $block_name, $attributes );
 
 		require_once GOVPACK_PLUGIN_FILE . '/includes/template-parts/functions.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 
-		ob_start();		
+		ob_start();     
 		require GOVPACK_PLUGIN_FILE . '/includes/template-parts/' . $template . '.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 		$html = ob_get_clean();
 

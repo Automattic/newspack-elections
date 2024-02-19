@@ -362,9 +362,10 @@ class Importer {
 	 * For a Given Post ID, look for the image meta value, sideload it and save it as the post thumbnail
 	 * 
 	 * @param integer $id Post ID to lookup and sideload.
+	 * @param string  $meta_key key used to find a sideload url.
 	 * @throws \Exception Profile errors.
 	 */
-	public static function sideload( $id = null, $meta_key = "photo" ) {
+	public static function sideload( $id = null, $meta_key = 'photo' ) {
 
 	
 		if ( ! $id ) {

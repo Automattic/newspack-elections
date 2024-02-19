@@ -1,21 +1,18 @@
-name: PHP Composer
+name: Create a release for GitHub when NOT deploying to WP.ORG
 
 on:
   push:
     tags:
-      - "v*.*.*"
-
+      - "v*.*.*-*"
 permissions:
   contents: read
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
+    
     - uses: actions/checkout@v3
-
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
@@ -52,20 +49,20 @@ jobs:
       run: |
        mv README.md readme.txt
     
-    - name: Zip It Up
-      run: |
-        zip -r "${GITHUB_WORKSPACE}/govpack.zip" . -x @.distignore
-
-
-
-    #- name: Create Release
-    #  id: create_release
-    #  uses: elgohr/Github-Release-Action@v4
-    #  env:
-    #    GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+    #- name: WordPress Plugin Deploy
+    #  id: deploy
+    #  uses: 10up/action-wordpress-plugin-deploy@stable
     #  with:
-    #    title: Messgae?
-
+    #    generate-zip: true
+    #  env:
+    #    SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+    #    SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+    #    ASSETS_DIR: "assets"
+    #    SLUG: "govpack"
+        
+    - name: Create a Zip
+      run: |
+          zip -r "${GITHUB_WORKSPACE}/govpack.zip" . -x @.distignore
 
     - name: Release
       uses: softprops/action-gh-release@v1
@@ -78,9 +75,3 @@ jobs:
       env: 
         GITHUB_REPOSITORY: "govpack-wp/govpack-plugin"
 
-
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
-
-    # - name: Run test suite
-    #   run: composer run-script test

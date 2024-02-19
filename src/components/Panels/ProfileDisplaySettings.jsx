@@ -9,10 +9,12 @@ const ProfileDisplaySettings = (props) => {
         setAttributes,
         showBioControl = true,
         showLinkControl = true,
+		profile
     } = props
 
     const {
         showBio,
+        showAge,
         showLegislativeBody,
         showPosition,
         showParty,
@@ -30,6 +32,8 @@ const ProfileDisplaySettings = (props) => {
 		showOtherCommunicationDetails,
 
     } = attributes
+
+	const disableAgeToggle = _.isEmpty(profile.meta.date_of_birth)
 
     return (
         <Panel>
@@ -50,6 +54,15 @@ const ProfileDisplaySettings = (props) => {
                                     onChange={ () => setAttributes( { showName: ! showName } ) }
                                 />
                             </PanelRow>
+                        <PanelRow>
+						    <ToggleControl
+							    label={ __( 'Display Age', 'govpack-blocks' ) }
+							    checked={ showAge }
+    							onChange={ () => setAttributes( { showAge: ! showAge } ) }
+								disabled = {disableAgeToggle}
+								help = { (disableAgeToggle) ? "Date of Birth Required" : null}
+		    				/>
+	    				</PanelRow>
                         <PanelRow>
 						    <ToggleControl
 							    label={ __( 'Display Legistlative Body', 'govpack-blocks' ) }

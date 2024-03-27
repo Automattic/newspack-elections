@@ -143,6 +143,10 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	public static function register_post_type() {
 
 	
+		$permalinks = gp_get_permalink_structure();
+		
+		$permalink_structure = (isset($permalinks['profile_base']) ? $permalinks['profile_base'] : "profile" );
+		
 
 		return register_post_type( // phpcs:ignore WordPress.NamingConventions.ValidPostTypeSlug.NotStringLiteral
 			self::CPT_SLUG,
@@ -172,7 +176,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				'as_taxonomy'  => \Govpack\Core\Tax\Profile::TAX_SLUG,
 				'menu_icon'    => 'dashicons-groups',
 				'rewrite'      => [
-					'slug'       => apply_filters( 'govpack_profile_filter_slug', 'profile' ),
+					'slug'       => apply_filters( 'govpack_profile_filter_slug', $permalink_structure ),
 					'with_front' => false,
 				],
 				'template'     => [

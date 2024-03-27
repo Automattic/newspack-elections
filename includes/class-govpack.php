@@ -50,7 +50,7 @@ class Govpack {
 	public function __construct() {
 		\add_action( 'after_setup_theme', [ __class__, 'hooks' ] );
 		\add_action( 'plugins_loaded', [ '\Govpack\Core\ActionScheduler\ActionScheduler', 'hooks' ], 0 );
-
+		require_once 'gp-functions.php';
 	}
 
 	/**
@@ -67,6 +67,7 @@ class Govpack {
 
 		// get capabilities setup first.
 		\Govpack\Core\Capabilities::hooks();
+
 
 		// Taxonomies.
 		\Govpack\Core\Tax\LegislativeBody::hooks();

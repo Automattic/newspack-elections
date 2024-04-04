@@ -19,23 +19,6 @@ class FrontEnd {
 	 */
 	public static function hooks() {
 		add_filter( 'newspack_can_show_post_thumbnail', [ __class__, 'newspack_can_show_post_thumbnail' ], 10, 1 );
-		add_action( 'enqueue_block_assets', [ __class__, 'enqueue_front_end_style' ] );
-	}
-
-	/**
-	 * Enqueue Front End Style
-	 */
-	public static function enqueue_front_end_style() {
-
-		wp_register_style(
-			'govpack-block-styles',
-			GOVPACK_PLUGIN_ASSETS_URL . 'frontend.css',
-			[],
-			1.00,
-			'screen'
-		);
-		wp_enqueue_style( 'govpack-block-styles' );
-
 	}
 
 

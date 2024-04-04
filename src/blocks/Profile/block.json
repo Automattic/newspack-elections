@@ -1,6 +1,8 @@
 {
 	"name": "govpack/profile",
     "editorScript": "file:./../../../dist/profile_block.js",
+	"style": "file:./../../../dist/profile_block.css",
+	"editorStyle": "file:./../../../dist/profile_block_editor_style.css",
 	"category": "govpack-blocks",
 	"attributes": {
 		"className": {

@@ -1,12 +1,11 @@
 import { registerBlockType } from '@wordpress/blocks';
 
-import { useRef } from '@wordpress/element';
+import { useRef, useState } from '@wordpress/element';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import {useSelect} from '@wordpress/data';
 import { useEntityProp } from '@wordpress/core-data';
 import { TextControl } from '@wordpress/components';
 
-import {useState} from "React"
 
 import {
     __experimentalHStack as HStack,

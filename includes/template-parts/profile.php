@@ -104,6 +104,7 @@ $show_secondary_address = ( isset( $profile_data['address']['secondary'] ) &&
 
 			</div>
 			<?php
+				gp_row( 'age', $profile_data['age'], $attributes['showAge'], );
 				gp_row( 'leg_body', $profile_data['legislative_body'], $attributes['showLegislativeBody'], );
 				gp_row( 'position', $profile_data['position'], $attributes['showPosition'] );
 				gp_row( 'party', $profile_data['party'], $attributes['showParty'] );

@@ -55,7 +55,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		\add_action( 'restrict_manage_posts', [ __CLASS__, 'post_table_filters' ], 10, 2 );
 
 		add_filter( 'disable_months_dropdown', [ __CLASS__, 'disable_months_dropdown' ], 10, 2 );
-		add_filter( 'wpseo_enable_editor_features_' . self::CPT_SLUG, '__return_false' );
+		//add_filter( 'wpseo_enable_editor_features_' . self::CPT_SLUG, '__return_false' );
 
 		
 		add_filter( 'bulk_actions-edit-' . self::CPT_SLUG, [ __CLASS__, 'filter_bulk_actions' ], 10 );
@@ -146,7 +146,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 
 		return register_post_type( // phpcs:ignore WordPress.NamingConventions.ValidPostTypeSlug.NotStringLiteral
 			self::CPT_SLUG,
-			[
+			\apply_filters("govpack_register_post_type_profile", [
 				'labels'       => [
 					'name'               => _x( 'Profiles', 'post type general name', 'govpack' ),
 					'singular_name'      => _x( 'Profile', 'post type singular name', 'govpack' ),
@@ -167,10 +167,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				'show_in_rest' => true,
 				'show_ui'      => true,
 				'show_in_menu' => 'govpack',
-				'supports'     => [ 
-					'revisions', 'thumbnail', 'editor', 'custom-fields', 'excerpt',
-					'title'
-				],
+				'supports'     => [ 'revisions', 'thumbnail', 'editor', 'custom-fields', 'title', 'excerpt', 'author'],
 				'taxonomies'   => [ 'post_tag' ],
 				'as_taxonomy'  => \Govpack\Core\Tax\Profile::TAX_SLUG,
 				'menu_icon'    => 'dashicons-groups',
@@ -181,7 +178,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				'template'     => [
 					[ 'govpack/profile-self' ],
 				],
-			]
+			])
 		);
 	}
 
@@ -639,6 +636,14 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		return ( empty( $address ) ? null : join( $seperator, $address ) );
 	}
 
+	static function age_from_epoc($dob){
+
+		$today = new \DateTime();
+		$dateOfBirth = new \DateTime();
+		$dateOfBirth->setTimestamp(($dob / 1000)); //js timestime is milliseconds, we just want seconds since epoc
+		$diff = $dateOfBirth->diff($today);
+		return sprintf("%d Years", $diff->y);
+	}
 
 	/**
 	 * Fetch profile data into an array. Used for shortcode and block.
@@ -696,7 +701,8 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'website'          => $profile_raw_meta_data['leg_url'][0] ?? '',
 			'biography'        => $profile_raw_meta_data['biography'][0] ?? '',
 			'district'         => $profile_raw_meta_data['district'][0] ?? '',
-			
+			'age'              => self::age_from_epoc($profile_raw_meta_data['date_of_birth'][0] ?? false),
+
 			'party'            => $term_data[ \Govpack\Core\Tax\Party::TAX_SLUG ] ?? '',
 			'state'            => $term_data[ \Govpack\Core\Tax\State::TAX_SLUG ] ?? '',
 			'legislative_body' => $term_data[ \Govpack\Core\Tax\LegislativeBody::TAX_SLUG ] ?? '',

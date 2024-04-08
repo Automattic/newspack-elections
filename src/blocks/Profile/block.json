@@ -50,6 +50,10 @@
 			"type": "boolean",
 			"default": true
 		},   
+        "showAge": {
+			"type": "boolean",
+			"default": false
+		},
         "showLegislativeBody": {
 			"type": "boolean",
 			"default": true

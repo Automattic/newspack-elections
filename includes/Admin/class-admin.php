@@ -37,17 +37,7 @@ class Admin {
 	 */
 	public static function enqueue_block_editor_assets() {
 
-		$screen = get_current_screen();
-
-		wp_enqueue_script(
-			'unregister-profile-self-block',
-			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/profile_self_unregister_block.js',
-			[ 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ],
-			1,
-			true
-		);
-
-		wp_localize_script( 'unregister-profile-self-block', 'unregister_profile_self_block_data', [ 'current_post_type' => $screen->post_type ] );
+		
 	}
 
 	/**

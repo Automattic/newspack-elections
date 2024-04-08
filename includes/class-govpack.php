@@ -24,6 +24,9 @@ class Govpack {
 	 */
 	const REST_PREFIX = 'govpack/v1';
 
+
+	public $blocks = [];
+
 	/**
 	 * Stores static instance of class.
 	 *
@@ -50,7 +53,7 @@ class Govpack {
 	public function __construct() {
 		\add_action( 'after_setup_theme', [ __class__, 'hooks' ] );
 		\add_action( 'plugins_loaded', [ '\Govpack\Core\ActionScheduler\ActionScheduler', 'hooks' ], 0 );
-
+		\add_action( 'init', [ $this, 'register_blocks' ] );
 	}
 
 	/**
@@ -84,7 +87,15 @@ class Govpack {
 		\Govpack\Core\Admin\Admin::hooks();
 		\Govpack\Core\FrontEnd\FrontEnd::hooks();
 
-		\Govpack\Blocks\Profile\Profile::hooks();
-		\Govpack\Blocks\ProfileSelf\ProfileSelf::hooks();
+	
+	}
+
+	public function register_blocks(){
+		
+		$this->blocks['profile'] = new \Govpack\Blocks\Profile\Profile();
+		$this->blocks['profile']->hooks();
+
+		$this->blocks['profile-self'] = new \Govpack\Blocks\ProfileSelf\ProfileSelf();
+		$this->blocks['profile-self']->hooks();
 	}
 }

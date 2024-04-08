@@ -15,7 +15,14 @@ defined( 'ABSPATH' ) || exit;
 class Profile extends \Govpack\Core\Abstracts\Block {
 
 
-	public static function block_build_path(){
+	public function register_script(){
+	}
+
+	public function enqueue_front_end_assets(){
+
+	}
+
+	public function block_build_path(){
 		return trailingslashit(GOVPACK_PLUGIN_BUILD_PATH . 'blocks/Profile');
 	}
 	/**
@@ -23,10 +30,10 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 	 *
 	 * @return void
 	 */
-	public static function register_block() {
-
+	public function register_block() {
+		
 		\register_block_type(
-			self::block_build_path() . '/block.json',
+			$this->block_build_path() . '/block.json',
 			[
 				'render_callback' => [ __class__, 'render' ],
 			]
@@ -41,7 +48,7 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 	 *
 	 * @return string HTML for recipe shortcode.
 	 */
-	public static function render( $attributes, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public function render( $attributes, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 
 		if ( ! $attributes['profileId'] ) {
 			return;
@@ -59,7 +66,7 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 	 * @param string $content Any HTML or content redurned form the block.
 	 * @param string $template The filename of teh template-part to use.
 	 */
-	public static function load_block( $block_name, $attributes, $content, $template ) {
+	public  function load_block( $block_name, $attributes, $content, $template ) {
 
 		if ( \is_admin() ) {
 			return false;

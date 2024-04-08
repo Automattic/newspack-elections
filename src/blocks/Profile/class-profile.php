@@ -14,6 +14,10 @@ defined( 'ABSPATH' ) || exit;
  */
 class Profile extends \Govpack\Core\Abstracts\Block {
 
+
+	public static function block_build_path(){
+		return trailingslashit(GOVPACK_PLUGIN_BUILD_PATH . 'blocks/Profile');
+	}
 	/**
 	 * Registers the block.
 	 *
@@ -21,9 +25,8 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 	 */
 	public static function register_block() {
 
-
 		\register_block_type(
-			__DIR__ . '/block.json',
+			self::block_build_path() . '/block.json',
 			[
 				'render_callback' => [ __class__, 'render' ],
 			]

@@ -14,6 +14,10 @@ defined( 'ABSPATH' ) || exit;
  */
 class ProfileSelf extends \Govpack\Blocks\Profile\Profile {
 
+	public static function block_build_path(){
+		return trailingslashit(GOVPACK_PLUGIN_BUILD_PATH . 'blocks/ProfileSelf');
+	}
+
 		/**
 		 * Registers the block.
 		 *

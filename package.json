@@ -1,153 +1,36 @@
 {
-  "name": "Govpack",
+  "name": "govpack-blocks",
   "version": "0.0.0",
-  "description": "Govpack TK",
+  "description": "Govpack Blocks",
   "scripts": {
-    "cm": "git-cz",
-    "semantic-release": "semantic-release",
-    "start": "npm run dev",
-    "dev": "calypso-build --watch --env WP",
-    "serve": "calypso-build serve --env WP",
-    "build": "calypso-build --config='./webpack.config.prod.js' --env WP",
-    "clean": "rm -rf dist/",
-    "lint": "npm-run-all --parallel lint:*",
-    "lint:js": "eslint --ext .js,.jsx assets/js/src",
-    "lint:scss": "stylelint \"**/*.scss\" --syntax scss",
-    "lint:php": "./vendor/bin/phpcs .",
-    "format:js": "prettier 'assets/js/src/**/*.{js,jsx}' --write",
-    "format:scss": "prettier --write 'src/**/*.scss'",
-    "format:php": "./vendor/bin/phpcbf .",
-    "lint:js:staged": "eslint --ext .js,.jsx",
-    "lint:scss:staged": "stylelint --syntax scss",
-    "lint:php:staged": "./vendor/bin/phpcs",
-    "release:archive": "rm -rf release && mkdir -p release && rsync -r . ./release/govpack --exclude-from='./.distignore' && cd release && zip -r govpack.zip govpack",
-    "release": "npm run build && npm run semantic-release"
-  },
-  "lint-staged": {
-    "*.js": "npm run lint:js:staged",
-    "*.scss": "npm run lint:scss:staged",
-    "*.php": "npm run lint:php:staged"
-  },
-  "release": {
-    "branches": [
-      "release",
-      {
-        "name": "alpha",
-        "prerelease": "alpha"
-      }
-    ],
-    "prepare": [
-      "@semantic-release/changelog",
-      "@semantic-release/npm",
-      [
-        "semantic-release-version-bump",
-        {
-          "files": "govpack.php",
-          "callback": "npm run release:archive"
-        }
-      ],
-      {
-        "path": "@semantic-release/git",
-        "assets": [
-          "govpack.php",
-          "package.json",
-          "package-lock.json",
-          "CHANGELOG.md"
-        ],
-        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-      }
-    ],
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      [
-        "@semantic-release/npm",
-        {
-          "npmPublish": false
-        }
-      ],
-      "semantic-release-version-bump",
-      [
-        "@semantic-release/github",
-        {
-          "assets": [
-            {
-              "path": "./release/govpack.zip",
-              "label": "govpack.zip"
-            }
-          ]
-        }
-      ]
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+	"build": "wp-scripts build",
+	"check-engines": "wp-scripts check-engines",
+	"check-licenses": "wp-scripts check-licenses",
+	"format": "wp-scripts format",
+	"lint:css": "wp-scripts lint-style",
+	"lint:js": "wp-scripts lint-js",
+	"lint:md:docs": "wp-scripts lint-md-docs",
+	"lint:pkg-json": "wp-scripts lint-pkg-json",
+	"packages-update": "wp-scripts packages-update",
+	"plugin-zip": "wp-scripts plugin-zip",
+	"start": "wp-scripts start",
+	"test:e2e": "wp-scripts test-e2e",
+	"test:unit": "wp-scripts test-unit-js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Automattic/govpack.git"
+    "url": "git+https://github.com/govpack-wp/govpack-plugin.git"
   },
   "license": "GPL-2.0-or-later",
   "bugs": {
-    "url": "https://github.com/Automattic/govpack/issues"
+    "url": "https://github.com/govpack-wp/govpack-plugin/issues"
   },
   "dependencies": {
     "@wordpress/icons": "^6.1.1",
     "axios": "^0.24.0",
-    "newspack-components": "^2.0.3",
-    "react-input-mask": "^2.0.4",
-    "react-router": "^6.3.0"
+    "react-input-mask": "^2.0.4"
   },
   "devDependencies": {
-    "@automattic/calypso-build": "^9.0.0",
-    "@babel/core": "^7.13.8",
-    "@commitlint/cli": "^12.0.1",
-    "@commitlint/config-conventional": "^12.0.1",
-    "@lodder/grunt-postcss": "^3.0.0",
-    "@semantic-release/changelog": "^5.0.1",
-    "@semantic-release/git": "^9.0.0",
-    "@svgr/webpack": "^6.2.1",
-    "@wordpress/eslint-plugin": "^8.0.2",
-    "@wordpress/stylelint-config": "^19.0.3",
-    "autoprefixer": "^10.2.4",
-    "copy-webpack-plugin": "^10.0.0",
-    "cz-conventional-changelog": "^3.3.0",
-    "duplicate-package-checker-webpack-plugin": "^3.0.0",
-    "eslint": "^7.21.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jsdoc": "^32.2.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.22.0",
-    "grunt": "^1.4.0",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-cssmin": "^4.0.0",
-    "grunt-contrib-uglify": "^5.0.0",
-    "grunt-contrib-watch": "^1.1.0",
-    "grunt-eslint": "^23.0.0",
-    "grunt-phpcbf": "^0.1.1",
-    "grunt-sass": "^3.1.0",
-    "grunt-stylelint": "^0.16.0",
-    "lint-staged": "^10.5.4",
-    "matchdep": "^2.0.0",
-    "npm-run-all": "^4.1.5",
-    "path-browserify": "^1.0.1",
-    "postcss": "^8.2.15",
-    "postcss-values-parser": "^5.0.0",
-    "prettier": "^2.0.5",
-    "sass": "^1.54.8",
-    "semantic-release": "^17.4.0",
-    "semantic-release-version-bump": "^1.4.1",
-    "stylelint": "^13.11.0",
-    "stylelint-config-prettier": "^8.0.2",
-    "stylelint-prettier": "^1.2.0",
-    "url-regex": "^5.0.0",
-    "util": "^0.12.4",
-    "webpack": "^5.46.0",
-    "webpack-bundle-analyzer": "^4.6.1",
-    "webpack-cli": "^4.7.2",
-    "webpack-dev-server": "^4.7.4"
+	"@wordpress/scripts": "^27.6.0"
   }
 }

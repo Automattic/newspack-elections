@@ -16,7 +16,13 @@ defined( 'ABSPATH' ) || exit;
 
 // Define GOVPACK_PLUGIN_FILE.
 if ( ! defined( 'GOVPACK_PLUGIN_FILE' ) ) {
-	define( 'GOVPACK_PLUGIN_FILE', plugin_dir_path( __FILE__ ) );
+	define( 'GOVPACK_PLUGIN_FILE', trailingslashit(plugin_dir_path( __FILE__ )) );
+	define( 'GOVPACK_PLUGIN_PATH', GOVPACK_PLUGIN_FILE );
+}
+
+
+if ( ! defined( 'GOVPACK_PLUGIN_BUILD_PATH' ) ) {
+	define( 'GOVPACK_PLUGIN_BUILD_PATH', trailingslashit(GOVPACK_PLUGIN_PATH . 'build') );
 }
 
 // Define GOVPACK_PLUGIN_URL.
@@ -26,6 +32,8 @@ if ( ! defined( 'GOVPACK_PLUGIN_URL' ) ) {
 if ( ! defined( 'GOVPACK_PLUGIN_ASSETS_URL' ) ) {
 	define( 'GOVPACK_PLUGIN_ASSETS_URL', GOVPACK_PLUGIN_URL . 'dist/' );
 }
+
+
 
 
 require_once GOVPACK_PLUGIN_FILE . 'vendor/autoload.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant

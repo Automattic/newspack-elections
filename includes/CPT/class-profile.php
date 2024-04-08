@@ -167,7 +167,10 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				'show_in_rest' => true,
 				'show_ui'      => true,
 				'show_in_menu' => 'govpack',
-				'supports'     => [ 'revisions', 'thumbnail', 'editor', 'custom-fields', 'title', 'excerpt' ],
+				'supports'     => [ 
+					'revisions', 'thumbnail', 'editor', 'custom-fields', 'excerpt',
+					'title'
+				],
 				'taxonomies'   => [ 'post_tag' ],
 				'as_taxonomy'  => \Govpack\Core\Tax\Profile::TAX_SLUG,
 				'menu_icon'    => 'dashicons-groups',

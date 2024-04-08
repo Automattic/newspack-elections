@@ -13,7 +13,6 @@ export function withPanel(component) {
         withDispatch( ( dispatch ) => {
             return {
                 setPostMeta( newMeta ) {
-                    console.log("setPostMeta", newMeta)
                     dispatch( 'core/editor' ).editPost( { meta: newMeta } );
                 },
                 setTerm(taxonomy, term ) {

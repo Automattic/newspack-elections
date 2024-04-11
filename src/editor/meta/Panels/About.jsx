@@ -1,4 +1,5 @@
 import { PanelRow } from "@wordpress/components";
+import { useDispatch, useSelect } from '@wordpress/data';
 
 import {GovPackSidebarPanel} from "./../../../components/sidebar-panel"
 import {PanelTextControl, PanelDateControl, PanelFieldset, PanelTaxonomyControl} from "./../Controls"
@@ -14,17 +15,87 @@ const changeContributesToName = (change) => {
 	let searchKeys = ["name_prefix", "name_first", "name_middle", "name_last", "name_suffix"]
 	let intersection = keys.filter( i => searchKeys.includes(i) )
 
-	console.log("is a name key", intersection)
+	if(intersection.length > 0){
+		return true;
+	}
+
+	return false;
 }
+
+const getNamePieces = (meta, change) => {
+	let {
+		name_prefix = null, 
+		name_first  = null, 
+		name_middle = null, 
+		name_last   = null, 
+		name_suffix = null
+	} = meta 
+
+	let pieces = {
+		"name_prefix" : name_prefix,
+		"name_first"  : name_first,
+		"name_middle" : name_middle,
+		"name_last"   : name_last,
+		"name_suffix" : name_suffix,
+	}
+
+	let changeKey = Object.keys(change).at(0)
+	pieces[changeKey] = change[changeKey]
+
+	return pieces
+
+}
+
+const assembleName = (pieces) => {
+	return Object.values(pieces).join(" ").trim()
+}
+
 
 export const AboutPanel = (props) => {
 
-    let { setPostMeta, setTerm, setSingleTerm, meta } = props
+	let {editPost} = useDispatch("core/editor")
+	const {postTitle, postIsNew, postEdits} = useSelect( (select) => {
+		return {
+			postTitle: select("core/editor").getEditedPostAttribute("title"),
+			postIsNew: select("core/editor").isEditedPostNew(),
+			postEdits: select("core/editor").getPostEdits()
+		}
+	})
+
+	let { setPostMeta, setTerm, setSingleTerm, meta } = props
+
+	const shouldUpdateTitle = (newPostTitle) => {
+
+		//console.log(postEdits)
+
+		if(!postIsNew){
+			return false;
+		}
+
+		if(newPostTitle === postTitle){
+			return false;
+		}
+
+		return true;
+	}
 
 	const updateMetaAndName = (change) => {
-		console.log("??");
+		
 		if(changeContributesToName(change)){
-			setPostMeta(change)
+			let namePieces = getNamePieces(meta, change)
+			let name = assembleName(namePieces)
+
+			let newChange = {
+				name : name,
+				...change
+			}
+
+			if(shouldUpdateTitle(name)){
+				editPost({ "title" : name })
+			}
+
+			setPostMeta(newChange)
+
 		} else {
 			setPostMeta(change)
 		}
@@ -36,7 +107,11 @@ export const AboutPanel = (props) => {
             name="gov-profile-about"
         >
 			<PanelRow>
-                <PanelTextControl meta={meta} label = "Name" meta_key="name" onChange={setPostMeta} />
+                <PanelTextControl 
+					meta={meta} label = "Name" meta_key="name" onChange={setPostMeta} 
+					disabled 
+					help = "Assembed from name piece fields below."
+					/>
             </PanelRow>
 
 			<PanelRow>

@@ -8,6 +8,7 @@ import {GovPackSidebarPanel} from "../../components/sidebar-panel"
 import {withPanel, AboutPanel, OfficePanel, CommunicationsPanel, SocialPanel, MetadataIdsPanel} from "./Panels"
 import "./view.scss"
  
+import { ProfileNameToPostTitle } from "./Actions"
 
 const ComposedAboutPanel = withPanel(AboutPanel)
 const ComposedOfficePanel = withPanel(OfficePanel)
@@ -16,7 +17,9 @@ const ComposedSocialPanel = withPanel(SocialPanel)
 const ComposedMetadataIds = withPanel(MetadataIdsPanel)
 
 
-const GovPackProfileSidebar = () => (
+const GovPackProfileSidebar = () => {
+
+	return (
     <>
         <ComposedAboutPanel />
         <ComposedOfficePanel />
@@ -24,8 +27,8 @@ const GovPackProfileSidebar = () => (
 		<ComposedSocialPanel />
 		<ComposedMetadataIds />
     </>
-
-);
+	)
+};
 
  
 registerPlugin( 'profile-meta', {

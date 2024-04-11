@@ -1,5 +1,6 @@
 /node_modules/
 /vendor/
+/vendor-prefixed/
 .DS_Store
 *.map
 .cache

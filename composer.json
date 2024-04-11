@@ -3,19 +3,20 @@
   "description": "Govpack TK",
   "type": "wordpress-plugin",
   "require": {
-    "pablo-sg-pacheco/wp-namespace-autoloader": "dev-master",
+    "pablo-sg-pacheco/wp-namespace-autoloader": "dev-master#b50050f541a1a5581cdd79d181120be97ab43c8e",
     "woocommerce/action-scheduler": "^3.4",
     "gargron/fileupload": "~1.4.0",
     "league/csv": "^9.7",
     "zerodahero/address-normalization": "^2.1",
-    "monolog/monolog": "^2.8"
+    "monolog/monolog": "^2.8",
+    "gamajo/template-loader": "^1.3"
   },
   "require-dev": {
     "automattic/vipwpcs": "^2.2",
     "wp-coding-standards/wpcs": "^2.3",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
     "phpcompatibility/phpcompatibility-wp": "^2.1.1",
-    "brainmaestro/composer-git-hooks": "^2.8.5"
+    "brianhenryie/strauss": "^0.17.0"
   },
   "license": "GPL-2.0-or-later",
   "autoload": {
@@ -24,15 +25,23 @@
 		"Govpack\\Blocks\\" : "src/blocks/"
     }
   },
+  "scripts": {
+    "prefix-namespaces": [
+        "strauss"
+    ],
+    "post-install-cmd": [
+        "@prefix-namespaces"
+    ],
+    "post-update-cmd": [
+        "@prefix-namespaces"
+    ]
+  },
   "extra": {
-    "hooks": {
-      "pre-commit": [
-        "./node_modules/.bin/lint-staged"
-      ],
-      "commit-msg": [
-        "cat $1 | ./node_modules/.bin/commitlint"
-      ]
-    }
+    "strauss": {
+		"namespace_prefix": "Govpack\\Vendor\\",
+        "classmap_prefix": "Govpack_Vendor_",
+		"update_call_sites": false
+	}
   },
   "config": {
     "allow-plugins": {

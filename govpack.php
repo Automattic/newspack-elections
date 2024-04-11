@@ -14,6 +14,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use Govpack\Vendor\Pablo_Pacheco\WP_Namespace_Autoloader\WP_Namespace_Autoloader;
+
 // Define GOVPACK_PLUGIN_FILE.
 if ( ! defined( 'GOVPACK_PLUGIN_FILE' ) ) {
 	define( 'GOVPACK_PLUGIN_FILE', trailingslashit(plugin_dir_path( __FILE__ )) );
@@ -34,26 +36,25 @@ if ( ! defined( 'GOVPACK_PLUGIN_ASSETS_URL' ) ) {
 }
 
 
-
-
+require_once GOVPACK_PLUGIN_FILE . 'vendor-prefixed/autoload.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 require_once GOVPACK_PLUGIN_FILE . 'vendor/autoload.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 require_once GOVPACK_PLUGIN_FILE . 'vendor/woocommerce/action-scheduler/action-scheduler.php';// phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 
 
 
-use Pablo_Pacheco\WP_Namespace_Autoloader\WP_Namespace_Autoloader;
-
-
-
-
 $autoloader = new WP_Namespace_Autoloader(
 	[
-		'directory'        => __DIR__,       // Directory of your project. It can be your theme or plugin. Defaults to __DIR__ (probably your best bet).
-		'namespace_prefix' => 'Govpack\Core', // Main namespace of your project. E.g My_Project\Admin\Tests should be My_Project. Defaults to the namespace of the instantiating file.
-		'classes_dir'      => 'includes',         // (optional). It is where your namespaced classes are located inside your project. If your classes are in the root level, leave this empty. If they are located on 'src' folder, write 'src' here
+		'directory'         => __DIR__,       // Directory of your project. It can be your theme or plugin. Defaults to __DIR__ (probably your best bet).
+		'namespace_prefix'  => "Govpack\Core", // Main namespace of your project. E.g My_Project\Admin\Tests should be My_Project. Defaults to the namespace of the instantiating file.
+		'classes_dir'       => 'includes',         // (optional). It is where your namespaced classes are located inside your project. If your classes are in the root level, leave this empty. If they are located on 'src' folder, write 'src' here
+		'debug'             => true,
+		'prepend_interface' => false,
+		'prepend_trait'     => false,
 	]
 );
+
 $autoloader->init();
+
 
 $blocks_autoloader = new WP_Namespace_Autoloader(
 	[
@@ -64,6 +65,7 @@ $blocks_autoloader = new WP_Namespace_Autoloader(
 	]
 );
 $blocks_autoloader->init();
+
 
 // Include the main Govpack class.
 if ( class_exists( '\Govpack\Core\Govpack' ) ) {

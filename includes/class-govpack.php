@@ -26,6 +26,7 @@ class Govpack {
 
 
 	public $blocks = [];
+	public $front_end;
 
 	/**
 	 * Stores static instance of class.
@@ -51,7 +52,8 @@ class Govpack {
 	 * Inits the class and registeres the hooks call.
 	 */
 	public function __construct() {
-		\add_action( 'after_setup_theme', [ __class__, 'hooks' ] );
+		
+		\add_action( 'after_setup_theme', [ $this, 'init' ] );
 		\add_action( 'plugins_loaded', [ '\Govpack\Core\ActionScheduler\ActionScheduler', 'hooks' ], 0 );
 		\add_action( 'init', [ $this, 'register_blocks' ] );
 	}
@@ -59,7 +61,7 @@ class Govpack {
 	/**
 	 * WordPress Hooks
 	 */
-	public static function hooks() {
+	public function init() {
 
 
 		// Functions well need.
@@ -84,10 +86,18 @@ class Govpack {
 		}
 
 		\Govpack\Core\Importer\Importer::hooks();
-		\Govpack\Core\Admin\Admin::hooks();
-		\Govpack\Core\FrontEnd\FrontEnd::hooks();
 
-	
+		if(is_admin()){
+			\Govpack\Core\Admin\Admin::hooks();
+		}
+		
+		if(!is_admin()){
+			$this->front_end = FrontEnd\FrontEnd::instance();
+			$this->front_end->hooks();
+			$this->front_end->template_loader();
+		}
+
+		require_once ( GOVPACK_PLUGIN_PATH . "includes/govpack-functions.php");
 	}
 
 	public function register_blocks(){

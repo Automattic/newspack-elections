@@ -35,6 +35,11 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	const CPT_SLUG = 'govpack_profiles';
 
 	/**
+	 * Post Type slug. Used when registering and referencing
+	 */
+	const TEMPLATE_NAME = 'single-' . self::CPT_SLUG . '.php';
+
+	/**
 	 * Shortcode.
 	 */
 	const SHORTCODE = 'govpack';

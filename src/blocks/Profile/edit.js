@@ -110,6 +110,8 @@ function Edit( props ) {
         showAvatar
 	} = attributes;
 
+	console.log("profileId", profileId)
+
     const availableWidths = [
         {
             label : "Small",
@@ -156,7 +158,13 @@ function Edit( props ) {
 
 	}, [ profileId, gotProfile, isLoading ] );
 
+	const setProfileId = (profileId) => {
 
+		setAttributes({"profileId" : profileId});
+		setGotProfile( false );
+		setIsLoading( false );
+
+	}
     const getProfileById = async () => {
 
 		//console.log("getProfile By Id")
@@ -287,7 +295,9 @@ function Edit( props ) {
                         } }
                         maxItemsToSuggest={ maxItemsToSuggest }
                         onChange={ (items) => {
-                            props.setAttributes( { profileId: parseInt( items[ 0 ].value ) } ) 
+							let profileId = parseInt( items[ 0 ].value );
+							console.log("onChange", profileId)
+                            setProfileId(profileId);
                         }}
                         postTypeLabel={ __( 'profile', 'govpack-blocks' ) }
                         postTypeLabelPlural={ __( 'profiles', 'govpack-blocks' ) }

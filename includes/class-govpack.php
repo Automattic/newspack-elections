@@ -25,7 +25,7 @@ class Govpack {
 	const REST_PREFIX = 'govpack/v1';
 
 
-	public $blocks = [];
+	private Blocks $blocks;
 
 	/**
 	 * Stores static instance of class.
@@ -51,8 +51,10 @@ class Govpack {
 	 * Inits the class and registeres the hooks call.
 	 */
 	public function __construct() {
+		
 		//self::setup();
 		$this->hooks();
+
 	}
 
 	/**
@@ -93,12 +95,18 @@ class Govpack {
 	
 	}
 
-	public function register_blocks(){
-		
-		$this->blocks['profile'] = new \Govpack\Blocks\Profile\Profile();
-		$this->blocks['profile']->hooks();
+	public function blocks(){
 
-		$this->blocks['profile-self'] = new \Govpack\Blocks\ProfileSelf\ProfileSelf();
-		$this->blocks['profile-self']->hooks();
+		if(!isset($this->blocks)){
+			$this->blocks = new Blocks();
+			$this->blocks->hooks();
+		}
+		
+		return $this->blocks;
+	}
+
+	public function register_blocks(){
+		$this->blocks()->register(new \Govpack\Blocks\Profile\Profile());
+		$this->blocks()->register(new \Govpack\Blocks\ProfileSelf\ProfileSelf());
 	}
 }

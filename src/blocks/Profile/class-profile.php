@@ -35,7 +35,7 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 	 *
 	 * @return void
 	 */
-	public function register_block() {
+	public function register() {
 
 		$this->block = register_block_type(
 			$this->block_build_path() . '/block.json',

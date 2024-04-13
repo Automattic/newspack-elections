@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { BlockControls, BlockAlignmentControl } from '@wordpress/block-editor';
-import { Toolbar, ToolbarDropdownMenu } from '@wordpress/components';
+import { ToolbarGroup, ToolbarDropdownMenu } from '@wordpress/components';
 import { resizeCornerNE } from '@wordpress/icons';
 
 const availableWidths = [
@@ -39,8 +39,8 @@ const BlockSizeAlignmentToolbar = (props) => {
     } = attributes
 
     return (
-        <BlockControls>
-            <Toolbar>
+        
+            <ToolbarGroup label = "Block Alignment">
                 <BlockAlignmentControl
                     value={ align }
                     onChange={ (newAlignment) => setAttributes( { align: newAlignment } ) }
@@ -49,7 +49,7 @@ const BlockSizeAlignmentToolbar = (props) => {
                 { (align !== "full") && (
                     <ToolbarDropdownMenu
                             icon = {resizeCornerNE}
-                            label = { __( 'Modify Selection', 'newspack-blocks' ) }
+                            label = { __( 'Block Size', 'newspack-blocks' ) }
                             controls={ availableWidths.map( (width) => {
                                 return [
                                     {
@@ -61,8 +61,8 @@ const BlockSizeAlignmentToolbar = (props) => {
                             }) }
                     />
                 )}
-            </Toolbar>
-        </BlockControls>
+            </ToolbarGroup>
+        
     )
 }
 

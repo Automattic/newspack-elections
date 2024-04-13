@@ -237,13 +237,14 @@
             display:inline-block;
             max-width:20px;
             max-height:20px;
-            width:auto;
+            width:100%;
             height:auto;
     
             svg{
                 max-width:20px;
                 max-height:20px;
                 display:block;
+				width:100%;
             }
         }
 

@@ -1,6 +1,6 @@
 {
 	"name": "govpack/profile-self",
-	"style": "file:./profile_self_block.css",
+	"style": "file:./index.css",
     "editorScript": "file:./index.js",
 	"category": "govpack-blocks",
 	"attributes": {

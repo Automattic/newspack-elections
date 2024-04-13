@@ -133,7 +133,7 @@
 
         &__link,
         a{
-            display:block;
+            display:flex;
             text-decoration: none;
         }
 
@@ -148,6 +148,7 @@
                 max-width:20px;
                 max-height:20px;
                 display:block;
+				width:100%;
             }
         }
 
@@ -167,7 +168,13 @@
     }
 
 	&__social_group{
+
 		display: flex;
+		align-items: center;
+		
+		ul.inline-list{
+			align-items: center;
+		}
 
         .aligncenter &{
             justify-content: center;
@@ -195,6 +202,8 @@
             }
         }
     }
+
+
 
     &__avatar {
 

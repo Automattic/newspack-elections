@@ -1,10 +1,10 @@
-import { useState } from "react"
+import { useState } from "@wordpress/element"
 import Moment from "moment"
 
 import { TextControl, TextareaControl, DatePicker, SelectControl, Spinner, Dropdown, Button } from "@wordpress/components";
 import { compose } from "@wordpress/compose";
 import { withSelect, } from "@wordpress/data";
-import { dateI18n, __experimentalGetSettings as getSettings } from "@wordpress/date"
+import { dateI18n, getSettings } from "@wordpress/date"
 import {MaskedTextControl} from "./MaskedTextControl"
 
 
@@ -106,30 +106,28 @@ export const PanelDateControl = (props) => {
 
 	let settings = getSettings()
 	
-	console.log(props)
+
 
 	let dateValue = props.meta?.[props.meta_key]
 	if(dateValue){
 		dateValue = moment(parseInt(dateValue)).format("MM/DD/YYYY")
 	}
-	console.log(props.meta_key, dateValue)
+
 	return (
 		<MaskedTextControl
 			
 			label = {props.label}
 			value={	inputValue ?? dateValue ?? "" }
 			onChange={ ( value ) => {
-				console.log(value)
 				setInputValue(value)
 				let timestamp = moment(value, "MM/DD/YYYY", true)
 				if(timestamp.isValid()){
-					console.log("onchange")
-                	onChange( { [props.meta_key]: timestamp.valueOf().toString() } )
+				onChange( { [props.meta_key]: timestamp.valueOf().toString() } )
 					setIsValid(true)
 				} else {
 					setIsValid(false)
 				}
-            }}
+			}}
 			placeholder = "05/31/2021"
 			help = "mm/dd/yyyy (eg 05/01/2021)"
 			maskProps = {{
@@ -143,8 +141,8 @@ export const PanelDateControl = (props) => {
 				setIsTouched(true)
 			} }
 			{...restProps}
-        />
-    )
+		/>
+	)
 
 	/*
 

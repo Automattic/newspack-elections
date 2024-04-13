@@ -4,3 +4,4 @@
 *.map
 .cache
 /dist/*
+/build*

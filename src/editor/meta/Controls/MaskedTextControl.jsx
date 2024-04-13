@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
- import { ChangeEvent, ForwardedRef } from 'react';
  import InputMask from 'react-input-mask';
  import classnames from 'classnames';
 
@@ -26,6 +25,8 @@
 		 className,
 		 onChange,
 		 type = 'text',
+		 isValid,
+		 isTouched,
 		 maskProps = {},
 		 ...additionalProps
 	 } = props;

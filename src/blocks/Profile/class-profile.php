@@ -7,6 +7,8 @@
 
 namespace Govpack\Blocks\Profile;
 
+use WP_Block_Type;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -14,13 +16,12 @@ defined( 'ABSPATH' ) || exit;
  */
 class Profile extends \Govpack\Core\Abstracts\Block {
 
+	public $block_name = "profile";
+
 
 	public function register_script(){
 	}
 
-	public function enqueue_front_end_assets(){
-
-	}
 
 	public function block_build_path(){
 		return trailingslashit(GOVPACK_PLUGIN_BUILD_PATH . 'blocks/Profile');
@@ -31,14 +32,17 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 	 * @return void
 	 */
 	public function register_block() {
-		
-		\register_block_type(
+
+		$this->block = register_block_type(
 			$this->block_build_path() . '/block.json',
 			[
-				'render_callback' => [ __class__, 'render' ],
+				'render_callback' => [ $this, 'render' ],
 			]
 		);
-	}   
+
+	}
+
+	
 
 	/**
 	 * Shortcode handler for [govpack].
@@ -53,7 +57,6 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 		if ( ! $attributes['profileId'] ) {
 			return;
 		}
-
 
 		return self::load_block( 'govpack/profile', $attributes, $content, 'profile' );
 	}
@@ -78,6 +81,9 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 			return;
 		}       
 
+		$this->enqueue_view_assets();
+
+	
 		$attributes = self::merge_attributes_with_block_defaults( $block_name, $attributes );
 
 		require_once GOVPACK_PLUGIN_FILE . '/includes/template-parts/functions.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant

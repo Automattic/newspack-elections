@@ -33,7 +33,7 @@ const ProfileDisplaySettings = (props) => {
 
     } = attributes
 
-	const disableAgeToggle = _.isEmpty(profile.meta.date_of_birth)
+	const disableAgeToggle = _.isEmpty(profile?.meta?.date_of_birth)
 
     return (
         <Panel>

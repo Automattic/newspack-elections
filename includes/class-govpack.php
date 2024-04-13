@@ -51,15 +51,15 @@ class Govpack {
 	 * Inits the class and registeres the hooks call.
 	 */
 	public function __construct() {
+		//self::setup();
 		$this->hooks();
-		self::setup();
 	}
 
 	/**
 	 * WordPress Hooks
 	 */
 	public function hooks() {
-		\add_action( 'after_setup_theme', [ __class__, 'hooks' ] );
+		\add_action( 'after_setup_theme', [ __class__, 'setup' ] );
 		\add_action( 'plugins_loaded', [ '\Govpack\Core\ActionScheduler\ActionScheduler', 'hooks' ], 0 );
 		\add_action( 'init', [ $this, 'register_blocks' ] );
 	}

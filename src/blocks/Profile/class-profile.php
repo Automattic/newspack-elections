@@ -22,6 +22,10 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 	public function register_script(){
 	}
 
+	public function disable_block( $allowed_blocks, $editor_context ){
+		return false;
+	}
+
 
 	public function block_build_path(){
 		return trailingslashit(GOVPACK_PLUGIN_BUILD_PATH . 'blocks/Profile');

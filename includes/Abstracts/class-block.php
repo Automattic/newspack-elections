@@ -23,11 +23,15 @@ abstract class Block {
 	 */
 	public function hooks() {
 		
-		add_action( 'init', [ $this, 'register_script' ], 11 );
-		add_action( 'init', [ $this, 'register_block' ], 11 );
-		add_action( 'wp_print_styles', [ $this, 'remove_view_styles' ], 10 );
+		add_action( 'init', 					[ $this, 'register_script' ], 11 );
+		add_action( 'init', 					[ $this, 'register_block' ], 11 );
+		add_action( 'wp_print_styles', 			[ $this, 'remove_view_styles' ], 10 );
+		add_filter( 'allowed_block_types_all', 	[ $this, 'handle_disable_block' ], 99, 2 );
 	}
 
+	public function disable_block( $allowed_blocks, $editor_context ){
+		return false;
+	}
 
 	public function needs_view_assets_enqueued() : bool{
 		return wp_is_block_theme();
@@ -44,6 +48,22 @@ abstract class Block {
 				wp_dequeue_style($handle);
 			}
 		}
+
+	}
+
+	public function handle_disable_block($allowed_blocks, $editor_context){
+
+		if(!$this->disable_block($allowed_blocks, $editor_context)){
+			return $allowed_blocks;
+		}
+
+		if($allowed_blocks === true){
+			$allowed_blocks = \WP_Block_Type_Registry::get_instance()->get_all_registered();
+		}
+
+		unset($allowed_blocks[$this->block_name]);
+
+		return array_keys($allowed_blocks);
 
 	}
 

@@ -122,7 +122,9 @@ class Admin {
 	 */
 	public static function register_assets() {
 
-		$file = GOVPACK_PLUGIN_FILE . 'dist/admin.asset.php';
+		
+
+		$file = GOVPACK_PLUGIN_BUILD_PATH . 'admin.asset.php';
 
 		if ( file_exists( $file ) ) {
 			$asset_data = require_once $file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
@@ -130,7 +132,7 @@ class Admin {
 
 		wp_register_style(
 			'govpack-admin-style',
-			GOVPACK_PLUGIN_ASSETS_URL . 'admin.css',
+			GOVPACK_PLUGIN_BUILD_URL . 'admin.css',
 			$asset_data['dependencies'] ?? '',
 			$asset_data['version'] ?? '',
 			true
@@ -138,14 +140,14 @@ class Admin {
 
 		wp_register_script(
 			'govpack-admin-script',
-			GOVPACK_PLUGIN_ASSETS_URL . 'admin.js',
+			GOVPACK_PLUGIN_BUILD_URL . 'admin.js',
 			$asset_data['dependencies'] ?? '',
 			$asset_data['version'] ?? '',
 			true
 		);
 
 
-		$file = GOVPACK_PLUGIN_FILE . 'dist/editor.asset.php';
+		$file = GOVPACK_PLUGIN_BUILD_PATH . 'editor.asset.php';
 
 		if ( file_exists( $file ) ) {
 			$asset_data = require_once $file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
@@ -153,14 +155,14 @@ class Admin {
 
 		wp_register_script(
 			'govpack-editor',
-			GOVPACK_PLUGIN_ASSETS_URL . 'editor.js',
+			GOVPACK_PLUGIN_BUILD_URL . 'editor.js',
 			$asset_data['dependencies'] ?? [],
 			$asset_data['version'] ?? '',
 			true
 		);
 		wp_register_style(
 			'govpack-editor-style',
-			GOVPACK_PLUGIN_ASSETS_URL . 'editor.css',
+			GOVPACK_PLUGIN_BUILD_URL . 'editor.css',
 			$asset_data['version'] ?? '',
 			true
 		);
@@ -177,6 +179,7 @@ class Admin {
 		}
 
 		if ( true === $screen->is_block_editor() && 'govpack_profiles' === $screen->post_type ) {
+			
 			\wp_enqueue_script( 'govpack-editor' );
 			\wp_enqueue_style( 'govpack-editor-style' );
 		}

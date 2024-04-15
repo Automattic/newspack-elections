@@ -32,5 +32,10 @@
   },
   "devDependencies": {
 	"@wordpress/scripts": "^27.6.0"
+  },
+  "config": {
+	"entrypoints" : {
+		"editor" : "./src/editor/index.js"
+	}
   }
 }

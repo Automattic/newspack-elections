@@ -25,8 +25,12 @@ get_header( 'govpack' ); ?>
 	
 		<?php while ( have_posts() ) : ?>
 			<?php the_post(); ?>
-		
-			<?php govpack_get_template_part( 'content/single', 'profile' ); ?>
+			
+			<header class="entry-header">
+				<?php gp_get_template_part( 'header/single', 'profile' ); ?>
+			</header>
+
+			<?php gp_get_template_part( 'content/single', 'profile' ); ?>
 
 		<?php endwhile; // end of the loop. ?>
 

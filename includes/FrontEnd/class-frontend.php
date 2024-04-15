@@ -57,15 +57,15 @@ class FrontEnd {
 	}
 
 	public function output_sidebar(){
-		return $this->template_loader()->get_template_part("global/sidebar");
+		return gp_get_template_part("global/sidebar");
 	}
 
 	public function output_wrapper_start(){
-		return $this->template_loader()->get_template_part("global/wrapper-start");
+		return gp_get_template_part("global/wrapper-start");
 	}
 
 	public function output_wrapper_end(){
-		return $this->template_loader()->get_template_part("global/wrapper-end");
+		return gp_get_template_part("global/wrapper-end");
 	}
 
 	public function template_loader(){

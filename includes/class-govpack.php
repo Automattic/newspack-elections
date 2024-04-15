@@ -9,7 +9,7 @@ namespace Govpack\Core;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'GOVPACK_VERSION', '0.0.1' );
+define( 'GOVPACK_VERSION', '1.1.0' );
 
 /**
  * Main Govpack Class.
@@ -60,12 +60,12 @@ class Govpack {
 
 
 	public function hooks() {
-		\add_action( 'after_setup_theme', [ __class__, 'setup' ] );
+		\add_action( 'after_setup_theme', [ $this, 'setup' ] );
 		\add_action( 'plugins_loaded', [ '\Govpack\Core\ActionScheduler\ActionScheduler', 'hooks' ], 0 );
 		\add_action( 'init', [ $this, 'register_blocks' ] );
 	}
 
-	public static function setup(){
+	public function setup(){
 		// Functions well need.
 		\Govpack\Core\CPT\AsTaxonomy::hooks();
 
@@ -88,6 +88,7 @@ class Govpack {
 		}
 
 		\Govpack\Core\Importer\Importer::hooks();
+		\Govpack\Core\Widgets::hooks();
 
 		if(is_admin()){
 			\Govpack\Core\Admin\Admin::hooks();

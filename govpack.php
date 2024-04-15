@@ -6,7 +6,7 @@
  * Author:            Govpack, poweredbycoffee, thefuturewasnow
  * Text Domain:       govpack
  * Domain Path:       /languages
- * Version:           1.0.1
+ * Version:           1.1.0
  * Requires at least: 5.9 
  *
  * @package         Govpack
@@ -14,12 +14,13 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use Pablo_Pacheco\WP_Namespace_Autoloader\WP_Namespace_Autoloader;
+
 // Define GOVPACK_PLUGIN_FILE.
 if ( ! defined( 'GOVPACK_PLUGIN_FILE' ) ) {
 	define( 'GOVPACK_PLUGIN_FILE', trailingslashit(plugin_dir_path( __FILE__ )) );
 	define( 'GOVPACK_PLUGIN_PATH', GOVPACK_PLUGIN_FILE );
 }
-
 
 if ( ! defined( 'GOVPACK_PLUGIN_BUILD_PATH' ) ) {
 	define( 'GOVPACK_PLUGIN_BUILD_PATH', trailingslashit(GOVPACK_PLUGIN_PATH . 'build') );
@@ -29,22 +30,13 @@ if ( ! defined( 'GOVPACK_PLUGIN_BUILD_PATH' ) ) {
 if ( ! defined( 'GOVPACK_PLUGIN_URL' ) ) {
 	define( 'GOVPACK_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 }
+
 if ( ! defined( 'GOVPACK_PLUGIN_ASSETS_URL' ) ) {
 	define( 'GOVPACK_PLUGIN_ASSETS_URL', GOVPACK_PLUGIN_URL . 'dist/' );
 }
 
-
-
-
 require_once GOVPACK_PLUGIN_FILE . 'vendor/autoload.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 require_once GOVPACK_PLUGIN_FILE . 'vendor/woocommerce/action-scheduler/action-scheduler.php';// phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
-
-
-
-use Pablo_Pacheco\WP_Namespace_Autoloader\WP_Namespace_Autoloader;
-
-
-
 
 $autoloader = new WP_Namespace_Autoloader(
 	[
@@ -53,6 +45,7 @@ $autoloader = new WP_Namespace_Autoloader(
 		'classes_dir'      => 'includes',         // (optional). It is where your namespaced classes are located inside your project. If your classes are in the root level, leave this empty. If they are located on 'src' folder, write 'src' here
 	]
 );
+
 $autoloader->init();
 
 $blocks_autoloader = new WP_Namespace_Autoloader(

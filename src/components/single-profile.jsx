@@ -24,7 +24,7 @@ import ProfileCommsPanel from "./Panels/ProfileCommsPanel"
 
 const TwitterIcon = () => ( <Icon icon={ TwitterIconSVG } /> )
 const LinkedinIcon = () => ( <Icon icon={ LinkedinIconSVG } /> )
-const EmailIcon = () => ( <Icon icon={ EmailSVG } /> )
+const EmailIcon = () => ( <Icon icon={ EmailIconSVG } /> )
 const InstagramIcon = () => ( <Icon icon={ InstagramIconSVG } /> )
 const PhoneIcon = () => ( <Icon icon={ PhoneIconSVG } /> )
 const WebIcon = () => ( <Icon icon={ WebIconSVG } /> )

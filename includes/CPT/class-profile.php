@@ -642,6 +642,10 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	}
 
 	static function age_from_epoc($dob){
+		
+		if($dob === ""){
+			return "";
+		}
 
 		$today = new \DateTime();
 		$dateOfBirth = new \DateTime();
@@ -725,16 +729,19 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 					'facebook'  => $profile_raw_meta_data['facebook_official'][0] ?? null,
 					'twitter'   => $profile_raw_meta_data['twitter_official'][0] ?? null,
 					'instagram' => $profile_raw_meta_data['instagram_official'][0] ?? null,
+					'youtube'   => $profile_raw_meta_data['youtube_official'][0] ?? null,
 				], 
 				'personal' => [
 					'facebook'  => $profile_raw_meta_data['facebook_personal'][0] ?? null,
 					'twitter'   => $profile_raw_meta_data['twitter_personal'][0] ?? null,
 					'instagram' => $profile_raw_meta_data['instagram_personal'][0] ?? null,
+					'youtube'   => $profile_raw_meta_data['youtube_personal'][0] ?? null,
 				], 
 				'campaign' => [
 					'facebook'  => $profile_raw_meta_data['facebook_campaign'][0] ?? null,
 					'twitter'   => $profile_raw_meta_data['twitter_campaign'][0] ?? null,
 					'instagram' => $profile_raw_meta_data['instagram_campaign'][0] ?? null,
+					'youtube'   => $profile_raw_meta_data['youtube_campaign'][0] ?? null,
 				],
 			],
 			'comms'            => [

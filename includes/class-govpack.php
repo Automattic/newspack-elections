@@ -25,8 +25,9 @@ class Govpack {
 	const REST_PREFIX = 'govpack/v1';
 
 
-	public $blocks = [];
+
 	public $front_end;
+	private Blocks $blocks;
 
 	/**
 	 * Stores static instance of class.
@@ -53,17 +54,18 @@ class Govpack {
 	 */
 	public function __construct() {
 		
-		\add_action( 'after_setup_theme', [ $this, 'init' ] );
+		$this->hooks();
+
+	}
+
+
+	public function hooks() {
+		\add_action( 'after_setup_theme', [ __class__, 'setup' ] );
 		\add_action( 'plugins_loaded', [ '\Govpack\Core\ActionScheduler\ActionScheduler', 'hooks' ], 0 );
 		\add_action( 'init', [ $this, 'register_blocks' ] );
 	}
 
-	/**
-	 * WordPress Hooks
-	 */
-	public function init() {
-
-
+	public static function setup(){
 		// Functions well need.
 		\Govpack\Core\CPT\AsTaxonomy::hooks();
 
@@ -100,12 +102,18 @@ class Govpack {
 		require_once ( GOVPACK_PLUGIN_PATH . "includes/govpack-functions.php");
 	}
 
-	public function register_blocks(){
-		
-		$this->blocks['profile'] = new \Govpack\Blocks\Profile\Profile();
-		$this->blocks['profile']->hooks();
+	public function blocks(){
 
-		$this->blocks['profile-self'] = new \Govpack\Blocks\ProfileSelf\ProfileSelf();
-		$this->blocks['profile-self']->hooks();
+		if(!isset($this->blocks)){
+			$this->blocks = new Blocks();
+			$this->blocks->hooks();
+		}
+		
+		return $this->blocks;
+	}
+
+	public function register_blocks(){
+		$this->blocks()->register(new \Govpack\Blocks\Profile\Profile());
+		$this->blocks()->register(new \Govpack\Blocks\ProfileSelf\ProfileSelf());
 	}
 }

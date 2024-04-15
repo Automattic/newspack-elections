@@ -6,3 +6,4 @@
 .cache
 /dist/*
 /build*
+vendor-prefixed/

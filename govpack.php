@@ -6,7 +6,7 @@
  * Author:            Govpack, poweredbycoffee, thefuturewasnow
  * Text Domain:       govpack
  * Domain Path:       /languages
- * Version:           1.0.1
+ * Version:           1.1.0
  * Requires at least: 5.9 
  *
  * @package         Govpack
@@ -22,19 +22,21 @@ if ( ! defined( 'GOVPACK_PLUGIN_FILE' ) ) {
 	define( 'GOVPACK_PLUGIN_PATH', GOVPACK_PLUGIN_FILE );
 }
 
-
 if ( ! defined( 'GOVPACK_PLUGIN_BUILD_PATH' ) ) {
 	define( 'GOVPACK_PLUGIN_BUILD_PATH', trailingslashit(GOVPACK_PLUGIN_PATH . 'build') );
 }
 
-// Define GOVPACK_PLUGIN_URL.
 if ( ! defined( 'GOVPACK_PLUGIN_URL' ) ) {
-	define( 'GOVPACK_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-}
-if ( ! defined( 'GOVPACK_PLUGIN_ASSETS_URL' ) ) {
-	define( 'GOVPACK_PLUGIN_ASSETS_URL', GOVPACK_PLUGIN_URL . 'dist/' );
+	define( 'GOVPACK_PLUGIN_URL', trailingslashit(plugin_dir_url( __FILE__ )));
 }
 
+if ( ! defined( 'GOVPACK_PLUGIN_ASSETS_URL' ) ) {
+	define( 'GOVPACK_PLUGIN_ASSETS_URL', trailingslashit(GOVPACK_PLUGIN_URL . 'dist') );
+}
+
+if ( ! defined( 'GOVPACK_PLUGIN_BUILD_URL' ) ) {
+	define( 'GOVPACK_PLUGIN_BUILD_URL', trailingslashit(GOVPACK_PLUGIN_URL . 'build') );
+}
 
 require_once GOVPACK_PLUGIN_FILE . 'vendor-prefixed/autoload.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 require_once GOVPACK_PLUGIN_FILE . 'vendor/autoload.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant

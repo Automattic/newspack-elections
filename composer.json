@@ -3,7 +3,7 @@
   "description": "Govpack TK",
   "type": "wordpress-plugin",
   "require": {
-    "pablo-sg-pacheco/wp-namespace-autoloader": "dev-master#b50050f541a1a5581cdd79d181120be97ab43c8e",
+    "pablo-sg-pacheco/wp-namespace-autoloader": "dev-master#b50050f",
     "woocommerce/action-scheduler": "^3.4",
     "gargron/fileupload": "~1.4.0",
     "league/csv": "^9.7",

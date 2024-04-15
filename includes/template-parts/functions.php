@@ -218,7 +218,7 @@ function gp_social_media_row( $label, $links = [] ) {
 
 	$content = '';
 
-	$services = [ 'facebook', 'twitter', 'linkedin', 'instagram' ];
+	$services = [ 'facebook', 'twitter', 'linkedin', 'instagram', 'youtube' ];
 
 	$icons = [
 		'facebook'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/facebook.svg' ),
@@ -226,6 +226,7 @@ function gp_social_media_row( $label, $links = [] ) {
 		'linkedin'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/linkedin.svg' ),
 		'instagram' => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/instagram.svg' ),
 		'email'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/email.svg' ),
+		'youtube'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/youtube.svg' ),
 	];
 
 	foreach ( $services as $service ) {

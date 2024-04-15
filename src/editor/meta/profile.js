@@ -4,7 +4,7 @@ import { withSelect, withDispatch, select } from "@wordpress/data";
 import { more } from '@wordpress/icons';
 import { registerPlugin } from '@wordpress/plugins';
 
-import {GovPackSidebarPanel} from "./../../components/sidebar-panel"
+import {GovPackSidebarPanel} from "../../components/sidebar-panel"
 import {withPanel, AboutPanel, OfficePanel, CommunicationsPanel, SocialPanel, MetadataIdsPanel} from "./Panels"
 import "./view.scss"
  
@@ -26,6 +26,7 @@ const GovPackProfileSidebar = () => (
     </>
 
 );
+
  
 registerPlugin( 'profile-meta', {
     icon: more,

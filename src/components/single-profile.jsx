@@ -1,15 +1,16 @@
 
 
 
-import FacebookIcon from "./../images/facebook.svg"
-import TwitterIcon from "./../images/twitter.svg"
-import LinkedinIcon from "./../images/linkedin.svg"
-import EmailIcon from "./../images/email.svg"
-import InstagramIcon from "./../images/instagram.svg"
-import PhoneIcon from "./../images/phone.svg"
-import WebIcon from "./../images/globe.svg"
-import FaxIcon from "./../images/fax.svg"
-
+import {ReactComponent as FacebookIconSVG} from "./../images/facebook.svg"
+import {ReactComponent as TwitterIconSVG} from "./../images/twitter.svg"
+import {ReactComponent as LinkedinIconSVG} from "./../images/linkedin.svg"
+import {ReactComponent as EmailIconSVG} from "./../images/email.svg"
+import {ReactComponent as InstagramIconSVG} from "./../images/instagram.svg"
+import {ReactComponent as PhoneIconSVG} from "./../images/phone.svg"
+import {ReactComponent as WebIconSVG} from "./../images/globe.svg"
+import {ReactComponent as FaxIconSVG} from "./../images/fax.svg"
+import {ReactComponent as YouTubeIconSVG} from "./../images/youtube.svg"
+import { Icon } from '@wordpress/components';
 /**
  * External dependencies
  */
@@ -21,6 +22,15 @@ import ProfileCommsPanel from "./Panels/ProfileCommsPanel"
 
 
 
+const TwitterIcon = () => ( <Icon icon={ TwitterIconSVG } /> )
+const LinkedinIcon = () => ( <Icon icon={ LinkedinIconSVG } /> )
+const EmailIcon = () => ( <Icon icon={ EmailIconSVG } /> )
+const InstagramIcon = () => ( <Icon icon={ InstagramIconSVG } /> )
+const PhoneIcon = () => ( <Icon icon={ PhoneIconSVG } /> )
+const WebIcon = () => ( <Icon icon={ WebIconSVG } /> )
+const FaxIcon = () => ( <Icon icon={ FaxIconSVG } /> )
+const FacebookIcon = () => ( <Icon icon={ FacebookIconSVG } /> )
+const YouTubeIcon = () => ( <Icon icon={ YouTubeIconSVG } /> )
 
 const Link = (props) => {
 
@@ -81,6 +91,7 @@ const SingleProfile = (props) => {
     } = props
 
     profile = normalize_profile(profile)
+	console.log("profile", profile)
 
     const {
         showAvatar, 
@@ -165,7 +176,7 @@ const SingleProfile = (props) => {
 				label
 			} = props
 
-			if(!show || !(props.services.facebook || props.services.twitter || props.services.instagram)){
+			if(!show || !(props.services.facebook || props.services.twitter || props.services.instagram || props.services.youtube)){
 				return null;
 			}
 
@@ -196,19 +207,26 @@ const SingleProfile = (props) => {
 								icon = { <InstagramIcon />}
 							/>
 						)}
+
+						{ props.services.youtube && (
+							<Contact 
+								href={props.services.youtube} 
+								label = "YouTube" 
+								icon = { <YouTubeIcon />}
+							/>
+						)}
 					</ul>
 				</li>
 			)
 		}
 
-		
-		
+		console.log(props.data)
 
         return (
            
             <div className={`${blockClassName}__social`}>
                 <ul className={`${blockClassName}__services`}>
-					<SocialRow services={props.data.official} show={props.show.showOfficial} label="Offical" />
+					<SocialRow services={props.data.official} show={props.show.showOfficial} label="Official" />
 					<SocialRow services={props.data.campaign} show={props.show.showCampaign} label="Campaign" />
 					<SocialRow services={props.data.personal} show={props.show.showPersonal} label="Personal" />
                 </ul>

@@ -14,15 +14,73 @@ defined( 'ABSPATH' ) || exit;
  */
 abstract class Block {
 
+	protected \WP_Block_Type $block;
+
+	public $block_name;
+
 	/**
 	 * WordPress Hooks
 	 */
 	public function hooks() {
 		
-		add_action( 'init', [ $this, 'register_script' ], 11 );
-		add_action( 'init', [ $this, 'register_block' ], 11 );
-		add_action( 'init', [ $this, 'enqueue_front_end_assets' ], 11 );
+		add_action( 'init', 					[ $this, 'register_script' ], 11 );
+		add_action( 'wp_print_styles', 			[ $this, 'remove_view_styles' ], 10 );
+		add_filter( 'allowed_block_types_all', 	[ $this, 'handle_disable_block' ], 99, 2 );
 	}
+
+	public function disable_block( $allowed_blocks, $editor_context ){
+		return false;
+	}
+
+	abstract function register();
+
+	public function needs_view_assets_enqueued() : bool{
+		return wp_is_block_theme();
+	}
+
+	public function remove_view_styles(){	
+
+		if(!isset($this->block)){
+			return;
+		}
+
+		if ( ! $this->needs_view_assets_enqueued() ) {
+			foreach($this->block->style_handles as $handle){
+				wp_dequeue_style($handle);
+			}
+		}
+
+	}
+
+	public function handle_disable_block($allowed_blocks, $editor_context){
+
+		if(!$this->disable_block($allowed_blocks, $editor_context)){
+			return $allowed_blocks;
+		}
+
+		if($allowed_blocks === true){
+			$allowed_blocks = \WP_Block_Type_Registry::get_instance()->get_all_registered();
+		}
+
+		unset($allowed_blocks[$this->block_name]);
+
+		return array_keys($allowed_blocks);
+
+	}
+
+	public function enqueue_view_assets(){
+
+		if ( ! $this->needs_view_assets_enqueued() ) {
+			return;
+		}
+
+		foreach($this->block->style_handles as $handle){
+			if( ! wp_style_is($handle, "enqueued")){
+				wp_enqueue_style($handle);
+			}
+		}
+	}
+
 
 	/**
 	 * Registers the common script for the blocks.
@@ -31,12 +89,6 @@ abstract class Block {
 	 */
 	public abstract function register_script();
 
-	/**
-	 * Enqueue Front End Assets.
-	 *
-	 * @return void
-	 */
-	public abstract function enqueue_front_end_assets();
 
 	/**
 	 * Get the WP_Block Object.

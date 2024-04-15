@@ -27,15 +27,6 @@ if ( ! defined( 'GOVPACK_PLUGIN_BUILD_PATH' ) ) {
 }
 
 if ( ! defined( 'GOVPACK_PLUGIN_URL' ) ) {
-<<<<<<< HEAD
-	define( 'GOVPACK_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-}
-
-if ( ! defined( 'GOVPACK_PLUGIN_ASSETS_URL' ) ) {
-	define( 'GOVPACK_PLUGIN_ASSETS_URL', GOVPACK_PLUGIN_URL . 'dist/' );
-}
-
-=======
 	define( 'GOVPACK_PLUGIN_URL', trailingslashit(plugin_dir_url( __FILE__ )));
 }
 
@@ -49,7 +40,6 @@ if ( ! defined( 'GOVPACK_PLUGIN_BUILD_URL' ) ) {
 
 
 
->>>>>>> dx/move-to-wp-scripts
 require_once GOVPACK_PLUGIN_FILE . 'vendor/autoload.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 require_once GOVPACK_PLUGIN_FILE . 'vendor/woocommerce/action-scheduler/action-scheduler.php';// phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 

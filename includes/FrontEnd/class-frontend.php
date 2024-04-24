@@ -87,7 +87,7 @@ class FrontEnd {
 
 		wp_register_style(
 			'govpack-block-styles',
-			GOVPACK_PLUGIN_ASSETS_URL . 'frontend.css',
+			GOVPACK_PLUGIN_BUILD_URL . 'frontend.css',
 			[],
 			1.00,
 			'screen'

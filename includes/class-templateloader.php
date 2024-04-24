@@ -52,6 +52,10 @@ class TemplateLoader extends \Govpack_Vendor_Gamajo_Template_Loader {
 				return $template;
 			}
 
+			if ( wp_is_block_theme() ) {
+				return $template;
+			}
+
 			if(is_singular(\Govpack\Core\CPT\Profile::CPT_SLUG)){
 				return $this->locate_template( \Govpack\Core\CPT\Profile::TEMPLATE_NAME );
 			}

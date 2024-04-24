@@ -37,7 +37,8 @@
 	"entrypoints" : {
 		"editor" : "./src/editor/index.js",
 		"admin" : "./src/admin/index.js",
-		"importer" : "./src/importer/index.js"
+		"importer" : "./src/importer/index.js",
+		"frontend" : "./src/frontend/index.js"
 	}
   }
 }

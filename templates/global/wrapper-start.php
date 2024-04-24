@@ -7,4 +7,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <!-- govpack-container -->
 <section id="primary" class="content-area content-area--govpack-profile">
-	<main id="main" class="govpack-profile" role="main">
+	<main id="profile" class="govpack-profile" role="main">

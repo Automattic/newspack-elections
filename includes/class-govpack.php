@@ -55,7 +55,7 @@ class Govpack {
 	public function __construct() {
 		
 		$this->hooks();
-
+		require_once 'gp-functions.php';
 	}
 
 
@@ -74,6 +74,7 @@ class Govpack {
 
 		// get capabilities setup first.
 		\Govpack\Core\Capabilities::hooks();
+
 
 		// Taxonomies.
 		\Govpack\Core\Tax\LegislativeBody::hooks();

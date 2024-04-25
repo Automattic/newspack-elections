@@ -28,7 +28,7 @@ class Admin {
 		\add_action( 'admin_enqueue_scripts', [ __class__, 'load_assets' ], 101, 1 );
 		\add_action( 'block_categories_all', [ __class__, 'block_categories' ], 10, 2 );                
 		\add_action( 'enqueue_block_editor_assets', [ __class__, 'enqueue_block_editor_assets' ] );
-		\add_action( 'current_screen', [ __class__, 'maybe_redirect_to_profiles' ] );
+		\add_action( 'current_screen', [ __class__, 'conditional_hooks' ] );
 		\add_action( 'after_setup_theme', [ '\Govpack\Core\Admin\Export', 'hooks' ], 11, 1 );
 	}
 
@@ -67,14 +67,24 @@ class Admin {
 	/**
 	 * Used to check if we're loaing the main "Govpack" page, redirect to the profile stable is we are.
 	 */
-	public static function maybe_redirect_to_profiles(){
+	public static function conditional_hooks(){
 		$screen = get_current_screen();
 		
-		if($screen->base !== "toplevel_page_govpack"){
+
+		if ( ! $screen ) {
 			return;
 		}
-		self::redirect_to_profiles();
-		die();
+
+		switch ( $screen->base ) {
+			case "toplevel_page_govpack":
+				self::redirect_to_profiles();
+				break;
+			case "options-permalink";
+				Permalink_Settings::hooks();
+				break;
+		}
+
+		
 		
 	}
 

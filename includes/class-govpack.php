@@ -16,6 +16,8 @@ define( 'GOVPACK_VERSION', '1.1.0' );
  */
 class Govpack {
 
+	use \Govpack\Core\Instance;
+
 	/**
 	 * Reference to REST API Prefix for consistency.
 	 *
@@ -24,30 +26,9 @@ class Govpack {
 	 */
 	const REST_PREFIX = 'govpack/v1';
 
-
-
-	public $front_end;
+	private $front_end;
+	private $admin;
 	private Blocks $blocks;
-
-	/**
-	 * Stores static instance of class.
-	 *
-	 * @access protected
-	 * @var Govpack\Govpack The single instance of the class
-	 */
-	protected static $instance = null;
-
-	/**
-	 * Returns static instance of class.
-	 *
-	 * @return self
-	 */
-	public static function instance() {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
 
 	/**
 	 * Inits the class and registeres the hooks call.
@@ -55,9 +36,12 @@ class Govpack {
 	public function __construct() {
 		
 		$this->hooks();
-		require_once 'gp-functions.php';
+		$this->require("includes/govpack-functions.php");
 	}
 
+	public function require($path){
+		require_once ( GOVPACK_PLUGIN_PATH . $path);
+	}
 
 	public function hooks() {
 		\add_action( 'after_setup_theme', [ $this, 'setup' ] );
@@ -92,16 +76,25 @@ class Govpack {
 		\Govpack\Core\Widgets::hooks();
 
 		if(is_admin()){
-			\Govpack\Core\Admin\Admin::hooks();
+			$this->admin = \Govpack\Core\Admin\Admin::instance();
+			$this->admin->hooks();
 		}
 		
 		if(!is_admin()){
+			$this->front_end();
+		}
+		
+	}
+
+	public function front_end(){
+
+		if(!isset($this->front_end)){
 			$this->front_end = FrontEnd\FrontEnd::instance();
 			$this->front_end->hooks();
 			$this->front_end->template_loader();
-		}
+		} 
 
-		require_once ( GOVPACK_PLUGIN_PATH . "includes/govpack-functions.php");
+		return $this->front_end;
 	}
 
 	public function blocks(){

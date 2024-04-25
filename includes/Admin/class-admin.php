@@ -18,10 +18,12 @@ use Exception;
  */
 class Admin {
 
+	use \Govpack\Core\Instance;
+
 	/**
 	 * Register Hooks for usage in wp-admin.
 	 */
-	public static function hooks() {
+	public function hooks() {
 		\add_action( 'admin_menu', [ '\Govpack\Core\Admin\Menu', 'add_taxonomy_submenus' ], 10, 1 );
 		\add_action( 'admin_menu', [ __class__, 'create_menus' ], 1, 1 );
 		\add_action( 'admin_enqueue_scripts', [ __class__, 'register_assets' ], 100, 1 );

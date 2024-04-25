@@ -28,13 +28,14 @@
         $element : &;
 
         flex-direction: column;
-
+		gap: 2rem;
+		
         &--right {
             flex-direction: row-reverse;
 
             #{$block}__avatar{
                 margin-right:0;
-                margin-left:1rem;
+                
             }
         }
 
@@ -225,7 +226,7 @@
         width:50%;
         display: flex;
         flex-direction: column;
-        margin-left:1rem;
+        
         justify-content: center;
 
         h3{

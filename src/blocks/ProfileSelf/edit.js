@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 
-import { InspectorControls, useBlockProps} from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps, BlockControls} from '@wordpress/block-editor';
 import { Spinner } from '@wordpress/components';
 import { useRef, useState, useEffect } from '@wordpress/element';
 import { withSelect, useSelect, select} from "@wordpress/data";
@@ -229,18 +229,20 @@ function RawEdit( props ) {
 				<ProfileCommsOtherPanel attributes = {attributes} parentAttributeKey={"selectedOtherCommunicationDetails"} setAttributes = {setAttributes} title="Other Communications" display={attributes.showOtherCommunicationDetails} profile={profile}/>
 				<ProfileCommsSocialPanel attributes = {attributes} parentAttributeKey={"selectedSocial"} setAttributes = {setAttributes} title="Social" display={attributes.showSocial} />
             </InspectorControls>
+			<BlockControls>
+				{showAvatar &&  'is-style-center' !== attributes.className &&(
+					<AvatarAlignmentToolBar  attributes = {attributes} setAttributes = {setAttributes} />
+				)}
+				{/*<BlockSizeAlignmentToolbar attributes={attributes} setAttributes={setAttributes} />*/}	
+			</BlockControls>
 
 			{ isLoading ? (
 				<div className="is-loading">
-					{ __( 'Fetching profile info…', 'newspack-blocks' ) }
+					{ __( 'Fetching profile info…', 'govpack-blocks' ) }
 					<Spinner />
 				</div>
 			) : (
-				<>				
-					{showAvatar &&  'is-style-center' !== attributes.className &&(
-						<AvatarAlignmentToolBar  attributes = {attributes} setAttributes = {setAttributes} />
-					)}
-					{/*<BlockSizeAlignmentToolbar attributes={attributes} setAttributes={setAttributes} />*/}	
+				<>
 					<SingleProfile blockClassName="wp-block-govpack-profile-self" profile={profile} attributes={ attributes } availableWidths = {availableWidths} showSelf = {true} />
 				</>
 			) }

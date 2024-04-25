@@ -1,7 +1,7 @@
 
 import { __ } from '@wordpress/i18n';
 import { BlockControls } from '@wordpress/block-editor';
-import { ToolbarGroup } from '@wordpress/components';
+import { ToolbarGroup, Toolbar } from '@wordpress/components';
 import { Icon, pullLeft, pullRight, positionCenter} from '@wordpress/icons';
 
 const AvatarAlignmentToolBar = (props) => {
@@ -17,7 +17,7 @@ const AvatarAlignmentToolBar = (props) => {
 
 
     return(
-        
+        <Toolbar>
             <ToolbarGroup
 				label='Picture Alignment'
                 controls={ [
@@ -41,7 +41,7 @@ const AvatarAlignmentToolBar = (props) => {
                     },
                 ] }
             />
-        
+        </Toolbar>
     )
 }
 

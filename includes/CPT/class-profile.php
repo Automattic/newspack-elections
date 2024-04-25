@@ -147,12 +147,9 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	 */
 	public static function register_post_type() {
 
-	
 		$permalinks = gp_get_permalink_structure();
-		
 		$permalink_structure = (isset($permalinks['profile_base']) ? $permalinks['profile_base'] : "profile" );
 		
-
 		return register_post_type( // phpcs:ignore WordPress.NamingConventions.ValidPostTypeSlug.NotStringLiteral
 			self::CPT_SLUG,
 			\apply_filters("govpack_register_post_type_profile", [
@@ -296,6 +293,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'date_of_birth',
 			'date_of_death',
 			'district',
+			"endorsements",
 
 			// office panel.
 			'contact_form_url',
@@ -714,6 +712,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'website'          => $profile_raw_meta_data['leg_url'][0] ?? '',
 			'biography'        => $profile_raw_meta_data['biography'][0] ?? '',
 			'district'         => $profile_raw_meta_data['district'][0] ?? '',
+			"endorsements"     => $profile_raw_meta_data['endorsements'][0] ?? '',
 			'age'              => self::age_from_epoc($profile_raw_meta_data['date_of_birth'][0] ?? false),
 
 			'party'            => $term_data[ \Govpack\Core\Tax\Party::TAX_SLUG ] ?? '',

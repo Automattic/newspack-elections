@@ -21,6 +21,7 @@ const ProfileDisplaySettings = (props) => {
         showState,
 		showDistrict,
 		showStatus,
+		showEndorsements,
 
         showSocial,
 		showName,
@@ -107,7 +108,18 @@ const ProfileDisplaySettings = (props) => {
     							onChange={ () => setAttributes( { showState: ! showState } ) }
 		    				/>
 	    				</PanelRow>
-                        
+
+						<PanelRow>
+						    <ToggleControl
+							    label={ __( 'Display Endorsements', 'govpack-blocks' ) }
+							    checked={ showEndorsements }
+    							onChange={ () => setAttributes( { showEndorsements: ! showEndorsements } ) }
+		    				/>
+	    				</PanelRow>
+						
+
+
+
                         <PanelRow>
 						    <ToggleControl
 							    label={ __( 'Display Social', 'govpack-blocks' ) }

@@ -155,6 +155,10 @@
 		"showProfileLink" : {
 			"type": "boolean",
 			"default": true
+		},
+		"showEndorsements" : {
+			"type": "boolean",
+			"default": true
 		}
 	}
 }

@@ -58,6 +58,7 @@ export function normalize_profile(profile){
         email :  decodeEntities(profile.meta?.email ?? null),
         link :  profile.link,
 		district :  profile.meta?.district ?? null,
+		endorsements :  profile.meta?.endorsements ?? null,
 		social : {
         	official : {
 				twitter : profile.meta?.twitter_official ?? null,

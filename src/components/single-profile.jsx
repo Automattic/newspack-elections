@@ -114,6 +114,7 @@ const SingleProfile = (props) => {
 		showWebsites,
 		showStatus,
         showProfileLink,
+		showEndorsements,
         className,
 
 		showCapitolCommunicationDetails,
@@ -398,7 +399,7 @@ const SingleProfile = (props) => {
 					<Row key="district" id="district" value={profile.district}  display={showDistrict}/>
 					<Row key="status" id="status" value={profile.status} display={showStatus}/>
                     <Row key="states" id="states" value={profile.state} display={showState}/>
-
+					<Row key="endorsements" id="endorsements" value={profile.endorsements} display={showEndorsements}/>
                     <Row key="social" id="social" value={<SocialMedia data={profile.social} label="Social Media" show={selectedSocial}/>} display={(showSocial && doShowSocial)}/>
 					<Row key="comms_capitol" id="comms_capitol" value={hasCommsData(profile.comms.capitol) && <Comms data={profile.comms.capitol} label="Capitol" show={selectedCapitolCommunicationDetails}/>} display={showCapitolCommunicationDetails} />
 					<Row key="comms_district" id="comms_district" value={hasCommsData(profile.comms.district) && <Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />

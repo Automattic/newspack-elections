@@ -1,7 +1,7 @@
 import { PanelRow } from "@wordpress/components";
 
 import {GovPackSidebarPanel} from "./../../../components/sidebar-panel"
-import {PanelTextControl, PanelDateControl, PanelFieldset, PanelTaxonomyControl} from "./../Controls"
+import {PanelTextControl, PanelDateControl, PanelFieldset, PanelTaxonomyControl, PanelTextareaControl} from "./../Controls"
 
 export const AboutPanel = (props) => {
 
@@ -61,7 +61,15 @@ export const AboutPanel = (props) => {
             </PanelRow>
 
 			<PanelRow>
+                <PanelTextareaControl meta={props.meta} label = "Endorsements" meta_key="endorsements" onChange={setPostMeta} />
+            </PanelRow>
+
+			<PanelRow>
                 <PanelDateControl meta={props.meta} label = "Date of Birth" meta_key="date_of_birth" onChange={setPostMeta} />
+            </PanelRow>
+
+			<PanelRow>
+                <PanelDateControl meta={props.meta} label = "Date of Death" meta_key="date_of_death" onChange={setPostMeta} />
             </PanelRow>
 
 			<PanelRow>

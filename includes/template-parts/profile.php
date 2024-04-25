@@ -111,6 +111,7 @@ $show_secondary_address = ( isset( $profile_data['address']['secondary'] ) &&
 				gp_row( 'district', $profile_data['district'], ( $attributes['showDistrict'] && $profile_data['district'] ) );
 				gp_row( 'state', $profile_data['state'], ( $attributes['showState'] && $profile_data['state'] ) );
 				gp_row( 'status', $profile_data['status'], ( $attributes['showStatus'] && $profile_data['status'] ) );
+				gp_row( 'endorsements', $profile_data['endorsements'], ( $attributes['showEndorsements'] && $profile_data['endorsements'] ) );
 				gp_row( 'social', gp_social_media( $profile_data, $attributes ), ( $attributes['showSocial'] && $profile_data['hasSocial'] ) );
 				gp_row( 'comms_capitol', gp_contact_info( 'Capitol', $profile_data['comms']['capitol'], $attributes['selectedCapitolCommunicationDetails'] ), $attributes['showCapitolCommunicationDetails'] );
 				gp_row( 'comms_district', gp_contact_info( 'District', $profile_data['comms']['district'], $attributes['selectedDistrictCommunicationDetails'] ), $attributes['showDistrictCommunicationDetails'] );

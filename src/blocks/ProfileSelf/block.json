@@ -37,6 +37,10 @@
 			"type": "boolean",
 			"default": false
 		},   
+		"showStatusTag": {
+			"type": "boolean",
+			"default": false
+		},
 		"showWebsites": {
 			"type": "boolean",
 			"default": true

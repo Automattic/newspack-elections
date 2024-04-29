@@ -113,6 +113,7 @@ const SingleProfile = (props) => {
 		selectedSocial,
 		showWebsites,
 		showStatus,
+		showStatusTag,
         showProfileLink,
         className,
 

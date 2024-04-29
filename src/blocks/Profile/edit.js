@@ -164,7 +164,6 @@ const ProfileSelector = ( {
 }
 function Edit( props ) {
 
-	;
 
 	const setProfile = (newProfileId) => {
 		setAttributes({"profileId" : newProfileId})

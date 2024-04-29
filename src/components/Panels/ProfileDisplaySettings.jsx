@@ -21,6 +21,7 @@ const ProfileDisplaySettings = (props) => {
         showState,
 		showDistrict,
 		showStatus,
+		showStatusTag,
 
         showSocial,
 		showName,
@@ -54,7 +55,15 @@ const ProfileDisplaySettings = (props) => {
                                     onChange={ () => setAttributes( { showName: ! showName } ) }
                                 />
                             </PanelRow>
+							<PanelRow>
+                                <ToggleControl
+                                    label={ __( 'Display Status Tag', 'govpack-blocks' ) }
+                                    checked={ showStatusTag }
+                                    onChange={ () => setAttributes( { showStatusTag: ! showStatusTag } ) }
+                                />
+                            </PanelRow>
                         <PanelRow>
+							
 						    <ToggleControl
 							    label={ __( 'Display Age', 'govpack-blocks' ) }
 							    checked={ showAge }

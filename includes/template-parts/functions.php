@@ -381,3 +381,43 @@ function gp_contact_other( $label, $links, $attrs ) {
 
 	return sprintf( $outer_template, $label, $content );
 }
+
+
+function gp_get_the_term($term){
+
+	if(!is_a($term, "\WP_Term")){
+		$term = get_term($term);
+	}
+
+	$classNames = [
+		"govpack-tag",
+		"govpack-tag--" . $term->taxonomy,
+		"govpack-tag--" . $term->slug
+	];
+
+	$classNames = implode(" ", $classNames);
+
+	return '<span rel="tag" class="'. $classNames .'">' . $term->name . '</span>';;
+
+}
+function gp_get_the_status_terms_list( $post_id, $before = "", $sep = "", $after = ""){
+	$taxonomy = "govpack_officeholder_status";
+	$terms = get_the_terms( $post_id, $taxonomy );
+
+	if ( is_wp_error( $terms ) ) {
+		return $terms;
+	}
+
+	if ( empty( $terms ) ) {
+		return false;
+	}
+
+	$tags = array();
+
+	foreach ( $terms as $term ) {
+		$tags[] = gp_get_the_term($term);
+	}
+
+	return $before . implode( $sep, $tags ) . $after;
+}
+

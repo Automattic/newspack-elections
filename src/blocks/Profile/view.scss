@@ -309,8 +309,29 @@
         margin-top: 0 !important;
 		word-break: normal;
     }
+
+	&__name:has(+ &__status-tag ) {
+		display: inline-block;
+		margin-bottom: .5rem;
+	}
+	
+	&--flex-left{
+		display: flex;
+		flex-direction:row;
+		flex-wrap: wrap;
+		gap: .33rem;
+	}
 }
 
 .wp-block-column .wp-block-govpack-profile{
 	margin-right:0;
+}
+
+.govpack-tag {
+	display: block;
+	padding: 0.2rem 0.4rem;
+	background-color: #eee;
+	display: inline-block;
+	font-size:0.8rem;
+	border-radius: 3px;
 }

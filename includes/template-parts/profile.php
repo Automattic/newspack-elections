@@ -68,6 +68,10 @@ $show_secondary_address = ( isset( $profile_data['address']['secondary'] ) &&
 	( $profile_data['address']['secondary'] !== $profile_data['address']['default'] )
 );
 
+
+$show_name              = ( isset( $profile_data['name']['full']  ) && $attributes['showName'] );
+$show_status_tag              = ( isset( $profile_data['status'] ) && $attributes['showStatusTag'] );
+
 ?>
 
 <aside class="<?php echo esc_attr( $classes ); ?>" style="<?php echo esc_attr( $styles ); ?>">
@@ -88,15 +92,22 @@ $show_secondary_address = ( isset( $profile_data['address']['secondary'] ) &&
 
 
 		<div class="wp-block-govpack-profile__info">
-			<div class="wp-block-govpack-profile__line">
-			<?php
-			if ( $attributes['showName'] && $profile_data['name']['full'] ) {
-				?>
-					<h3> <?php echo GP_Maybe_Link( $profile_data['name']['full'], $profile_data['link'], $attributes['showProfileLink'] );  //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></h3>
-				<?php
-			}
+			<?php if ( $show_name || $show_status_tag) { ?>
+				<div class="wp-block-govpack-profile__line wp-block-govpack-profile--flex-left">
+				<?php if ( $show_name) { ?>
+					<h3 class="wp-block-govpack-profile__name"> <?php echo GP_Maybe_Link( $profile_data['name']['full'], $profile_data['link'], $attributes['showProfileLink'] );  //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></h3>
+				<?php } ?>
+				<?php if ( $show_status_tag) { ?>
+					<div class="wp-block-govpack-profile__status-tag">
+							<div class="govpack-termlist">
+								<?php echo gp_get_the_status_terms_list($profile_data["id"]); ?>
+							</div>
+						</div>
+				<?php } ?>
+				</div>
+			<?php } ?>
 				
-
+<?php
 			if ( $attributes['showBio'] && $profile_data['bio'] ) {
 				echo esc_html( $profile_data['bio'] );
 			} 

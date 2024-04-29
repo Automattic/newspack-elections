@@ -283,4 +283,17 @@
         background-color:rgba(0,0,0,0.02);
         margin-top: 0 !important;
     }
+
+
+	&__name:has(+ &__status-tag ) {
+		display: inline-block;
+		margin-bottom: .5rem;
+	}
+	
+	&--flex-left{
+		display: flex;
+		flex-direction:row;
+		flex-wrap: wrap;
+		gap: .33rem;
+	}
 }

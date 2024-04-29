@@ -81,6 +81,8 @@ $show_secondary_address = ( isset( $profile_data['address']['secondary'] ) &&
 	( $profile_data['address']['secondary'] !== $profile_data['address']['default'] )
 );
 $show_name              = ( isset( $profile_data['name'] ) && $attributes['showName'] );
+$show_status_tag              = ( isset( $profile_data['status'] ) && $attributes['showStatusTag'] );
+
 ?>
 
 <aside class="<?php echo esc_attr( $classes ); ?>" style="<?php echo esc_attr( $styles ); ?>">
@@ -94,10 +96,19 @@ $show_name              = ( isset( $profile_data['name'] ) && $attributes['showN
 		</div>
 		<?php } ?>
 
-		<div class="wp-block-govpack-profile-self__info">
-			<?php if ( $show_name ) { ?>
-				<div class="wp-block-govpack-profile-self__line">
-					<h3> <?php echo esc_html( $profile_data['name']['full'] ); ?></h3>
+		<div class="wp-block-govpack-profile-self__info ">
+			<?php if ( $show_name || $show_status_tag) { ?>
+				<div class="wp-block-govpack-profile-self__line wp-block-govpack-profile-self--flex-left">
+					<?php if( $show_name ){ ?>
+						<h3 class="wp-block-govpack-profile-self__name"> <?php echo esc_html( $profile_data['name']['full'] ); ?></h3>
+					<?php } ?>
+					<?php if( $show_status_tag ){ ?>
+						<div class="wp-block-govpack-profile-self__status-tag">
+							<div class="govpack-termlist">
+								<?php echo gp_get_the_status_terms_list($profile_data["id"]); ?>
+							</div>
+						</div>
+					<?php } ?>
 				</div>
 			<?php } ?>
 			<?php

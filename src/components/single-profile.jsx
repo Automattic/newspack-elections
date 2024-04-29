@@ -383,9 +383,13 @@ const SingleProfile = (props) => {
                     <div className={`${blockClassName}__line ${blockClassName}__line--name`} role="listitem">
                         {showName && (
 							<>
-                            <h3><Link>{profile.name.full}</Link></h3>
-							{showStatusTag && (
-								<div>tag here</div>
+                            <h3 className={`${blockClassName}__name`} ><Link>{profile.name.full}</Link></h3>
+							{(showStatusTag && profile.status) && (
+								<div className={`${blockClassName}__status-tag`}>
+									<div className="govpack-termlist">
+										<span className="govpack-tag">{profile.status}</span>
+									</div>
+								</div>
 							)}
 							</>
                         )}

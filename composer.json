@@ -16,7 +16,8 @@
     "wp-coding-standards/wpcs": "^2.3",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
     "phpcompatibility/phpcompatibility-wp": "^2.1.1",
-    "brianhenryie/strauss": "^0.17.0"
+    "brianhenryie/strauss": "^0.17.0",
+    "php-stubs/wp-cli-stubs": "^2.10"
   },
   "license": "GPL-2.0-or-later",
   "autoload": {

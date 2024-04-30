@@ -347,10 +347,32 @@
 }
 
 .govpack-line {
+	
+	&__label,
+	&__content{
+	//&__label{
+		//float:left;
+		display:inline;
+	}
+	
+	&__label::after{
+		content:":\00a0";
+	}
+
 	&__label {
+		font-weight: bold;
+
+
+		&--hide{
+			display: none;
+		}
+		&--show{
+			display: initial;
+		}
 
 	}
 	&__content {
 		margin: 0;
+		display:inline;
 	}
 }

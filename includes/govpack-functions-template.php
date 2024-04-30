@@ -69,7 +69,8 @@
 		"status_tag" => ( isset( $profile_data['status'] ) && $attributes['showStatusTag'] ),
 		"secondary_address" => ( isset( $profile_data['address']['secondary'] ) &&  ( $profile_data['address']['secondary'] !== $profile_data['address']['default'] ) ),
 		"social" => ($attributes['showSocial'] && $profile_data['hasSocial']),
-		"bio" => ($attributes['showBio'] && $profile_data['bio'])
+		"bio" => ($attributes['showBio'] && $profile_data['bio']),
+		"labels" => (isset( $attributes['showLabels'] ) && ($attributes['showLabels']) )
 	];
 
 	return $show;

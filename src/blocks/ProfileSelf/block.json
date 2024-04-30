@@ -26,6 +26,10 @@
 			"type": "boolean",
 			"default": false
 		},
+		"showLabels": {
+			"type": "boolean",
+			"default": false
+		},
         "showBio": {
 			"type": "boolean",
 			"default": false

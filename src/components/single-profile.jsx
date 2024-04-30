@@ -100,6 +100,7 @@ const SingleProfile = (props) => {
         avatarAlignment,
         align,
         width,
+		showLabels = false,
 
         showName,
         showAge,
@@ -131,7 +132,12 @@ const SingleProfile = (props) => {
 
 	const Row = (props) => {
 
-		const {display, value, id} = props
+		const {
+			display, 
+			value, 
+			id,
+			label = ""
+		} = props
 	
 		if(!display){
 			return null
@@ -142,12 +148,18 @@ const SingleProfile = (props) => {
 		}
 		
 		const classes = classnames(`${blockClassName}__line`, {
+			"govpack-line" : true,
 			[`${blockClassName}--${id}`] : (id ?? false)
 		} )
 	
 		return (
 			<div className={classes} role="listitem">
-				{value}
+				{(showLabels) && (label !== "") && (
+					<dt className="govpack-line__label">{label}</dt>
+				)}
+				<dd className="govpack-line__content">
+					{value}
+				</dd>
 			</div>
 		)
 	}
@@ -401,21 +413,21 @@ const SingleProfile = (props) => {
                         )}
                         
                     </div>
-					<Row key="age" id="age" value={profile.age} display={showAge}/>
-                    <Row key="leg_body" id="leg_body" value={profile.legislative_body} display={showLegislativeBody}/>
-                    <Row key="pos" id="position" value={profile.position}  display={showPosition}/>
-                    <Row key="party" id="party" value={profile.party}  display={showParty}/>
-					<Row key="district" id="district" value={profile.district}  display={showDistrict}/>
-					<Row key="status" id="status" value={profile.status} display={showStatus}/>
-                    <Row key="states" id="states" value={profile.state} display={showState}/>
+					<Row key="age" id="age" label="Age" value={profile.age} display={showAge}/>
+                    <Row key="leg_body" id="leg_body" label="Legislative Body" value={profile.legislative_body} display={showLegislativeBody}/>
+                    <Row key="pos" id="position" label="Position" value={profile.position}  display={showPosition}/>
+                    <Row key="party" id="party" label="Party" value={profile.party}  display={showParty}/>
+					<Row key="district" id="district" label="District" value={profile.district}  display={showDistrict}/>
+					<Row key="status" id="status" label="Status" value={profile.status} display={showStatus}/>
+                    <Row key="states" id="states" label="State" value={profile.state} display={showState}/>
 
-                    <Row key="social" id="social" value={<SocialMedia data={profile.social} label="Social Media" show={selectedSocial}/>} display={(showSocial && doShowSocial)}/>
-					<Row key="comms_capitol" id="comms_capitol" value={hasCommsData(profile.comms.capitol) && <Comms data={profile.comms.capitol} label="Capitol" show={selectedCapitolCommunicationDetails}/>} display={showCapitolCommunicationDetails} />
-					<Row key="comms_district" id="comms_district" value={hasCommsData(profile.comms.district) && <Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />
-					<Row key="comms_campaign" id="comms_campaign" value={hasCommsData(profile.comms.campaign) && <Comms data={profile.comms.campaign} label="Campaign" show={selectedCampaignCommunicationDetails}/>} display={showCampaignCommunicationDetails} />
-					<Row key="comms_other" id="comms_other" value={hasCommsOtherData(profile.comms.other) && <CommsOther data={profile.comms.other} label="Other" show={selectedOtherCommunicationDetails}/>} display={showOtherCommunicationDetails} />
+                    <Row key="social" id="social" label="Social Media" value={<SocialMedia data={profile.social} label="Social Media" show={selectedSocial}/>} display={(showSocial && doShowSocial)}/>
+					<Row key="comms_capitol" id="comms_capitol" label="Contact Info (Capitol)" value={hasCommsData(profile.comms.capitol) && <Comms data={profile.comms.capitol} label="Capitol" show={selectedCapitolCommunicationDetails}/>} display={showCapitolCommunicationDetails} />
+					<Row key="comms_district" id="comms_district" label="Contact Info (District)" value={hasCommsData(profile.comms.district) && <Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />
+					<Row key="comms_campaign" id="comms_campaign" label="Contact Info (Campaign)" value={hasCommsData(profile.comms.campaign) && <Comms data={profile.comms.campaign} label="Campaign" show={selectedCampaignCommunicationDetails}/>} display={showCampaignCommunicationDetails} />
+					<Row key="comms_other" id="comms_other" label="Contact Info (Other)" value={hasCommsOtherData(profile.comms.other) && <CommsOther data={profile.comms.other} label="Other" show={selectedOtherCommunicationDetails}/>} display={showOtherCommunicationDetails} />
 
-					<Row key="url" id="more_about" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
+					<Row key="url" id="more_about" label="More" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
                 </div>
             </div>  
      

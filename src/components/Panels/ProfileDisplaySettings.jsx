@@ -14,6 +14,7 @@ const ProfileDisplaySettings = (props) => {
 
     const {
         showBio,
+		showLabels,
         showAge,
         showLegislativeBody,
         showPosition,

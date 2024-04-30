@@ -11,6 +11,7 @@ import { compose } from "@wordpress/compose";
 
 import ProfileDisplaySettings from './../../components/Panels/ProfileDisplaySettings.jsx'
 import ProfileAvatarPanel from '../../components/Panels/ProfileAvatarPanel';
+import ProfileLabelPanel from '../../components/Panels/ProfileLabelPanel';
 import ProfileCommsPanel from '../../components/Panels/ProfileCommsPanel'
 import ProfileCommsOtherPanel from '../../components/Panels/ProfileCommsOtherPanel'
 import ProfileCommsSocialPanel from '../../components/Panels/ProfileCommsSocialPanel'
@@ -20,8 +21,6 @@ import AvatarAlignmentToolBar from '../../components/Toolbars/AvatarAlignment.js
 import BlockSizeAlignmentToolbar from '../../components/Toolbars/BlockSizeAlignmentToolbar.jsx';
 
 import {isNil, isEmpty} from "lodash"
-
-
 
 
 const availableWidths = [
@@ -142,7 +141,7 @@ function RawEdit( props ) {
     } = props
     
     const {
-        showAvatar
+        showAvatar,
 	} = attributes;
 
 	/*
@@ -222,6 +221,7 @@ function RawEdit( props ) {
         <div { ...blockProps }>
             <InspectorControls>
                 <ProfileAvatarPanel attributes = {attributes} setAttributes = {setAttributes} showSizeControl = {false} showRadiusControl = {true} />
+				<ProfileLabelPanel attributes = {attributes} setAttributes = {setAttributes} />
                 <ProfileDisplaySettings attributes = {attributes} setAttributes = {setAttributes} showBioControl = {true} showLinkControl = {false} profile={profile} />
 				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedCapitolCommunicationDetails"} setAttributes = {setAttributes} title="Capitol Communications" display={attributes.showCapitolCommunicationDetails} />
 				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedCampaignCommunicationDetails"} setAttributes = {setAttributes} title="Campaign Communications" display={attributes.showCampaignCommunicationDetails} />

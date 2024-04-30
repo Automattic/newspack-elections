@@ -273,6 +273,10 @@
         .alignright & {
             text-align: right;
         }
+
+		p {
+			margin: 0;
+		}
     }
 
     &.is-style-boxed_centered,
@@ -312,14 +316,20 @@
 
 	&__name:has(+ &__status-tag ) {
 		display: inline-block;
-		margin-bottom: .5rem;
+		margin: 0;
 	}
 	
 	&--flex-left{
 		display: flex;
 		flex-direction:row;
 		flex-wrap: wrap;
+		align-items: center;
 		gap: .33rem;
+	}
+
+	&__line-label{
+		margin:0;
+		padding:0;
 	}
 }
 
@@ -334,4 +344,13 @@
 	display: inline-block;
 	font-size:0.8rem;
 	border-radius: 3px;
+}
+
+.govpack-line {
+	&__label {
+
+	}
+	&__content {
+		margin: 0;
+	}
 }

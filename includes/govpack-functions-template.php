@@ -156,12 +156,29 @@ function gp_get_profile_lines($attributes, $profile_data) {
 }
 
 function gp_get_photo_styles($attributes){
-	return join(
-	' ',
-	[
-		'border-radius: ' . $attributes['avatarBorderRadius'] . ';',
-	]
-);
+
+	// CSS props to embed with a value getter or boolean.
+	$rules = array(
+		"border-radius" => (isset($attributes['avatarBorderRadius']) ? esc_attr($attributes['avatarBorderRadius']) : false),
+		"width" => (isset($attributes['avatarSize']) ? esc_attr($attributes['avatarSize'] . "px") : false),
+		"height" => (isset($attributes['avatarSize']) ? esc_attr($attributes['avatarSize'] . "px") : false)
+	);
+
+	return gp_style_attr_generator($rules);
+}
+
+function gp_style_attr_generator($rules){
+	// filter the rules where the getter returns false;
+	$rules = array_filter($rules);
+
+	// normalise the rules into css syntax;
+	$normalized_rules = array();
+	foreach ( $rules as $property => $rule ) {
+		$normalized_rules[] = sprintf("%s: %s;", $property, $rule);
+	}
+
+	// join all the normalsed rules and trim any excess whitespace
+	return trim(join(" ", $normalized_rules));
 }
 
 

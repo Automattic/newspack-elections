@@ -90,12 +90,7 @@ class CLI extends \WP_CLI_Command {
 	 * @param array $assoc_args  Associative array of arguments.
 	 */
 	public function import_old( $args, $assoc_args ) {
-		if ( isset( $assoc_args['dry-run'] ) && 'false' === $assoc_args['dry-run'] ) {
-			$dry_run = false;
-		} else {
-			$dry_run = true;
-			WP_CLI::line( '!!! Doing a dry-run, no profiles will be imported.' );
-		}
+		$dry_run = self::is_dry_run();
 
 		$source = $assoc_args['source'] ?? 'govpack';
 		$state  = $assoc_args['state'] ?? '';
@@ -142,12 +137,7 @@ class CLI extends \WP_CLI_Command {
 	 */
 	public function import( $args, $assoc_args ) {
 
-		if ( isset( $assoc_args['dry-run'] ) && 'false' === $assoc_args['dry-run'] ) {
-			$dry_run = false;
-		} else {
-			$dry_run = true;
-			WP_CLI::line( '!!! Doing a dry-run, no profiles will be imported.' );
-		}
+		$dry_run = self::is_dry_run();
 
 		foreach ( $args as $file ) {
 			
@@ -387,30 +377,19 @@ class CLI extends \WP_CLI_Command {
 	 * @param array $args        Array of command-line arguments.
 	 * @param array $assoc_args  Associative array of arguments.
 	 */
-	public function address( $args, $assoc_args ) {
+	public function address( $args = [], $assoc_args = [] ) {
 
-	
-		if ( isset( $assoc_args['dry-run'] ) && 'true' === $assoc_args['dry-run'] ) {
+		$this->import($args, $assoc_args);
+
+	}
+
+	private static function is_dry_run(array $assoc_args = []){
+
+		$dry_run = \WP_CLI\Utils\get_flag_value($assoc_args, "dry-run", false);
+		if ( $dry_run === true ) {
 			$dry_run = true;
 			WP_CLI::line( '!!! Doing a dry-run, no profiles will be imported.' );
-		} else {
-			$dry_run = false;
-		
 		}
-
-		foreach ( $args as $file ) {    
-
-			
-			
-			try {
-
-				$importer = \Govpack\Core\Importer\Importer::make( $file );
-				$importer::import( $file, $dry_run );
-
-			} catch ( \Exception $e ) {
-				WP_CLI::error( $e->getMessage() );
-			}
-		}
-
+		return $dry_run;
 	}
 }

@@ -85,6 +85,7 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 			return;
 		}       
 
+		
 		$this->enqueue_view_assets();
 		$attributes = self::merge_attributes_with_block_defaults( $block_name, $attributes );
 		$template_name = "blocks/" . $template;

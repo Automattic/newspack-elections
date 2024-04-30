@@ -4,10 +4,7 @@
     "editorScript": "file:./index.js",
 	"category": "govpack-blocks",
 	"attributes": {
-		"className": {
-			"type": "string",
-			"default": ""
-		},
+		
 		"profileId": {
 			"type": "number",
 			"default": 0

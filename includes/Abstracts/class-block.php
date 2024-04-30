@@ -123,7 +123,7 @@ abstract class Block {
 	public function get_block_attributes_with_default_values( $block_name ) {
 	
 		$block = self::get_block( $block_name );
-		
+	
 		$block_attributes = array_merge(
 			...array_map(
 				function( $key, $value ) {
@@ -134,6 +134,9 @@ abstract class Block {
 			)
 		);
 
+		if(!isset($block_attributes["className"])){
+			$block_attributes["className"] = wp_get_block_default_classname($block_name);
+		}
 		return $block_attributes;
 	}
 	

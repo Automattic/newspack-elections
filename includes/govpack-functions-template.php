@@ -5,6 +5,166 @@
  * @package Govpack
  */
 
+ function gp_get_available_widths(){
+	return [
+		'small'  => [
+			'label'    => 'Small',
+			'value'    => 'small',
+			'maxWidth' => '300px',
+		],
+		'medium' => [
+			'label'    => 'Medium',
+			'value'    => 'medium',
+			'maxWidth' => '400px',
+		],
+		'large'  => [
+			'label'    => 'Large',
+			'value'    => 'large',
+			'maxWidth' => '600px',
+		],
+		'full'   => [
+			'label'    => 'Full',
+			'value'    => 'full',
+			'maxWidth' => '100%',
+		],
+		'auto'   => [
+			'label'    => 'Auto',
+			'value'    => 'auto',
+			'maxWidth' => 'none',
+		]
+		];
+ }
+
+ function gp_classnames($classnames = "", $candidates = [] ){
+
+	return trim($classnames . " ". join(
+		" ",
+		array_filter(
+			$candidates
+		)
+	)); 
+ }
+
+ function gp_line_attributes($line){
+	
+	$elm_attributes = [
+		"id" => esc_attr(sprintf("govpack-profile-block-%s", $line["key"])),
+		"class" =>  esc_attr("wp-block-govpack-profile__line wp-block-govpack-profile__line--" . $line["key"])
+	];
+
+	$normalized_attributes = array();
+	foreach ( $elm_attributes as $key => $value ) {
+		$normalized_attributes[] = $key . '="' . esc_attr( $value ) . '"';
+	}
+
+	$elm_attributes = implode( ' ', $normalized_attributes );
+
+	return trim($elm_attributes);
+ }
+ function gp_get_show_data($profile_data, $attributes){
+
+	$show = [
+		"photo" => ( has_post_thumbnail( $profile_data['id'] ) && $attributes['showAvatar'] ),
+		"name" => ( isset( $profile_data['name'] ) && $attributes['showName'] ),
+		"status_tag" => ( isset( $profile_data['status'] ) && $attributes['showStatusTag'] ),
+		"secondary_address" => ( isset( $profile_data['address']['secondary'] ) &&  ( $profile_data['address']['secondary'] !== $profile_data['address']['default'] ) ),
+		"social" => ($attributes['showSocial'] && $profile_data['hasSocial']),
+		"bio" => ($attributes['showBio'] && $profile_data['bio'])
+	];
+
+	return $show;
+}
+
+function gp_get_profile_lines($attributes, $profile_data) {
+	$show = gp_get_show_data($profile_data, $attributes);
+	$lines = [ 
+	
+		[
+			"key" => "age",
+			"value" => esc_html($profile_data["age"]),
+			"label" => "Age",
+			"shouldShow" => $attributes["showAge"]
+		],
+		[
+			"key" => "leg_body",
+			"value" => esc_html($profile_data["legislative_body"]),
+			"label" => "Legislative Body",
+			"shouldShow" => $attributes["showLegislativeBody"]
+		],
+		[
+			"key" => "position",
+			"value" => esc_html($profile_data["position"]),
+			"label" => "Position",
+			"shouldShow" => $attributes["showPosition"]
+		],
+		[
+			"key" => "party",
+			"value" => esc_html($profile_data["party"]),
+			"label" => "Party",
+			"shouldShow" => $attributes["showParty"]
+		],
+		[
+			"key" => "district",
+			"value" => esc_html($profile_data["district"]),
+			"label" => "District",
+			"shouldShow" => $attributes["showDistrict"]
+		],
+		[
+			"key" => "status",
+			"value" => esc_html($profile_data["status"]),
+			"label" => "Status",
+			"shouldShow" => $attributes["showDistrict"]
+		],
+		[
+			"key" => "social",
+			"value" => gp_social_media( $profile_data, $attributes ),
+			"label" => "Social Media",
+			"shouldShow" => $show["social"]
+		],
+		[
+			"key" => "comms_capitol",
+			"value" => gp_contact_info( 'Capitol', $profile_data['comms']['capitol'], $attributes['selectedCapitolCommunicationDetails'] ),
+			"label" => "Contact Info (Capitol)",
+			"shouldShow" => $attributes["showCapitolCommunicationDetails"]
+		],
+		[
+			"key" => "comms_district",
+			"value" => gp_contact_info( 'District', $profile_data['comms']['district'], $attributes['selectedDistrictCommunicationDetails'] ),
+			"label" => "Contact Info (District)",
+			"shouldShow" => $attributes["showDistrictCommunicationDetails"]
+		],
+		[
+			"key" => "comms_campaign",
+			"value" => gp_contact_info( 'Campaign', $profile_data['comms']['campaign'], $attributes['selectedCampaignCommunicationDetails'] ),
+			"label" => "Contact Info (Campaign)",
+			"shouldShow" => $attributes["showCampaignCommunicationDetails"]
+		],
+		[
+			"key" => "comms_other",
+			"value" => gp_contact_other( 'Other', $profile_data['comms']['other'], $attributes['selectedOtherCommunicationDetails'] ),
+			"label" => "Contact Info (Campaign)",
+			"shouldShow" => $attributes["showOtherCommunicationDetails"]
+		],
+		[
+			"key" => "more_about",
+			"value" => gp_maybe_link( 'More About' . $profile_data['name']['full'], $profile_data['link'], isset($attributes['showProfileLink']) && $attributes['showProfileLink']),
+			"shouldShow" => (isset($attributes['showProfileLink']) && $attributes['showProfileLink'])
+		]
+	];
+
+	return $lines;
+}
+
+function gp_get_photo_styles($attributes){
+	return join(
+	' ',
+	[
+		'border-radius: ' . $attributes['avatarBorderRadius'] . ';',
+	]
+);
+}
+
+
 /**
  * Utility Function that Outputs a row
  * 

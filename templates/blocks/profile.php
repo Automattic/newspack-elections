@@ -9,45 +9,18 @@
 // phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 
 $profile_data = $extra["profile_data"];
+$block_class = $attributes["className"];
+$show = gp_get_show_data($profile_data, $attributes);
 
-$classes = join(
-	' ',
-	array_filter(
-		[ 
-			'wp-block-govpack-profile', 
-			$attributes['className'],
-			( isset( $attributes['align'] ) ? 'align' . $attributes['align'] : false ),
-		] 
-	) 
-);
+$block_classes = gp_classnames("", [
+	( isset( $attributes['align'] ) ? 'align' . $attributes['align'] : false ),
+] );
 
-$available_widths = [
-	'small'  => [
-		'label'    => 'Small',
-		'value'    => 'small',
-		'maxWidth' => '300px',
-	],
-	'medium' => [
-		'label'    => 'Medium',
-		'value'    => 'medium',
-		'maxWidth' => '400px',
-	],
-	'large'  => [
-		'label'    => 'Large',
-		'value'    => 'large',
-		'maxWidth' => '600px',
-	],
-	'full'   => [
-		'label'    => 'Full',
-		'value'    => 'full',
-		'maxWidth' => '100%',
-	],
-];
-
+$available_widths = gp_get_available_widths();
 $styles = join(
 	' ',
 	[
-		'max-width:' . $available_widths[ $attributes['width'] ?? 'full' ]['maxWidth'] . ';',
+		'max-width:' . $available_widths[ $attributes['width'] ?? 'auto' ]['maxWidth'] . ';',
 	]
 );
 
@@ -61,22 +34,16 @@ $container_classes = join(
 			( 'is-styled-center' === $attributes['className'] ? 'wp-block-govpack-profile__container--center' : false ),
 			( isset( $attributes['align'] ) && ( 'center' === $attributes['align'] ? 'wp-block-govpack-profile__container--align-center' : false ) ),
 			( isset( $attributes['align'] ) && ( 'right' === $attributes['align'] ? 'wp-block-govpack-profile__container--align-right' : false ) ),
-			
 		] 
 	) 
 );
 
-$show_secondary_address = ( isset( $profile_data['address']['secondary'] ) && 
-	( $profile_data['address']['secondary'] !== $profile_data['address']['default'] )
-);
-
-
-$show_name              = ( isset( $profile_data['name']['full']  ) && $attributes['showName'] );
-$show_status_tag              = ( isset( $profile_data['status'] ) && $attributes['showStatusTag'] );
-
 ?>
 
-<aside class="<?php echo esc_attr( $classes ); ?>" style="<?php echo esc_attr( $styles ); ?>">
+<aside <?php echo get_block_wrapper_attributes([
+	'class' => $block_classes,
+	'style' => $styles,
+]); ?>>
 	<div class="<?php echo esc_attr( $container_classes ); ?>">
 	   
 
@@ -108,29 +75,29 @@ $show_status_tag              = ( isset( $profile_data['status'] ) && $attribute
 				<?php } ?>
 				</div>
 			<?php } ?>
-				
-<?php
-			if ( $attributes['showBio'] && $profile_data['bio'] ) {
-				echo esc_html( $profile_data['bio'] );
-			} 
+			<?php
+				if ( $show['bio'] ) {
+					esc_html_e( $profile_data['bio'] );
+				} 
 			?>
-
 			</div>
 			<?php
-				gp_row( 'age', $profile_data['age'], $attributes['showAge'], );
-				gp_row( 'leg_body', $profile_data['legislative_body'], $attributes['showLegislativeBody'], );
-				gp_row( 'position', $profile_data['position'], $attributes['showPosition'] );
-				gp_row( 'party', $profile_data['party'], $attributes['showParty'] );
-				gp_row( 'district', $profile_data['district'], ( $attributes['showDistrict'] && $profile_data['district'] ) );
-				gp_row( 'state', $profile_data['state'], ( $attributes['showState'] && $profile_data['state'] ) );
-				gp_row( 'status', $profile_data['status'], ( $attributes['showStatus'] && $profile_data['status'] ) );
-				gp_row( 'social', gp_social_media( $profile_data, $attributes ), ( $attributes['showSocial'] && $profile_data['hasSocial'] ) );
-				gp_row( 'comms_capitol', gp_contact_info( 'Capitol', $profile_data['comms']['capitol'], $attributes['selectedCapitolCommunicationDetails'] ), $attributes['showCapitolCommunicationDetails'] );
-				gp_row( 'comms_district', gp_contact_info( 'District', $profile_data['comms']['district'], $attributes['selectedDistrictCommunicationDetails'] ), $attributes['showDistrictCommunicationDetails'] );
-				gp_row( 'comms_campaign', gp_contact_info( 'Campaign', $profile_data['comms']['campaign'], $attributes['selectedCampaignCommunicationDetails'] ), $attributes['showCampaignCommunicationDetails'] );
-				gp_row( 'comms_other', gp_contact_other( 'Other', $profile_data['comms']['other'], $attributes['selectedOtherCommunicationDetails'] ), $attributes['showOtherCommunicationDetails'] );
-				gp_row( 'more_about', gp_maybe_link( 'More About ' . $profile_data['name']['full'], $profile_data['link'], $attributes['showProfileLink'] ), $attributes['showProfileLink'] );
-
+				foreach(gp_get_profile_lines($attributes, $profile_data) as $index => $line){
+					if ( ! $line["shouldShow"] ) {
+						continue;
+					}
+	
+					if ( ! $line["value"] ) {
+						continue;
+					}
+	
+					?>
+						<div <?php echo gp_line_attributes($line);?>>
+							<p><?php esc_html_e($line["label"]); ?></p>
+							<p><?php echo $line["value"]; ?></p>
+						</div>
+					<?php
+				}
 			?>
 
 		</div>

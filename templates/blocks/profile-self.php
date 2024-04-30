@@ -7,6 +7,7 @@
 
 // $profile_data is defined elsewhere.
 // phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
+$profile_data = $extra["profile_data"];
 
 $classes = join(
 	' ',

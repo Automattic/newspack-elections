@@ -86,17 +86,9 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 		}       
 
 		$this->enqueue_view_assets();
-
-	
 		$attributes = self::merge_attributes_with_block_defaults( $block_name, $attributes );
-
-		require_once GOVPACK_PLUGIN_FILE . '/includes/template-parts/functions.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
-
-		ob_start();     
-		require GOVPACK_PLUGIN_FILE . '/includes/template-parts/' . $template . '.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
-		$html = ob_get_clean();
-
-		return $html;
+		$template_name = "blocks/" . $template;
+		return gp_template_loader()->render_block($template_name, null, $attributes, $content, null, ["profile_data" => $profile_data] );
 
 	}
 

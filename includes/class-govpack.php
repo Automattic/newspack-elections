@@ -37,6 +37,7 @@ class Govpack {
 		
 		$this->hooks();
 		$this->require("includes/govpack-functions.php");
+		$this->require("includes/govpack-functions-template.php");
 	}
 
 	public function require($path){

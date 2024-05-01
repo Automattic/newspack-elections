@@ -4,7 +4,7 @@ namespace Govpack\Core;
 
 class Profile_Links {
 
-	private $profile_id;
+	public $profile_id;
 
 	private $tests = [];
 	private $links = [];
@@ -47,16 +47,20 @@ class Profile_Links {
 
 	public function generate(){
 		foreach($this->getLinkable() as $class){
-			$linkable = new $class();
+			$linkable = new $class($this);
 
 			// test this link option, save the result and move on to the next of its a failure
-			$this->tests[$linkable->get_slug()] = $linkable->test($this->profile_id);
+			$this->tests[$linkable->get_slug()] = $linkable->test();
 			if(!$this->tests[$linkable->get_slug()]){
 				continue;
 			}
 
 			$this->links[$linkable->get_slug()] = $linkable;
 		}
+	}
+
+	public function get_meta($key){
+		return get_post_meta( $this->profile_id , $key, true );
 	}
 
 	public function toArray(){

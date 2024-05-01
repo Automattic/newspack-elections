@@ -5,13 +5,19 @@ abstract class ProfileLink {
 	protected $label;
 	protected $slug = false;
 	protected $post_meta;
+	protected $profile;
 
 	abstract function meta_key();
 	abstract function label();
+	function url_template(){return "";}
 
-	public function test($profile_id){
+	public function __construct($profile){
+		$this->profile = $profile;
+	}
 
-		if(!$this->profile_has_meta_key($profile_id)){
+	public function test(){
+		
+		if(!$this->profile_has_meta_key($this->profile->profile_id)){
 			return false;
 		}
 
@@ -27,8 +33,8 @@ abstract class ProfileLink {
 		return $this->slug;
 	}
 
-	public function profile_has_meta_key($profile_id){
-		$post_meta = $this->meta_value($profile_id);
+	public function profile_has_meta_key(){
+		$post_meta = $this->meta_value();
 		
 		if(!$post_meta){
 			return false;
@@ -41,17 +47,18 @@ abstract class ProfileLink {
 		return true;
 	}
 
-	public function meta_value($profile_id){
+	public function meta_value(){
 		if(isset($this->post_meta)){
 			return $this->post_meta;
 		}
 
-		$this->post_meta = get_post_meta( $profile_id , $this->meta_key(), true );
+		$this->post_meta = $this->profile->get_meta($this->meta_key());
 		return $this->post_meta;
 	}
 
 	public function toArray () {
 		return [
+			"meta" => $this->meta_value(),
 			"target" => "_blank",
 			"src" => $this->generate_url(),
 			"label" => $this->label()
@@ -59,6 +66,9 @@ abstract class ProfileLink {
 	}
 
 	public function generate_url(){
-		return "https://sfdsad";
+		$template = $this->url_template();
+		$tag = "{". $this->meta_key() ."}";
+		$with_placeholders = str_replace($tag, "%s", $template);
+		return sprintf($with_placeholders, $this->meta_value());
 	}
 }

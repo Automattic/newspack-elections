@@ -38,15 +38,8 @@ $container_classes = join(
 	])
 ]); ?>>
 	<div class="<?php echo esc_attr( $container_classes ); ?>">
-	   
-	<?php if ( $show['photo'] ) { ?>
-		<div class="wp-block-govpack-profile__avatar">
-			<figure style = "<?php echo gp_get_photo_styles($attributes); ?>" >
-				<?php echo GP_Maybe_Link( get_the_post_thumbnail( $profile_data['id'] ), $profile_data['link'], $attributes['showProfileLink'] );  //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			</figure>
-		</div>
-	<?php } ?>
-
+	
+		<?php gp_get_block_part("blocks/parts/profile", "photo", $attributes, $content, $block, $extra);  ?>
 		<dl class="wp-block-govpack-profile__info">
 			<?php if ( $show['name'] || $show['status_tag']) { ?>
 				<div class="wp-block-govpack-profile__line wp-block-govpack-profile--flex-left">
@@ -62,16 +55,9 @@ $container_classes = join(
 				<?php } ?>
 				</div>
 			<?php } ?>
-			<?php
-				if ( $show['bio'] ) {
-					esc_html_e( $profile_data['bio'] );
-				} 
-			?>
-			</div>
-			
-			<?php  
-			gp_get_block_part("blocks/parts/profile", "lines", $attributes, $content, $block, $extra); 
-			?>
+
+			<?php  gp_get_block_part("blocks/parts/profile", "bio", $attributes, $content, $block, $extra);  ?>
+			<?php  gp_get_block_part("blocks/parts/profile", "lines", $attributes, $content, $block, $extra);  ?>
 
 		</dl>
 	</div> <!-- end __container -->

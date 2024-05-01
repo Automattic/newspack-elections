@@ -572,7 +572,8 @@ function gp_get_the_term($term){
 	$classNames = [
 		"govpack-tag",
 		"govpack-tag--" . $term->taxonomy,
-		"govpack-tag--" . $term->slug
+		"govpack-tag--" . $term->slug,
+		"govpack-tag--" . $term->term_id,
 	];
 
 	$classNames = implode(" ", $classNames);

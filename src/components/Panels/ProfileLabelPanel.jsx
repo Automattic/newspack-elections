@@ -10,7 +10,8 @@ const ProfileLabelPanel = (props) => {
     } = props
 
     const {
-        showLabels
+        showLabels,
+		labelsAbove
     } = attributes
 
 	return (
@@ -21,6 +22,18 @@ const ProfileLabelPanel = (props) => {
 						label={ __( 'Display Row Labels', 'govpack' ) }
 						checked={ showLabels }
 						onChange={ () => setAttributes( { showLabels: ! showLabels } ) }
+					/>
+				</PanelRow>
+				<PanelRow>
+					<ToggleControl
+						label={ __( 'Position Labels Above', 'govpack' ) }
+						checked={ labelsAbove }
+						onChange={ () => setAttributes( { labelsAbove: ! labelsAbove } ) }
+						help={
+							labelsAbove
+								? 'Labels will be shown above.'
+								: 'Labels will be shown beside.'
+						}
 					/>
 				</PanelRow>
 			</PanelBody>

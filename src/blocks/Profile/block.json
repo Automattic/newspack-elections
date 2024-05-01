@@ -54,6 +54,14 @@
 			"type": "boolean",
 			"default": true
 		},   
+		"showLabels": {
+			"type": "boolean",
+			"default": false
+		},
+		"labelsAbove": {
+			"type": "boolean",
+			"default": false
+		},
         "showAge": {
 			"type": "boolean",
 			"default": false

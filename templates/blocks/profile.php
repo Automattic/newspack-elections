@@ -68,23 +68,9 @@ $container_classes = join(
 				} 
 			?>
 			</div>
-			<?php
-				foreach(gp_get_profile_lines($attributes, $profile_data) as $index => $line){
-					if ( ! $line["shouldShow"] ) {
-						continue;
-					}
-	
-					if ( ! $line["value"] ) {
-						continue;
-					}
-	
-					?>
-						<div <?php echo gp_line_attributes($line);?>>
-							<p class="wp-block-govpack-profile__line-label"><?php esc_html_e($line["label"]); ?></p>
-							<p><?php echo $line["value"]; ?></p>
-						</div>
-					<?php
-				}
+			
+			<?php  
+			gp_get_block_part("blocks/parts/profile", "lines", $attributes, $content, $block, $extra); 
 			?>
 
 		</dl>

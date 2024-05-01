@@ -38,61 +38,13 @@ $container_classes = join(
 		"max-width" => $available_widths[ $attributes['width'] ?? 'auto' ]['maxWidth']
 	])
 ]); ?>>
-
-	<div class="<?php echo esc_attr( $container_classes ); ?>">
-
-	<?php if ( $show['photo'] ) { ?>
-	<div class="<?php echo esc_attr($block_class);?>__avatar">
-		<figure style="<?php echo esc_attr( gp_get_photo_styles($attributes) ); ?>">
-			<?php echo wp_kses_post( GP_Maybe_Link( get_the_post_thumbnail( $profile_data['id'] ), $profile_data['link'], false ) ); ?>
-		</figure>
-	</div>
-	<?php } ?>
-
-
+	<!-- start __container -->
+	<div class="<?php echo esc_attr( $container_classes ); ?>">	
+		<?php gp_get_block_part("blocks/parts/profile", "photo", $attributes, $content, $block, $extra);  ?>
 		<dl class="wp-block-govpack-profile__info ">
-			<?php if ( $show['name'] || $show['status_tag']) { ?>
-				<div class="wp-block-govpack-profile__line wp-block-govpack-profile--flex-left">
-					<?php if( $show['name'] ){ ?>
-						<h3 class="wp-block-govpack-profile__name"> <?php echo esc_html( $profile_data['name']['full'] ); ?></h3>
-					<?php } ?>
-					<?php if(  $show['status_tag'] ){ ?>
-						<div class="wp-block-govpack-profile__status-tag">
-							<div class="govpack-termlist">
-								<?php echo gp_get_the_status_terms_list($profile_data["id"]); ?>
-							</div>
-						</div>
-					<?php } ?>
-				</div>
-			<?php } ?>
-			
-			<?php
-
-			foreach(gp_get_profile_lines($attributes, $profile_data) as $index => $line){
-				if ( ! $line["shouldShow"] ) {
-					continue;
-				}
-
-				if ( ! $line["value"] ) {
-					continue;
-				}
-
-				?>
-					<div <?php echo gp_line_attributes($line);?>>
-						<dt 
-							class="<?php echo gp_classnames("govpack-line__label", [
-								$show["labels"] ? "govpack-line__label--show" : "govpack-line__label--hide"
-							]);?>"
-						>
-							<?php esc_html_e($line["label"]); ?>
-						</dt>
-						<dd class="govpack-line__content"><?php echo $line["value"]; ?></dd>
-					</div>
-				<?php
-			}
-
-			?>
-			
+			<?php gp_get_block_part("blocks/parts/profile", "header", $attributes, $content, $block, $extra);  ?>
+			<?php gp_get_block_part("blocks/parts/profile", "lines", $attributes, $content, $block, $extra);  ?>
 		</dl>
-	</div> <!-- end __container -->
+	</div>
+	<!-- end __container -->
 </aside>

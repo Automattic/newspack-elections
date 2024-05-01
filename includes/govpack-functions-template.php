@@ -45,11 +45,15 @@
 	)); 
  }
 
- function gp_line_attributes($line){
+ function gp_line_attributes($line, $attributes){
 	
 	$elm_attributes = [
 		"id" => esc_attr(sprintf("govpack-profile-block-%s", $line["key"])),
-		"class" =>  esc_attr("wp-block-govpack-profile__line wp-block-govpack-profile__line--" . $line["key"])
+		"class" =>  esc_attr(gp_classnames("wp-block-govpack-profile__line", [
+			"wp-block-govpack-profile__line--" . $line["key"],
+			"govpack-line",
+			"govpack-line--labels-" . ($attributes["labelsAbove"] ? "above" : "beside"),
+		]))
 	];
 
 	$normalized_attributes = array();
@@ -354,7 +358,7 @@ function gp_contacts( $profile_data, $attributes ) {
 function gp_social_media( $profile_data, $attributes ) {
 
 	$template = '<div class="wp-block-govpack-profile__social">
-		<ul class=\"wp-block-govpack-profile__services">
+		<ul class="wp-block-govpack-profile__services govpack-vertical-list">
 		%s
 		</ul>
 		</div>';
@@ -389,7 +393,7 @@ function gp_social_media_row( $label, $links = [] ) {
 	$outer_template = 
 		'<li class="wp-block-govpack-profile__social_group">
 			<div class="wp-block-govpack-profile__label">%s: </div>
-			<ul class="inline-list">
+			<ul class="govpack-inline-list">
 				%s
 			</ul>
 		</li>';
@@ -433,8 +437,6 @@ function gp_social_media_row( $label, $links = [] ) {
 
 	}
 
-
-
 	return sprintf( $outer_template, $label, $content ); 
 }
 
@@ -449,7 +451,7 @@ function gp_contact_info( $label, $links, $attrs ) {
 	$outer_template = '
 	<div class="wp-block-govpack-profile__comms">
 		<div class="wp-block-govpack-profile__label">%s:</div>
-		<ul class="wp-block-govpack-profile__comms-icons inline-list">
+		<ul class="wp-block-govpack-profile__comms-icons govpack-inline-list">
 			%s
 		</ul>
 		%s

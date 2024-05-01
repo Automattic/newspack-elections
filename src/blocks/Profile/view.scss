@@ -4,7 +4,6 @@
 .wp-block-govpack-profile{
 
     $block : &;
-
     margin-bottom:1rem;
 
     &__contacts ul,
@@ -12,18 +11,7 @@
         display: flex;  
         flex-direction: row;
         width:100%;
-       
     }
-
-	.inline-list {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-
-		> li {
-			float: left;
-		}
-	}
 
 	&__comms{
 		display: flex;
@@ -98,7 +86,6 @@
 		margin-right: 1rem;
 	}
 
-    
     &__container {
 
         $element : &;
@@ -185,12 +172,6 @@
     &__contacts,
 	&__services{
 
-        ul{
-            margin:0;
-            padding:0;
-            list-style: none;
-        }
-
         ul li{
             margin-right:.5rem;
 
@@ -201,27 +182,9 @@
     }
 
     &__avatar {
-
-        margin-right:1rem;
-      //  width:50%;
-
-        figure {
-            margin: 0 auto;
-            overflow:hidden;
-
-            img{
-                display:block;
-                width:100%;
-				height: 100%;
-    			object-fit: cover;
-    			object-position: center;
-            }
-        }
+        width:50%;
     }
 
-    &__info {
-       // width:50%;
-    }
 
     &__contact {
 
@@ -346,33 +309,70 @@
 	border-radius: 3px;
 }
 
-.govpack-line {
-	
-	&__label,
-	&__content{
-	//&__label{
-		//float:left;
-		display:inline;
+.govpack-inline-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	> li {
+		float: left;
 	}
-	
-	&__label::after{
-		content:":\00a0";
+}
+
+.govpack-vertical-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.govpack-line {	
+	$block : &;
+
+	&--labels-above, &{
+		#{$block}__label,
+		#{$block}__content{
+			display:block;
+		}
 	}
 
+	&--labels-beside{
+		#{$block}__label,
+		#{$block}__content{
+			display:inline;
+		}
+
+		#{$block}__label::after{
+			content:":\00a0";
+		}
+	}
+	
 	&__label {
+		line-height:1.2;
 		font-weight: bold;
-
-
 		&--hide{
 			display: none;
 		}
 		&--show{
 			display: initial;
 		}
-
 	}
+
 	&__content {
+		line-height:1.2;
 		margin: 0;
-		display:inline;
+	}
+}
+
+.govpack-photo {
+	margin: 0 auto;
+	overflow:hidden;
+
+	.govpack-photo-image,
+	img {
+		display:block;
+		width:100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
 	}
 }

@@ -101,6 +101,7 @@ const SingleProfile = (props) => {
         align,
         width,
 		showLabels = false,
+		labelsAbove = true,
 
         showName,
         showAge,
@@ -149,6 +150,8 @@ const SingleProfile = (props) => {
 		
 		const classes = classnames(`${blockClassName}__line`, {
 			"govpack-line" : true,
+			"govpack-line--labels-above" : labelsAbove,
+			"govpack-line--labels-beside" : !labelsAbove,
 			[`${blockClassName}--${id}`] : (id ?? false)
 		} )
 	
@@ -196,7 +199,7 @@ const SingleProfile = (props) => {
 			return (
 				<li className={`${blockClassName}__social_group`}>
 					<div className={`${blockClassName}__label`}>{label}: </div>
-					<ul className='inline-list'>
+					<ul className='govpack-inline-list'>
 						{ props.services.facebook && (
 							<Contact 
 								href={props.services.facebook} 
@@ -263,7 +266,7 @@ const SingleProfile = (props) => {
 				<div className={`${blockClassName}__label`}>{label}:</div>
 				
 				{props.data && (<>
-					<ul className={`${blockClassName}__comms-icons inline-list`}>
+					<ul className={`${blockClassName}__comms-icons govpack-inline-list`}>
 						{ props.data.phone && props.show.showPhone && (
                                 <Contact 
 									href={`tel:${props.data.phone}`} 

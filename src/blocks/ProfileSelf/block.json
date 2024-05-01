@@ -30,6 +30,10 @@
 			"type": "boolean",
 			"default": false
 		},
+		"labelsAbove": {
+			"type": "boolean",
+			"default": false
+		},
         "showBio": {
 			"type": "boolean",
 			"default": false

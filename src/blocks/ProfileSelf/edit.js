@@ -15,6 +15,7 @@ import ProfileLabelPanel from '../../components/Panels/ProfileLabelPanel';
 import ProfileCommsPanel from '../../components/Panels/ProfileCommsPanel'
 import ProfileCommsOtherPanel from '../../components/Panels/ProfileCommsOtherPanel'
 import ProfileCommsSocialPanel from '../../components/Panels/ProfileCommsSocialPanel'
+import {ProfileLinksPanel} from '../../components/Panels/ProfileLinksPanel.jsx'
 
 import SingleProfile from "./../../components/single-profile"
 import AvatarAlignmentToolBar from '../../components/Toolbars/AvatarAlignment.jsx';
@@ -88,7 +89,7 @@ function RawEdit( props ) {
     const ref = useRef();
 	const blockProps = useBlockProps( { ref } );
 
-	
+
 	useEffect( () => {
 		// first, if we already know we finished loading then leave
 		if(!isLoading){
@@ -133,7 +134,6 @@ function RawEdit( props ) {
 	profile._embedded['wp:term'] = terms
 
 
-	//Promise.all(term_promises).then( () => setIsLoading(false ))
 
     const {
         attributes,
@@ -228,6 +228,7 @@ function RawEdit( props ) {
 				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedDistrictCommunicationDetails"} setAttributes = {setAttributes} title="District Communications" display={attributes.showDistrictCommunicationDetails} />
 				<ProfileCommsOtherPanel attributes = {attributes} parentAttributeKey={"selectedOtherCommunicationDetails"} setAttributes = {setAttributes} title="Other Communications" display={attributes.showOtherCommunicationDetails} profile={profile}/>
 				<ProfileCommsSocialPanel attributes = {attributes} parentAttributeKey={"selectedSocial"} setAttributes = {setAttributes} title="Social" display={attributes.showSocial} />
+				<ProfileLinksPanel attributes = {attributes} parentAttributeKey={"selectedLinks"} setAttributes = {setAttributes} title="Links" display={attributes.showOtherLinks} profile={profile} />
             </InspectorControls>
 			<BlockControls>
 				{showAvatar &&  'is-style-center' !== attributes.className &&(

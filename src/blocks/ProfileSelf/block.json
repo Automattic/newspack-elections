@@ -21,7 +21,10 @@
 			"type": "string",
 			"default": "0%"
 		},
-		
+		"showOtherLinks" : {
+			"type": "bool",
+			"default": false
+		},
 		"avatarHideDefault": {
 			"type": "boolean",
 			"default": false
@@ -153,6 +156,11 @@
 		"selectedOtherCommunicationDetails": {
 			"type": "object",
 			"default": {}
+		},
+		"selectedLinks": {
+			"type": "object",
+			"default": {
+			}
 		}
 	}
 }

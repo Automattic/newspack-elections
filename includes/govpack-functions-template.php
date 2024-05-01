@@ -154,10 +154,19 @@ function gp_get_profile_lines($attributes, $profile_data) {
 			"key" => "more_about",
 			"value" => gp_maybe_link( 'More About' . $profile_data['name']['full'], $profile_data['link'], isset($attributes['showProfileLink']) && $attributes['showProfileLink']),
 			"shouldShow" => (isset($attributes['showProfileLink']) && $attributes['showProfileLink'])
+		],
+		[
+			"key" => "links",
+			"value" => gp_get_profile_links($profile_data, $attributes),
+			"shouldShow" => true
 		]
 	];
 
 	return $lines;
+}
+
+function gp_get_profile_links($profile_data, $attributes){
+	return "Links here";
 }
 
 function gp_get_photo_styles($attributes){

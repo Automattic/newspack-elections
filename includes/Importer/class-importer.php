@@ -35,7 +35,7 @@ class Importer {
 	 */
 	public static function register_scripts() {
 
-		$file = GOVPACK_PLUGIN_FILE . 'dist/importer.asset.php';
+		$file = GOVPACK_PLUGIN_BUILD_PATH . 'importer.asset.php';
 		if ( file_exists( $file ) ) {
 			$asset_data = require_once $file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
 		}
@@ -46,7 +46,7 @@ class Importer {
 
 		wp_register_script(
 			$script_handle,
-			GOVPACK_PLUGIN_ASSETS_URL . 'importer.js',
+			GOVPACK_PLUGIN_BUILD_URL . 'importer.js',
 			$asset_data['dependencies'] ?? [],
 			$asset_data['version'] ?? '',
 			true

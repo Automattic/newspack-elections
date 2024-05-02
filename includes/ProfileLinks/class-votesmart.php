@@ -12,4 +12,8 @@ class VoteSmart extends \Govpack\Core\ProfileLinks\ProfileLink {
 	public function label(){
 		return 'VoteSmart';
 	}
+
+	public function url_template(){
+		return "https://justfacts.votesmart.org/candidate/biography/{votesmart_id}/";
+	} 
 }

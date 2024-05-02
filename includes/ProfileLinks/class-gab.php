@@ -12,4 +12,8 @@ class Geb extends \Govpack\Core\ProfileLinks\ProfileLink {
 	public function label(){
 		return 'Gab';
 	}
+
+	public function url_template(){
+		return "https://gab.com/{gab}/";
+	}
 }

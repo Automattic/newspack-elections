@@ -12,4 +12,8 @@ class Fec extends \Govpack\Core\ProfileLinks\ProfileLink {
 	public function label(){
 		return 'FEC';
 	}
+
+	public function url_template(){
+		return "https://www.fec.gov/data/candidate/{fec_id}/";
+	}
 }

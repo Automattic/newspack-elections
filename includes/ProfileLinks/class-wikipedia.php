@@ -15,5 +15,5 @@ class WikiPedia extends \Govpack\Core\ProfileLinks\ProfileLink {
 
 	public function url_template(){
 		return "https://wikipedia.org/wiki/{wikipedia_id}/";
-	}
+	} 
 }

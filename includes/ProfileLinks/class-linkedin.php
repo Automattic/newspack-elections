@@ -12,4 +12,8 @@ class Linkedin extends \Govpack\Core\ProfileLinks\ProfileLink {
 	public function label(){
 		return 'LinkedIn';
 	}
+
+	public function url_template(){
+		return "https://www.linkedin.com/in/{linkedin}/";
+	}
 }

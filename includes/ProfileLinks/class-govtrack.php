@@ -12,4 +12,9 @@ class Govtrack extends \Govpack\Core\ProfileLinks\ProfileLink {
 	public function label(){
 		return 'GovTrack';
 	}
+
+	public function url_template(){
+		return "https://www.govtrack.us/congress/members/{govtrack_id}/";
+	} 
+	
 }

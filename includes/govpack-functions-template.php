@@ -56,6 +56,11 @@
 		]))
 	];
 
+	return gp_normalise_html_element_args($elm_attributes);
+ }
+
+ function gp_normalise_html_element_args($elm_attributes){
+
 	$normalized_attributes = array();
 	foreach ( $elm_attributes as $key => $value ) {
 		$normalized_attributes[] = $key . '="' . esc_attr( $value ) . '"';
@@ -65,6 +70,7 @@
 
 	return trim($elm_attributes);
  }
+
  function gp_get_show_data($profile_data, $attributes){
 
 	$show = [
@@ -166,7 +172,51 @@ function gp_get_profile_lines($attributes, $profile_data) {
 }
 
 function gp_get_profile_links($profile_data, $attributes){
-	return "Links here";
+	
+	if(!isset($profile_data['links'])){
+		return;
+	}
+
+	if(empty($profile_data['links'])){
+		return;
+	}
+
+	
+	$links = apply_filters("govpack_profile_links", $profile_data['links'], $profile_data["id"], $profile_data );
+	foreach($links as &$link){
+
+		$link = apply_filters("govpack_profile_link", $link, $profile_data["id"], $profile_data );
+
+		$link_attrs = array_filter($link, function($value, $key){
+			if(($value === null) || ($value === "")){
+				return false;
+			}
+
+			if(($key === "text") || ($key === "meta")){
+				return false;
+			}
+			
+			if(is_array($value) && (empty($value))){
+				return false;
+			}
+
+			return true;
+
+		}, ARRAY_FILTER_USE_BOTH);
+
+		$link["src"] = sprintf("<a %s>%s</a>", gp_normalise_html_element_args($link_attrs), $link["text"]);
+		
+	}
+
+	ob_start();
+	?>
+	<ul>
+		<?php foreach($links as &$link){ ?>
+			<li><?php echo $link['src']; ?></li>
+		<?php } ?>
+	</ul>
+	<?php
+	return ob_get_clean();
 }
 
 function gp_get_photo_styles($attributes){

@@ -56,12 +56,19 @@ abstract class ProfileLink {
 		return $this->post_meta;
 	}
 
+	public function prep_meta_value($meta_value){
+		return $meta_value;
+	}
+
 	public function toArray () {
 		return [
 			"meta" => $this->meta_value(),
 			"target" => "_blank",
-			"src" => $this->generate_url(),
-			"label" => $this->label()
+			"href" => $this->href(),
+			"text" => $this->label(),
+			"id" => null,
+			"rel" => null,
+			"class" => []
 		];
 	}
 
@@ -69,6 +76,27 @@ abstract class ProfileLink {
 		$template = $this->url_template();
 		$tag = "{". $this->meta_key() ."}";
 		$with_placeholders = str_replace($tag, "%s", $template);
-		return sprintf($with_placeholders, $this->meta_value());
+		return sprintf($with_placeholders, $this->prep_meta_value($this->meta_value()));
+	}
+
+	public function is_url_valid($url){
+		if (!filter_var($url, FILTER_VALIDATE_URL)) {
+			return false;
+		}
+
+		return true;
+	}
+	public function href(){
+
+		if($this->is_url_valid($this->meta_value())){
+			return $this->meta_value();
+		}
+		
+		$new_url = $this->generate_url();
+		if($this->is_url_valid($new_url)){
+			return $new_url;
+		}
+
+		return false;
 	}
 }

@@ -4,9 +4,19 @@ namespace Govpack\Core;
 
 class Profile_Links {
 
+	/**
+	 * Post ID of the govpack profile this will generate links for
+	 */
 	public $profile_id;
 
+	/**
+	 * Array that stores the test results for each link service
+	 */
 	private $tests = [];
+
+	/**
+	 * Array that stores the generated link objects for each service
+	 */
 	private $links = [];
 
 	public function __construct($profile_id)
@@ -25,7 +35,7 @@ class Profile_Links {
 			'Govtrack',
 			'Linkedin',
 			'OpenSecrets',
-			'OpenStates',
+			//'OpenStates',
 			'Rumble',
 			'VoteSmart',
 			'VoteView',

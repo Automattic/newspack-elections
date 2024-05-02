@@ -11,5 +11,8 @@ class Rumble extends \Govpack\Core\ProfileLinks\ProfileLink {
 	public function label(){
 		return 'Rumble';
 	}
+	public function url_template(){
+		return "https://rumble.com/user/{rumble}/";
+	} 
 
 }

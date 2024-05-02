@@ -836,8 +836,8 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		$profile_data['social']      = array_filter( $profile_data['social'] );
 		$profile_data['hasSocial']   = ! ( empty( $profile_data['social']['official'] ) && empty( $profile_data['social']['personal'] ) && empty( $profile_data['social']['campaign'] ) ?? false );
 		
-		var_dump($profile_data["links"]);
-		die();
+	//	var_dump($profile_data["links"]);
+	//	die();
 
 		return $profile_data;
 	}

@@ -12,4 +12,8 @@ class VoteView extends \Govpack\Core\ProfileLinks\ProfileLink {
 	public function label(){
 		return 'VoteView';
 	}
+
+	public function url_template(){
+		return "https://voteview.com/person/{icpsr_id}/";
+	} 
 }

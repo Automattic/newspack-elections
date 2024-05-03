@@ -60,6 +60,20 @@ abstract class ProfileLink {
 		return $meta_value;
 	}
 
+	public function enabled(){
+		return true;
+	}
+
+	public function get_service(){
+		return [
+			"slug" => $this->get_slug(),
+			"label"=> $this->label(),
+			"enabled" => $this->enabled(),
+			"meta_key" => $this->meta_key(),
+			"template" => $this->url_template(),
+		];
+	}
+
 	public function toArray () {
 		return [
 			"meta" => $this->meta_value(),

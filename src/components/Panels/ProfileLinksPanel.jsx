@@ -18,7 +18,7 @@ export const ProfileLinksPanel = (props) => {
 		return null
 	}
 
-	profile = normalize_profile(profile)
+	
 
 	const setSubAttributes = (attrs) => {
 
@@ -31,14 +31,36 @@ export const ProfileLinksPanel = (props) => {
 	}
 
 
-	if( isNil(profile) || isNil(profile.links)){
+	if( isNil(profile) || isNil(profile.link_services)){
 		return null;
+	}
+
+	const isDisabled = (key) => {
+		return (typeof profile.profile_links[key] === "undefined")
+	}
+
+	const isActive = (key) => {
+
+		if(Object.keys(attributes[parentAttributeKey]).length === 0){
+			return !isDisabled(key)
+		} 
+		
+		return attributes[parentAttributeKey][key] ?? false
 	}
 
     return (
 		<Panel>
 			<PanelBody title={ title }>
-				hello
+			{Object.keys(profile.link_services ?? {}).map( (key) => (
+					<PanelRow key={key}>
+						<ToggleControl
+							label={ profile.link_services[key].label}
+							checked={  isActive(key) }
+							onChange={ () => setSubAttributes( { [key]: !(attributes[parentAttributeKey][key] ?? true) } ) }
+							disabled = {isDisabled(key)}
+						/>
+					</PanelRow>
+				))}
 			</PanelBody>
 		</Panel>
 	)

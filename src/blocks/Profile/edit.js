@@ -20,7 +20,7 @@ import ProfileAvatarPanel from '../../components/Panels/ProfileAvatarPanel';
 import ProfileCommsPanel from '../../components/Panels/ProfileCommsPanel'
 import ProfileCommsOtherPanel from '../../components/Panels/ProfileCommsOtherPanel'
 import ProfileCommsSocialPanel from '../../components/Panels/ProfileCommsSocialPanel'
-
+import {ProfileLinksPanel} from '../../components/Panels/ProfileLinksPanel.jsx'
 import AvatarAlignmentToolBar from '../../components/Toolbars/AvatarAlignment.jsx';
 import BlockSizeAlignmentToolbar from '../../components/Toolbars/BlockSizeAlignmentToolbar.jsx';
 import ResetProfileToolbar from '../../components/Toolbars/ResetProfileToolbar.jsx';
@@ -255,6 +255,7 @@ function Edit( props ) {
 				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedDistrictCommunicationDetails"} setAttributes = {setAttributes} title="District Communications" display={attributes.showDistrictCommunicationDetails} />
 				<ProfileCommsOtherPanel attributes = {attributes} parentAttributeKey={"selectedOtherCommunicationDetails"} setAttributes = {setAttributes} title="Other Communications" display={attributes.showOtherCommunicationDetails} profile={profile}/>
 				<ProfileCommsSocialPanel attributes = {attributes} parentAttributeKey={"selectedSocial"} setAttributes = {setAttributes} title="Social" display={attributes.showSocial} />
+				<ProfileLinksPanel key={"block-profile-row-links"} attributes = {attributes} parentAttributeKey={"selectedLinks"} setAttributes = {setAttributes} title="Links" display={attributes.showOtherLinks} profile={profile} />
             </InspectorControls>
                               
             { profileId ? (

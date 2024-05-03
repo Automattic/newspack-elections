@@ -12,4 +12,8 @@ class OpenSecrets extends \Govpack\Core\ProfileLinks\ProfileLink {
 	public function label(){
 		return 'OpenSecrets';
 	}
+
+	public function enabled(){
+		return false;
+	}
 }

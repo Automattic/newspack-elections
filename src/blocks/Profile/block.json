@@ -26,6 +26,10 @@
 			"type": "string",
 			"default": "0%"
 		},
+		"showOtherLinks" : {
+			"type": "boolean",
+			"default": false
+		},
 		"avatarSize": {
 			"type": "number",
 			"default": 128
@@ -167,6 +171,11 @@
 		"showProfileLink" : {
 			"type": "boolean",
 			"default": true
+		},
+		"selectedLinks": {
+			"type": "object",
+			"default": {
+			}
 		}
 	}
 }

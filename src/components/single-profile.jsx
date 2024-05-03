@@ -90,6 +90,7 @@ const SingleProfile = (props) => {
         showSelf = false
     } = props
 
+	
     profile = normalize_profile(profile)
 	
 
@@ -123,11 +124,13 @@ const SingleProfile = (props) => {
 		showDistrictCommunicationDetails,
 		showCampaignCommunicationDetails,
 		showOtherCommunicationDetails,
+		showOtherLinks,
 
 		selectedCapitolCommunicationDetails,
 		selectedDistrictCommunicationDetails,
 		selectedCampaignCommunicationDetails,
 		selectedOtherCommunicationDetails,
+		selectedLinks,
 
     } = attributes
 
@@ -348,6 +351,40 @@ const SingleProfile = (props) => {
 		)
 	}
 
+	const ProfileLinks = (props) => {
+
+		const {
+			label = "Links",
+			data
+		} = props			
+
+		return (
+			<div className={`${blockClassName}__links`}>
+
+				{props.data && (
+					<ul>
+						{Object.keys(data).filter( key => ( 
+							(Object.keys(selectedLinks).length === 0) 
+							|| (selectedLinks[key]))
+						).map( (slug) => {
+							let link = data[slug]
+
+							return(
+								<li key={`block-profile-${slug}`}>
+									<a href="#">{link.text}</a>
+								</li>
+							)
+						} )}
+					</ul>
+				)}
+			</div>
+		)
+	}
+
+	function hasCommsData(item){
+		return item.phone || item.fax || item.email || item.website || item.address;
+	}
+
 	function hasCommsData(item){
 		return item.phone || item.fax || item.email || item.website || item.address;
 	}
@@ -356,6 +393,10 @@ const SingleProfile = (props) => {
 		return Object.keys(item).filter((key) => {
 			return item[key].value;
 		}).length;		
+	}	
+
+	function hasLinksData(item){
+		return (Object.keys(item).length > 0);	
 	}	
 
 	const maxWidth = (align !== "full" ? props.availableWidths.find( (w) => w.value === width)?.maxWidth : false)
@@ -429,6 +470,8 @@ const SingleProfile = (props) => {
 					<Row key="comms_district" id="comms_district" label="Contact Info (District)" value={hasCommsData(profile.comms.district) && <Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />
 					<Row key="comms_campaign" id="comms_campaign" label="Contact Info (Campaign)" value={hasCommsData(profile.comms.campaign) && <Comms data={profile.comms.campaign} label="Campaign" show={selectedCampaignCommunicationDetails}/>} display={showCampaignCommunicationDetails} />
 					<Row key="comms_other" id="comms_other" label="Contact Info (Other)" value={hasCommsOtherData(profile.comms.other) && <CommsOther data={profile.comms.other} label="Other" show={selectedOtherCommunicationDetails}/>} display={showOtherCommunicationDetails} />
+
+					<Row key="links" id="links" label="Links" value={hasLinksData(profile.links) && <ProfileLinks data={profile.links} show={selectedLinks}/>} display={showOtherLinks} />
 
 					<Row key="url" id="more_about" label="More" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
                 </div>

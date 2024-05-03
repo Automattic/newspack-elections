@@ -112,17 +112,20 @@ function RawEdit( props ) {
 	// destucture loaded values to make it easier to work with
 	let [taxonomies, entity, image, terms] = loaded
 
+	
 	let {
 		meta = {}, 
 		title = null,
 		link = null,
 		excerpt = null,
 		featured_media = null,
-		_links = null
+		_links = null,
+		link_services,
+		profile_links
 	} = entity
 
 	let profile = {
-		meta, title, link, excerpt, featured_media
+		meta, title, link, excerpt, featured_media, link_services, profile_links
 	}
 
 	taxonomies?.forEach( (tax) => {
@@ -132,6 +135,8 @@ function RawEdit( props ) {
 	profile._embedded = {}
 	profile._embedded['wp:featuredmedia'] = [image]
 	profile._embedded['wp:term'] = terms
+
+
 
 
 
@@ -228,7 +233,7 @@ function RawEdit( props ) {
 				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedDistrictCommunicationDetails"} setAttributes = {setAttributes} title="District Communications" display={attributes.showDistrictCommunicationDetails} />
 				<ProfileCommsOtherPanel attributes = {attributes} parentAttributeKey={"selectedOtherCommunicationDetails"} setAttributes = {setAttributes} title="Other Communications" display={attributes.showOtherCommunicationDetails} profile={profile}/>
 				<ProfileCommsSocialPanel attributes = {attributes} parentAttributeKey={"selectedSocial"} setAttributes = {setAttributes} title="Social" display={attributes.showSocial} />
-				<ProfileLinksPanel attributes = {attributes} parentAttributeKey={"selectedLinks"} setAttributes = {setAttributes} title="Links" display={attributes.showOtherLinks} profile={profile} />
+				<ProfileLinksPanel key={"block-profile-row-links"} attributes = {attributes} parentAttributeKey={"selectedLinks"} setAttributes = {setAttributes} title="Links" display={attributes.showOtherLinks} profile={profile} />
             </InspectorControls>
 			<BlockControls>
 				{showAvatar &&  'is-style-center' !== attributes.className &&(

@@ -144,6 +144,6 @@ export function normalize_profile(profile){
 				}
 			}
 		},
-		links : profile.meta?.links ?? {}
+		links : profile.profile_links ?? {}
     }
 }

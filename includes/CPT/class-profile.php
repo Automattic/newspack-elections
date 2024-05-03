@@ -50,7 +50,8 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	public static function hooks() {
 		parent::hooks();
 		\add_action( 'init', [ __CLASS__, 'register_post_meta' ] );
-		\add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
+		//\add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
+		\add_action( 'wp_after_insert_post', [ __CLASS__, 'set_profile_title' ], 10, 4 );
 		\add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
 		\add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
 		\add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', [ __CLASS__, 'custom_columns' ] );
@@ -585,20 +586,53 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 
 	/**
 	 * Set the post title based on the profile data (first and last name);
-	 *
-	 * @param array $data                An array of slashed, sanitized, and processed post data.
-	 * @param array $postarr             An array of sanitized (and slashed) but otherwise unmodified post data.
-	 * @param array $unsanitized_postarr An array of slashed yet *unsanitized* and unprocessed post data as
-	 *                                   originally passed to wp_insert_post().
+
 	 * @return array
 	 */
-	public static function set_profile_title( $data, $postarr, $unsanitized_postarr = false ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		$title = join( ' ', array_filter( [ $postarr['first_name'] ?? '', $postarr['last_name'] ?? '' ] ) );
-		if ( $title ) {
-			$data['post_title'] = $title;
-			$data['post_name']  = null;
+	public static function set_profile_title( $post_id, $post, $update, $post_before) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		
+		
+		if($post->post_type !== self::CPT_SLUG){
+			return;
 		}
-		return $data;
+
+		if(
+			($post->post_title) && ($post->post_title !== "")
+		){
+			return;
+		}
+
+		if(($post->name) && ($post->name !== "")){
+			$post_title = $post->name;
+		} else {
+			$post_title = join( ' ', array_filter( [ $post->name_first ?? '', $post->name_last ?? '' ] ) );
+		}
+
+		$post_title = trim($post_title);
+
+		if($post_title === ""){
+			return;
+		}
+
+		$post_parent = ! empty( $post->post_parent ) ? $post->post_parent : 0;
+		$post_name = wp_unique_post_slug(
+			sanitize_title($post_title),
+			$post->ID,
+			'publish',
+			$post->post_type,
+			$post_parent
+		);
+
+		$postarr = (array) $post;
+		$postarr["post_title"] = $post_title;
+		$postarr["post_name"] = $post_name;
+		if($post->name === ""){
+			$postarr["meta_input"] = [];
+			$postarr["meta_input"]["name"] = $post_title;
+		}
+
+		wp_update_post($postarr);
+	
 	}
 
 	/**

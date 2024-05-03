@@ -115,23 +115,23 @@ export const AboutPanel = (props) => {
             </PanelRow>
 
 			<PanelRow>
-                <PanelTextControl meta={meta} label = "Prefix" meta_key="name_prefix" onChange={updateMetaAndName} />
+                <PanelTextControl meta={meta} label = "Prefix" meta_key="name_prefix" onChange={setPostMeta} />
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl meta={meta} label = "First Name" meta_key="name_first" onChange={updateMetaAndName} />
+                <PanelTextControl meta={meta} label = "First Name" meta_key="name_first" onChange={setPostMeta} />
             </PanelRow>
 
 			<PanelRow>
-                <PanelTextControl meta={meta} label = "Middle Name" meta_key="name_middle" onChange={updateMetaAndName} />
+                <PanelTextControl meta={meta} label = "Middle Name" meta_key="name_middle" onChange={setPostMeta} />
             </PanelRow>
 
             <PanelRow>
-                <PanelTextControl meta={meta} label = "Last Name" meta_key="name_last" onChange={updateMetaAndName} />
+                <PanelTextControl meta={meta} label = "Last Name" meta_key="name_last" onChange={setPostMeta} />
             </PanelRow>
 
 			<PanelRow>
-                <PanelTextControl meta={meta} label = "Suffix" meta_key="name_suffix" onChange={updateMetaAndName} />
+                <PanelTextControl meta={meta} label = "Suffix" meta_key="name_suffix" onChange={setPostMeta} />
             </PanelRow>
 
 			<PanelRow>

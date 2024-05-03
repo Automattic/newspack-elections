@@ -1,15 +1,16 @@
 
 
 
-import FacebookIcon from "./../images/facebook.svg"
-import TwitterIcon from "./../images/twitter.svg"
-import LinkedinIcon from "./../images/linkedin.svg"
-import EmailIcon from "./../images/email.svg"
-import InstagramIcon from "./../images/instagram.svg"
-import PhoneIcon from "./../images/phone.svg"
-import WebIcon from "./../images/globe.svg"
-import FaxIcon from "./../images/fax.svg"
-
+import {ReactComponent as FacebookIconSVG} from "./../images/facebook.svg"
+import {ReactComponent as TwitterIconSVG} from "./../images/twitter.svg"
+import {ReactComponent as LinkedinIconSVG} from "./../images/linkedin.svg"
+import {ReactComponent as EmailIconSVG} from "./../images/email.svg"
+import {ReactComponent as InstagramIconSVG} from "./../images/instagram.svg"
+import {ReactComponent as PhoneIconSVG} from "./../images/phone.svg"
+import {ReactComponent as WebIconSVG} from "./../images/globe.svg"
+import {ReactComponent as FaxIconSVG} from "./../images/fax.svg"
+import {ReactComponent as YouTubeIconSVG} from "./../images/youtube.svg"
+import { Icon } from '@wordpress/components';
 /**
  * External dependencies
  */
@@ -21,6 +22,15 @@ import ProfileCommsPanel from "./Panels/ProfileCommsPanel"
 
 
 
+const TwitterIcon = () => ( <Icon icon={ TwitterIconSVG } /> )
+const LinkedinIcon = () => ( <Icon icon={ LinkedinIconSVG } /> )
+const EmailIcon = () => ( <Icon icon={ EmailIconSVG } /> )
+const InstagramIcon = () => ( <Icon icon={ InstagramIconSVG } /> )
+const PhoneIcon = () => ( <Icon icon={ PhoneIconSVG } /> )
+const WebIcon = () => ( <Icon icon={ WebIconSVG } /> )
+const FaxIcon = () => ( <Icon icon={ FaxIconSVG } /> )
+const FacebookIcon = () => ( <Icon icon={ FacebookIconSVG } /> )
+const YouTubeIcon = () => ( <Icon icon={ YouTubeIconSVG } /> )
 
 const Link = (props) => {
 
@@ -81,6 +91,7 @@ const SingleProfile = (props) => {
     } = props
 
     profile = normalize_profile(profile)
+	console.log("profile", profile)
 
     const {
         showAvatar, 
@@ -89,6 +100,8 @@ const SingleProfile = (props) => {
         avatarAlignment,
         align,
         width,
+		showLabels = false,
+		labelsAbove = true,
 
         showName,
         showAge,
@@ -102,6 +115,7 @@ const SingleProfile = (props) => {
 		selectedSocial,
 		showWebsites,
 		showStatus,
+		showStatusTag,
         showProfileLink,
         className,
 
@@ -119,7 +133,12 @@ const SingleProfile = (props) => {
 
 	const Row = (props) => {
 
-		const {display, value, id} = props
+		const {
+			display, 
+			value, 
+			id,
+			label = ""
+		} = props
 	
 		if(!display){
 			return null
@@ -130,12 +149,20 @@ const SingleProfile = (props) => {
 		}
 		
 		const classes = classnames(`${blockClassName}__line`, {
+			"govpack-line" : true,
+			"govpack-line--labels-above" : labelsAbove,
+			"govpack-line--labels-beside" : !labelsAbove,
 			[`${blockClassName}--${id}`] : (id ?? false)
 		} )
 	
 		return (
 			<div className={classes} role="listitem">
-				{value}
+				{(showLabels) && (label !== "") && (
+					<dt className="govpack-line__label">{label}</dt>
+				)}
+				<dd className="govpack-line__content">
+					{value}
+				</dd>
 			</div>
 		)
 	}
@@ -165,14 +192,14 @@ const SingleProfile = (props) => {
 				label
 			} = props
 
-			if(!show || !(props.services.facebook || props.services.twitter || props.services.instagram)){
+			if(!show || !(props.services.facebook || props.services.twitter || props.services.instagram || props.services.youtube)){
 				return null;
 			}
 
 			return (
 				<li className={`${blockClassName}__social_group`}>
 					<div className={`${blockClassName}__label`}>{label}: </div>
-					<ul className='inline-list'>
+					<ul className='govpack-inline-list'>
 						{ props.services.facebook && (
 							<Contact 
 								href={props.services.facebook} 
@@ -196,19 +223,26 @@ const SingleProfile = (props) => {
 								icon = { <InstagramIcon />}
 							/>
 						)}
+
+						{ props.services.youtube && (
+							<Contact 
+								href={props.services.youtube} 
+								label = "YouTube" 
+								icon = { <YouTubeIcon />}
+							/>
+						)}
 					</ul>
 				</li>
 			)
 		}
 
-		
-		
+		console.log(props.data)
 
         return (
            
             <div className={`${blockClassName}__social`}>
                 <ul className={`${blockClassName}__services`}>
-					<SocialRow services={props.data.official} show={props.show.showOfficial} label="Offical" />
+					<SocialRow services={props.data.official} show={props.show.showOfficial} label="Official" />
 					<SocialRow services={props.data.campaign} show={props.show.showCampaign} label="Campaign" />
 					<SocialRow services={props.data.personal} show={props.show.showPersonal} label="Personal" />
                 </ul>
@@ -232,7 +266,7 @@ const SingleProfile = (props) => {
 				<div className={`${blockClassName}__label`}>{label}:</div>
 				
 				{props.data && (<>
-					<ul className={`${blockClassName}__comms-icons inline-list`}>
+					<ul className={`${blockClassName}__comms-icons govpack-inline-list`}>
 						{ props.data.phone && props.show.showPhone && (
                                 <Contact 
 									href={`tel:${props.data.phone}`} 
@@ -363,7 +397,16 @@ const SingleProfile = (props) => {
                 <div className={`${blockClassName}__info`}>
                     <div className={`${blockClassName}__line ${blockClassName}__line--name`} role="listitem">
                         {showName && (
-                            <h3><Link>{profile.name.full}</Link></h3>
+							<>
+                            <h3 className={`${blockClassName}__name`} ><Link>{profile.name.full}</Link></h3>
+							{(showStatusTag && profile.status) && (
+								<div className={`${blockClassName}__status-tag`}>
+									<div className="govpack-termlist">
+										<span className="govpack-tag">{profile.status}</span>
+									</div>
+								</div>
+							)}
+							</>
                         )}
 
                         {showBio && profile.bio && (
@@ -373,21 +416,21 @@ const SingleProfile = (props) => {
                         )}
                         
                     </div>
-					<Row key="age" id="age" value={profile.age} display={showAge}/>
-                    <Row key="leg_body" id="leg_body" value={profile.legislative_body} display={showLegislativeBody}/>
-                    <Row key="pos" id="position" value={profile.position}  display={showPosition}/>
-                    <Row key="party" id="party" value={profile.party}  display={showParty}/>
-					<Row key="district" id="district" value={profile.district}  display={showDistrict}/>
-					<Row key="status" id="status" value={profile.status} display={showStatus}/>
-                    <Row key="states" id="states" value={profile.state} display={showState}/>
+					<Row key="age" id="age" label="Age" value={profile.age} display={showAge}/>
+                    <Row key="leg_body" id="leg_body" label="Legislative Body" value={profile.legislative_body} display={showLegislativeBody}/>
+                    <Row key="pos" id="position" label="Position" value={profile.position}  display={showPosition}/>
+                    <Row key="party" id="party" label="Party" value={profile.party}  display={showParty}/>
+					<Row key="district" id="district" label="District" value={profile.district}  display={showDistrict}/>
+					<Row key="status" id="status" label="Status" value={profile.status} display={showStatus}/>
+                    <Row key="states" id="states" label="State" value={profile.state} display={showState}/>
 
-                    <Row key="social" id="social" value={<SocialMedia data={profile.social} label="Social Media" show={selectedSocial}/>} display={(showSocial && doShowSocial)}/>
-					<Row key="comms_capitol" id="comms_capitol" value={hasCommsData(profile.comms.capitol) && <Comms data={profile.comms.capitol} label="Capitol" show={selectedCapitolCommunicationDetails}/>} display={showCapitolCommunicationDetails} />
-					<Row key="comms_district" id="comms_district" value={hasCommsData(profile.comms.district) && <Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />
-					<Row key="comms_campaign" id="comms_campaign" value={hasCommsData(profile.comms.campaign) && <Comms data={profile.comms.campaign} label="Campaign" show={selectedCampaignCommunicationDetails}/>} display={showCampaignCommunicationDetails} />
-					<Row key="comms_other" id="comms_other" value={hasCommsOtherData(profile.comms.other) && <CommsOther data={profile.comms.other} label="Other" show={selectedOtherCommunicationDetails}/>} display={showOtherCommunicationDetails} />
+                    <Row key="social" id="social" label="Social Media" value={<SocialMedia data={profile.social} label="Social Media" show={selectedSocial}/>} display={(showSocial && doShowSocial)}/>
+					<Row key="comms_capitol" id="comms_capitol" label="Contact Info (Capitol)" value={hasCommsData(profile.comms.capitol) && <Comms data={profile.comms.capitol} label="Capitol" show={selectedCapitolCommunicationDetails}/>} display={showCapitolCommunicationDetails} />
+					<Row key="comms_district" id="comms_district" label="Contact Info (District)" value={hasCommsData(profile.comms.district) && <Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />
+					<Row key="comms_campaign" id="comms_campaign" label="Contact Info (Campaign)" value={hasCommsData(profile.comms.campaign) && <Comms data={profile.comms.campaign} label="Campaign" show={selectedCampaignCommunicationDetails}/>} display={showCampaignCommunicationDetails} />
+					<Row key="comms_other" id="comms_other" label="Contact Info (Other)" value={hasCommsOtherData(profile.comms.other) && <CommsOther data={profile.comms.other} label="Other" show={selectedOtherCommunicationDetails}/>} display={showOtherCommunicationDetails} />
 
-					<Row key="url" id="more_about" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
+					<Row key="url" id="more_about" label="More" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
                 </div>
             </div>  
      

@@ -20,81 +20,28 @@ export const PanelFieldset = ({legend = null, children}) => {
 	)
 }
 
-export const PanelTextControl = (props) => {
-
-	const {onChange, meta, meta_key, ...restProps} = props
-
+const DefaultControl = (props, Control) => {
+	const {onChange, meta, ...restProps} = props
     return (
-        <TextControl
-			
+        <Control
             label = {props.label}
             value={ props.meta?.[props.meta_key] ?? "" }
             onChange={ ( value ) => {
                 onChange( { [props.meta_key]: value } )
             }}
-			
 			{...restProps}
-			
         />
     )
+}
+
+export const PanelTextControl = (props) => {
+	return DefaultControl(props, TextControl)
 }
 
 export const PanelTextareaControl = (props) => {
-
-	const {onChange, meta, ...restProps} = props
-
-    return (
-        <TextareaControl
-			
-            label = {props.label}
-            value={ props.meta?.[props.meta_key] ?? "" }
-            onChange={ ( value ) => {
-                onChange( { [props.meta_key]: value } )
-            }}
-			
-			{...restProps}
-			
-        />
-    )
+	return DefaultControl(props, TextareaControl)
 }
-/*
 
-export const PanelDatePickerControl = (props) => {
-
-	const {onChange, meta, ...restProps} = props
-	const [ date, setDate ] = useState( new Date() );
-
-	let settings = getSettings()
-	
-
-	return (
-		<>
-			<span>{ props.label }</span>
-		
-			<Dropdown
-				renderToggle={ ( { isOpen, onToggle } ) => (
-					<Button
-						onClick={ onToggle }
-						aria-expanded={ isOpen }
-						variant="tertiary"
-					>
-						{dateI18n(settings.formats.date, date)}
-					</Button>
-				) }
-				renderContent={ ( { onClose } ) => (
-					<DatePicker
-						currentDate={ date }
-						onChange={ ( newDate ) => setDate( newDate ) }
-						onClose={ onClose }
-					/>
-				) }
-			/>
-
-		</>
-	
-    )
-}
-*/
 
 export const PanelDateControl = (props) => {
 

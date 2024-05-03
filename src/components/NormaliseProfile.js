@@ -62,17 +62,20 @@ export function normalize_profile(profile){
         	official : {
 				twitter : profile.meta?.twitter_official ?? null,
 				facebook : profile.meta?.facebook_official ?? null,
-				instagram : profile.meta?.instagram_official ?? null
+				instagram : profile.meta?.instagram_official ?? null,
+				youtube : profile.meta?.youtube_official ?? null
 			},
 			campaign :  {
 				twitter : profile.meta?.twitter_campaign ?? null,
 				facebook : profile.meta?.facebook_campaign ?? null,
-				instagram : profile.meta?.instagram_campaign ?? null
+				instagram : profile.meta?.instagram_campaign ?? null,
+				youtube : profile.meta?.youtube_campaign ?? null
 			},
 			personal :  {
 				twitter : profile.meta?.twitter_personal ?? null,
 				facebook : profile.meta?.facebook_personal ?? null,
-				instagram : profile.meta?.instagram_personal ?? null
+				instagram : profile.meta?.instagram_personal ?? null,
+				youtube : profile.meta?.youtube_personal ?? null
 			},
 		},
 

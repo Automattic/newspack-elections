@@ -4,7 +4,6 @@
 .wp-block-govpack-profile{
 
     $block : &;
-
     margin-bottom:1rem;
 
     &__contacts ul,
@@ -12,18 +11,7 @@
         display: flex;  
         flex-direction: row;
         width:100%;
-       
     }
-
-	.inline-list {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-
-		> li {
-			float: left;
-		}
-	}
 
 	&__comms{
 		display: flex;
@@ -98,7 +86,6 @@
 		margin-right: 1rem;
 	}
 
-    
     &__container {
 
         $element : &;
@@ -185,12 +172,6 @@
     &__contacts,
 	&__services{
 
-        ul{
-            margin:0;
-            padding:0;
-            list-style: none;
-        }
-
         ul li{
             margin-right:.5rem;
 
@@ -201,27 +182,9 @@
     }
 
     &__avatar {
-
-        margin-right:1rem;
-      //  width:50%;
-
-        figure {
-            margin: 0 auto;
-            overflow:hidden;
-
-            img{
-                display:block;
-                width:100%;
-				height: 100%;
-    			object-fit: cover;
-    			object-position: center;
-            }
-        }
+        width:50%;
     }
 
-    &__info {
-       // width:50%;
-    }
 
     &__contact {
 
@@ -237,13 +200,14 @@
             display:inline-block;
             max-width:20px;
             max-height:20px;
-            width:auto;
+            width:100%;
             height:auto;
     
             svg{
                 max-width:20px;
                 max-height:20px;
                 display:block;
+				width:100%;
             }
         }
 
@@ -272,6 +236,10 @@
         .alignright & {
             text-align: right;
         }
+
+		p {
+			margin: 0;
+		}
     }
 
     &.is-style-boxed_centered,
@@ -308,8 +276,103 @@
         margin-top: 0 !important;
 		word-break: normal;
     }
+
+	&__name:has(+ &__status-tag ) {
+		display: inline-block;
+		margin: 0;
+	}
+	
+	&--flex-left{
+		display: flex;
+		flex-direction:row;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: .33rem;
+	}
+
+	&__line-label{
+		margin:0;
+		padding:0;
+	}
 }
 
 .wp-block-column .wp-block-govpack-profile{
 	margin-right:0;
+}
+
+.govpack-tag {
+	display: block;
+	padding: 0.2rem 0.4rem;
+	background-color: #eee;
+	display: inline-block;
+	font-size:0.8rem;
+	border-radius: 3px;
+}
+
+.govpack-inline-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	> li {
+		float: left;
+	}
+}
+
+.govpack-vertical-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.govpack-line {	
+	$block : &;
+
+	&--labels-above, &{
+		#{$block}__label,
+		#{$block}__content{
+			display:block;
+		}
+	}
+
+	&--labels-beside{
+		#{$block}__label,
+		#{$block}__content{
+			display:inline;
+		}
+
+		#{$block}__label::after{
+			content:":\00a0";
+		}
+	}
+	
+	&__label {
+		line-height:1.2;
+		font-weight: bold;
+		&--hide{
+			display: none;
+		}
+		&--show{
+			display: initial;
+		}
+	}
+
+	&__content {
+		line-height:1.2;
+		margin: 0;
+	}
+}
+
+.govpack-photo {
+	margin: 0 auto;
+	overflow:hidden;
+
+	.govpack-photo-image,
+	img {
+		display:block;
+		width:100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+	}
 }

@@ -1,0 +1,21 @@
+/*
+ * Single Profile Template
+ */
+
+body.single-govpack_profiles {
+
+	.govpack-profile{
+		display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between
+	}
+
+	.profile-content{
+		width: 65%;
+
+		&:last-child{
+			width: 100%;
+		}
+	}
+
+}

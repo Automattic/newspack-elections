@@ -11,7 +11,7 @@ use Exception;
 use Govpack\Core\Govpack;
 use Govpack\Core\Capabilities;
 use Govpack\Core\CPT\Profile;
-use League\Csv\Writer;
+use Govpack\League\Csv\Writer;
 
 /**
  * GovPack Export
@@ -34,18 +34,16 @@ class Export {
 
 		
 
-		$file = GOVPACK_PLUGIN_FILE . 'dist/exporter.asset.php';
+		$file = GOVPACK_PLUGIN_BUILD_PATH . 'exporter.asset.php';
 		if ( file_exists( $file ) ) {
 			$asset_data = require_once $file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
 		}
 		
 		$script_handle = 'govpack-exporter';
 
-		
-
 		wp_register_script(
 			$script_handle,
-			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/exporter.js',
+			GOVPACK_PLUGIN_BUILD_URL . 'exporter.js',
 			$asset_data['dependencies'] ?? [],
 			$asset_data['version'] ?? '',
 			true

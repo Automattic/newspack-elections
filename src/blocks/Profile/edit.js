@@ -2,13 +2,16 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InspectorControls, useBlockProps} from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps, BlockControls} from '@wordpress/block-editor';
 import { Placeholder, Spinner } from '@wordpress/components';
 import { useRef, useState, useEffect } from '@wordpress/element';
 import { Icon, postAuthor, } from '@wordpress/icons';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 import { decodeEntities } from '@wordpress/html-entities';
+import { useSelect } from "@wordpress/data";
+import { useEntityRecord, store as coreData } from "@wordpress/core-data"
+
 
 import AutocompleteWithSuggestions from '../../components/AutocompleteWithSuggestions.jsx'
 
@@ -90,12 +93,82 @@ export const avatarSizeOptions = [
 	},
 ];
 
-function Edit( props ) {
-    const [ profile, setProfile ] = useState( null );
-	const [ error, setError ] = useState( null );
+
+const ProfileSelector = ( {
+	setProfile,
+	...props
+} ) => {
+
 	const [ isLoading, setIsLoading ] = useState( false );
-	const [ gotProfile, setGotProfile ] = useState( false );
-	const [ maxItemsToSuggest, setMaxItemsToSuggest ] = useState( 10 );
+	const [ maxItemsToSuggest, setMaxItemsToSuggest ] = useState( 10 )
+
+	return (
+		<Placeholder
+            icon={ <Icon icon={ postAuthor } /> }
+            label={ __( 'Profile', 'govpack-blocks' ) }
+        >
+            { isLoading && (
+						<div className="is-loading">
+							{ __( 'Fetching profile info…', 'govpack' ) }
+							<Spinner />
+						</div>
+			) }
+
+            { ! isLoading && (
+                <AutocompleteWithSuggestions
+                    label={ __( 'Search for a profile to display', 'govpack' ) }
+                    help={ __(
+                        'Begin typing name, click autocomplete result to select.',
+                        'govpack'
+                    ) }
+
+                    fetchSuggestions={ async ( search = null, offset = 0 ) => {
+
+						const response = await apiFetch( {
+							parse: false,
+							path: addQueryArgs( '/wp/v2/govpack_profiles', {
+								search,
+								offset,
+								fields: 'id,name',
+							} ),
+						} ).catch( (error) => {
+							return error
+						});
+
+                        const total = parseInt( response.headers.get( 'x-wp-total' ) || 0 );
+                        const profiles = await response.json();
+
+						// Set max items for "load more" functionality in suggestions list.
+						if ( ! maxItemsToSuggest && ! search ) {
+							setMaxItemsToSuggest( total );
+						}
+
+        
+						return profiles.map( _profile => ( {
+							value: _profile.id,
+							label: decodeEntities( _profile.title.rendered ) || __( '(no name)', 'govpack' ),
+						} ) );
+                    } }
+					maxItemsToSuggest={ maxItemsToSuggest }
+					onChange={ (items) => {
+						let profileId = parseInt( items[ 0 ].value );
+						setProfile(profileId)
+					}}
+					postTypeLabel={ __( 'profile', 'govpack-blocks' ) }
+					postTypeLabelPlural={ __( 'profiles', 'govpack-blocks' ) }
+					selectedItems={ [] }
+				/>
+			)}
+		</Placeholder>
+	)
+}
+function Edit( props ) {
+
+
+	const setProfile = (newProfileId) => {
+		setAttributes({"profileId" : newProfileId})
+	}
+
 
     const ref = useRef();
 	const blockProps = useBlockProps( { ref } );
@@ -106,9 +179,39 @@ function Edit( props ) {
     } = props
     
     const {
-		profileId,
+		profileId = null,
         showAvatar
 	} = attributes;
+
+	
+	const {profile, hasStartedResolution} = useSelect( (select) => {
+
+		const selectorArgs = [ 
+			'postType', 
+			'govpack_profiles', 
+			profileId, 
+			{ 
+				_embed : true 
+			} 
+		];
+
+		return {
+			profile : select( coreData ).getEntityRecord( ...selectorArgs ),
+			hasStartedResolution: select( coreData ).hasStartedResolution(
+				"getEntityRecord", // _selectorName_
+				selectorArgs
+			),
+			hasFinishedResolution: select( coreData ).hasFinishedResolution(
+				"getEntityRecord", 
+				selectorArgs
+			),
+			hasResolutionFailed: select( coreData ).hasResolutionFailed(
+				"getEntityRecord", 
+				selectorArgs
+			)
+		}
+	})
+	
 
     const availableWidths = [
         {
@@ -140,70 +243,6 @@ function Edit( props ) {
 		setAttributes( { format: value } );
 	}
 
-    useEffect( () => {	
-		
-		if(gotProfile){
-			return
-		}
-
-		if(isLoading){
-			return
-		}
-
-		if ( 0 !== profileId ) {
-			getProfileById();
-		}
-
-	}, [ profileId, gotProfile, isLoading ] );
-
-
-    const getProfileById = async () => {
-
-		//console.log("getProfile By Id")
-
-		setError( null );
-		setIsLoading( true );
-
-		try {
-		
-			//console.log("getProfile")
-
-
-			const response = await apiFetch( {
-				path: addQueryArgs( '/wp/v2/govpack_profiles/' + profileId , {
-                    _embed : true
-                } ),
-			} );
-
-			const _profile = response
-
-			if ( ! _profile ) {
-				throw sprintf(
-					/* translators: Error text for when no authors are found. */
-					__( 'No profile found for ID %s.', 'govpack' ),
-					profileId
-				);
-			}
-			setProfile( _profile );
-			setGotProfile( true )
-			setIsLoading( false );
-
-		} catch ( e ) {
-			setError(
-				e.message ||
-					e ||
-					sprintf(
-						/* translators: Error text for when no authors are found. */
-						__( 'No profile found for ID %s.', 'govpack' ),
-						profileId
-					)
-			);
-			setIsLoading( false );
-			setGotProfile( true )
-		}	
-		
-		
-	};
 
 	return (
 		<div { ...blockProps }>
@@ -218,84 +257,34 @@ function Edit( props ) {
 				<ProfileCommsSocialPanel attributes = {attributes} parentAttributeKey={"selectedSocial"} setAttributes = {setAttributes} title="Social" display={attributes.showSocial} />
             </InspectorControls>
                               
-            { profile ? (
+            { profileId ? (
                 <>
-                   
-                    {showAvatar &&  'is-style-center' !== attributes.className &&(
-                        <AvatarAlignmentToolBar attributes={attributes} setAttributes={setAttributes} />
-                    )}
-
-                    { profile && (
+                    { profile ? (
                         <>
-                            
-                            <BlockSizeAlignmentToolbar attributes={attributes} setAttributes={setAttributes} />
-                            <ResetProfileToolbar setProfile={setProfile} attributes={attributes} setAttributes={setAttributes} />
-                        </>
-                    ) }
+                            <BlockControls>
+								{showAvatar &&  'is-style-center' !== attributes.className &&(
+                        			<AvatarAlignmentToolBar attributes={attributes} setAttributes={setAttributes} />
+                    			)}
+                            	<BlockSizeAlignmentToolbar attributes={attributes} setAttributes={setAttributes} />
+                            	<ResetProfileToolbar setProfile={setProfile} attributes={attributes} setAttributes={setAttributes} />
+							</BlockControls>
 
-				    <SingleProfile blockClassName = "wp-block-govpack-profile"  profile={profile} attributes={ attributes } availableWidths = {availableWidths} />
-                </>
-			) : (
-			<Placeholder
-                icon={ <Icon icon={ postAuthor } /> }
-                label={ __( 'Profile', 'govpack-blocks' ) }
-            >   
-                { isLoading && (
+							<SingleProfile blockClassName = "wp-block-govpack-profile"  profile={profile} attributes={ attributes } availableWidths = {availableWidths} />
+                        </>
+                    ) : (
 						<div className="is-loading">
 							{ __( 'Fetching profile info…', 'govpack' ) }
 							<Spinner />
 						</div>
-				) }
-                { ! isLoading && (
-                    <AutocompleteWithSuggestions
-                        label={ __( 'Search for a profile to display', 'govpack' ) }
-                        help={ __(
-                            'Begin typing name, click autocomplete result to select.',
-                            'govpack'
-                        ) }
+					) }
 
-                        fetchSuggestions={ async ( search = null, offset = 0 ) => {
-                            // If we already have a selected author, no need to fetch suggestions.
-                             if ( profileId ) {
-                                return [];
-                             }
-
-                            const response = await apiFetch( {
-                                parse: false,
-                                path: addQueryArgs( '/wp/v2/govpack_profiles', {
-                                    search,
-                                    offset,
-                                    fields: 'id,name',
-                                } ),
-                            } ).catch( (error) => {
-                                return error
-                            });
-
-                            const total = parseInt( response.headers.get( 'x-wp-total' ) || 0 );
-                            const profiles = await response.json();
-
-                            // Set max items for "load more" functionality in suggestions list.
-                            if ( ! maxItemsToSuggest && ! search ) {
-                                setMaxItemsToSuggest( total );
-                            }
-
-        
-                            return profiles.map( _profile => ( {
-                                value: _profile.id,
-                                label: decodeEntities( _profile.title.rendered ) || __( '(no name)', 'govpack' ),
-                            } ) );
-                        } }
-                        maxItemsToSuggest={ maxItemsToSuggest }
-                        onChange={ (items) => {
-                            props.setAttributes( { profileId: parseInt( items[ 0 ].value ) } ) 
-                        }}
-                        postTypeLabel={ __( 'profile', 'govpack-blocks' ) }
-                        postTypeLabelPlural={ __( 'profiles', 'govpack-blocks' ) }
-                        selectedItems={ [] }
-                    />
-                )}
-            </Placeholder>
-            )}
+				    
+                </>
+			) : (
+				<ProfileSelector
+					setProfile = {setProfile}
+				 />
+			)} 
 		</div>
 	);
 }

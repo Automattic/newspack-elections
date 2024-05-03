@@ -1,4 +1,4 @@
-@use "./../Profile/view.scss";
+//@use "./../Profile/view.scss";
 
 .wp-block-govpack-profile-self {
 
@@ -13,28 +13,21 @@
         width:100%;
     }
 
-    .inline-list{
-		margin: 0;
-		padding: 0;
-		list-style: none;
 
-		> li {
-			float: left;
-		}
-	}
 
     &__container {
 
         $element : &;
 
         flex-direction: column;
-
+		gap: 2rem;
+		
         &--right {
             flex-direction: row-reverse;
 
             #{$block}__avatar{
                 margin-right:0;
-                margin-left:1rem;
+                
             }
         }
 
@@ -133,7 +126,7 @@
 
         &__link,
         a{
-            display:block;
+            display:flex;
             text-decoration: none;
         }
 
@@ -148,6 +141,7 @@
                 max-width:20px;
                 max-height:20px;
                 display:block;
+				width:100%;
             }
         }
 
@@ -167,7 +161,13 @@
     }
 
 	&__social_group{
+
 		display: flex;
+		align-items: center;
+		
+		ul.govpack-inline-list{
+			align-items: center;
+		}
 
         .aligncenter &{
             justify-content: center;
@@ -196,6 +196,8 @@
         }
     }
 
+
+	/*
     &__avatar {
 
         margin-right:1rem;
@@ -211,14 +213,14 @@
             }
         }
     }
+	*/
 
+	/*
     &__info{
         width:50%;
         display: flex;
         flex-direction: column;
-        margin-left:1rem;
         justify-content: center;
-
         h3{
             margin-top:0;
         }
@@ -229,6 +231,7 @@
             margin-left:0;
         }
     }
+	*/
 
     &__line{
         padding-top:.5rem;

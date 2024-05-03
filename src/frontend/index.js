@@ -1,3 +1,2 @@
 
-import "./../blocks/Profile/view.scss"
-import "./../blocks/ProfileSelf/view.scss"
+import './front-end.scss'

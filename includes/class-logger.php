@@ -7,8 +7,8 @@
 
 namespace Govpack\Core;
 
-use \Monolog\Logger as MonoLog;
-use \Monolog\Handler\StreamHandler;
+use \Govpack\Vendor\Monolog\Logger as MonoLog;
+use \Govpack\Vendor\Monolog\Handler\StreamHandler;
 
 /**
  * WordPress filters and actions.

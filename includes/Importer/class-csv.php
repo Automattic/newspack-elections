@@ -8,7 +8,7 @@
 namespace Govpack\Core\Importer;
 
 use Exception;
-use League\Csv\Reader;
+use Govpack\League\Csv\Reader;
 
 /**
  * Register and handle the "USIO" Importer

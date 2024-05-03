@@ -9,12 +9,14 @@ namespace Govpack\Core;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'GOVPACK_VERSION', '0.0.1' );
+define( 'GOVPACK_VERSION', '1.1.0' );
 
 /**
  * Main Govpack Class.
  */
 class Govpack {
+
+	use \Govpack\Core\Instance;
 
 	/**
 	 * Reference to REST API Prefix for consistency.
@@ -24,44 +26,31 @@ class Govpack {
 	 */
 	const REST_PREFIX = 'govpack/v1';
 
-
-	public $blocks = [];
-
-	/**
-	 * Stores static instance of class.
-	 *
-	 * @access protected
-	 * @var Govpack\Govpack The single instance of the class
-	 */
-	protected static $instance = null;
-
-	/**
-	 * Returns static instance of class.
-	 *
-	 * @return self
-	 */
-	public static function instance() {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
+	private $front_end;
+	private $admin;
+	private Blocks $blocks;
 
 	/**
 	 * Inits the class and registeres the hooks call.
 	 */
 	public function __construct() {
-		\add_action( 'after_setup_theme', [ __class__, 'hooks' ] );
+		
+		$this->hooks();
+		$this->require("includes/govpack-functions.php");
+		$this->require("includes/govpack-functions-template.php");
+	}
+
+	public function require($path){
+		require_once ( GOVPACK_PLUGIN_PATH . $path);
+	}
+
+	public function hooks() {
+		\add_action( 'after_setup_theme', [ $this, 'setup' ] );
 		\add_action( 'plugins_loaded', [ '\Govpack\Core\ActionScheduler\ActionScheduler', 'hooks' ], 0 );
 		\add_action( 'init', [ $this, 'register_blocks' ] );
 	}
 
-	/**
-	 * WordPress Hooks
-	 */
-	public static function hooks() {
-
-
+	public function setup(){
 		// Functions well need.
 		\Govpack\Core\CPT\AsTaxonomy::hooks();
 
@@ -70,6 +59,7 @@ class Govpack {
 
 		// get capabilities setup first.
 		\Govpack\Core\Capabilities::hooks();
+
 
 		// Taxonomies.
 		\Govpack\Core\Tax\LegislativeBody::hooks();
@@ -84,18 +74,42 @@ class Govpack {
 		}
 
 		\Govpack\Core\Importer\Importer::hooks();
-		\Govpack\Core\Admin\Admin::hooks();
-		\Govpack\Core\FrontEnd\FrontEnd::hooks();
+		\Govpack\Core\Widgets::hooks();
 
-	
+		if(is_admin()){
+			$this->admin = \Govpack\Core\Admin\Admin::instance();
+			$this->admin->hooks();
+		}
+		
+		if(!is_admin()){
+			$this->front_end();
+		}
+		
+	}
+
+	public function front_end(){
+
+		if(!isset($this->front_end)){
+			$this->front_end = FrontEnd\FrontEnd::instance();
+			$this->front_end->hooks();
+			$this->front_end->template_loader();
+		} 
+
+		return $this->front_end;
+	}
+
+	public function blocks(){
+
+		if(!isset($this->blocks)){
+			$this->blocks = new Blocks();
+			$this->blocks->hooks();
+		}
+		
+		return $this->blocks;
 	}
 
 	public function register_blocks(){
-		
-		$this->blocks['profile'] = new \Govpack\Blocks\Profile\Profile();
-		$this->blocks['profile']->hooks();
-
-		$this->blocks['profile-self'] = new \Govpack\Blocks\ProfileSelf\ProfileSelf();
-		$this->blocks['profile-self']->hooks();
+		$this->blocks()->register(new \Govpack\Blocks\Profile\Profile());
+		$this->blocks()->register(new \Govpack\Blocks\ProfileSelf\ProfileSelf());
 	}
 }

@@ -104,11 +104,11 @@ class Chunked_Upload {
 		
 		self::create_upload_directory();
   
-		$factory = new \FileUpload\FileUploadFactory(
-			new \FileUpload\PathResolver\Simple( self::get_upload_path( 'govpack' ) ), 
-			new \FileUpload\FileSystem\Simple(), 
+		$factory = new \Govpack\FileUpload\FileUploadFactory(
+			new \Govpack\FileUpload\PathResolver\Simple( self::get_upload_path( 'govpack' ) ), 
+			new \Govpack\FileUpload\FileSystem\Simple(), 
 			[
-				new \FileUpload\Validator\MimeTypeValidator( [ 'text/csv', 'text/plain' ] ),
+				new \Govpack\FileUpload\Validator\MimeTypeValidator( [ 'text/csv', 'text/plain' ] ),
 			]
 		);
 

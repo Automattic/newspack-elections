@@ -1,12 +1,10 @@
 {
 	"name": "govpack/profile-self",
+	"style": ["govpack-profile-style", "file:./index.css"],
     "editorScript": "file:./index.js",
 	"category": "govpack-blocks",
 	"attributes": {
-		"className": {
-			"type": "string",
-			"default": ""
-		},
+		
 		"profileId": {
 			"type": "number",
 			"default": 0
@@ -28,6 +26,14 @@
 			"type": "boolean",
 			"default": false
 		},
+		"showLabels": {
+			"type": "boolean",
+			"default": false
+		},
+		"labelsAbove": {
+			"type": "boolean",
+			"default": false
+		},
         "showBio": {
 			"type": "boolean",
 			"default": false
@@ -36,6 +42,10 @@
 			"type": "boolean",
 			"default": false
 		},   
+		"showStatusTag": {
+			"type": "boolean",
+			"default": false
+		},
 		"showWebsites": {
 			"type": "boolean",
 			"default": true

@@ -35,6 +35,11 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	const CPT_SLUG = 'govpack_profiles';
 
 	/**
+	 * Post Type slug. Used when registering and referencing
+	 */
+	const TEMPLATE_NAME = 'single-' . self::CPT_SLUG . '.php';
+
+	/**
 	 * Shortcode.
 	 */
 	const SHORTCODE = 'govpack';
@@ -143,6 +148,10 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	public static function register_post_type() {
 
 	
+		$permalinks = gp_get_permalink_structure();
+		
+		$permalink_structure = (isset($permalinks['profile_base']) ? $permalinks['profile_base'] : "profile" );
+		
 
 		return register_post_type( // phpcs:ignore WordPress.NamingConventions.ValidPostTypeSlug.NotStringLiteral
 			self::CPT_SLUG,
@@ -172,7 +181,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				'as_taxonomy'  => \Govpack\Core\Tax\Profile::TAX_SLUG,
 				'menu_icon'    => 'dashicons-groups',
 				'rewrite'      => [
-					'slug'       => apply_filters( 'govpack_profile_filter_slug', 'profile' ),
+					'slug'       => apply_filters( 'govpack_profile_filter_slug', $permalink_structure ),
 					'with_front' => false,
 				],
 				'template'     => [
@@ -637,6 +646,10 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	}
 
 	static function age_from_epoc($dob){
+		
+		if($dob === ""){
+			return "";
+		}
 
 		$today = new \DateTime();
 		$dateOfBirth = new \DateTime();
@@ -720,16 +733,19 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 					'facebook'  => $profile_raw_meta_data['facebook_official'][0] ?? null,
 					'twitter'   => $profile_raw_meta_data['twitter_official'][0] ?? null,
 					'instagram' => $profile_raw_meta_data['instagram_official'][0] ?? null,
+					'youtube'   => $profile_raw_meta_data['youtube_official'][0] ?? null,
 				], 
 				'personal' => [
 					'facebook'  => $profile_raw_meta_data['facebook_personal'][0] ?? null,
 					'twitter'   => $profile_raw_meta_data['twitter_personal'][0] ?? null,
 					'instagram' => $profile_raw_meta_data['instagram_personal'][0] ?? null,
+					'youtube'   => $profile_raw_meta_data['youtube_personal'][0] ?? null,
 				], 
 				'campaign' => [
 					'facebook'  => $profile_raw_meta_data['facebook_campaign'][0] ?? null,
 					'twitter'   => $profile_raw_meta_data['twitter_campaign'][0] ?? null,
 					'instagram' => $profile_raw_meta_data['instagram_campaign'][0] ?? null,
+					'youtube'   => $profile_raw_meta_data['youtube_campaign'][0] ?? null,
 				],
 			],
 			'comms'            => [

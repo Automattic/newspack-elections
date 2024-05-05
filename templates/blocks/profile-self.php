@@ -44,6 +44,8 @@ $container_classes = join(
 		<dl class="wp-block-govpack-profile__info ">
 			<?php gp_get_block_part("blocks/parts/profile", "header", $attributes, $content, $block, $extra);  ?>
 			<?php gp_get_block_part("blocks/parts/profile", "lines", $attributes, $content, $block, $extra);  ?>
+
+			
 		</dl>
 	</div>
 	<!-- end __container -->

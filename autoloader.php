@@ -15,6 +15,7 @@ $autoloader = new WP_Namespace_Autoloader(
 		'debug'             => true,
 		'prepend_interface' => false,
 		'prepend_trait'     => true,
+		'prepend_abstract'  => true,
 	]
 );
 

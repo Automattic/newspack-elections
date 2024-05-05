@@ -8,6 +8,8 @@
 namespace Govpack\Core\CPT;
 
 use Govpack\Core\Capabilities;
+use Govpack\Core\Profile_Links;
+use Govpack\Core\Profile_Link_Services;
 use \Govpack\Helpers;
 
 /**
@@ -66,6 +68,54 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		add_filter( 'bulk_actions-edit-' . self::CPT_SLUG, [ __CLASS__, 'filter_bulk_actions' ], 10 );
 		add_filter( 'handle_bulk_actions-edit-' . self::CPT_SLUG, [ __CLASS__, 'handle_bulk_publish' ], 10, 3 );
 
+		add_filter( 'govpack_profile_register_meta_field_args', [ __CLASS__, 'filter_meta_registration_for_links' ], 10, 2);
+
+		add_action('rest_api_init', [__CLASS__, "add_rest_fields"]);
+	}
+
+
+	public static function add_rest_fields(){
+		register_rest_field( self::CPT_SLUG, "profile_links", [
+			"get_callback" => function($request){
+				
+				return self::generate_links_for_profile($request['id']);
+			},
+			"update_callback" => false,
+			"schema" => [
+				'description'  => "Links to 3rd party services and pages for this profile",
+                'type'         => 'array',
+				'items' => array(
+					'type'   => 'object',
+					'properties' => array(
+						'meta'   => 'string',
+						'target' => 'string',
+						'href' => 'string',
+						'id' => 'string',
+						'rel' => 'string',
+						'class' => 'string',
+					),
+				),
+                'context'      => array( 'view', "edit"),
+                'readonly'     => true,
+			]
+		] );
+
+		register_rest_field( self::CPT_SLUG, "link_services", [
+			"get_callback" => function($request){
+				return self::generate_link_services($request['id']);
+			},
+			"update_callback" => false,
+			"schema" => [
+				'description'  => "Links to 3rd party services and pages for this profile",
+                'type'         => 'array',
+				'items' => array(
+					'type'   => 'object',
+					'properties' => array(),
+				),
+                'context'      => array( 'edit' ),
+                'readonly'     => true,
+			]
+		] );
 	}
 
 	/**
@@ -332,29 +382,39 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'website_capitol',
 			'rss',
 
-
+			// got svgs
 			'linkedin',
-			'rumble',
-			'gab',
-
-			// meta and ID's panel.
-			'govpack_id',
-			'fec_id',
-			'usio_id',
-			'opensecrets_id',
-			'district_ocd_id',
-			'openstates_id',
-			'thomas_id',
-			'lis_id',
-			'cspan_id',
-			'govtrack_id',
-			'votesmart_id',
-			'balletpedia_id',
-			'washington_post_id',
-			'icpsr_id',
 			'wikipedia_id',
 			'google_entity_id',
-			'committee_id',
+			'gab',
+
+			// have favicons
+			'rumble',
+			'opensecrets_id',
+			'balletpedia_id',
+			'openstates_id',
+			'fec_id',
+			'govtrack_id',
+			'votesmart_id',
+			'usio_id', // bio guide
+			'icpsr_id', // voteview
+
+			// meta and ID's panel.
+			'thomas_id', // cant access
+			'cspan_id', // icon too big
+		
+			
+
+			// no longer accessable 
+			'washington_post_id',
+			
+			// na
+			'govpack_id', // us
+			'district_ocd_id', // not linkable
+			'lis_id', // cant link to
+			'committee_id', //fernando made this up
+
+			'links' // will contain an object with links
 		];
 
 		// Social Panel.
@@ -390,7 +450,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	public static function register_meta( string $slug, array $args = [] ) {
 
 
-		$args = array_merge(
+		$args = apply_filters("govpack_profile_register_meta_field_args", array_merge(
 			[
 				'show_in_rest'  => true,
 				'single'        => true,
@@ -400,11 +460,21 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				},
 			],
 			$args
-		);
+		), $slug );
 
 		register_post_meta( self::CPT_SLUG, $slug, $args );
 	}
 
+	public static function filter_meta_registration_for_links($args = [], $slug = ""){
+		if($slug !== "links"){
+			return $args;
+		}
+
+		$args['type'] = 'object';
+		$args['default'] = [];
+
+		return $args;
+	}
 	/**
 	 * Print out the post title where the normal title field would be. This post type does not
 	 * `supports` the title field; it is constructed from the profile data.
@@ -788,8 +858,10 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 						'value' => $profile_raw_meta_data['contact_form_url'][0] ?? null,
 					],
 				],
+				
 			],
-			'name'             => [
+			'links' => self::generate_links_for_profile($profile_id),
+			'name'  => [
 				'name'  => $profile_raw_meta_data['name'][0] ?? null,
 				'full'  => implode(
 					' ',
@@ -807,16 +879,25 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		];
 
 		
-		
 		$profile_data['hasWebsites'] = ( $profile_data['websites']['campaign'] ?? $profile_data['websites']['legislative'] ?? false );
 		$profile_data['social']      = array_map( 'array_filter', $profile_data['social'] );
 		$profile_data['social']      = array_filter( $profile_data['social'] );
 		$profile_data['hasSocial']   = ! ( empty( $profile_data['social']['official'] ) && empty( $profile_data['social']['personal'] ) && empty( $profile_data['social']['campaign'] ) ?? false );
-			
-		return $profile_data;
+		
+		return apply_filters("govpack_profile_data", $profile_data);
 	}
 
 
+	public static function generate_links_for_profile($profile_id){
+		$pl = new Profile_Links($profile_id);
+		$pl->generate();
+		return $pl->toArray();
+	}
+
+	public static function generate_link_services(){
+		$services = new Profile_Link_Services();
+		return $services->toArray();
+	}
 
 	/**
 	 * Shortcode handler for [govpack].

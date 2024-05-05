@@ -13,6 +13,7 @@ const ProfileDisplaySettings = (props) => {
 		profile
     } = props
 
+
 	const disableAgeToggle = _.isEmpty(profile?.meta?.date_of_birth)
 
 	let controls = [
@@ -77,11 +78,15 @@ const ProfileDisplaySettings = (props) => {
 			label : 'Display Other Communication',
 			attr : "showOtherCommunicationDetails"
 		},{
+			label : 'Display Other Links',
+			attr : "showOtherLinks"
+		},{
 			label : 'Include Link to Profile Page',
 			attr : "showProfileLink",
 			shouldDisplay : showLinkControl
 		}
 	]
+
 
 	
 	const controlDefaults = {
@@ -103,6 +108,7 @@ const ProfileDisplaySettings = (props) => {
 			controls = {controls} 
 			title = {__( 'Govpack Profile Settings', 'govpack' )} 
 		/>
+
     )
 }
 

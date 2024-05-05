@@ -143,6 +143,7 @@ export function normalize_profile(profile){
 					value : profile.meta?.contact_form_url
 				}
 			}
-		}
+		},
+		links : profile.profile_links ?? {}
     }
 }

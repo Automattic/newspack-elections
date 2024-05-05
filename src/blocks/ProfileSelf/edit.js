@@ -47,24 +47,34 @@ const availableWidths = [
     }
 ]
 
-function useLoaded(props){
+function useLoaded(){
 
 
-	let {taxonomies, entity, image, terms} = useSelect( ( select ) => {
+	let resp = useSelect( ( select ) => {
 
-		let taxonomies = select( 'core' ).getTaxonomies({ type : props.postType })
-		let entity = select( 'core' ).getEditedEntityRecord('postType', props.postType, props.profileId)
+		const postType = select( 'core/editor' ).getCurrentPostType()
+		const profileId = select( 'core/editor' ).getCurrentPostId()
+		const taxonomies = select( 'core' ).getTaxonomies({ type : postType })
 		let terms = []
 
+		let selectorArgs = [
+			"postType",
+			postType,
+			profileId
+		]
 
+		let entity = select( 'core' ).getEditedEntityRecord(...selectorArgs)
+		
 		if(!isNil(taxonomies) && !isNil(entity)){
-			terms = taxonomies.filter( (tax) => {
-				return !isEmpty(entity[tax.slug])
-			}).map((tax) => {
-				return select('core').getEntityRecords( 'taxonomy', tax.slug, {"include" : entity[tax.slug]} )
-			}).filter((term) => {
-				return !isEmpty(term)
-			});
+
+			terms = taxonomies.
+				filter( (tax) => {
+					return !isEmpty(entity[tax.slug])
+				}).map((tax) => {
+					return select('core').getEntityRecords( 'taxonomy', tax.slug, {"include" : entity[tax.slug]} )
+				}).filter((term) => {
+					return !isEmpty(term)
+				});
 
 			if(isEmpty(terms)){
 				terms = false
@@ -72,47 +82,42 @@ function useLoaded(props){
 		}
 
 		return {
+			profileId,
+			postType,
 			taxonomies, 
 			entity,
 			image : select( 'core' ).getMedia( entity.featured_media ) ?? false,
-			terms : terms
+			terms,
+			hasResolved: select( 'core' ).hasFinishedResolution('getEntityRecords', selectorArgs),
 		}
+
 	}, [] );
 
-	return [taxonomies, entity, image, terms]
+	return resp
 	
 }
-function RawEdit( props ) {
+function Edit( props ) {
 
-	const loaded = useLoaded(props)
-	const [ isLoading, setIsLoading ] = useState( true );
+	const {
+        attributes,
+        setAttributes
+    } = props
+    
+    const {
+        showAvatar,
+	} = attributes;
+
+	const {
+		taxonomies, 
+		entity, 
+		image, 
+		terms, 
+		hasResolved
+	} = useLoaded()
+
     const ref = useRef();
 	const blockProps = useBlockProps( { ref } );
 
-
-	useEffect( () => {
-		// first, if we already know we finished loading then leave
-		if(!isLoading){
-			return;
-		}
-
-		// if any item returned from the hook useLoaded is empty of undefined, we're not finished loading yet so set stillLoading to true
-		const stillLoading = loaded.some( (load) => {
-			return isNil(load)
-		} )
-
-		// if stillLoading is false (ie - we finished loading) then set that react state
-		if(!stillLoading){
-			setIsLoading(false)
-		}
-
-	}, loaded)
-
-	
-	// destucture loaded values to make it easier to work with
-	let [taxonomies, entity, image, terms] = loaded
-
-	
 	let {
 		meta = {}, 
 		title = null,
@@ -136,92 +141,6 @@ function RawEdit( props ) {
 	profile._embedded['wp:featuredmedia'] = [image]
 	profile._embedded['wp:term'] = terms
 
-
-
-
-
-    const {
-        attributes,
-        setAttributes
-    } = props
-    
-    const {
-        showAvatar,
-	} = attributes;
-
-	/*
-	if(isArray(profile[tax]) && !isEmpty(profile[tax])){
-		let term_lookups =  profile[tax].map( async (term) => {
-			let lookup = await select('core').getEntityRecord( 'taxonomy', tax, term )
-			return lookup
-		})
-
-		return await Promise.all(term_lookups)
-	}
-	*/
-	/*
-	useSelect( async (select) => {
-        const id = await select("core/editor").getCurrentPostId()
-		const postType = await  select( 'core/editor' ).getCurrentPostType()
-		let profile = await  select( 'core/editor' ).getCurrentPost()
-		const [ meta, setMeta ] = useEntityProp( 'postType', postType, 'meta' );
-		profile['meta'] = meta
-
-		console.log("profile", profile)
-    });
-	*/
-	/*
-
-    useEffect( () => {
-		if ( 0 !== profileId ) {
-			getProfileById();
-		} else {
-
-        }
-	}, [ profileId ] );
-
-	
-   
-
-    const getProfileById = async () => {
-
-		setError( null );
-		setIsLoading( true );
-
-		try {
-		
-			const response = await apiFetch( {
-				path: addQueryArgs( '/wp/v2/govpack_profiles/' + profileId , {
-                    _embed : true
-                } ),
-			} );
-
-			const _profile = response
-
-			if ( ! _profile ) {
-				throw sprintf(
-					
-					__( 'No profile found for ID %s.', 'newspack-blocks' ),
-					profileId
-				);
-			}
-			setProfile( _profile );
-
-		} catch ( e ) {
-			setError(
-				e.message ||
-					e ||
-					sprintf(
-						
-						__( 'No profile found for ID %s.', 'newspack-blocks' ),
-						profileId
-					)
-			);
-		}
-		setIsLoading( false );
-	};
-	*/	
-
     return (
         <div { ...blockProps }>
             <InspectorControls>
@@ -242,7 +161,7 @@ function RawEdit( props ) {
 				{/*<BlockSizeAlignmentToolbar attributes={attributes} setAttributes={setAttributes} />*/}	
 			</BlockControls>
 
-			{ isLoading ? (
+			{ hasResolved ? (
 				<div className="is-loading">
 					{ __( 'Fetching profile info…', 'govpack-blocks' ) }
 					<Spinner />
@@ -256,14 +175,7 @@ function RawEdit( props ) {
 	);
 }
 
-const Edit = compose([ 
-	withSelect( ( select ) => {
-		return {
-			profileId: select( 'core/editor' ).getCurrentPostId(),
-			postType: select( 'core/editor' ).getCurrentPostType(),
-		};
-	})
-])(RawEdit)
+
 
 export {Edit}
 export default Edit

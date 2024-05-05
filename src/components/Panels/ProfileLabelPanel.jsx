@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import {Panel, PanelBody, PanelRow, ToggleControl, BaseControl, ButtonGroup, Button} from '@wordpress/components';
+import {Panel, PanelBody, PanelRow, ToggleControl} from '@wordpress/components';
 
 
 const ProfileLabelPanel = (props) => {

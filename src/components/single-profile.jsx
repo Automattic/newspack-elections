@@ -81,6 +81,30 @@ const Photo = (props) => {
 	)
 }
 
+
+const availableWidths = [
+	{
+		label : "Small",
+		value : "small",
+		maxWidth : "300px"
+	},
+	{
+		label : "Medium",
+		value : "medium",
+		maxWidth : "400px"
+	},
+	{
+		label : "Large",
+		value : "large",
+		maxWidth : "600px"
+	},
+	{
+		label : "Full",
+		value : "full",
+		maxWidth : "100%"
+	}
+]
+
 const SingleProfile = (props) => {
 
     let {
@@ -399,7 +423,7 @@ const SingleProfile = (props) => {
 		return (Object.keys(item).length > 0);	
 	}	
 
-	const maxWidth = (align !== "full" ? props.availableWidths.find( (w) => w.value === width)?.maxWidth : false)
+	const maxWidth = (align !== "full" ? availableWidths.find( (w) => w.value === width)?.maxWidth : false)
     const excerptElement = document.createElement( 'div' );
     excerptElement.innerHTML = profile.bio;
 

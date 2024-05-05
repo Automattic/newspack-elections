@@ -213,28 +213,7 @@ function Edit( props ) {
 	})
 	
 
-    const availableWidths = [
-        {
-            label : "Small",
-            value : "small",
-            maxWidth : "300px"
-        },
-        {
-            label : "Medium",
-            value : "medium",
-            maxWidth : "400px"
-        },
-        {
-            label : "Large",
-            value : "large",
-            maxWidth : "600px"
-        },
-        {
-            label : "Full",
-            value : "full",
-            maxWidth : "100%"
-        }
-    ]
+    
 
 	/**
 	 * @param {string} value The selected format.
@@ -270,7 +249,7 @@ function Edit( props ) {
                             	<ResetProfileToolbar setProfile={setProfile} attributes={attributes} setAttributes={setAttributes} />
 							</BlockControls>
 
-							<SingleProfile blockClassName = "wp-block-govpack-profile"  profile={profile} attributes={ attributes } availableWidths = {availableWidths} />
+							<SingleProfile blockClassName = "wp-block-govpack-profile"  profile={profile} attributes={ attributes } />
                         </>
                     ) : (
 						<div className="is-loading">

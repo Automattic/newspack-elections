@@ -24,29 +24,6 @@ import BlockSizeAlignmentToolbar from '../../components/Toolbars/BlockSizeAlignm
 import {isNil, isEmpty} from "lodash"
 
 
-const availableWidths = [
-    {
-        label : "Small",
-        value : "small",
-        maxWidth : "300px"
-    },
-    {
-        label : "Medium",
-        value : "medium",
-        maxWidth : "400px"
-    },
-    {
-        label : "Large",
-        value : "large",
-        maxWidth : "600px"
-    },
-    {
-        label : "Full",
-        value : "full",
-        maxWidth : "100%"
-    }
-]
-
 function useLoaded(){
 
 
@@ -94,8 +71,8 @@ function useLoaded(){
 	}, [] );
 
 	return resp
-	
 }
+
 function Edit( props ) {
 
 	const {
@@ -168,7 +145,7 @@ function Edit( props ) {
 				</div>
 			) : (
 				<>
-					<SingleProfile blockClassName="wp-block-govpack-profile-self" profile={profile} attributes={ attributes } availableWidths = {availableWidths} showSelf = {true} />
+					<SingleProfile blockClassName="wp-block-govpack-profile-self" profile={profile} attributes={ attributes } showSelf = {true} />
 				</>
 			) }
 		</div>

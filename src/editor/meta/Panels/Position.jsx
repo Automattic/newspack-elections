@@ -2,10 +2,11 @@ import { PanelRow } from "@wordpress/components";
 
 import {GovPackSidebarPanel} from "./../../../components/sidebar-panel"
 
+import {usePanel} from './usePanel'
 
 export const PositionPanel = (props) => {
 
-    let { setTerm, setPostMeta } = props
+	const {meta, setPostMeta, setTerm} = usePanel()
 
     return (
         <GovPackSidebarPanel 

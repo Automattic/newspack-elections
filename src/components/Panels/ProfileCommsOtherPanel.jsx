@@ -1,8 +1,7 @@
 import { __ } from '@wordpress/i18n';
-import {Panel, PanelBody, PanelRow, ToggleControl, BaseControl, ButtonGroup, Button} from '@wordpress/components';
-import {__experimentalUnitControl as UnitControl} from '@wordpress/components';
 import { isNil } from 'lodash';
 import { normalize_profile } from '../NormaliseProfile';
+import { ControlledPanel } from './ControlledPanel';
 
 const ProfileCommsOtherPanel = (props) => {
 
@@ -10,12 +9,12 @@ const ProfileCommsOtherPanel = (props) => {
 		title,
         attributes,
         setAttributes,
-		display = true,
+		display : shouldDisplayPanel = true,
 		parentAttributeKey,
 		profile
     } = props
 
-	if(!display){
+	if(!shouldDisplayPanel){
 		return null
 	}
 
@@ -23,12 +22,10 @@ const ProfileCommsOtherPanel = (props) => {
 	
 
 	const setSubAttributes = (attrs) => {
-
 		const newAttrs = {
 			...attributes[parentAttributeKey],
 			...attrs
 		}
-
 		setAttributes({ [parentAttributeKey] : newAttrs })
 	}
 
@@ -36,23 +33,24 @@ const ProfileCommsOtherPanel = (props) => {
 		return null;
 	}
 
-    return (
-		<Panel>
-			<PanelBody title={ title }>
+	let controls = Object.keys(profile.comms?.other).map( (key) => {
+		return {
+			label : profile.comms?.other[key].label,
+			attr : key,
+			checked : attributes[parentAttributeKey][key],
+			onChange : () => {
+				setSubAttributes( { [key]: ! attributes[parentAttributeKey][key] } ) 
+			}
+		}
+	});
 
-				{Object.keys(profile.comms?.other).map( (key) => (
-					<PanelRow key={key}>
-						<ToggleControl
-							label={ profile.comms?.other[key].label}
-							checked={  attributes[parentAttributeKey][key] ?? true }
-							onChange={ () => setSubAttributes( { [key]: !(attributes[parentAttributeKey][key] ?? true) } ) }
-						/>
-					</PanelRow>
-				))}
-			
-			</PanelBody>
-		</Panel>
-	)
+	return (
+		<ControlledPanel 
+			controls = {controls} 
+			title = { title } 
+		/>
+    )
+
 }
 
 export default ProfileCommsOtherPanel

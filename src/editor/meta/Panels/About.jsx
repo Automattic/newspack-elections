@@ -2,7 +2,10 @@ import { PanelRow } from "@wordpress/components";
 import { useDispatch, useSelect } from '@wordpress/data';
 
 import {GovPackSidebarPanel} from "./../../../components/sidebar-panel"
-import {PanelTextControl, PanelDateControl, PanelFieldset, PanelTaxonomyControl} from "./../Controls"
+import {PanelTextControl, PanelDateControl} from "./../Controls"
+
+import {usePanel} from './usePanel'
+
 
 
 const changeContributesToName = (change) => {
@@ -53,53 +56,7 @@ const assembleName = (pieces) => {
 
 export const AboutPanel = (props) => {
 
-	let {editPost} = useDispatch("core/editor")
-	const {postTitle, postIsNew, postEdits} = useSelect( (select) => {
-		return {
-			postTitle: select("core/editor").getEditedPostAttribute("title"),
-			postIsNew: select("core/editor").isEditedPostNew(),
-			postEdits: select("core/editor").getPostEdits()
-		}
-	})
-
-	let { setPostMeta, setTerm, setSingleTerm, meta } = props
-
-	const shouldUpdateTitle = (newPostTitle) => {
-
-		//console.log(postEdits)
-
-		if(!postIsNew){
-			return false;
-		}
-
-		if(newPostTitle === postTitle){
-			return false;
-		}
-
-		return true;
-	}
-
-	const updateMetaAndName = (change) => {
-		
-		if(changeContributesToName(change)){
-			let namePieces = getNamePieces(meta, change)
-			let name = assembleName(namePieces)
-
-			let newChange = {
-				name : name,
-				...change
-			}
-
-			if(shouldUpdateTitle(name)){
-				editPost({ "title" : name })
-			}
-
-			setPostMeta(newChange)
-
-		} else {
-			setPostMeta(change)
-		}
-	}
+	const {meta, setPostMeta} = usePanel()
 
     return (
         <GovPackSidebarPanel 
@@ -107,11 +64,7 @@ export const AboutPanel = (props) => {
             name="gov-profile-about"
         >
 			<PanelRow>
-                <PanelTextControl 
-					meta={meta} label = "Name" meta_key="name" onChange={setPostMeta} 
-					disabled 
-					help = "Assembed from name piece fields below."
-					/>
+                <PanelTextControl meta={meta} label = "Name" meta_key="name" onChange={setPostMeta} />
             </PanelRow>
 
 			<PanelRow>

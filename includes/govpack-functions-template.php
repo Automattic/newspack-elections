@@ -56,6 +56,11 @@
 		]))
 	];
 
+	return gp_normalise_html_element_args($elm_attributes);
+ }
+
+ function gp_normalise_html_element_args($elm_attributes){
+
 	$normalized_attributes = array();
 	foreach ( $elm_attributes as $key => $value ) {
 		$normalized_attributes[] = $key . '="' . esc_attr( $value ) . '"';
@@ -65,6 +70,7 @@
 
 	return trim($elm_attributes);
  }
+
  function gp_get_show_data($profile_data, $attributes){
 
 	$show = [
@@ -153,11 +159,118 @@ function gp_get_profile_lines($attributes, $profile_data) {
 		[
 			"key" => "more_about",
 			"value" => gp_maybe_link( 'More About' . $profile_data['name']['full'], $profile_data['link'], isset($attributes['showProfileLink']) && $attributes['showProfileLink']),
-			"shouldShow" => (isset($attributes['showProfileLink']) && $attributes['showProfileLink'])
+			"shouldShow" => shouldShowLinks($profile_data, $attributes)
+		],
+		[
+			"key" => "links",
+			"value" => gp_the_profile_links($profile_data, $attributes),
+			"shouldShow" => (isset($attributes['showOtherLinks']) && $attributes['showOtherLinks'])
 		]
 	];
 
 	return $lines;
+}
+
+function shouldShowLinks($profile_data, $attributes){
+	if(isset($attributes['showOtherLinks'])){
+		return $attributes['showOtherLinks'];
+	}
+
+	if(!isset($profile_data['links']) || empty($profile_data['links'])){
+		return false;
+	}
+
+	if(
+		(!isset($attributes['selectedLinks'])) ||
+		(empty($profile_data['selectedLinks']))
+	){
+		return true;
+	}
+
+	return false;
+}
+
+function gp_get_profile_links($profile_data, $attributes){
+	
+	if(!isset($profile_data['links'])){
+		return;
+	}
+
+	if(empty($profile_data['links'])){
+		return;
+	}
+
+	
+	$links = apply_filters("govpack_profile_links", $profile_data['links'], $profile_data["id"], $profile_data );
+	foreach($links as &$link){
+
+		$link = apply_filters("govpack_profile_link", $link, $profile_data["id"], $profile_data );
+
+		$link_attrs = array_filter($link, function($value, $key){
+			if(($value === null) || ($value === "")){
+				return false;
+			}
+
+			if(($key === "text") || ($key === "meta")){
+				return false;
+			}
+			
+			if(is_array($value) && (empty($value))){
+				return false;
+			}
+
+			return true;
+
+		}, ARRAY_FILTER_USE_BOTH);
+
+		$link["src"] = sprintf("<a %s>%s</a>", gp_normalise_html_element_args($link_attrs), $link["text"]);
+		
+	}
+
+	return $links;
+
+}
+
+function gp_should_show_link($key, $attributes ){
+	if(!isset($attributes['showOtherLinks'])){
+		return false;
+	}
+
+	if(
+		(isset($attributes['selectedLinks'])) &&
+		($attributes['selectedLinks'][$key] === false)
+	){
+		return false;
+	}
+
+	return true;
+
+}
+
+function gp_the_profile_links($profile_data, $attributes){
+	$links = gp_get_profile_links($profile_data, $attributes);
+	foreach($links as $key => &$link){
+		$link["show"] = gp_should_show_link($key, $attributes);
+	}	
+
+	$links = array_filter($links, function($link, $key){
+		return $link["show"];
+	}, ARRAY_FILTER_USE_BOTH );
+
+	if(count($links) <= 0){
+		return "";
+	}
+
+
+	ob_start();
+	?>
+	<ul>
+		<?php foreach($links as &$link){ ?>
+			<li><?php echo $link['src']; ?></li>
+		<?php } ?>
+	</ul>
+	<?php
+	return ob_get_clean();
 }
 
 function gp_get_photo_styles($attributes){

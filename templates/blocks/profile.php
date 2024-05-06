@@ -44,7 +44,7 @@ $container_classes = join(
 			<?php if ( $show['name'] || $show['status_tag']) { ?>
 				<div class="wp-block-govpack-profile__line wp-block-govpack-profile--flex-left">
 				<?php if ( $show['name']) { ?>
-					<h3 class="wp-block-govpack-profile__name"> <?php echo GP_Maybe_Link( $profile_data['name']['full'], $profile_data['link'], $attributes['showProfileLink'] );  //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></h3>
+					<h3 class="wp-block-govpack-profile__name"> <?php echo GP_Maybe_Link( $profile_data['name']['name'], $profile_data['link'], $attributes['showProfileLink'] );  //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></h3>
 				<?php } ?>
 				<?php if ( $show['status_tag']) { ?>
 					<div class="wp-block-govpack-profile__status-tag">

@@ -24,7 +24,7 @@ import BlockSizeAlignmentToolbar from '../../components/Toolbars/BlockSizeAlignm
 import {isNil, isEmpty} from "lodash"
 
 
-function useLoaded(){
+function useProfileLoader(){
 
 
 	let resp = useSelect( ( select ) => {
@@ -90,7 +90,7 @@ function Edit( props ) {
 		image, 
 		terms, 
 		hasResolved
-	} = useLoaded()
+	} = useProfileLoader()
 
     const ref = useRef();
 	const blockProps = useBlockProps( { ref } );

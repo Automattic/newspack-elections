@@ -169,7 +169,6 @@ function Edit( props ) {
 		setAttributes({"profileId" : newProfileId})
 	}
 
-
     const ref = useRef();
 	const blockProps = useBlockProps( { ref } );
 
@@ -212,17 +211,6 @@ function Edit( props ) {
 		}
 	})
 	
-
-    
-
-	/**
-	 * @param {string} value The selected format.
-	 */
-	function updateFormat( value ) {
-		setAttributes( { format: value } );
-	}
-
-
 	return (
 		<div { ...blockProps }>
 

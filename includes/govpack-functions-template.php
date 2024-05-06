@@ -121,6 +121,12 @@ function gp_get_profile_lines($attributes, $profile_data) {
 			"shouldShow" => $attributes["showDistrict"]
 		],
 		[
+			"key" => "state",
+			"value" => esc_html($profile_data["state"]),
+			"label" => "State",
+			"shouldShow" => $attributes["showState"]
+		],
+		[
 			"key" => "status",
 			"value" => esc_html($profile_data["status"]),
 			"label" => "Status",
@@ -158,13 +164,13 @@ function gp_get_profile_lines($attributes, $profile_data) {
 		],
 		[
 			"key" => "more_about",
-			"value" => gp_maybe_link( 'More About' . $profile_data['name']['full'], $profile_data['link'], isset($attributes['showProfileLink']) && $attributes['showProfileLink']),
-			"shouldShow" => shouldShowLinks($profile_data, $attributes)
+			"value" => gp_maybe_link( sprintf('More About %s', $profile_data['name']['name']), $profile_data['link'], isset($attributes['showProfileLink']) && $attributes['showProfileLink']),
+			"shouldShow" => $attributes['showProfileLink']
 		],
 		[
 			"key" => "links",
 			"value" => gp_the_profile_links($profile_data, $attributes),
-			"shouldShow" => (isset($attributes['showOtherLinks']) && $attributes['showOtherLinks'])
+			"shouldShow" => shouldShowLinks($profile_data, $attributes)
 		]
 	];
 
@@ -193,15 +199,15 @@ function shouldShowLinks($profile_data, $attributes){
 function gp_get_profile_links($profile_data, $attributes){
 	
 	if(!isset($profile_data['links'])){
-		return;
+		return [];
 	}
 
 	if(empty($profile_data['links'])){
-		return;
+		return [];
 	}
 
 	
-	$links = apply_filters("govpack_profile_links", $profile_data['links'], $profile_data["id"], $profile_data );
+	$links = apply_filters("govpack_profile_links", $profile_data['links'] ?? [], $profile_data["id"], $profile_data );
 	foreach($links as &$link){
 
 		$link = apply_filters("govpack_profile_link", $link, $profile_data["id"], $profile_data );

@@ -263,8 +263,6 @@ const SingleProfile = (props) => {
 			)
 		}
 
-		
-
         return (
            
             <div className={`${blockClassName}__social`}>
@@ -409,9 +407,7 @@ const SingleProfile = (props) => {
 		return item.phone || item.fax || item.email || item.website || item.address;
 	}
 
-	function hasCommsData(item){
-		return item.phone || item.fax || item.email || item.website || item.address;
-	}
+
 
 	function hasCommsOtherData(item){
 		return Object.keys(item).filter((key) => {
@@ -429,8 +425,29 @@ const SingleProfile = (props) => {
 
     let bio = excerptElement.textContent || excerptElement.innerText || '';
 
-	const doShowSocial = selectedSocial.showOfficial || selectedSocial.showCampaign || selectedSocial.showPersonal;		
+	
+	const hasSocial = (testObj) => {
+		let found = false
 
+		for(const key in testObj){
+			if (typeof testObj[key] === "object") {
+				found = hasSocial(testObj[key])
+			} else if(testObj[key] !== ""){
+				found = true;
+			}
+			
+			if(found){
+				continue;
+			}
+		}
+
+		return found
+	}
+
+
+	const doShowSocial = ((showSocial) && (selectedSocial.showOfficial || selectedSocial.showCampaign || selectedSocial.showPersonal) && (hasSocial(profile.social)));		
+
+	
     return (
        <div className= {classnames(`${blockClassName}__container`, {
             [`${blockClassName}__container--right`] : (avatarAlignment === "right"),
@@ -489,7 +506,7 @@ const SingleProfile = (props) => {
 					<Row key="status" id="status" label="Status" value={profile.status} display={showStatus}/>
                     <Row key="states" id="states" label="State" value={profile.state} display={showState}/>
 
-                    <Row key="social" id="social" label="Social Media" value={<SocialMedia data={profile.social} label="Social Media" show={selectedSocial}/>} display={(showSocial && doShowSocial)}/>
+                    <Row key="social" id="social" label="Social Media" value={<SocialMedia data={profile.social} label="Social Media" show={selectedSocial}/>} display={doShowSocial}/>
 					<Row key="comms_capitol" id="comms_capitol" label="Contact Info (Capitol)" value={hasCommsData(profile.comms.capitol) && <Comms data={profile.comms.capitol} label="Capitol" show={selectedCapitolCommunicationDetails}/>} display={showCapitolCommunicationDetails} />
 					<Row key="comms_district" id="comms_district" label="Contact Info (District)" value={hasCommsData(profile.comms.district) && <Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />
 					<Row key="comms_campaign" id="comms_campaign" label="Contact Info (Campaign)" value={hasCommsData(profile.comms.campaign) && <Comms data={profile.comms.campaign} label="Campaign" show={selectedCampaignCommunicationDetails}/>} display={showCampaignCommunicationDetails} />

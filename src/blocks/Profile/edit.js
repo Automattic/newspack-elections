@@ -144,10 +144,18 @@ const ProfileSelector = ( {
 						}
 
         
-						return profiles.map( _profile => ( {
-							value: _profile.id,
-							label: decodeEntities( _profile.title.rendered ) || __( '(no name)', 'govpack' ),
-						} ) );
+						return profiles.map( _profile => {
+
+							let label = decodeEntities( _profile.title.rendered ) ?? null
+							if(label){
+								label = label + " (ID: " + _profile.id + ")";
+							}
+
+							return {
+								value: _profile.id,
+								label: label || __( '(no name)', 'govpack' ),
+							} 
+						} );
                     } }
 					maxItemsToSuggest={ maxItemsToSuggest }
 					onChange={ (items) => {

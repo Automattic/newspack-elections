@@ -15,8 +15,9 @@ defined( 'ABSPATH' ) || exit;
 class ProfileSelf extends \Govpack\Blocks\Profile\Profile {
 
 	public $block_name = "govpack/profile-self";
+	public $template = "profile-self";
 
-	public function block_build_path(){
+	public function block_build_path() : string {
 		return trailingslashit(GOVPACK_PLUGIN_BUILD_PATH . 'blocks/ProfileSelf');
 	}
 
@@ -30,7 +31,9 @@ class ProfileSelf extends \Govpack\Blocks\Profile\Profile {
 	public function render( $attributes, $content = null, $block = null ) {
 
 		$attributes['profileId'] = get_queried_object_id();
-		return self::load_block( 'govpack/profile-self', $attributes, $content, 'profile-self' );
+
+		return $this->handle_render( $attributes, $content, $block );
+
 	}
 
 	public function disable_block( $allowed_blocks, $editor_context ){

@@ -8,7 +8,7 @@
 // $profile_data is defined elsewhere.
 // phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 
-$profile_data = $extra["profile_data"];
+$profile_block = $extra["profile_block"];
 $block_class = $attributes["className"];
 $show = gp_get_show_data($profile_data, $attributes);
 $available_widths = gp_get_available_widths();

@@ -16,36 +16,19 @@ defined( 'ABSPATH' ) || exit;
  */
 class Profile extends \Govpack\Core\Abstracts\Block {
 
-	public $block_name = "profile";
+	public $block_name = "govpack/profile";
+	public $template = "profile";
 
-
-	public function register_script(){
-	}
 
 	public function disable_block( $allowed_blocks, $editor_context ){
 		return false;
 	}
 
 
-	public function block_build_path(){
+	public function block_build_path() : string {
 		return trailingslashit(GOVPACK_PLUGIN_BUILD_PATH . 'blocks/Profile');
 	}
-	/**
-	 * Registers the block.
-	 *
-	 * @return void
-	 */
-	public function register() {
-
-		$this->block = register_block_type(
-			$this->block_build_path() . '/block.json',
-			[
-				'render_callback' => [ $this, 'render' ],
-			]
-		);
-
-	}
-
+	
 	
 
 	/**
@@ -63,35 +46,44 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 			return;
 		}
 
-		return self::load_block( 'govpack/profile', $attributes, $content, 'profile' );
+		if ( \is_admin() ) {
+			return false;
+		}
+
+
+		return $this->handle_render( $attributes, $content, $block );
 	}
 
 	/**
 	 * Loads a block from display on the frontend/via render.
 	 *
-	 * @param string $block_name the name(or slug) of the block being output.
 	 * @param array  $attributes array of block attributes.
 	 * @param string $content Any HTML or content redurned form the block.
-	 * @param string $template The filename of teh template-part to use.
+	 * @param WP_Block $template The filename of the template-part to use.
 	 */
-	public  function load_block( $block_name, $attributes, $content, $template ) {
-
-		if ( \is_admin() ) {
-			return false;
-		}
-
-		$profile_data = \Govpack\Core\CPT\Profile::get_data( $attributes['profileId'] );
-	
-		if ( ! $profile_data ) {
-			return;
-		}       
+	public function handle_render(array $attributes, string $content, WP_Block $block ) {
 
 		
-		$this->enqueue_view_assets();
-		$attributes = self::merge_attributes_with_block_defaults( $block_name, $attributes );
-		$template_name = "blocks/" . $template;
-		return gp_template_loader()->render_block($template_name, null, $attributes, $content, null, ["profile_data" => $profile_data] );
+		$profile = \Govpack\Core\CPT\Profile::get_data( $attributes['profileId'] );
+	
+		if ( ! $profile ) {
+			return;
+		}
 
+		$this->enqueue_view_assets();
+		
+		return gp_template_loader()->render_block(
+			$this->template(),
+			self::merge_attributes_with_block_defaults( $this->block_name, $attributes ), 
+			$content, 
+			$block, 
+			["profile_block" => $this] 
+		);
+
+	}
+
+	public function template() : string {
+		return sprintf("blocks/%s", $this->template);
 	}
 
 }

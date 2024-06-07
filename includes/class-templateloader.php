@@ -63,8 +63,8 @@ class TemplateLoader extends \Govpack_Vendor_Gamajo_Template_Loader {
 			return $template;
 		}
 
-		public function render_block($slug, $name = null, $attributes = [], $content = "", $block = null, $extra = null){
-			$template = $this->get_template_part($slug, $name, false);
+		public function render_block($slug, $attributes = [], $content = "", $block = null, $extra = null){
+			$template = $this->get_template_part($slug, null, false);
 		
 			ob_start();
 			require $template;

@@ -54,7 +54,35 @@
         		]
 			},{
 				"action": "composer dump-autoload"
+			},{
+				"action": "npm install",
+				"conditions": [
+					{
+						"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChanged\\Any",
+						"args": [
+							["package.json", "package-lock.json"]
+						]
+					}
+				]
+			},{
+				"action": "npm run build",
+				"conditions": [{
+					"exec": "and",
+					"args" : [
+						{
+							"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChanged\\OfType",
+							"args": [
+								"js", "jsx", "scss", "sass", "ts", "tsx", "json", "php"
+							]	
+						},{
+							"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChanged\\Any",
+							"args": [
+								["/src/*"]
+							]
+						}
+					]
+				}]
 			}
 		]
-    }
+	}
 }

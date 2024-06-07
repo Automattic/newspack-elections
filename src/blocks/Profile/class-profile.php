@@ -7,7 +7,7 @@
 
 namespace Govpack\Blocks\Profile;
 
-use WP_Block_Type;
+use WP_Block;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -53,10 +53,11 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 	 *
 	 * @param array  $attributes    Array of shortcode attributes.
 	 * @param string $content Post content.
+	 * @param WP_Block $block Reference to the block being rendered .
 	 *
-	 * @return string HTML for recipe shortcode.
+	 * @return string HTML for the block.
 	 */
-	public function render( $attributes, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public function render( array $attributes, ?string $content = null, ?WP_Block $block = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 
 		if ( ! $attributes['profileId'] ) {
 			return;

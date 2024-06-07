@@ -27,7 +27,7 @@ class ProfileSelf extends \Govpack\Blocks\Profile\Profile {
 	 * @param string $content contentf rom the block.
 	 * @return string
 	 */
-	public function render( $attributes, $content = null ) {
+	public function render( $attributes, $content = null, $block = null ) {
 
 		$attributes['profileId'] = get_queried_object_id();
 		return self::load_block( 'govpack/profile-self', $attributes, $content, 'profile-self' );

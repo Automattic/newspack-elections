@@ -31,12 +31,30 @@
     "prefix-namespaces": [
         "strauss"
     ],
+	"post-autoload-dump": [
+		"@githooks:refresh"
+	],
     "post-install-cmd": [
         "@prefix-namespaces"
     ],
     "post-update-cmd": [
         "@prefix-namespaces"
-    ]
+    ],
+	"githooks:install":[
+		"vendor/bin/captainhook install --force --skip-existing"
+	],
+	"githooks:uninstall":[
+		"rm .git/hooks/*"
+	],
+	"githooks:refresh":[
+		"@githooks:uninstall",
+		"@githooks:install"	
+	]
+  },
+  "scripts-descriptions": {
+	"githooks:install" : "Add new hook files to `.git/hooks` without disturbing existing hooks.",
+	"githooks:uninstall" : "Removes all hooks in `.git/hooks`.",
+	"githooks:refresh" : "Removes all hooks from `.git/hooks` then re-installs"
   },
   "extra": {
     "strauss": {

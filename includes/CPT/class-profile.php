@@ -895,8 +895,10 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				
 			],
 			'links' => self::generate_links_for_profile($profile_id),
+			'name' => self::generate_name_for_profile($profile_id),
+			/*
 			'name'  => [
-				'name'  => $profile_raw_meta_data['name'][0] ?? null,
+				'name'  => $profile_raw_meta_data['name'][0] ?? \get_the_title( $profile_id ) ?? null,
 				'full'  => implode(
 					' ',
 					[
@@ -910,6 +912,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				'first' => $profile_raw_meta_data['name_first'][0] ?? null ?? null,
 				'last'  => $profile_raw_meta_data['name_last'][0] ?? null ?? null,
 				],
+			*/
 		];
 
 		
@@ -921,6 +924,32 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		return apply_filters("govpack_profile_data", $profile_data);
 	}
 
+	public static function generate_name_for_profile(int $profile_id) : array {
+
+		$name_parts = [
+			"prefix" 	=> get_post_meta($profile_id, "name_prefix", true) ?? null,
+			"first" 	=> get_post_meta($profile_id, "name_first",  true) ?? null,
+			"middle" 	=> get_post_meta($profile_id, "name_middle", true) ?? null,
+			"last" 		=> get_post_meta($profile_id, "name_last",   true) ?? null,
+			"suffix" 	=> get_post_meta($profile_id, "name_suffix", true) ?? null,
+		];
+		
+		$provided_name = get_post_meta($profile_id, "name", true) ?? null;
+		$provided_name = ($provided_name === "" ? null : $provided_name);
+		
+		$generated_name = trim(implode( ' ', $name_parts ));
+		$generated_name = ($generated_name === "" ? null : $generated_name);
+
+		$name_data = array(
+			'name'  => $provided_name ?? \get_the_title( $profile_id ) ?? $generated_name ?? null,
+			'full'  => $generated_name ??  \get_the_title( $profile_id ) ,
+			'first' => $name_parts['first'] ?? null,
+			'last'  => $name_parts['last'] ?? null,
+		);
+
+		return $name_data;
+
+	}
 
 	public static function generate_links_for_profile($profile_id){
 		$pl = new Profile_Links($profile_id);

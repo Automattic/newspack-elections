@@ -165,7 +165,7 @@ function gp_get_profile_lines($attributes, $profile_data) {
 		[
 			"key" => "more_about",
 			"value" => gp_maybe_link( sprintf('More About %s', $profile_data['name']['name']), $profile_data['link'], isset($attributes['showProfileLink']) && $attributes['showProfileLink']),
-			"shouldShow" => $attributes['showProfileLink']
+			"shouldShow" => (isset($attributes['showProfileLink']) && $attributes['showProfileLink'])
 		],
 		[
 			"key" => "links",

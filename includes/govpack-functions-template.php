@@ -244,6 +244,7 @@ function gp_should_show_link($key, $attributes ){
 
 	if(
 		(isset($attributes['selectedLinks'])) &&
+		(isset($attributes['selectedLinks'][$key])) &&
 		($attributes['selectedLinks'][$key] === false)
 	){
 		return false;

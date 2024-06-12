@@ -384,7 +384,7 @@ const SingleProfile = (props) => {
 			<div className={`${blockClassName}__links`}>
 
 				{props.data && (
-					<ul>
+					<ul className="govpack-vertical-list">
 						{Object.keys(data).filter( key => ( 
 							(Object.keys(selectedLinks).length === 0) 
 							|| (selectedLinks[key]))

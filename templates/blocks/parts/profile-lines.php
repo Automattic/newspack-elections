@@ -7,6 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $profile_data = $extra["profile_data"];
 $show = gp_get_show_data($profile_data, $attributes);
 
+
 foreach(gp_get_profile_lines($attributes, $profile_data) as $index => $line){
 	if ( ! $line["shouldShow"] ) {
 		continue;

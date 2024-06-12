@@ -23,9 +23,7 @@ foreach(gp_get_profile_lines($attributes, $profile_data) as $index => $line){
 				class="<?php echo gp_classnames("govpack-line__label", [
 					$show["labels"] ? "govpack-line__label--show" : "govpack-line__label--hide"
 				]);?>"
-			>
-				<?php esc_html_e($line["label"]); ?>
-			</dt>
+			><?php esc_html_e($line["label"]);?></dt>
 			<?php } ?>
 			<dd class="govpack-line__content"><?php echo $line["value"]; ?></dd>
 		</div>

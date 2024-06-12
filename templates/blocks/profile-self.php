@@ -30,12 +30,12 @@ $container_classes = join(
 ?>
 
 <aside <?php echo get_block_wrapper_attributes([
-	'class' => gp_classnames("wp-block-govpack-profile-self", [
-		( isset( $attributes['align'] ) ? 'align' . $attributes['align'] : false ),
+	'class' => gp_classnames("", [
+		//( isset( $attributes['align'] ) ? 'align' . $attributes['align'] : false ),
 		( (isset( $attributes['showLabels'] ) && ($attributes['showLabels']) ) ? "wp-block-govpack-profile--show-labels": false ),
 	] ),
 	'style' => gp_style_attr_generator([
-		"max-width" => $available_widths[ $attributes['width'] ?? 'auto' ]['maxWidth']
+		//"max-width" => $available_widths[ $attributes['width'] ?? 'auto' ]['maxWidth']
 	])
 ]); ?>>
 	<!-- start __container -->

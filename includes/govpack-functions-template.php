@@ -271,7 +271,7 @@ function gp_the_profile_links($profile_data, $attributes){
 
 	ob_start();
 	?>
-	<ul>
+	<ul class="govpack-vertical-list">
 		<?php foreach($links as &$link){ ?>
 			<li><?php echo $link['src']; ?></li>
 		<?php } ?>
@@ -314,7 +314,7 @@ function gp_style_attr_generator($rules){
  * @param string  $value The value to output.
  * @param boolean $display Override to control if this row will output.
  */
-function gp_row( $id = '', $value, $display ) {
+function gp_row( $id, $value, $display ) {
 
 	if ( ! $display ) {
 		return null;

@@ -32,6 +32,7 @@ class ProfileSelf extends \Govpack\Blocks\Profile\Profile {
 
 		$attributes['profileId'] = get_queried_object_id();
 
+		
 		return $this->handle_render( $attributes, $content, $block );
 
 	}

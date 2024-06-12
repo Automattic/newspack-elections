@@ -64,6 +64,7 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 	public function handle_render(array $attributes, string $content, WP_Block $block ) {
 
 		
+		
 		$profile = \Govpack\Core\CPT\Profile::get_data( $attributes['profileId'] );
 	
 		if ( ! $profile ) {
@@ -71,13 +72,18 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 		}
 
 		$this->enqueue_view_assets();
+
+		
 		
 		return gp_template_loader()->render_block(
 			$this->template(),
 			self::merge_attributes_with_block_defaults( $this->block_name, $attributes ), 
 			$content, 
 			$block, 
-			["profile_block" => $this] 
+			[
+				"profile_block" => $this,
+				"profile_data" => $profile
+			] 
 		);
 
 	}

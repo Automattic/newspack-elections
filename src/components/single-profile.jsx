@@ -3,6 +3,7 @@
 
 import {ReactComponent as FacebookIconSVG} from "./../images/facebook.svg"
 import {ReactComponent as TwitterIconSVG} from "./../images/twitter.svg"
+import {ReactComponent as XIconSVG} from "./../images/x.svg"
 import {ReactComponent as LinkedinIconSVG} from "./../images/linkedin.svg"
 import {ReactComponent as EmailIconSVG} from "./../images/email.svg"
 import {ReactComponent as InstagramIconSVG} from "./../images/instagram.svg"
@@ -23,6 +24,7 @@ import ProfileCommsPanel from "./Panels/ProfileCommsPanel"
 
 
 const TwitterIcon = () => ( <Icon icon={ TwitterIconSVG } /> )
+const XIcon = () => ( <Icon icon={ XIconSVG } /> )
 const LinkedinIcon = () => ( <Icon icon={ LinkedinIconSVG } /> )
 const EmailIcon = () => ( <Icon icon={ EmailIconSVG } /> )
 const InstagramIcon = () => ( <Icon icon={ InstagramIconSVG } /> )
@@ -202,7 +204,7 @@ const SingleProfile = (props) => {
             })}>
                 <a href={props.href} className={`${blockClassName}__link`} title={props.tooltip ?? props.label ?? ""}>
                     {props.icon && (
-                        <span className={`${blockClassName}__contact__icon ${blockClassName}__contact__icon`}>{props.icon}</span>
+                        <span className={`${blockClassName}__contact__icon ${blockClassName}__contact__icon--${props.service}`}>{props.icon}</span>
                     )}
                     <span className = {`${blockClassName}__contact__label`}>{props.label}</span>
                 </a>
@@ -213,13 +215,13 @@ const SingleProfile = (props) => {
     const SocialMedia = (props) => {
 
 		const SocialRow = (props) => {
-
+  
 			const {
 				show = true,
 				label
 			} = props
 
-			if(!show || !(props.services.facebook || props.services.twitter || props.services.instagram || props.services.youtube)){
+			if(!show || !(props.services.facebook || props.services.x || props.services.instagram || props.services.youtube)){
 				return null;
 			}
 
@@ -229,22 +231,25 @@ const SingleProfile = (props) => {
 					<ul className='govpack-inline-list'>
 						{ props.services.facebook && (
 							<Contact 
+								service = "facebook"
 								href={props.services.facebook} 
 								label = "Facebook"
 								icon = { <FacebookIcon />}
 							/>
 						)}
 
-						{ props.services.twitter && (
+						{ props.services.x && (
 							<Contact 
-								href={props.services.twitter} 
-								label = "Twitter" 
-								icon = { <TwitterIcon />}
+								service = "x"
+								href={props.services.x} 
+								label = "X" 
+								icon = { <XIcon />}
 							/>
 						)}
 
 						{ props.services.instagram && (
 							<Contact 
+								service = "instagram"
 								href={props.services.instagram} 
 								label = "Instagram" 
 								icon = { <InstagramIcon />}
@@ -253,6 +258,7 @@ const SingleProfile = (props) => {
 
 						{ props.services.youtube && (
 							<Contact 
+								service = "youtube"
 								href={props.services.youtube} 
 								label = "YouTube" 
 								icon = { <YouTubeIcon />}

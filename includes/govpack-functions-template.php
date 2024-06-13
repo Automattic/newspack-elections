@@ -422,7 +422,7 @@ function gp_contacts( $profile_data, $attributes ) {
         </li>";
 
 	}
-
+  
 
 	$social = '';
 	if ( $attributes['showSocial'] ) {

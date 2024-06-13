@@ -203,13 +203,19 @@
             max-height:20px;
             width:100%;
             height:auto;
-    
+			
+			
             svg{
                 max-width:20px;
                 max-height:20px;
                 display:block;
 				width:100%;
             }
+
+			&--x svg{
+				max-width:18px;
+                max-height:18px;
+			}
         }
 
         &__label{

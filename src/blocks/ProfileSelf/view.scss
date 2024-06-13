@@ -143,6 +143,12 @@
                 display:block;
 				width:100%;
             }
+
+			&--x svg{
+				margin-top:2px;
+				max-width:18px;
+                max-height:16px;
+			}
         }
 
         &__label{

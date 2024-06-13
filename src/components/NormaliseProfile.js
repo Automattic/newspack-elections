@@ -69,18 +69,21 @@ export function normalize_profile(profile){
 		district :  profile.meta?.district ?? null,
 		social : {
         	official : {
+				x : profile.meta?.x_official ??  profile.meta?.twitter_official ?? null,
 				twitter : profile.meta?.twitter_official ?? null,
 				facebook : profile.meta?.facebook_official ?? null,
 				instagram : profile.meta?.instagram_official ?? null,
 				youtube : profile.meta?.youtube_official ?? null
 			},
 			campaign :  {
+				x : profile.meta?.x_campaign ??  profile.meta?.twitter_campaign ?? null,
 				twitter : profile.meta?.twitter_campaign ?? null,
 				facebook : profile.meta?.facebook_campaign ?? null,
 				instagram : profile.meta?.instagram_campaign ?? null,
 				youtube : profile.meta?.youtube_campaign ?? null
 			},
 			personal :  {
+				x : profile.meta?.x_personal ??  profile.meta?.twitter_personal ?? null,
 				twitter : profile.meta?.twitter_personal ?? null,
 				facebook : profile.meta?.facebook_personal ?? null,
 				instagram : profile.meta?.instagram_personal ?? null,

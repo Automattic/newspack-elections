@@ -9,6 +9,8 @@ export const SocialPanel = (props) => {
 
 	const {meta, setPostMeta} = usePanel()
 
+	console.log(meta)
+
 	return (
         <GovPackSidebarPanel 
             title="Social"
@@ -17,9 +19,9 @@ export const SocialPanel = (props) => {
 
 			<PanelRow>
 				<PanelFieldset legend={"Twitter"} >
-					<PanelTextControl meta={meta} placeholder="https://" label= "Twitter (Official)" meta_key="twitter_official" onChange={setPostMeta}/>
-					<PanelTextControl meta={meta} placeholder="https://" label= "Twitter (Personal)" meta_key="twitter_personal" onChange={setPostMeta}/>
-					<PanelTextControl meta={meta} placeholder="https://" label= "Twitter (Campaign)" meta_key="twitter_campaign" onChange={setPostMeta}/>
+					<PanelTextControl meta={meta} placeholder="https://" label= "X (Official)" meta_key="x_official" onChange={setPostMeta}/>
+					<PanelTextControl meta={meta} placeholder="https://" label= "X (Personal)" meta_key="x_personal" onChange={setPostMeta}/>
+					<PanelTextControl meta={meta} placeholder="https://" label= "X (Campaign)" meta_key="x_campaign" onChange={setPostMeta}/>
 				</PanelFieldset>
 			</PanelRow>
 

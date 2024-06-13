@@ -419,7 +419,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		];
 
 		// Social Panel.
-		$groups = [ 'facebook', 'twitter', 'instagram', 'youtube' ];
+		$groups = [ 'facebook', 'twitter', 'instagram', 'youtube', 'x' ];
 		$keys   = [ 'official', 'campaign', 'personal' ];
 
 		foreach ( $groups as $group ) {

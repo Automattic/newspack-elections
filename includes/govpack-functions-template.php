@@ -402,6 +402,7 @@ function gp_contacts( $profile_data, $attributes ) {
 		'linkedin'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/linkedin.svg' ),
 		'instagram' => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/instagram.svg' ),
 		'email'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/email.svg' ),
+		'x'         => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/x.svg' ),
 	];
   
 	$icon = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
@@ -427,7 +428,7 @@ function gp_contacts( $profile_data, $attributes ) {
 	$social = '';
 	if ( $attributes['showSocial'] ) {
 
-		$services = [ 'facebook', 'twitter', 'linkedin', 'instagram' ];
+		$services = [ 'facebook', 'x', 'linkedin', 'instagram' ];
 
 
 		foreach ( $services as $service ) {
@@ -520,7 +521,7 @@ function gp_social_media_row( $label, $links = [] ) {
 
 	$content = '';
 
-	$services = [ 'facebook', 'twitter', 'linkedin', 'instagram', 'youtube' ];
+	$services = [ 'facebook', 'x', 'linkedin', 'instagram', 'youtube' ];
 
 	$icons = [
 		'facebook'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/facebook.svg' ),
@@ -529,6 +530,7 @@ function gp_social_media_row( $label, $links = [] ) {
 		'instagram' => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/instagram.svg' ),
 		'email'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/email.svg' ),
 		'youtube'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/youtube.svg' ),
+		'x'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/x.svg' ),
 	];
 
 	foreach ( $services as $service ) {

@@ -29,6 +29,7 @@ class Govpack {
 	private $front_end;
 	private $admin;
 	private Blocks $blocks;
+	private Icons $icons;
 
 	/**
 	 * Inits the class and registeres the hooks call.
@@ -106,6 +107,15 @@ class Govpack {
 		}
 		
 		return $this->blocks;
+	}
+
+	public function icons(){
+
+		if(!isset($this->icons)){
+			$this->icons = new Icons();
+		}
+		
+		return $this->icons;
 	}
 
 	public function register_blocks(){

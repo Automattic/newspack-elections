@@ -396,19 +396,12 @@ function gp_websites( $websites ) {
  */
 function gp_contacts( $profile_data, $attributes ) {
 
-	$icons = [
-		'facebook'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/facebook.svg' ),
-		'twitter'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/twitter.svg' ),
-		'linkedin'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/linkedin.svg' ),
-		'instagram' => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/instagram.svg' ),
-		'email'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/email.svg' ),
-		'x'         => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/x.svg' ),
-	];
+	$icons = gp_get_icons();
   
 	$icon = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
 
 	if ( $attributes['showEmail'] && $profile_data['email'] ) {
-		$email_icon = sprintf( $icon, 'email', $icons['email'] );
+		$email_icon = sprintf( $icon, 'email', gp_get_icon('email') );
 		$classes    = [
 			'wp-block-govpack-profile__contact--hide-label',
 		];
@@ -445,7 +438,7 @@ function gp_contacts( $profile_data, $attributes ) {
 			$classes = join( ' ', $classes );
 
 
-			$contact_icon = sprintf( $icon, $service, $icons[ $service ] );
+			$contact_icon = sprintf( $icon, $service, gp_get_icons($service) );
 			$social      .=  
 			"<li class=\"{$classes} \">
                 <a href=\"{$profile_data[$service]}\" class=\"wp-block-govpack-profile__contact__link\">
@@ -503,22 +496,11 @@ function gp_social_media( $profile_data, $attributes ) {
 }
 
 function gp_get_icons(){
-	$icons = [
-		'facebook'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/facebook.svg' ),
-		'twitter'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/twitter.svg' ),
-		'linkedin'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/linkedin.svg' ),
-		'instagram' => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/instagram.svg' ),
-		'email'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/email.svg' ),
-		'youtube'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/youtube.svg' ),
-		'x'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/x.svg' ),
-	];
-
-	return $icons;
+	return gp()->icons()->all();
 }
 
 function gp_get_icon($key){
-	$icons = gp_get_icons();
-	return $icons[$key];
+	return gp()->icons()->get($key);
 }
 
 /**
@@ -542,7 +524,6 @@ function gp_social_media_row( $label, $links = [] ) {
 
 	$services = [ 'facebook', 'x', 'linkedin', 'instagram', 'youtube' ];
 
-	$icons = gp_get_icons();
 
 	foreach ( $services as $service ) {
 		if ( ! isset( $links[ $service ] ) || ! $links[ $service ] ) {
@@ -558,7 +539,7 @@ function gp_social_media_row( $label, $links = [] ) {
 		$classes = join( ' ', $classes );
 
 		$icon         = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
-		$contact_icon = sprintf( $icon, $service, $icons[ $service ] );
+		$contact_icon = sprintf( $icon, $service, gp_get_icon($service) );
 
 		$content .=  
 		"<li class=\"{$classes} \">
@@ -622,7 +603,7 @@ function gp_contact_info( $label, $links, $attrs ) {
 		$classes = join( ' ', $classes );
 
 		$icon         = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
-		$contact_icon = sprintf( $icon, $service, $icons[ $service ] );
+		$contact_icon = sprintf( $icon, $service, gp_get_icon($service) );
 
 		if ( ( 'phone' === $service ) || ( 'fax' === $service ) ) {
 			$protocol = 'tel:';

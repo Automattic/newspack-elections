@@ -502,6 +502,25 @@ function gp_social_media( $profile_data, $attributes ) {
 
 }
 
+function gp_get_icons(){
+	$icons = [
+		'facebook'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/facebook.svg' ),
+		'twitter'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/twitter.svg' ),
+		'linkedin'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/linkedin.svg' ),
+		'instagram' => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/instagram.svg' ),
+		'email'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/email.svg' ),
+		'youtube'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/youtube.svg' ),
+		'x'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/x.svg' ),
+	];
+
+	return $icons;
+}
+
+function gp_get_icon($key){
+	$icons = gp_get_icons();
+	return $icons[$key];
+}
+
 /**
  * Utility Function that Outputs a Profiles's Social Media Row
  * 
@@ -523,15 +542,7 @@ function gp_social_media_row( $label, $links = [] ) {
 
 	$services = [ 'facebook', 'x', 'linkedin', 'instagram', 'youtube' ];
 
-	$icons = [
-		'facebook'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/facebook.svg' ),
-		'twitter'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/twitter.svg' ),
-		'linkedin'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/linkedin.svg' ),
-		'instagram' => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/instagram.svg' ),
-		'email'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/email.svg' ),
-		'youtube'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/youtube.svg' ),
-		'x'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/x.svg' ),
-	];
+	$icons = gp_get_icons();
 
 	foreach ( $services as $service ) {
 		if ( ! isset( $links[ $service ] ) || ! $links[ $service ] ) {
@@ -579,12 +590,7 @@ function gp_contact_info( $label, $links, $attrs ) {
 		%s
 	</div>';
 
-	$icons = [
-		'phone'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/phone.svg' ),
-		'fax'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/fax.svg' ),
-		'website' => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/globe.svg' ),
-		'email'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/email.svg' ),
-	];
+	$icons = gp_get_icons();
 
 	$services = [ 
 		'email'   => 'showEmail',

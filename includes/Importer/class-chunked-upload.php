@@ -11,6 +11,7 @@ use Exception;
 use WP_Error;
 use Govpack\Core\Govpack;
 use Govpack\Core\Capabilities;
+use Govpack\Vendor\FileUpload;
 
 /**
  * Handles Chunked Uploading via a REST Endpoint
@@ -104,11 +105,11 @@ class Chunked_Upload {
 		
 		self::create_upload_directory();
   
-		$factory = new \Govpack\FileUpload\FileUploadFactory(
-			new \Govpack\FileUpload\PathResolver\Simple( self::get_upload_path( 'govpack' ) ), 
-			new \Govpack\FileUpload\FileSystem\Simple(), 
+		$factory = new FileUpload\FileUploadFactory(
+			new FileUpload\PathResolver\Simple( self::get_upload_path( 'govpack' ) ), 
+			new FileUpload\FileSystem\Simple(), 
 			[
-				new \Govpack\FileUpload\Validator\MimeTypeValidator( [ 'text/csv', 'text/plain' ] ),
+				new FileUpload\Validator\MimeTypeValidator( [ 'text/csv', 'text/plain' ] ),
 			]
 		);
 

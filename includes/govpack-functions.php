@@ -29,3 +29,19 @@ if(!function_exists("gp_get_permalink_structure")){
 		return Govpack\Core\Permalinks::instance()->permalinks();
 	}
 }
+
+/**
+ * Provides Developer feedback if using a hook, method or function is being used incorrectly.
+ * 
+ * Trigers a userland error if WP_DEBUG is true.
+ * 
+ * Wraps the core `_doing_it_wrong` function as it provides all we need for now but it may change 
+ * or our needs may evolve.
+ * 
+ * See https://developer.wordpress.org/reference/functions/_doing_it_wrong/ for info.
+ */
+if(!function_exists("gp_doing_it_wrong")){
+	function gp_doing_it_wrong(string $function_name, string $message, string $version) : void {
+		_doing_it_wrong( $function_name, $message, $version );
+	}
+}

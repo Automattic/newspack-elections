@@ -63,6 +63,7 @@ class State extends \Govpack\Core\Abstracts\Taxonomy {
 				'show_admin_column'  => true,
 				'show_in_rest'       => true,
 				'show_ui'            => true,
+				'show_in_nav_menus'  => false,
 				'show_in_which_menu' => 'govpack',
 			]
 		);

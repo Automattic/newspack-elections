@@ -199,10 +199,8 @@ class Admin {
 	 */
 	public static function load_assets() {
 		\wp_enqueue_style( 'govpack-admin-style' );
+		
 		$screen = get_current_screen();
-		//if ( 'edit-govpack_profiles' === $screen->id ) {
-		//	\wp_enqueue_style( 'govpack-admin-style' );
-		//}
 
 		if ( true === $screen->is_block_editor() && 'govpack_profiles' === $screen->post_type ) {
 			

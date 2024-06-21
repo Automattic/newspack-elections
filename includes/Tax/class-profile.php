@@ -63,6 +63,7 @@ class Profile extends \Govpack\Core\Abstracts\Taxonomy {
 				'show_admin_column' => true,
 				'show_in_rest'      => true,
 				'show_in_menu'      => true,
+				'show_in_nav_menus'  => false
 			]
 		);
 	}

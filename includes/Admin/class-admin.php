@@ -20,12 +20,17 @@ class Admin {
 
 	use \Govpack\Core\Instance;
 
+	private $plugin;
+
+	public function __construct($plugin){
+		$this->plugin = $plugin;
+	}
 	/**
 	 * Register Hooks for usage in wp-admin.
 	 */
 	public function hooks() {
 		\add_action( 'admin_menu', [ '\Govpack\Core\Admin\Menu', 'add_taxonomy_submenus' ], 10, 1 );
-		\add_action( 'admin_menu', [ __class__, 'create_menus' ], 1, 1 );
+		\add_action( 'admin_menu', [ $this, 'create_menus' ], 1, 1 );
 		\add_action( 'admin_enqueue_scripts', [ __class__, 'register_assets' ], 100, 1 );
 		\add_action( 'admin_enqueue_scripts', [ __class__, 'load_assets' ], 101, 1 );
 		\add_action( 'block_categories_all', [ __class__, 'block_categories' ], 10, 2 );                
@@ -90,18 +95,27 @@ class Admin {
 		
 	}
 
+	public function get_menu_svg(){
+		return '<svg width="153" height="213" viewBox="0 0 153 213" xmlns="http://www.w3.org/2000/svg">
+	<path fill="rgba(240, 246, 252, 0.6)" clip-rule="evenodd" d="M68.6875 148.556C18.0258 148.556 0.4375 110.963 0.4375 76.2125C0.4375 26.4625 37.5625 0.400024 76.8125 0.400024C90.6717 0.400024 107.693 3.21878 116.562 10.5563V4.55628H152.563V156.556C152.563 166 139.438 212.713 76.5625 212.713C11.4332 212.713 4.5625 163.963 4.5625 160.556H48.5625C48.5625 165.9 59.6875 174.338 77.4375 174.338C98.1875 174.338 110.562 158.088 110.562 146.556V130.556C110.562 130.556 96.38 148.556 68.6875 148.556ZM82.4425 54.9375L63.255 24.6875L60.4425 62.9375L24.4425 72.9375L58.4425 86.9375V124.938C62.4884 120.213 83.6925 95.5 83.6925 95.5L118.442 108.938C118.442 108.938 103.546 86.0825 98.4425 78.9375V74.9375C98.0675 74.9375 120.442 46.9375 120.442 46.9375L82.4425 54.9375Z"/>
+</svg>';
+	}
+
+	public function create_menu_svg(){
+		return sprintf("data:image/svg+xml;base64,%s", base64_encode($this->get_menu_svg()));
+	}
 	/**
 	 * Creates the Govpack Menu in the Dashboard Navigation
 	 */
-	public static function create_menus() {
+	public function create_menus() {
 
-		
-
+	
 		$menu = new Menu();
 
 		$menu->set_page_title( 'GovPack' )
 			->set_menu_title( 'GovPack' )
 			->set_menu_slug( 'govpack' )
+			->set_icon($this->create_menu_svg())
 			->set_callback(
 				function() {
 					// no call back as this should be redirected.
@@ -147,7 +161,7 @@ class Admin {
 			GOVPACK_PLUGIN_BUILD_URL . 'admin.css',
 			$asset_data['dependencies'] ?? '',
 			$asset_data['version'] ?? '',
-			true
+			"all"
 		);
 
 		wp_register_script(
@@ -184,11 +198,11 @@ class Admin {
 	 * Conditionally Enqueue JS/CSS Assets depending on wp_screen
 	 */
 	public static function load_assets() {
-		
+		\wp_enqueue_style( 'govpack-admin-style' );
 		$screen = get_current_screen();
-		if ( 'edit-govpack_profiles' === $screen->id ) {
-			\wp_enqueue_style( 'govpack-admin-style' );
-		}
+		//if ( 'edit-govpack_profiles' === $screen->id ) {
+		//	\wp_enqueue_style( 'govpack-admin-style' );
+		//}
 
 		if ( true === $screen->is_block_editor() && 'govpack_profiles' === $screen->post_type ) {
 			

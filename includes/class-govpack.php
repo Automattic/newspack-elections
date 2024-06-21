@@ -27,7 +27,7 @@ class Govpack {
 	const REST_PREFIX = 'govpack/v1';
 
 	private $front_end;
-	private $admin;
+	private Admin\Admin $admin;
 	private Blocks $blocks;
 	private Icons $icons;
 
@@ -43,6 +43,10 @@ class Govpack {
 
 	public function require($path){
 		require_once ( GOVPACK_PLUGIN_PATH . $path);
+	}
+
+	public function url($path){
+		return trailingslashit( GOVPACK_PLUGIN_URL ) . $path;
 	}
 
 	public function hooks() {
@@ -78,14 +82,20 @@ class Govpack {
 		\Govpack\Core\Widgets::hooks();
 
 		if(is_admin()){
-			$this->admin = \Govpack\Core\Admin\Admin::instance();
-			$this->admin->hooks();
+			$this->admin();
 		}
 		
 		if(!is_admin()){
 			$this->front_end();
 		}
 		
+	}
+
+	public function admin(){
+		if(!isset($this->admin)){
+			$this->admin = new Admin\Admin($this);
+			$this->admin->hooks();
+		}
 	}
 
 	public function front_end(){

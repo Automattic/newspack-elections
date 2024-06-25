@@ -26,9 +26,9 @@ jobs:
           ${{ runner.os }}-php-
 
     - name: Install Composer Dependencies
-      run: composer install --no-dev --prefer-dist --no-progress --no-scripts && \
-           composer require brianhenryie/strauss && \
-           vendor/bin/strauss && \
+      run: composer install --no-dev --prefer-dist --no-progress --no-scripts && |
+           composer require brianhenryie/strauss && |
+           vendor/bin/strauss && |
            composer dump-autoload 
       
       

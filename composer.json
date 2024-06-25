@@ -19,14 +19,20 @@
     "phpcompatibility/phpcompatibility-wp": "^2.1.1",
     "brianhenryie/strauss": "^0.17.0",
     "php-stubs/wp-cli-stubs": "^2.10",
-    "captainhook/captainhook-phar": "^5.23"
+    "captainhook/captainhook-phar": "^5.23",
+    "vimeo/psalm": "^5.25.0",
+    "humanmade/psalm-plugin-wordpress": "^3.1"
   },
   "license": "GPL-2.0-or-later",
   "autoload": {
     "psr-4": {
 		"Govpack\\" : "includes/",
 		"Govpack\\Blocks\\" : "src/blocks/"
-    }
+    },
+	"files" : [
+		"includes/govpack-functions-template.php",
+		"includes/govpack-functions.php"
+	]
   },
   "scripts": {
     "prefix-namespaces": [
@@ -50,12 +56,16 @@
 	"githooks:refresh":[
 		"@githooks:uninstall",
 		"@githooks:install"	
+	],
+	"qa:psalm":[
+		"psalm"
 	]
   },
   "scripts-descriptions": {
 	"githooks:install" : "Add new hook files to `.git/hooks` without disturbing existing hooks.",
 	"githooks:uninstall" : "Removes all hooks in `.git/hooks`.",
-	"githooks:refresh" : "Removes all hooks from `.git/hooks` then re-installs"
+	"githooks:refresh" : "Removes all hooks from `.git/hooks` then re-installs",
+	"qa:psalm" : "Runs the Psalm Static Analysis as defined in psalm.xml"
   },
   "extra": {
     "strauss": {

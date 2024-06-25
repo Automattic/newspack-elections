@@ -29,7 +29,7 @@ jobs:
       run: |  
           composer install --no-dev --prefer-dist --no-progress --no-scripts
             vendor/bin/strauss 
-            composer dump-autoload 
+            composer dump-autoload --no-scripts
       
       
     - name: Cache NPM packages

@@ -10,14 +10,15 @@
     "league/csv": "^9.15.0",
     "zerodahero/address-normalization": "^2.1",
     "monolog/monolog": "^2.8",
-    "gamajo/template-loader": "^1.3"
+    "gamajo/template-loader": "^1.3",
+	"brianhenryie/strauss": "^0.17.0"
   },
   "require-dev": {
     "automattic/vipwpcs": "^2.2",
     "wp-coding-standards/wpcs": "^2.3",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
     "phpcompatibility/phpcompatibility-wp": "^2.1.1",
-    "brianhenryie/strauss": "^0.17.0",
+    
     "php-stubs/wp-cli-stubs": "^2.10",
     "captainhook/captainhook-phar": "^5.23",
     "vimeo/psalm": "^5.25.0",

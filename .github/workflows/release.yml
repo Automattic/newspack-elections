@@ -28,7 +28,7 @@ jobs:
     - name: Install Composer Dependencies
       run: |  
           composer install --no-dev --prefer-dist --no-progress --no-scripts
-            composer require brianhenryie/strauss
+            composer require brianhenryie/strauss --no-scripts
             vendor/bin/strauss 
             composer dump-autoload 
       

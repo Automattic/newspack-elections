@@ -26,7 +26,7 @@ jobs:
           ${{ runner.os }}-php-
 
     - name: Install Composer Dependencies
-      run: composer install --prefer-dist --no-progress --no-scripts && composer run-script prefix-namespaces && composer run-script dump-autoloader
+      run: composer install --prefer-dist --no-progress --no-scripts && composer run-script prefix-namespaces && composer run-script dump-autoload
       
       
     - name: Cache NPM packages

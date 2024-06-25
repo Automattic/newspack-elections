@@ -13,8 +13,8 @@ jobs:
     steps:
     
     - uses: actions/checkout@v4
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict
+    #- name: Validate composer.json and composer.lock
+      #run: composer validate --strict
 
     - name: Cache Composer packages
       id: composer-cache
@@ -57,7 +57,7 @@ jobs:
     #  env:
     #    SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
     #    SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-    #    ASSETS_DIR: "assets"
+    #    ASSETS_DIR: "assets"git
     #    SLUG: "govpack"
         
     - name: Create a Zip

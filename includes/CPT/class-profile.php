@@ -783,6 +783,14 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		if($dob === ""){
 			return "";
 		}
+		
+		if(is_string($dob)){
+			$dob = strtotime($dob);
+		}
+
+		if(!$dob){
+			return "";
+		}
 
 		$today = new \DateTime();
 		$dateOfBirth = new \DateTime();

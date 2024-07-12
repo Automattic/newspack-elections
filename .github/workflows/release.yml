@@ -17,7 +17,8 @@ jobs:
         with:
           tagRegex: "v(.*)"  # Optional. Returns specified group text as tag name. Full tag string is returned if regex is not defined.
           tagRegexGroup: 1 # Optional. Default is 1.
-      
+      - name: Checkout Repo
+        uses: actions/checkout@v4
       - name: Modify version number
         uses: mingjun97/file-regex-replace@v1
         with:
@@ -28,7 +29,6 @@ jobs:
           exclude: '.^'               # Optional, defaults to '.^'
           encoding: 'utf8'            # Optional, defaults to 'utf8'
           path: '.'                   # Optional, defaults to '.'
-      - uses: actions/checkout@v4
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v4

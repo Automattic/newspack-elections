@@ -784,6 +784,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			return "";
 		}
 		
+		// attempt to convert a string to a date
 		if(is_string($dob)){
 			$dob = strtotime($dob);
 		}

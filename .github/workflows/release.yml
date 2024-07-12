@@ -24,7 +24,7 @@ jobs:
         uses: mingjun97/file-regex-replace@v1
         with:
           regex: '^([\s]+\* Version:[ ]*([\S]+))$'
-          replacement: '$1-$GIT_TAG_NAME'
+          replacement: "$1-${{ steps.tagName.outputs.tag }}"
           flags: "gm"                  # Optional, defaults to "g"
           include: 'govpack\.php'    # Optional, defaults to ".*"
           exclude: '.^'               # Optional, defaults to '.^'

@@ -8,8 +8,7 @@
 namespace Govpack\Core\Admin;
 
 use Govpack\Core\Capabilities;
-use Govpack\Core\CPT;
-
+use Govpack\Core\CPT\Profile;
 
 use Exception;
 
@@ -28,8 +27,22 @@ class Admin {
 		\add_action( 'admin_enqueue_scripts', [ __class__, 'load_assets' ], 101, 1 );
 		\add_action( 'block_categories_all', [ __class__, 'block_categories' ], 10, 2 );                
 		\add_action( 'enqueue_block_editor_assets', [ __class__, 'enqueue_block_editor_assets' ] );
-
+		\add_action( 'current_screen', [ __class__, 'conditional_hooks' ] );
 		\add_action( 'after_setup_theme', [ '\Govpack\Core\Admin\Export', 'hooks' ], 11, 1 );
+	}
+
+	public static function conditional_hooks(){
+		$screen = \get_current_screen();
+		
+		if ( ! $screen ) {
+			return;
+		}
+
+		switch ( $screen->base ) {
+			case "toplevel_page_govpack":
+				self::redirect_to_profiles();
+				break;
+		}
 	}
 
 	/**
@@ -67,6 +80,13 @@ class Admin {
 		);
 	}
 	
+	/**
+	 * Utility Function that redirects to Profiles archive.
+	 */
+	public static function redirect_to_profiles(){
+		wp_redirect(admin_url( 'edit.php?post_type=' . Profile::CPT_SLUG ), 302);
+	}
+
 	/**
 	 * Creates the Govpack Menu in the Dashboard Navigation
 	 */

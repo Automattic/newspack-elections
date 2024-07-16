@@ -3,12 +3,12 @@
   "description": "Govpack TK",
   "type": "wordpress-plugin",
   "require": {
-    "pablo-sg-pacheco/wp-namespace-autoloader": "dev-master",
-    "woocommerce/action-scheduler": "^3.4",
+    "pablo-sg-pacheco/wp-namespace-autoloader": "dev-master#b50050f",
+    "woocommerce/action-scheduler": "^3.8",
     "gargron/fileupload": "~1.4.0",
     "league/csv": "^9.7",
     "zerodahero/address-normalization": "^2.1",
-    "monolog/monolog": "^2.8"
+    "monolog/monolog": "^2.9"
   },
   "require-dev": {
     "automattic/vipwpcs": "^2.2",

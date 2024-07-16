@@ -59,5 +59,6 @@ $blocks_autoloader->init();
 
 // Include the main Govpack class.
 if ( class_exists( '\Govpack\Core\Govpack' ) ) {
+
 	$GLOBALS['govpack'] = \Govpack\Core\Govpack::instance();
 }

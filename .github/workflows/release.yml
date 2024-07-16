@@ -40,7 +40,6 @@ jobs:
       - name: Install Composer Dependencies
         run: |  
           composer install --no-dev --prefer-dist --no-progress --no-scripts
-            vendor/bin/strauss 
             composer dump-autoload --no-scripts
       - name: Cache NPM packages
         id: npm-cache

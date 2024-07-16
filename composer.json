@@ -1,6 +1,6 @@
 {
   "name": "govpack/govpack",
-  "description": "Govpack TK",
+  "description": "Govpack",
   "type": "wordpress-plugin",
   "require": {
     "pablo-sg-pacheco/wp-namespace-autoloader": "dev-master#b50050f",

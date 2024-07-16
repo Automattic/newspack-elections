@@ -6,7 +6,7 @@
  * Author:            Govpack, poweredbycoffee, thefuturewasnow
  * Text Domain:       govpack
  * Domain Path:       /languages
- * Version:           1.0.1
+ * Version:           1.0.2
  * Requires at least: 5.9 
  *
  * @package         Govpack

@@ -54,7 +54,7 @@ class Admin {
 
 		wp_enqueue_script(
 			'unregister-profile-self-block',
-			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/profile_self_unregister_block.js',
+			GOVPACK_PLUGIN_ASSETS_URL . 'profile_self_unregister_block.js',
 			[ 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ],
 			1,
 			true
@@ -131,7 +131,7 @@ class Admin {
 	 */
 	public static function register_assets() {
 
-		$file = GOVPACK_PLUGIN_FILE . 'dist/admin.asset.php';
+		$file = GOVPACK_PLUGIN_DIR . 'dist/admin.asset.php';
 
 		if ( file_exists( $file ) ) {
 			$asset_data = require_once $file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
@@ -154,7 +154,7 @@ class Admin {
 		);
 
 
-		$file = GOVPACK_PLUGIN_FILE . 'dist/editor.asset.php';
+		$file = GOVPACK_PLUGIN_DIR . 'dist/editor.asset.php';
 
 		if ( file_exists( $file ) ) {
 			$asset_data = require_once $file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable

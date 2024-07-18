@@ -64,7 +64,7 @@ class Helpers {
 
 		$items = wp_cache_get( $cache_key );
 		if ( false === $items ) {
-			$data  = file_get_contents( GOVPACK_PLUGIN_FILE . "assets/json/$slug.json" );
+			$data  = file_get_contents( GOVPACK_PLUGIN_DIR . "assets/json/$slug.json" );
 			$items = json_decode( $data, true );
 
 			if ( json_last_error() === JSON_ERROR_NONE && $items ) {

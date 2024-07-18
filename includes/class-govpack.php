@@ -49,32 +49,47 @@ class Govpack {
 	 */
 	public function __construct() {
 		\add_action( 'after_setup_theme', [ __class__, 'hooks' ] );
-		\add_action( 'plugins_loaded', [ '\Govpack\Core\ActionScheduler\ActionScheduler', 'hooks' ], 0 );
-
+		\add_action( 'plugins_loaded', [ '\Govpack\Core\ActionScheduler\ActionScheduler', 'hooks' ], 0 );		
 	}
 
-	/**
-	 * WordPress Hooks
-	 */
-	public static function hooks() {
+	public static function activation(){
+		error_log("activeate fired");
+		
+		
+		\Govpack\Core\CPT\Profile::register_post_type();
+		flush_rewrite_rules(false);
+	}
 
 
-		// Functions well need.
-		\Govpack\Core\CPT\AsTaxonomy::hooks();
-
+	public static function post_types(){
 		// Custom Post Types.
 		\Govpack\Core\CPT\Profile::hooks();
+	}
 
-		// get capabilities setup first.
-		\Govpack\Core\Capabilities::hooks();
-
-		// Taxonomies.
+	public static function taxonomies(){
+		// Custom Post Types.
 		\Govpack\Core\Tax\LegislativeBody::hooks();
 		\Govpack\Core\Tax\OfficeHolderStatus::hooks();
 		\Govpack\Core\Tax\OfficeHolderTitle::hooks();
 		\Govpack\Core\Tax\Party::hooks();
 		\Govpack\Core\Tax\Profile::hooks();
 		\Govpack\Core\Tax\State::hooks();
+
+	}
+	/**
+	 * WordPress Hooks
+	 */
+	public static function hooks() {
+
+		// Functions well need.
+		\Govpack\Core\CPT\AsTaxonomy::hooks();
+
+		// Custom Post Types & taxonomies.
+		self::post_types();
+		self::taxonomies();
+
+		// get capabilities setup first.
+		\Govpack\Core\Capabilities::hooks();
 
 		if ( defined( 'WP_CLI' ) && \WP_CLI ) {
 			\Govpack\Core\CLI::init();

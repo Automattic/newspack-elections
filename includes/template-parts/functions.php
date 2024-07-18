@@ -12,7 +12,7 @@
  * @param string  $value The value to output.
  * @param boolean $display Override to control if this row will output.
  */
-function gp_row( $id = '', $value, $display ) {
+function gp_row( $id , $value = null, $display = null ) {
 
 	if ( ! $display ) {
 		return null;
@@ -95,11 +95,11 @@ function gp_websites( $websites ) {
 function gp_contacts( $profile_data, $attributes ) {
 
 	$icons = [
-		'facebook'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/facebook.svg' ),
-		'twitter'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/twitter.svg' ),
-		'linkedin'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/linkedin.svg' ),
-		'instagram' => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/instagram.svg' ),
-		'email'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/email.svg' ),
+		'facebook'  => file_get_contents( GOVPACK_PLUGIN_DIR . '/src/images/facebook.svg' ),
+		'twitter'   => file_get_contents( GOVPACK_PLUGIN_DIR . '/src/images/twitter.svg' ),
+		'linkedin'  => file_get_contents( GOVPACK_PLUGIN_DIR . '/src/images/linkedin.svg' ),
+		'instagram' => file_get_contents( GOVPACK_PLUGIN_DIR . '/src/images/instagram.svg' ),
+		'email'     => file_get_contents( GOVPACK_PLUGIN_DIR . '/src/images/email.svg' ),
 	];
   
 	$icon = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
@@ -221,11 +221,11 @@ function gp_social_media_row( $label, $links = [] ) {
 	$services = [ 'facebook', 'twitter', 'linkedin', 'instagram' ];
 
 	$icons = [
-		'facebook'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/facebook.svg' ),
-		'twitter'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/twitter.svg' ),
-		'linkedin'  => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/linkedin.svg' ),
-		'instagram' => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/instagram.svg' ),
-		'email'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/email.svg' ),
+		'facebook'  => file_get_contents( GOVPACK_PLUGIN_DIR . 'src/images/facebook.svg' ),
+		'twitter'   => file_get_contents( GOVPACK_PLUGIN_DIR . 'src/images/twitter.svg' ),
+		'linkedin'  => file_get_contents( GOVPACK_PLUGIN_DIR . 'src/images/linkedin.svg' ),
+		'instagram' => file_get_contents( GOVPACK_PLUGIN_DIR . 'src/images/instagram.svg' ),
+		'email'     => file_get_contents( GOVPACK_PLUGIN_DIR . 'src/images/email.svg' ),
 	];
 
 	foreach ( $services as $service ) {
@@ -277,10 +277,10 @@ function gp_contact_info( $label, $links, $attrs ) {
 	</div>';
 
 	$icons = [
-		'phone'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/phone.svg' ),
-		'fax'     => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/fax.svg' ),
-		'website' => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/globe.svg' ),
-		'email'   => file_get_contents( GOVPACK_PLUGIN_FILE . '/src/images/email.svg' ),
+		'phone'   => file_get_contents( GOVPACK_PLUGIN_DIR . 'src/images/phone.svg' ),
+		'fax'     => file_get_contents( GOVPACK_PLUGIN_DIR . 'src/images/fax.svg' ),
+		'website' => file_get_contents( GOVPACK_PLUGIN_DIR . 'src/images/globe.svg' ),
+		'email'   => file_get_contents( GOVPACK_PLUGIN_DIR . 'src/images/email.svg' ),
 	];
 
 	$services = [ 

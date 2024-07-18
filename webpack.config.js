@@ -207,6 +207,7 @@ function getUpdatedWebpackConfig(env, arg){
     webpackConfig.entry.importer = path.join( __dirname, "src", 'importer', "index" )
     webpackConfig.entry.admin = path.join( __dirname, 'src', "admin", 'index')
 	webpackConfig.entry.frontend = path.join( __dirname, 'src', "frontend", 'index')
+	webpackConfig.entry.exporter = path.join( __dirname, 'src', "admin", "exporter", 'index')
 
 
     return webpackConfig

@@ -34,7 +34,7 @@ class Export {
 
 		
 
-		$file = GOVPACK_PLUGIN_FILE . 'dist/exporter.asset.php';
+		$file = GOVPACK_PLUGIN_DIR . 'dist/exporter.asset.php';
 		if ( file_exists( $file ) ) {
 			$asset_data = require_once $file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
 		}
@@ -45,7 +45,7 @@ class Export {
 
 		wp_register_script(
 			$script_handle,
-			plugin_dir_url( GOVPACK_PLUGIN_FILE ) . 'govpack/dist/exporter.js',
+			GOVPACK_PLUGIN_ASSETS_URL . 'exporter.js',
 			$asset_data['dependencies'] ?? [],
 			$asset_data['version'] ?? '',
 			true

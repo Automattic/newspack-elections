@@ -33,7 +33,7 @@ abstract class Taxonomy {
 	 * Seed taxonomies with default data.
 	 */
 	public static function seed() {
-		$file_path = GOVPACK_PLUGIN_FILE . 'assets/json/' . static::SLUG . '.json';
+		$file_path = GOVPACK_PLUGIN_DIR . 'assets/json/' . static::SLUG . '.json';
 
 		if ( ! file_exists( $file_path ) || 0 !== validate_file( $file_path ) ) {
 			return;

@@ -86,7 +86,7 @@ class County extends \Govpack\Core\Abstracts\Taxonomy {
 	 * Seed taxonomies with default data.
 	 */
 	public static function seed() {
-		$file_path = GOVPACK_PLUGIN_FILE . 'assets/json/county.json';
+		$file_path = GOVPACK_PLUGIN_DIR . 'assets/json/county.json';
 
 		if ( ! file_exists( $file_path ) || 0 !== validate_file( $file_path ) ) {
 			return;

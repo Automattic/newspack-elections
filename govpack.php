@@ -14,22 +14,32 @@
 
 defined( 'ABSPATH' ) || exit;
 
-// Define GOVPACK_PLUGIN_FILE.
+
+
+// Define where the path to the core plugin file.
 if ( ! defined( 'GOVPACK_PLUGIN_FILE' ) ) {
-	define( 'GOVPACK_PLUGIN_FILE', plugin_dir_path( __FILE__ ) );
+	define( 'GOVPACK_PLUGIN_FILE',  __FILE__ );
+}
+
+// Define where the path to the folder where plugin files live.
+if ( ! defined( 'GOVPACK_PLUGIN_DIR' ) ) {
+	define( 'GOVPACK_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 }
 
 // Define GOVPACK_PLUGIN_URL.
 if ( ! defined( 'GOVPACK_PLUGIN_URL' ) ) {
 	define( 'GOVPACK_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 }
+
 if ( ! defined( 'GOVPACK_PLUGIN_ASSETS_URL' ) ) {
 	define( 'GOVPACK_PLUGIN_ASSETS_URL', GOVPACK_PLUGIN_URL . 'dist/' );
 }
 
 
-require_once GOVPACK_PLUGIN_FILE . 'vendor/autoload.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
-require_once GOVPACK_PLUGIN_FILE . 'vendor/woocommerce/action-scheduler/action-scheduler.php';// phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+
+
+require_once GOVPACK_PLUGIN_DIR . 'vendor/autoload.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+require_once GOVPACK_PLUGIN_DIR . 'vendor/woocommerce/action-scheduler/action-scheduler.php';// phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 
 
 
@@ -59,6 +69,6 @@ $blocks_autoloader->init();
 
 // Include the main Govpack class.
 if ( class_exists( '\Govpack\Core\Govpack' ) ) {
-
 	$GLOBALS['govpack'] = \Govpack\Core\Govpack::instance();
+	register_activation_hook(__FILE__, [ $GLOBALS['govpack'], 'activation' ]);
 }

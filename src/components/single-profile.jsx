@@ -487,16 +487,16 @@ const SingleProfile = (props) => {
                         {showName && (
 							<>
                             <h3 className={`${blockClassName}__name`} ><Link>{profile.name.name}</Link></h3>
-							{(showStatusTag && profile.status) && (
-								<div className={`${blockClassName}__status-tag`}>
-									<div className="govpack-termlist">
-										<span className="govpack-tag">{profile.status}</span>
-									</div>
-								</div>
-							)}
 							</>
                         )}
-
+						{(showStatusTag && profile.status) && (
+							<div className={`${blockClassName}__status-tag`}>
+								<div className="govpack-termlist">
+									<span className="govpack-tag">{profile.status}</span>
+								</div>
+							</div>
+						)}
+						
                         {showBio && profile.bio && (
                             <>
                                 <div>{bio}</div>

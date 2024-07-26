@@ -53,7 +53,7 @@ const ProfileDisplaySettings = (props) => {
 			
 		},{
 			label: 'Display Status',
-			attr: "showParty",
+			attr: "showStatus",
 			
 		},{
 			label: 'Display State',

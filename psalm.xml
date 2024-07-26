@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="1"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    findUnusedBaselineEntry="true"
+    findUnusedCode="true"
+	autoloader="./vendor-prefixed/autoload.php"
+>
+    <projectFiles>
+        <directory name="./"/>
+		<file name="govpack.php" />
+        <ignoreFiles>
+			<directory name="includes"/>
+			<directory name="src"/>
+			<directory name="vendor-prefixed"/>
+			<directory name="vendor"/>
+			<directory name=".github"/>
+			<directory name=".cache"/>
+			<directory name="assets"/>
+			<directory name="build"/>
+			<directory name="node_modules"/>
+        </ignoreFiles>
+    </projectFiles>
+<plugins><pluginClass class="PsalmWordPress\Plugin"/></plugins></psalm>

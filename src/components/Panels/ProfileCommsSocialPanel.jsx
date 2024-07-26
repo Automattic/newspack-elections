@@ -10,7 +10,7 @@ const ProfileCommsSocialPanel = (props) => {
 		title,
         attributes,
         setAttributes,
-		display = true,
+		display : shouldDisplayPanel = true,
 		parentAttributeKey
     } = props
 
@@ -21,7 +21,7 @@ const ProfileCommsSocialPanel = (props) => {
     } = attributes[parentAttributeKey]
 
 
-	if(!display){
+	if(!shouldDisplayPanel){
 		return null
 	}
 
@@ -35,6 +35,7 @@ const ProfileCommsSocialPanel = (props) => {
 		setAttributes({ [parentAttributeKey] : newAttrs })
 	}
 
+	
     return (
 		<Panel>
 			<PanelBody title={ title }>

@@ -4,10 +4,7 @@
     "editorScript": "file:./index.js",
 	"category": "govpack-blocks",
 	"attributes": {
-		"className": {
-			"type": "string",
-			"default": ""
-		},
+		
 		"profileId": {
 			"type": "number",
 			"default": 0
@@ -24,8 +21,19 @@
 			"type": "string",
 			"default": "0%"
 		},
-		
+		"showOtherLinks" : {
+			"type": "boolean",
+			"default": false
+		},
 		"avatarHideDefault": {
+			"type": "boolean",
+			"default": false
+		},
+		"showLabels": {
+			"type": "boolean",
+			"default": false
+		},
+		"labelsAbove": {
 			"type": "boolean",
 			"default": false
 		},
@@ -37,6 +45,10 @@
 			"type": "boolean",
 			"default": false
 		},   
+		"showStatusTag": {
+			"type": "boolean",
+			"default": false
+		},
 		"showWebsites": {
 			"type": "boolean",
 			"default": true
@@ -148,6 +160,11 @@
 		"showEndorsements" : {
 			"type": "boolean",
 			"default": true
+		},
+		"selectedLinks": {
+			"type": "object",
+			"default": {
+			}
 		}
 	}
 }

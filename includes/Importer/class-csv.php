@@ -8,7 +8,7 @@
 namespace Govpack\Core\Importer;
 
 use Exception;
-use Govpack\League\Csv\Reader;
+use Govpack\Vendor\League\Csv\Reader;
 
 /**
  * Register and handle the "USIO" Importer
@@ -35,7 +35,13 @@ class CSV extends \Govpack\Core\Importer\Abstracts\Abstract_Importer {
 			throw new Exception( 'Each column in your CSV needs to have a heading, there is at least 1 un-named column' );
 		}
 
-		self::has_required_columns( $reader->getHeader() );
+		// Normalise the column names in the CSV to all be lowercase, dont actually pass this back to the CSV reader, just pass it to the validation
+		$header = array_map(function($col){
+			return strtolower($col);
+		}, $reader->getHeader());
+
+		
+		self::has_required_columns( $header );
 		
 		return $reader;
 	}

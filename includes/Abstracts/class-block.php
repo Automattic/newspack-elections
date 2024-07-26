@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  */
 abstract class Block {
 
-	protected \WP_Block_Type $block;
+	protected \WP_Block_Type $block_type;
 
 	public $block_name;
 
@@ -32,7 +32,23 @@ abstract class Block {
 		return false;
 	}
 
-	abstract function register();
+	abstract public function block_build_path() : string;
+
+	/**
+	 * Registers the block.
+	 *
+	 * @return void
+	 */
+	public function register() {
+
+		$this->block_type = register_block_type(
+			$this->block_build_path() . '/block.json',
+			[
+				'render_callback' => [ $this, 'render' ],
+			]
+		);
+
+	}
 
 	public function needs_view_assets_enqueued() : bool{
 		return wp_is_block_theme();
@@ -40,12 +56,12 @@ abstract class Block {
 
 	public function remove_view_styles(){	
 
-		if(!isset($this->block)){
+		if(!isset($this->block_type)){
 			return;
 		}
 
 		if ( ! $this->needs_view_assets_enqueued() ) {
-			foreach($this->block->style_handles as $handle){
+			foreach($this->block_type->style_handles as $handle){
 				wp_dequeue_style($handle);
 			}
 		}
@@ -74,7 +90,7 @@ abstract class Block {
 			return;
 		}
 
-		foreach($this->block->style_handles as $handle){
+		foreach($this->block_type->style_handles as $handle){
 			if( ! wp_style_is($handle, "enqueued")){
 				wp_enqueue_style($handle);
 			}
@@ -87,7 +103,9 @@ abstract class Block {
 	 *
 	 * @return void
 	 */
-	public abstract function register_script();
+	public function register_script(){
+
+	}
 
 
 	/**
@@ -123,7 +141,7 @@ abstract class Block {
 	public function get_block_attributes_with_default_values( $block_name ) {
 	
 		$block = self::get_block( $block_name );
-		
+	
 		$block_attributes = array_merge(
 			...array_map(
 				function( $key, $value ) {
@@ -134,6 +152,9 @@ abstract class Block {
 			)
 		);
 
+		if(!isset($block_attributes["className"])){
+			$block_attributes["className"] = wp_get_block_default_classname($block_name);
+		}
 		return $block_attributes;
 	}
 	

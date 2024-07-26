@@ -26,6 +26,10 @@
 			"type": "string",
 			"default": "0%"
 		},
+		"showOtherLinks" : {
+			"type": "boolean",
+			"default": false
+		},
 		"avatarSize": {
 			"type": "number",
 			"default": 128
@@ -37,6 +41,10 @@
 		"showStatus": {
 			"type": "boolean",
 			"default": true
+		},
+		"showStatusTag": {
+			"type": "boolean",
+			"default": false
 		},
 		"showWebsites": {
 			"type": "boolean",
@@ -50,6 +58,14 @@
 			"type": "boolean",
 			"default": true
 		},   
+		"showLabels": {
+			"type": "boolean",
+			"default": false
+		},
+		"labelsAbove": {
+			"type": "boolean",
+			"default": false
+		},
         "showAge": {
 			"type": "boolean",
 			"default": false
@@ -159,6 +175,11 @@
 		"showEndorsements" : {
 			"type": "boolean",
 			"default": true
+		},
+		"selectedLinks": {
+			"type": "object",
+			"default": {
+			}
 		}
 	}
 }

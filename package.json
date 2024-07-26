@@ -3,19 +3,20 @@
   "version": "0.0.0",
   "description": "Govpack Blocks",
   "scripts": {
-	"build": "wp-scripts build",
-	"check-engines": "wp-scripts check-engines",
-	"check-licenses": "wp-scripts check-licenses",
-	"format": "wp-scripts format",
-	"lint:css": "wp-scripts lint-style",
-	"lint:js": "wp-scripts lint-js",
-	"lint:md:docs": "wp-scripts lint-md-docs",
-	"lint:pkg-json": "wp-scripts lint-pkg-json",
-	"packages-update": "wp-scripts packages-update",
-	"plugin-zip": "wp-scripts plugin-zip",
-	"start": "wp-scripts start",
-	"test:e2e": "wp-scripts test-e2e",
-	"test:unit": "wp-scripts test-unit-js"
+    "build": "wp-scripts build",
+    "check-engines": "wp-scripts check-engines",
+    "check-licenses": "wp-scripts check-licenses",
+    "format": "wp-scripts format",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "lint:md:docs": "wp-scripts lint-md-docs",
+    "lint:pkg-json": "wp-scripts lint-pkg-json",
+    "packages-update": "wp-scripts packages-update",
+    "plugin-zip": "wp-scripts plugin-zip",
+    "start": "wp-scripts start",
+    "test:e2e": "wp-scripts test-e2e",
+    "test:unit": "wp-scripts test-unit-js",
+	"lint:cpd": "jscpd ."
   },
   "repository": {
     "type": "git",
@@ -31,14 +32,22 @@
     "react-input-mask": "^2.0.4"
   },
   "devDependencies": {
-	"@wordpress/scripts": "^27.6.0"
+    "@wordpress/scripts": "^27.6.0",
+	"jscpd": "^3.5.10"
   },
   "config": {
-	"entrypoints" : {
-		"editor" : "./src/editor/index.js",
-		"admin" : "./src/admin/index.js",
-		"importer" : "./src/importer/index.js",
-		"frontend" : "./src/frontend/index.js"
-	}
+    "entrypoints": {
+      "editor": "./src/editor/index.js",
+      "admin": "./src/admin/index.js",
+      "importer": "./src/importer/index.js",
+      "frontend": "./src/frontend/index.js",
+	  "exporter": "./src/admin/exporter/index.js"
+    }
+  },
+  "jscpd": {
+    "reporters": ["console"],
+    "ignore": ["**/.github/**", "**/deprecated/**", "**/block.json"],
+    "absolute": true,
+    "gitignore": true
   }
 }

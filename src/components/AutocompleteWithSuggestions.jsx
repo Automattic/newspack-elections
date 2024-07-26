@@ -44,8 +44,6 @@ const AutocompleteField = (props) => {
 		const request = fetchSuggestions( input );
 		request
 			.then( suggestions => {
-
-				console.log("then", suggestions, suggestionsRequest)
 				
 					// A fetch Promise doesn't have an abort option. It's mimicked by
 					// comparing the request reference in on the instance, which is
@@ -54,15 +52,20 @@ const AutocompleteField = (props) => {
 					//	return;
 					//}
 
-					const currentSuggestions = [ ...suggestions ];
+					const currentSuggestions = [ ...suggestions ].map( (suggestion) => {
+						return {
+							...suggestion,
+							"label" : (suggestion.label + " (ID:" + suggestion.value + ")")
+						}
+					});
+					
 					const currentValidValues = {};
 
 					suggestions.forEach( suggestion => {
-						currentValidValues[ suggestion.value ] = suggestion.label;
+						currentValidValues[ suggestion.value ] = suggestion.label + " (ID:" + suggestion.value + ")";
 					} );
 
-					console.log("currentSuggestions", currentSuggestions)
-
+			
 					setSuggestions(currentSuggestions);
 					setValidValues(currentValidValues);
 					setLoading(false);
@@ -72,8 +75,6 @@ const AutocompleteField = (props) => {
 					setLoading(false);
 				}
 			} );
-
-		console.log("??")
 
 		setSuggestionsRequest(request);
 		
@@ -145,13 +146,11 @@ const AutocompleteField = (props) => {
 		return getLabelsForValues( tokens );
 	}
 
-	console.log("Suggestions",  suggestions.map( suggestion => suggestion.label ))
-	console.log("tokens",  getTokens())
 	return (
 			<div className="govpack-autocomplete-tokenfield">
 				<FormTokenField
 					value={ getTokens() }
-					suggestions={ suggestions.map( suggestion => suggestion.label ) }
+					suggestions={ suggestions.map( suggestion => suggestion.label )}
 					onChange={ tokens => handleOnChange( tokens ) }
 					onInputChange={ input => debouncedUpdateSuggestions( input ) }
 					label={ label }

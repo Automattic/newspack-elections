@@ -46,6 +46,15 @@ export function normalize_profile(profile){
     return today.getFullYear() - dateOfBirth.getFullYear() - (birthdayThisYearYet ? 0 : 1) + " Years";
   }
 
+
+  	let generated_name = [
+		profile.meta?.name_prefix, 
+		profile.meta?.name_first,
+		profile.meta?.name_middle, 
+		profile.meta?.name_last,
+		profile.meta?.name_suffix,
+	].join(" ")
+
     return {
         title : decodeEntities(profile?.title?.rendered ?? profile?.title),
         featured_image : featured_image,
@@ -61,18 +70,21 @@ export function normalize_profile(profile){
 		endorsements :  profile.meta?.endorsements ?? null,
 		social : {
         	official : {
+				x : profile.meta?.x_official ??  profile.meta?.twitter_official ?? null,
 				twitter : profile.meta?.twitter_official ?? null,
 				facebook : profile.meta?.facebook_official ?? null,
 				instagram : profile.meta?.instagram_official ?? null,
 				youtube : profile.meta?.youtube_official ?? null
 			},
 			campaign :  {
+				x : profile.meta?.x_campaign ??  profile.meta?.twitter_campaign ?? null,
 				twitter : profile.meta?.twitter_campaign ?? null,
 				facebook : profile.meta?.facebook_campaign ?? null,
 				instagram : profile.meta?.instagram_campaign ?? null,
 				youtube : profile.meta?.youtube_campaign ?? null
 			},
 			personal :  {
+				x : profile.meta?.x_personal ??  profile.meta?.twitter_personal ?? null,
 				twitter : profile.meta?.twitter_personal ?? null,
 				facebook : profile.meta?.facebook_personal ?? null,
 				instagram : profile.meta?.instagram_personal ?? null,
@@ -86,16 +98,10 @@ export function normalize_profile(profile){
 			district 	: createAddress("district")
 		},
 		name : {
-			name 	: profile.meta?.name,
-			full 	: [
-				profile.meta?.name_prefix, 
-				profile.meta?.name_first,
-				profile.meta?.name_middle, 
-				profile.meta?.name_last,
-				profile.meta?.name_suffix,
-			].join(" "),
-			first 	:  profile.meta?.first_name ?? null,
-			last 	:  profile.meta?.last_name ?? null
+			name 	: profile.meta?.name || profile.title?.rendered || generated_name,
+			full 	: generated_name,
+			first 	: profile.meta?.first_name ?? null,
+			last 	: profile.meta?.last_name ?? null
 		},
         age : profile.meta?.date_of_birth ? getAgeFromEpoch(Number(profile.meta?.date_of_birth)) : null,
 		websites : {
@@ -144,6 +150,7 @@ export function normalize_profile(profile){
 					value : profile.meta?.contact_form_url
 				}
 			}
-		}
+		},
+		links : profile.profile_links ?? {}
     }
 }

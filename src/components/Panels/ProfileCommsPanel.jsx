@@ -1,7 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import {Panel, PanelBody, PanelRow, ToggleControl, BaseControl, ButtonGroup, Button} from '@wordpress/components';
-import {__experimentalUnitControl as UnitControl} from '@wordpress/components';
-
+import { ControlledPanel } from './ControlledPanel';
 
 
 const ProfileCommsPanel = (props) => {
@@ -10,74 +8,60 @@ const ProfileCommsPanel = (props) => {
 		title,
         attributes,
         setAttributes,
-		display = true,
+		display : shouldDisplayPanel = true,
 		parentAttributeKey
     } = props
 
-    const {
-        showPhone,
-        showEmail,
-        showFax,
-        showAddress,
-		showWebsite,
-    } = attributes[parentAttributeKey]
 
-
-	if(!display){
+	if(!shouldDisplayPanel){
 		return null
 	}
 
 	const setSubAttributes = (attrs) => {
-
 		const newAttrs = {
 			...attributes[parentAttributeKey],
 			...attrs
 		}
-
 		setAttributes({ [parentAttributeKey] : newAttrs })
 	}
 
-    return (
-		<Panel>
-			<PanelBody title={ title }>
-				<PanelRow>
-					<ToggleControl
-						label={ __( 'Display Phone', 'govpack' ) }
-						checked={ showPhone ?? true }
-						onChange={ () => setSubAttributes( { showPhone: ! showPhone } ) }
-					/>
-				</PanelRow>
-				<PanelRow>
-					<ToggleControl
-						label={ __( 'Display Fax', 'govpack' ) }
-						checked={ showFax ?? true }
-						onChange={ () => setSubAttributes( { showFax: ! showFax } ) }
-					/>
-				</PanelRow>
-				<PanelRow>
-					<ToggleControl
-						label={ __( 'Display Email', 'govpack' ) }
-						checked={ showEmail ?? true }
-						onChange={ () => setSubAttributes( { showEmail: ! showEmail } ) }
-					/>
-				</PanelRow>
-				<PanelRow>
-					<ToggleControl
-						label={ __( 'Display Address', 'govpack' ) }
-						checked={ showAddress ?? true }
-						onChange={ () => setSubAttributes( { showAddress: ! showAddress } ) }
-					/>
-				</PanelRow>
-				<PanelRow>
-					<ToggleControl
-						label={ __( 'Display Website', 'govpack' ) }
-						checked={ showWebsite ?? true }
-						onChange={ () => setSubAttributes( { showWebsite: ! showWebsite } ) }
-					/>
-				</PanelRow>
-			</PanelBody>
-		</Panel>
-	)
+	let controls = [
+		{
+			label : "Display Phone",
+			attr : "showPhone", 
+		},{
+			label : "Display Fax",
+			attr : "showFax", 
+		},{
+			label : "Display Email",
+			attr : "showEmail", 
+		},{
+			label : "Display Address",
+			attr : "showAddress", 
+		},{
+			label : "Display Website",
+			attr : "showWebsite", 
+		},
+	]
+
+
+	controls = controls.map( (control) => ({
+		...control, 
+		checked : attributes[parentAttributeKey][control.attr],
+		onChange : () => {
+			setSubAttributes( { [control.attr]: ! attributes[parentAttributeKey][control.attr] } ) 
+		}
+	}))
+
+
+
+	return (
+		<ControlledPanel 
+			controls = {controls} 
+			title = { title } 
+		/>
+    )
+
 }
 
 export default ProfileCommsPanel

@@ -20,7 +20,7 @@ import ProfileAvatarPanel from '../../components/Panels/ProfileAvatarPanel';
 import ProfileCommsPanel from '../../components/Panels/ProfileCommsPanel'
 import ProfileCommsOtherPanel from '../../components/Panels/ProfileCommsOtherPanel'
 import ProfileCommsSocialPanel from '../../components/Panels/ProfileCommsSocialPanel'
-
+import {ProfileLinksPanel} from '../../components/Panels/ProfileLinksPanel.jsx'
 import AvatarAlignmentToolBar from '../../components/Toolbars/AvatarAlignment.jsx';
 import BlockSizeAlignmentToolbar from '../../components/Toolbars/BlockSizeAlignmentToolbar.jsx';
 import ResetProfileToolbar from '../../components/Toolbars/ResetProfileToolbar.jsx';
@@ -144,10 +144,18 @@ const ProfileSelector = ( {
 						}
 
         
-						return profiles.map( _profile => ( {
-							value: _profile.id,
-							label: decodeEntities( _profile.title.rendered ) || __( '(no name)', 'govpack' ),
-						} ) );
+						return profiles.map( _profile => {
+
+							let label = decodeEntities( _profile.title.rendered ) ?? null
+							if(label){
+								label = label + " (ID: " + _profile.id + ")";
+							}
+
+							return {
+								value: _profile.id,
+								label: label || __( '(no name)', 'govpack' ),
+							} 
+						} );
                     } }
 					maxItemsToSuggest={ maxItemsToSuggest }
 					onChange={ (items) => {
@@ -164,12 +172,10 @@ const ProfileSelector = ( {
 }
 function Edit( props ) {
 
-	;
 
 	const setProfile = (newProfileId) => {
 		setAttributes({"profileId" : newProfileId})
 	}
-
 
     const ref = useRef();
 	const blockProps = useBlockProps( { ref } );
@@ -213,38 +219,6 @@ function Edit( props ) {
 		}
 	})
 	
-
-    const availableWidths = [
-        {
-            label : "Small",
-            value : "small",
-            maxWidth : "300px"
-        },
-        {
-            label : "Medium",
-            value : "medium",
-            maxWidth : "400px"
-        },
-        {
-            label : "Large",
-            value : "large",
-            maxWidth : "600px"
-        },
-        {
-            label : "Full",
-            value : "full",
-            maxWidth : "100%"
-        }
-    ]
-
-	/**
-	 * @param {string} value The selected format.
-	 */
-	function updateFormat( value ) {
-		setAttributes( { format: value } );
-	}
-
-
 	return (
 		<div { ...blockProps }>
 
@@ -256,6 +230,7 @@ function Edit( props ) {
 				<ProfileCommsPanel attributes = {attributes} parentAttributeKey={"selectedDistrictCommunicationDetails"} setAttributes = {setAttributes} title="District Communications" display={attributes.showDistrictCommunicationDetails} />
 				<ProfileCommsOtherPanel attributes = {attributes} parentAttributeKey={"selectedOtherCommunicationDetails"} setAttributes = {setAttributes} title="Other Communications" display={attributes.showOtherCommunicationDetails} profile={profile}/>
 				<ProfileCommsSocialPanel attributes = {attributes} parentAttributeKey={"selectedSocial"} setAttributes = {setAttributes} title="Social" display={attributes.showSocial} />
+				<ProfileLinksPanel key={"block-profile-row-links"} attributes = {attributes} parentAttributeKey={"selectedLinks"} setAttributes = {setAttributes} title="Links" display={attributes.showOtherLinks} profile={profile} />
             </InspectorControls>
                               
             { profileId ? (
@@ -270,7 +245,7 @@ function Edit( props ) {
                             	<ResetProfileToolbar setProfile={setProfile} attributes={attributes} setAttributes={setAttributes} />
 							</BlockControls>
 
-							<SingleProfile blockClassName = "wp-block-govpack-profile"  profile={profile} attributes={ attributes } availableWidths = {availableWidths} />
+							<SingleProfile blockClassName = "wp-block-govpack-profile"  profile={profile} attributes={ attributes } />
                         </>
                     ) : (
 						<div className="is-loading">

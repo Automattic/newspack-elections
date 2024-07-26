@@ -1,40 +1,72 @@
 {
   "name": "govpack/govpack",
-  "description": "Govpack TK",
+  "description": "Govpack",
   "type": "wordpress-plugin",
   "require": {
+	"php":">=8.1.2",
     "pablo-sg-pacheco/wp-namespace-autoloader": "dev-master#b50050f",
     "woocommerce/action-scheduler": "^3.4",
     "gargron/fileupload": "~1.4.0",
-    "league/csv": "^9.7",
+    "league/csv": "^9.15.0",
     "zerodahero/address-normalization": "^2.1",
     "monolog/monolog": "^2.8",
-    "gamajo/template-loader": "^1.3"
+    "gamajo/template-loader": "^1.3",
+	"brianhenryie/strauss": "^0.17.0"
   },
   "require-dev": {
     "automattic/vipwpcs": "^2.2",
     "wp-coding-standards/wpcs": "^2.3",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
     "phpcompatibility/phpcompatibility-wp": "^2.1.1",
-    "brianhenryie/strauss": "^0.17.0"
+    
+    "php-stubs/wp-cli-stubs": "^2.10",
+    "captainhook/captainhook-phar": "^5.23",
+    "vimeo/psalm": "^5.25.0",
+    "humanmade/psalm-plugin-wordpress": "^3.1"
   },
   "license": "GPL-2.0-or-later",
   "autoload": {
     "psr-4": {
 		"Govpack\\" : "includes/",
 		"Govpack\\Blocks\\" : "src/blocks/"
-    }
+    },
+	"files" : [
+		"includes/govpack-functions-template.php",
+		"includes/govpack-functions.php"
+	]
   },
   "scripts": {
     "prefix-namespaces": [
         "strauss"
     ],
+	"post-autoload-dump": [
+		"@githooks:refresh"
+	],
     "post-install-cmd": [
         "@prefix-namespaces"
     ],
     "post-update-cmd": [
         "@prefix-namespaces"
-    ]
+    ],
+	"githooks:install":[
+		"vendor/bin/captainhook install --force --skip-existing"
+	],
+	"githooks:uninstall":[
+		"rm .git/hooks/*"
+	],
+	"githooks:refresh":[
+		"@githooks:uninstall",
+		"@githooks:install"	
+	],
+	"qa:psalm":[
+		"psalm"
+	]
+  },
+  "scripts-descriptions": {
+	"githooks:install" : "Add new hook files to `.git/hooks` without disturbing existing hooks.",
+	"githooks:uninstall" : "Removes all hooks in `.git/hooks`.",
+	"githooks:refresh" : "Removes all hooks from `.git/hooks` then re-installs",
+	"qa:psalm" : "Runs the Psalm Static Analysis as defined in psalm.xml"
   },
   "extra": {
     "strauss": {
@@ -45,7 +77,11 @@
   },
   "config": {
     "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true
-    }
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "captainhook/captainhook-phar": true
+    },
+	"platform" : {
+		"php" : "8.1.2"
+	}
   }
 }

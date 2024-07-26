@@ -3,6 +3,7 @@
 
 import {ReactComponent as FacebookIconSVG} from "./../images/facebook.svg"
 import {ReactComponent as TwitterIconSVG} from "./../images/twitter.svg"
+import {ReactComponent as XIconSVG} from "./../images/x.svg"
 import {ReactComponent as LinkedinIconSVG} from "./../images/linkedin.svg"
 import {ReactComponent as EmailIconSVG} from "./../images/email.svg"
 import {ReactComponent as InstagramIconSVG} from "./../images/instagram.svg"
@@ -23,6 +24,7 @@ import ProfileCommsPanel from "./Panels/ProfileCommsPanel"
 
 
 const TwitterIcon = () => ( <Icon icon={ TwitterIconSVG } /> )
+const XIcon = () => ( <Icon icon={ XIconSVG } /> )
 const LinkedinIcon = () => ( <Icon icon={ LinkedinIconSVG } /> )
 const EmailIcon = () => ( <Icon icon={ EmailIconSVG } /> )
 const InstagramIcon = () => ( <Icon icon={ InstagramIconSVG } /> )
@@ -81,6 +83,30 @@ const Photo = (props) => {
 	)
 }
 
+
+const availableWidths = [
+	{
+		label : "Small",
+		value : "small",
+		maxWidth : "300px"
+	},
+	{
+		label : "Medium",
+		value : "medium",
+		maxWidth : "400px"
+	},
+	{
+		label : "Large",
+		value : "large",
+		maxWidth : "600px"
+	},
+	{
+		label : "Full",
+		value : "full",
+		maxWidth : "100%"
+	}
+]
+
 const SingleProfile = (props) => {
 
     let {
@@ -90,8 +116,9 @@ const SingleProfile = (props) => {
         showSelf = false
     } = props
 
+	
     profile = normalize_profile(profile)
-	console.log("profile", profile)
+	
 
     const {
         showAvatar, 
@@ -100,6 +127,8 @@ const SingleProfile = (props) => {
         avatarAlignment,
         align,
         width,
+		showLabels = false,
+		labelsAbove = true,
 
         showName,
         showAge,
@@ -113,6 +142,7 @@ const SingleProfile = (props) => {
 		selectedSocial,
 		showWebsites,
 		showStatus,
+		showStatusTag,
         showProfileLink,
 		showEndorsements,
         className,
@@ -121,17 +151,24 @@ const SingleProfile = (props) => {
 		showDistrictCommunicationDetails,
 		showCampaignCommunicationDetails,
 		showOtherCommunicationDetails,
+		showOtherLinks,
 
 		selectedCapitolCommunicationDetails,
 		selectedDistrictCommunicationDetails,
 		selectedCampaignCommunicationDetails,
 		selectedOtherCommunicationDetails,
+		selectedLinks,
 
     } = attributes
 
 	const Row = (props) => {
 
-		const {display, value, id} = props
+		const {
+			display, 
+			value, 
+			id,
+			label = ""
+		} = props
 	
 		if(!display){
 			return null
@@ -142,12 +179,20 @@ const SingleProfile = (props) => {
 		}
 		
 		const classes = classnames(`${blockClassName}__line`, {
+			"govpack-line" : true,
+			"govpack-line--labels-above" : labelsAbove,
+			"govpack-line--labels-beside" : !labelsAbove,
 			[`${blockClassName}--${id}`] : (id ?? false)
 		} )
 	
 		return (
 			<div className={classes} role="listitem">
-				{value}
+				{(showLabels) && (label !== "") && (
+					<dt className="govpack-line__label">{label}</dt>
+				)}
+				<dd className="govpack-line__content">
+					{value}
+				</dd>
 			</div>
 		)
 	}
@@ -160,7 +205,7 @@ const SingleProfile = (props) => {
             })}>
                 <a href={props.href} className={`${blockClassName}__link`} title={props.tooltip ?? props.label ?? ""}>
                     {props.icon && (
-                        <span className={`${blockClassName}__contact__icon ${blockClassName}__contact__icon`}>{props.icon}</span>
+                        <span className={`${blockClassName}__contact__icon ${blockClassName}__contact__icon--${props.service}`}>{props.icon}</span>
                     )}
                     <span className = {`${blockClassName}__contact__label`}>{props.label}</span>
                 </a>
@@ -171,38 +216,41 @@ const SingleProfile = (props) => {
     const SocialMedia = (props) => {
 
 		const SocialRow = (props) => {
-
+  
 			const {
 				show = true,
 				label
 			} = props
 
-			if(!show || !(props.services.facebook || props.services.twitter || props.services.instagram || props.services.youtube)){
+			if(!show || !(props.services.facebook || props.services.x || props.services.instagram || props.services.youtube)){
 				return null;
 			}
 
 			return (
 				<li className={`${blockClassName}__social_group`}>
 					<div className={`${blockClassName}__label`}>{label}: </div>
-					<ul className='inline-list'>
+					<ul className='govpack-inline-list'>
 						{ props.services.facebook && (
 							<Contact 
+								service = "facebook"
 								href={props.services.facebook} 
 								label = "Facebook"
 								icon = { <FacebookIcon />}
 							/>
 						)}
 
-						{ props.services.twitter && (
+						{ props.services.x && (
 							<Contact 
-								href={props.services.twitter} 
-								label = "Twitter" 
-								icon = { <TwitterIcon />}
+								service = "x"
+								href={props.services.x} 
+								label = "X" 
+								icon = { <XIcon />}
 							/>
 						)}
 
 						{ props.services.instagram && (
 							<Contact 
+								service = "instagram"
 								href={props.services.instagram} 
 								label = "Instagram" 
 								icon = { <InstagramIcon />}
@@ -211,6 +259,7 @@ const SingleProfile = (props) => {
 
 						{ props.services.youtube && (
 							<Contact 
+								service = "youtube"
 								href={props.services.youtube} 
 								label = "YouTube" 
 								icon = { <YouTubeIcon />}
@@ -220,8 +269,6 @@ const SingleProfile = (props) => {
 				</li>
 			)
 		}
-
-		console.log(props.data)
 
         return (
            
@@ -251,7 +298,7 @@ const SingleProfile = (props) => {
 				<div className={`${blockClassName}__label`}>{label}:</div>
 				
 				{props.data && (<>
-					<ul className={`${blockClassName}__comms-icons inline-list`}>
+					<ul className={`${blockClassName}__comms-icons govpack-inline-list`}>
 						{ props.data.phone && props.show.showPhone && (
                                 <Contact 
 									href={`tel:${props.data.phone}`} 
@@ -333,9 +380,41 @@ const SingleProfile = (props) => {
 		)
 	}
 
+	const ProfileLinks = (props) => {
+
+		const {
+			label = "Links",
+			data
+		} = props			
+
+		return (
+			<div className={`${blockClassName}__links`}>
+
+				{props.data && (
+					<ul className="govpack-vertical-list">
+						{Object.keys(data).filter( key => ( 
+							(Object.keys(selectedLinks).length === 0) 
+							|| (selectedLinks[key]))
+						).map( (slug) => {
+							let link = data[slug]
+
+							return(
+								<li key={`block-profile-${slug}`}>
+									<a href="#">{link.text}</a>
+								</li>
+							)
+						} )}
+					</ul>
+				)}
+			</div>
+		)
+	}
+
 	function hasCommsData(item){
 		return item.phone || item.fax || item.email || item.website || item.address;
 	}
+
+
 
 	function hasCommsOtherData(item){
 		return Object.keys(item).filter((key) => {
@@ -343,14 +422,39 @@ const SingleProfile = (props) => {
 		}).length;		
 	}	
 
-	const maxWidth = (align !== "full" ? props.availableWidths.find( (w) => w.value === width)?.maxWidth : false)
+	function hasLinksData(item){
+		return (Object.keys(item).length > 0);	
+	}	
+
+	const maxWidth = (align !== "full" ? availableWidths.find( (w) => w.value === width)?.maxWidth : false)
     const excerptElement = document.createElement( 'div' );
     excerptElement.innerHTML = profile.bio;
 
     let bio = excerptElement.textContent || excerptElement.innerText || '';
 
-	const doShowSocial = selectedSocial.showOfficial || selectedSocial.showCampaign || selectedSocial.showPersonal;		
+	
+	const hasSocial = (testObj) => {
+		let found = false
 
+		for(const key in testObj){
+			if (typeof testObj[key] === "object") {
+				found = hasSocial(testObj[key])
+			} else if(testObj[key] !== ""){
+				found = true;
+			}
+			
+			if(found){
+				continue;
+			}
+		}
+
+		return found
+	}
+
+
+	const doShowSocial = ((showSocial) && (selectedSocial.showOfficial || selectedSocial.showCampaign || selectedSocial.showPersonal) && (hasSocial(profile.social)));		
+
+	
     return (
        <div className= {classnames(`${blockClassName}__container`, {
             [`${blockClassName}__container--right`] : (avatarAlignment === "right"),
@@ -382,9 +486,18 @@ const SingleProfile = (props) => {
                 <div className={`${blockClassName}__info`}>
                     <div className={`${blockClassName}__line ${blockClassName}__line--name`} role="listitem">
                         {showName && (
-                            <h3><Link>{profile.name.full}</Link></h3>
+							<>
+                            <h3 className={`${blockClassName}__name`} ><Link>{profile.name.name}</Link></h3>
+							</>
                         )}
-
+						{(showStatusTag && profile.status) && (
+							<div className={`${blockClassName}__status-tag`}>
+								<div className="govpack-termlist">
+									<span className="govpack-tag">{profile.status}</span>
+								</div>
+							</div>
+						)}
+						
                         {showBio && profile.bio && (
                             <>
                                 <div>{bio}</div>
@@ -392,21 +505,24 @@ const SingleProfile = (props) => {
                         )}
                         
                     </div>
-					<Row key="age" id="age" value={profile.age} display={showAge}/>
-                    <Row key="leg_body" id="leg_body" value={profile.legislative_body} display={showLegislativeBody}/>
-                    <Row key="pos" id="position" value={profile.position}  display={showPosition}/>
-                    <Row key="party" id="party" value={profile.party}  display={showParty}/>
-					<Row key="district" id="district" value={profile.district}  display={showDistrict}/>
-					<Row key="status" id="status" value={profile.status} display={showStatus}/>
-                    <Row key="states" id="states" value={profile.state} display={showState}/>
-					<Row key="endorsements" id="endorsements" value={profile.endorsements} display={showEndorsements}/>
-                    <Row key="social" id="social" value={<SocialMedia data={profile.social} label="Social Media" show={selectedSocial}/>} display={(showSocial && doShowSocial)}/>
-					<Row key="comms_capitol" id="comms_capitol" value={hasCommsData(profile.comms.capitol) && <Comms data={profile.comms.capitol} label="Capitol" show={selectedCapitolCommunicationDetails}/>} display={showCapitolCommunicationDetails} />
-					<Row key="comms_district" id="comms_district" value={hasCommsData(profile.comms.district) && <Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />
-					<Row key="comms_campaign" id="comms_campaign" value={hasCommsData(profile.comms.campaign) && <Comms data={profile.comms.campaign} label="Campaign" show={selectedCampaignCommunicationDetails}/>} display={showCampaignCommunicationDetails} />
-					<Row key="comms_other" id="comms_other" value={hasCommsOtherData(profile.comms.other) && <CommsOther data={profile.comms.other} label="Other" show={selectedOtherCommunicationDetails}/>} display={showOtherCommunicationDetails} />
 
-					<Row key="url" id="more_about" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
+					<Row key="age" id="age" label="Age" value={profile.age} display={showAge}/>
+                    <Row key="leg_body" id="leg_body" label="Legislative Body" value={profile.legislative_body} display={showLegislativeBody}/>
+                    <Row key="pos" id="position" label="Position" value={profile.position}  display={showPosition}/>
+                    <Row key="party" id="party" label="Party" value={profile.party}  display={showParty}/>
+					<Row key="district" id="district" label="District" value={profile.district}  display={showDistrict}/>
+					<Row key="status" id="status" label="Status" value={profile.status} display={showStatus}/>
+                    <Row key="states" id="states" label="State" value={profile.state} display={showState}/>
+					<Row key="endorsements" id="endorsements" value={profile.endorsements} display={showEndorsements}/>
+                    <Row key="social" id="social" label="Social Media" value={<SocialMedia data={profile.social} label="Social Media" show={selectedSocial}/>} display={doShowSocial}/>
+					<Row key="comms_capitol" id="comms_capitol" label="Contact Info (Capitol)" value={hasCommsData(profile.comms.capitol) && <Comms data={profile.comms.capitol} label="Capitol" show={selectedCapitolCommunicationDetails}/>} display={showCapitolCommunicationDetails} />
+					<Row key="comms_district" id="comms_district" label="Contact Info (District)" value={hasCommsData(profile.comms.district) && <Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />
+					<Row key="comms_campaign" id="comms_campaign" label="Contact Info (Campaign)" value={hasCommsData(profile.comms.campaign) && <Comms data={profile.comms.campaign} label="Campaign" show={selectedCampaignCommunicationDetails}/>} display={showCampaignCommunicationDetails} />
+					<Row key="comms_other" id="comms_other" label="Contact Info (Other)" value={hasCommsOtherData(profile.comms.other) && <CommsOther data={profile.comms.other} label="Other" show={selectedOtherCommunicationDetails}/>} display={showOtherCommunicationDetails} />
+
+					<Row key="links" id="links" label="Links" value={hasLinksData(profile.links) && <ProfileLinks data={profile.links} show={selectedLinks}/>} display={showOtherLinks} />
+
+					<Row key="url" id="more_about" label="More" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
                 </div>
             </div>  
      

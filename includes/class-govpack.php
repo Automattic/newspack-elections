@@ -25,7 +25,7 @@ class Govpack {
 	 * @var string REST API Prefix
 	 */
 	const REST_PREFIX = 'govpack/v1';
-
+	private $dev;
 	private $front_end;
 	private Admin\Admin $admin;
 	private Blocks $blocks;
@@ -39,10 +39,25 @@ class Govpack {
 		$this->hooks();
 		$this->require("includes/govpack-functions.php");
 		$this->require("includes/govpack-functions-template.php");
+
+		if(class_exists('\Govpack\Core\Dev_Helpers')){
+			$this->dev = new \Govpack\Core\Dev_Helpers($this);
+			$this->dev->hooks();
+		}
+	}
+
+	public function path($path){
+		return GOVPACK_PLUGIN_PATH . $path;
+	}
+
+	public function build_path($path){
+		return trailingslashit(
+			trailingslashit($this->path("build")) . $path
+		);
 	}
 
 	public function require($path){
-		require_once ( GOVPACK_PLUGIN_PATH . $path);
+		require_once ($this->path($path));
 	}
 
 	public function url($path){
@@ -56,6 +71,7 @@ class Govpack {
 	}
 
 	public function setup(){
+
 		// Functions well need.
 		\Govpack\Core\CPT\AsTaxonomy::hooks();
 

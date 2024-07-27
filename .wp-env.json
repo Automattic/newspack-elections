@@ -1,0 +1,7 @@
+{
+    "plugins": [ "." ],
+    "config": {
+        "WP_HOME": "http://localhost",
+        "WP_SITEURL": "http://localhost"
+    }
+}

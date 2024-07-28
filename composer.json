@@ -11,7 +11,9 @@
     "zerodahero/address-normalization": "^2.1",
     "monolog/monolog": "^2.8",
     "gamajo/template-loader": "^1.3",
-	"brianhenryie/strauss": "^0.17.0"
+	"brianhenryie/strauss": "^0.17.0",
+    "z4kn4fein/php-semver": "^3.0",
+    "nette/php-generator": "^4.1"
   },
   "require-dev": {
     "automattic/vipwpcs": "^2.2",
@@ -34,6 +36,9 @@
 		"includes/govpack-functions-template.php",
 		"includes/govpack-functions.php"
 	]
+  },
+  "autoload-dev": {
+	"classmap": ["bin/scripts/"]
   },
   "scripts": {
     "prefix-namespaces": [
@@ -60,7 +65,8 @@
 	],
 	"qa:psalm":[
 		"psalm"
-	]
+	],
+	"generate_version": "\\Govpack\\Scripts\\GenerateVersionFileCommand"
   },
   "scripts-descriptions": {
 	"githooks:install" : "Add new hook files to `.git/hooks` without disturbing existing hooks.",

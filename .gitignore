@@ -7,3 +7,4 @@
 /dist/*
 /build*
 vendor-prefixed/
+version.php

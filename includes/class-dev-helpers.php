@@ -2,16 +2,18 @@
 
 namespace Govpack\Core;
 
+use  z4kn4fein\SemVer\Version;
+
 class Dev_Helpers{
 	
 	private Govpack $plugin;
 
 	private bool $is_git;
-	private bool $has_build_file;
+	private bool $has_version_file;
 	private string $branch;
 	private string $build_number;
 	private string $release_label;
-	private array $version_info;
+	private Version $version;
 
 	public function __construct(Govpack $plugin)
 	{
@@ -77,12 +79,12 @@ class Dev_Helpers{
 			return $this->build_number;
 		}
 
-		if(!$this->has_build_file()){
+		if(!$this->has_version_file()){
 			return "";
 		}
 
 		try{
-			$this->build_number = $this->get_version_info()["build"] ?? "";
+			$this->build_number = $this->get_version()->getBuildMeta() ?? "";
 			return $this->build_number;
 
 		} catch (\Exception $e){
@@ -90,14 +92,16 @@ class Dev_Helpers{
 		}
 	}
 
-	public function get_version_info(){
-		if(isset($this->version_info)){
-			return $this->version_info;
+	public function get_version() : Version{
+		if(isset($this->version)){
+			return $this->version;
 		}
 
-		$this->version_info = include_once($this->version_file_path());
+		$version = include_once($this->version_file_path());
 
-		return $this->version_info;
+		$this->version =  Version::parse($version);
+
+		return $this->version;
 		
 	}
 
@@ -106,12 +110,12 @@ class Dev_Helpers{
 			return $this->release_label;
 		}
 
-		if(!$this->has_build_file()){
+		if(!$this->has_version_file()){
 			return "";
 		}
 
 		try{
-			$this->release_label = $this->get_version_info()["pre-release"] ?? "";
+			$this->release_label = $this->get_version()->getPreRelease() ?? "";
 			return $this->release_label;
 
 		} catch (\Exception $e){
@@ -123,7 +127,7 @@ class Dev_Helpers{
 		return $this->plugin->path("version.php");
 	}
 
-	public function has_build_file(){
+	public function has_version_file(){
 		return file_exists($this->version_file_path());
 	}
 

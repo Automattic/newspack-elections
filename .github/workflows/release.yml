@@ -20,16 +20,16 @@ jobs:
           tagRegex: "-(.*)"  # Optional. Returns specified group text as tag name. Full tag string is returned if regex is not defined.
           tagRegexGroup: 1 # Optional. Default is 1.
 
-      - name: Modify version number
-        uses: mingjun97/file-regex-replace@v1
-        with:
-          regex: '^([\s]+\* Version:[ ]*([\S]+))$'
-          replacement: "$1-${{ steps.tagName.outputs.tag }}"
-          flags: "gm"                  # Optional, defaults to "g"
-          include: 'govpack\.php'    # Optional, defaults to ".*"
-          exclude: '.^'               # Optional, defaults to '.^'
-          encoding: 'utf8'            # Optional, defaults to 'utf8'
-          path: '.'                   # Optional, defaults to '.'
+     # - name: Modify version number
+     #   uses: mingjun97/file-regex-replace@v1
+     #   with:
+     #     regex: '^([\s]+\* Version:[ ]*([\S]+))$'
+     #     replacement: "$1-${{ steps.tagName.outputs.tag }}"
+     #     flags: "gm"                  # Optional, defaults to "g"
+     #     include: 'govpack\.php'    # Optional, defaults to ".*"
+     #     exclude: '.^'               # Optional, defaults to '.^'
+     #     encoding: 'utf8'            # Optional, defaults to 'utf8'
+     #     path: '.'                   # Optional, defaults to '.'
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v4
@@ -43,6 +43,7 @@ jobs:
           composer install --no-dev --prefer-dist --no-progress --no-scripts
             vendor/bin/strauss 
             composer dump-autoload --no-scripts
+            composer generate_version --pre_release ${{ steps.tagName.outputs.tag }}
       - name: Cache NPM packages
         id: npm-cache
         uses: actions/cache@v4

@@ -61,17 +61,27 @@ class Dev_Helpers{
 
 		if($this->label() !== ""){
 			return $this->label();
-		}
-
-		if($this->build_number() !== ""){
+		} elseif ($this->build_number() !== ""){
 			return $this->build_number();
-		}
-
-		if($this->is_git_repo()){
+		} elseif($this->is_git_repo()) {
 			return $this->get_git_branch();
+		} elseif ($this->is_composer()){
+			return $this->get_composer_ref();
 		}
 
 		return null;
+	}
+
+	public function get_composer_ref() : string {
+		$ref = \Composer\InstalledVersions::getReference('govpack/govpack') ?? "";
+		if($ref){
+			$ref = substr($ref, 0, 7);
+		}
+		return $ref;
+	}
+	public function is_composer(){
+		
+		return file_exists($this->plugin->path("composer.lock"));
 	}
 
 	public function build_number() : string {

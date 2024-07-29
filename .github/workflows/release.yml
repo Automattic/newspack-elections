@@ -43,7 +43,7 @@ jobs:
           composer install --no-dev --prefer-dist --no-progress --no-scripts
             vendor/bin/strauss 
             composer dump-autoload --no-scripts
-            composer generate_version --pre_release ${{ steps.tagName.outputs.tag }}
+            composer generate_version --pre-release ${{ steps.tagName.outputs.tag }}
       - name: Cache NPM packages
         id: npm-cache
         uses: actions/cache@v4

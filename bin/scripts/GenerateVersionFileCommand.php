@@ -26,6 +26,7 @@ class GenerateVersionFileCommand extends Command{
 			new InputOption('patch', null, InputOption::VALUE_REQUIRED, 'Example flag'),
 			new InputOption('pre-release', null, InputOption::VALUE_REQUIRED, 'Example flag'),
 			new InputOption('build', null, InputOption::VALUE_REQUIRED, 'Example flag'),
+			new InputOption('build-from-composer', null, InputOption::VALUE_NONE, 'Example flag'),
         ]);
     }
 
@@ -155,8 +156,10 @@ class GenerateVersionFileCommand extends Command{
 			$fragments["pre_release"] = $input->getOption("pre-release");
 		}
 
-		if($input->getOption("build")){
+		if($input->getOption("build") && !$input->getOption("build-from-composer") ){
 			$fragments["build"] = $input->getOption("build");
+		} elseif ($input->getOption("build-from-composer")) {
+			$fragments["build"] = $this->getBuildFromComposer();
 		}
 
 		$version = Version::create(
@@ -168,6 +171,12 @@ class GenerateVersionFileCommand extends Command{
 		);
 
 		return $version->__toString();
+	}
+
+	private function getBuildFromComposer() : string {
+		$ref = \Composer\InstalledVersions::getReference('govpack/govpack');
+		$short_ref = substr($ref, 0, 7);
+		return $short_ref;
 	}
 
 	private function generateCode($version) : string {

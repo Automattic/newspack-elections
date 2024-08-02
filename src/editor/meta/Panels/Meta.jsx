@@ -58,7 +58,7 @@ export const MetadataIdsPanel = (props) => {
             </PanelRow>
 
 			<PanelRow>
-                <PanelTextControl meta={meta} label= "Balletpedia ID" meta_key="balletpedia_id" onChange={setPostMeta} placeholder="" />
+                <PanelTextControl meta={meta} label= "Ballotpedia ID" meta_key="balletpedia_id" onChange={setPostMeta} placeholder="" />
             </PanelRow>
 
 			<PanelRow>

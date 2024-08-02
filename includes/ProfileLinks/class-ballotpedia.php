@@ -6,14 +6,14 @@ class BallotPedia extends \Govpack\Core\ProfileLinks\ProfileLink {
 	protected $slug = "ballotpedia";
 
 	public function meta_key(){
-		return 'ballotpedia_id';
+		return 'balletpedia_id';
 	}
 
 	public function label(){
-		return 'BallotPedia';
+		return 'Ballotpedia';
 	}
 
 	public function url_template(){
-		return "https://www.fec.gov/data/candidate/{fec_id}/";
+		return "https://ballotpedia.org/{balletpedia_id}/";
 	}
 }

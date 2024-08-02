@@ -22,7 +22,7 @@ class Profile_Link_Services {
 
 		// a list of known classes
 		$linkable = [
-			//'BallotPedia',
+			'Ballotpedia',
 			'Fec',
 			'Gab',
 			'Google',

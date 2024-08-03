@@ -423,11 +423,17 @@ const SingleProfile = (props) => {
 							|| (selectedLinks[key]))
 						).map( (slug, index) => {
 							let link = data[slug]
+
+							
 							let Icon = null
 							if(ProfileLinksIcons[slug]){
 								Icon = ProfileLinksIcons[slug]()
 							}
 							if(!Icon){
+								return false;
+							}
+
+							if(!link.href){
 								return false;
 							}
 							return(

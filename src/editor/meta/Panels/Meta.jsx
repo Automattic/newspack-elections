@@ -7,7 +7,7 @@ import {usePanel} from './usePanel'
 export const MetadataIdsPanel = (props) => {
 
     let { setPostMeta, meta } = usePanel()
-
+	
     return (
         <GovPackSidebarPanel 
             title="Metadata & IDS"

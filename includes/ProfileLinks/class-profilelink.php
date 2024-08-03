@@ -80,6 +80,7 @@ abstract class ProfileLink {
 			"target" => "_blank",
 			"href" => $this->href(),
 			"text" => $this->label(),
+			"slug" => $this->get_slug(),
 			"id" => null,
 			"rel" => null,
 			"class" => []

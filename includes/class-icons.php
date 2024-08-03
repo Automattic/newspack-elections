@@ -63,6 +63,10 @@ class Icons {
 			$this->cache($icon, $value);
 		}
 
+		if(!$this->cached($icon)){
+			return "";
+		}
+
 		return $this->cache[$icon];
 	}
 
@@ -80,4 +84,19 @@ class Icons {
 		$this->cache[$key] = $value;
 	}
 
+	public function exists($key){
+		
+		$found = $this->get($key);
+
+		if(!$found){
+			return false;
+		}
+
+		// get can return a string, check for empty then covert to bool
+		if($found === ""){
+			return false;
+		}
+		
+		return true;
+	}
 }

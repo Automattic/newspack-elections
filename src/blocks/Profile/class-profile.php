@@ -73,8 +73,7 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 
 		$this->enqueue_view_assets();
 
-		
-		
+	
 		return gp_template_loader()->render_block(
 			$this->template(),
 			self::merge_attributes_with_block_defaults( $this->block_name, $attributes ), 

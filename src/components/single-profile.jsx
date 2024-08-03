@@ -11,6 +11,8 @@ import {ReactComponent as PhoneIconSVG} from "./../images/phone.svg"
 import {ReactComponent as WebIconSVG} from "./../images/globe.svg"
 import {ReactComponent as FaxIconSVG} from "./../images/fax.svg"
 import {ReactComponent as YouTubeIconSVG} from "./../images/youtube.svg"
+import {ReactComponent as GoogleIconSVG} from "./../images/google.svg"
+import {ReactComponent as WikipediaIconSVG} from "./../images/wikipedia.svg"
 import { Icon } from '@wordpress/components';
 /**
  * External dependencies
@@ -33,6 +35,13 @@ const WebIcon = () => ( <Icon icon={ WebIconSVG } /> )
 const FaxIcon = () => ( <Icon icon={ FaxIconSVG } /> )
 const FacebookIcon = () => ( <Icon icon={ FacebookIconSVG } /> )
 const YouTubeIcon = () => ( <Icon icon={ YouTubeIconSVG } /> )
+const WikipediaIcon = () => ( <Icon icon={ WikipediaIconSVG } /> )
+const GoogleIcon = () => ( <Icon icon={ GoogleIconSVG } /> )
+
+const ProfileLinksIcons = {
+	"google" : GoogleIcon,
+	"wikipedia" : WikipediaIcon,
+}
 
 const Link = (props) => {
 
@@ -388,20 +397,31 @@ const SingleProfile = (props) => {
 		} = props			
 
 		return (
-			<div className={`${blockClassName}__links`}>
-
+			<div className={`${blockClassName}__comms`}>
+				<div className={`${blockClassName}__label`}>{label}:</div>
 				{props.data && (
-					<ul className="govpack-vertical-list">
+					<ul className={`${blockClassName}__comms-icons govpack-inline-list govpack-vertical-list`}>
+					
 						{Object.keys(data).filter( key => ( 
 							(Object.keys(selectedLinks).length === 0) 
 							|| (selectedLinks[key]))
-						).map( (slug) => {
+						).map( (slug, index) => {
 							let link = data[slug]
-
+							let Icon = null
+							if(ProfileLinksIcons[slug]){
+								Icon = ProfileLinksIcons[slug]()
+							}
+							if(!Icon){
+								return false;
+							}
 							return(
-								<li key={`block-profile-${slug}`}>
-									<a href="#">{link.text}</a>
-								</li>
+								<Contact 
+									key = {`icon-${profile.id}-${index}`}
+									href={link.href} 
+									tooltip = {`Link : ${link.text}`} 
+									label = {link.text}
+									icon = { Icon }
+								/>
 							)
 						} )}
 					</ul>
@@ -519,9 +539,7 @@ const SingleProfile = (props) => {
 					<Row key="comms_district" id="comms_district" label="Contact Info (District)" value={hasCommsData(profile.comms.district) && <Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />
 					<Row key="comms_campaign" id="comms_campaign" label="Contact Info (Campaign)" value={hasCommsData(profile.comms.campaign) && <Comms data={profile.comms.campaign} label="Campaign" show={selectedCampaignCommunicationDetails}/>} display={showCampaignCommunicationDetails} />
 					<Row key="comms_other" id="comms_other" label="Contact Info (Other)" value={hasCommsOtherData(profile.comms.other) && <CommsOther data={profile.comms.other} label="Other" show={selectedOtherCommunicationDetails}/>} display={showOtherCommunicationDetails} />
-
 					<Row key="links" id="links" label="Links" value={hasLinksData(profile.links) && <ProfileLinks data={profile.links} show={selectedLinks}/>} display={showOtherLinks} />
-
 					<Row key="url" id="more_about" label="More" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
                 </div>
             </div>  

@@ -281,33 +281,8 @@ if(!function_exists("gp_should_show_link")){
 	}
 }
 
-if(!function_exists("gp_the_profile_links")){
-	function gp_the_profile_links($profile_data, $attributes){
-		$links = gp_get_profile_links($profile_data, $attributes);
-		foreach($links as $key => &$link){
-			$link["show"] = gp_should_show_link($key, $attributes);
-		}	
-
-		$links = array_filter($links, function($link, $key){
-			return $link["show"];
-		}, ARRAY_FILTER_USE_BOTH );
-
-		if(count($links) <= 0){
-			return "";
-		}
 
 
-		ob_start();
-		?>
-		<ul class="govpack-vertical-list">
-			<?php foreach($links as &$link){ ?>
-				<li><?php echo $link['src']; ?></li>
-			<?php } ?>
-		</ul>
-		<?php
-		return ob_get_clean();
-	}
-}
 
 if(!function_exists("gp_get_photo_styles")){
 	function gp_get_photo_styles($attributes){
@@ -502,6 +477,65 @@ if(!function_exists("gp_contacts")){
 	}
 }
 
+if(!function_exists("gp_the_profile_links")){
+
+	function gp_the_profile_links($profile_data, $attributes){
+
+		$links = gp_get_profile_links($profile_data, $attributes);
+
+		foreach($links as $key => &$link){
+			$link["show"] = gp_should_show_link($key, $attributes);
+		}	
+
+		$links = array_filter($links, function($link, $key){
+			return $link["show"];
+		}, ARRAY_FILTER_USE_BOTH );
+
+		if(count($links) <= 0){
+			return "";
+		}
+
+
+		ob_start();
+		?>
+		<div class="wp-block-govpack-profile__comms">
+			<div class="wp-block-govpack-profile__label">Links:</div>
+			<ul class="wp-block-govpack-profile__comms-icons govpack-inline-list">
+				<?php
+				foreach($links as &$link){
+
+					if(!gp_icon_exists($link['slug'])){
+						continue;
+					}
+					
+					$classes = [
+						'wp-block-govpack-profile__contact',
+						'wp-block-govpack-profile__contact--hide-label',
+						"wp-block-govpack-profile__contact--{$link['slug']}",
+					];
+					$classes = join( ' ', $classes );
+
+					?>
+					<li class="<?php echo $classes; ?>">
+						<a href="<?php echo $link["href"];?>">
+							<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--<?php echo $link['slug']; ?>">
+								<?php echo gp_get_icon($link['slug']); ?>
+							</span>
+							<span class="wp-block-govpack-profile__contact__label">
+								<?php echo $link["text"]; ?>
+							</span>
+						</a>
+					</li>
+				<?php } ?>
+			</ul>
+		</div>
+		<?php
+		return ob_get_clean();
+
+		
+	}
+}
+
 /**
  * Utility Function that Outputs a Profiles's Social Media Sections
  * 
@@ -547,6 +581,12 @@ if(!function_exists("gp_get_icon")){
 		return gp()->icons()->get($key);
 	}
 }
+
+if(!function_exists("gp_has_icon")){
+	function gp_icon_exists($key){
+		return gp()->icons()->exists($key);
+	}
+}
 /**
  * Utility Function that Outputs a Profiles's Social Media Row
  * 
@@ -568,7 +608,6 @@ if(!function_exists("gp_social_media_row")){
 		$content = '';
 
 		$services = [ 'facebook', 'x', 'linkedin', 'instagram', 'youtube' ];
-
 
 		foreach ( $services as $service ) {
 			if ( ! isset( $links[ $service ] ) || ! $links[ $service ] ) {

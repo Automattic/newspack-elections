@@ -431,8 +431,6 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'thomas_id', // cant access
 			'cspan_id', // icon too big
 		
-			
-
 			// no longer accessable 
 			'washington_post_id',
 			

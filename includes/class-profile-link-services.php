@@ -29,7 +29,7 @@ class Profile_Link_Services {
 			'Govtrack',
 			'Linkedin',
 			'OpenSecrets',
-			//'OpenStates',
+			'OpenStates',
 			'Rumble',
 			'VoteSmart',
 			'VoteView',

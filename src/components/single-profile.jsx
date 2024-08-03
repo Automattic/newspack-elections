@@ -13,6 +13,12 @@ import {ReactComponent as FaxIconSVG} from "./../images/fax.svg"
 import {ReactComponent as YouTubeIconSVG} from "./../images/youtube.svg"
 import {ReactComponent as GoogleIconSVG} from "./../images/google.svg"
 import {ReactComponent as WikipediaIconSVG} from "./../images/wikipedia.svg"
+import {ReactComponent as GabIconSVG} from "./../images/gab.svg"
+import {ReactComponent as OpenStatesIconSVG} from "./../images/openstates.svg"
+import {ReactComponent as OpenSecretsIconSVG} from "./../images/opensecrets.svg"
+import {ReactComponent as RumbleIconSVG} from "./../images/rumble.svg"
+import {ReactComponent as FecIconSVG} from "./../images/fec.svg"
+
 import { Icon } from '@wordpress/components';
 /**
  * External dependencies
@@ -37,10 +43,20 @@ const FacebookIcon = () => ( <Icon icon={ FacebookIconSVG } /> )
 const YouTubeIcon = () => ( <Icon icon={ YouTubeIconSVG } /> )
 const WikipediaIcon = () => ( <Icon icon={ WikipediaIconSVG } /> )
 const GoogleIcon = () => ( <Icon icon={ GoogleIconSVG } /> )
+const GabIcon = () => ( <Icon icon={ GabIconSVG } /> )
+const OpenStatesIcon = () => ( <Icon icon={ OpenStatesIconSVG } /> )
+const OpenSecretsIcon = () => ( <Icon icon={ OpenSecretsIconSVG } /> )
+const RumbleIcon = () => ( <Icon icon={ RumbleIconSVG } /> )
+const FecIcon = () => ( <Icon icon={ FecIconSVG } /> )
 
 const ProfileLinksIcons = {
 	"google" : GoogleIcon,
 	"wikipedia" : WikipediaIcon,
+	"gab" : GabIcon,
+	"openstates" : OpenStatesIcon,
+	"opensecrets" : OpenSecretsIcon,
+	"rumble" : RumbleIcon,
+	"fec" : FecIcon,
 }
 
 const Link = (props) => {

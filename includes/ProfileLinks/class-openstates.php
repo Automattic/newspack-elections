@@ -12,4 +12,8 @@ class OpenStates extends \Govpack\Core\ProfileLinks\ProfileLink {
 	public function label(){
 		return 'OpenStates';
 	}
+
+	public function enabled(){
+		return true;
+	}
 }

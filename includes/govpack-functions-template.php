@@ -517,7 +517,7 @@ if(!function_exists("gp_the_profile_links")){
 
 					?>
 					<li class="<?php echo $classes; ?>">
-						<a href="<?php echo $link["href"];?>">
+						<a href="<?php echo $link["href"];?>" title="Link to <?php echo $link['text']; ?>">
 							<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--<?php echo $link['slug']; ?>">
 								<?php echo gp_get_icon($link['slug']); ?>
 							</span>

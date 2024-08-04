@@ -10,7 +10,7 @@ class Fec extends \Govpack\Core\ProfileLinks\ProfileLink {
 	}
 
 	public function label(){
-		return 'FEC';
+		return 'Federal Election Comission';
 	}
 
 	public function url_template(){

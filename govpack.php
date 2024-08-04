@@ -34,6 +34,23 @@ if ( ! defined( 'GOVPACK_PLUGIN_BUILD_URL' ) ) {
 	define( 'GOVPACK_PLUGIN_BUILD_URL', trailingslashit(GOVPACK_PLUGIN_URL . 'build') );
 }
 
+require_once(__DIR__ . "/includes/class-bootstrap.php");
+
+if ( ! file_exists( GOVPACK_PLUGIN_PATH . 'vendor/autoload.php' ) ) {
+	add_action( 'all_admin_notices', 'Govpack_Bootstrap_Helper::notice_vendor_missing' );
+	return;
+}
+
+if ( ! file_exists( GOVPACK_PLUGIN_PATH . 'vendor-prefixed/autoload.php' ) ) {
+	add_action( 'all_admin_notices', 'Govpack_Bootstrap_Helper::notice_prefixed_vendor_missing' );
+	return;
+}
+
+if ( ! is_dir( GOVPACK_PLUGIN_PATH . 'build' ) ) {
+	add_action( 'all_admin_notices', 'Govpack_Bootstrap_Helper::notice_build_missing' );
+	return;
+}
+
 require_once GOVPACK_PLUGIN_PATH . "autoloader.php";
 
 

@@ -148,4 +148,5 @@ class Govpack {
 		$this->blocks()->register(new \Govpack\Blocks\Profile\Profile());
 		$this->blocks()->register(new \Govpack\Blocks\ProfileSelf\ProfileSelf());
 	}
+
 }

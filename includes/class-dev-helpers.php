@@ -20,6 +20,7 @@ class Dev_Helpers{
 		$this->plugin = $plugin;
 	}
 
+
 	public function hooks(){
 		add_filter("plugins_list", [$this, "filter_version"]);
 	}

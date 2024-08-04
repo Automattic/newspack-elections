@@ -115,6 +115,6 @@ class Hooks {
 			return;
 		}
 
-		require_once GOVPACK_PLUGIN_FILE . 'template-parts/banner.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+		require_once GOVPACK_PLUGIN_DIR . 'template-parts/banner.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 	}
 }

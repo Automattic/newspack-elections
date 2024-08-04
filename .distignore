@@ -19,7 +19,7 @@ gruntfile.js
 
 tests
 bin
-babel
+./babel/*
 /.git
 /.circleci
 /.cache

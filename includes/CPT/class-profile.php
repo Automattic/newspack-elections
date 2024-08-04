@@ -1021,7 +1021,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		}
 
 		ob_start();
-		require_once GOVPACK_PLUGIN_FILE . 'template-parts/profile-self.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+		require_once GOVPACK_PLUGIN_DIR . 'template-parts/profile-self.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 		$html = ob_get_clean();
 
 		return $html;

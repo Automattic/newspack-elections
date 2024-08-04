@@ -48,6 +48,13 @@ class Govpack {
 
 	public function path($path){
 		return GOVPACK_PLUGIN_PATH . $path;
+		\add_action( 'after_setup_theme', [ __class__, 'hooks' ] );
+		\add_action( 'plugins_loaded', [ '\Govpack\Core\ActionScheduler\ActionScheduler', 'hooks' ], 0 );		
+	}
+
+	public static function activation(){
+		\Govpack\Core\CPT\Profile::register_post_type();
+		flush_rewrite_rules(false);
 	}
 
 	public function build_path($path){
@@ -70,25 +77,36 @@ class Govpack {
 		\add_action( 'init', [ $this, 'register_blocks' ] );
 	}
 
-	public function setup(){
-
-		// Functions well need.
-		\Govpack\Core\CPT\AsTaxonomy::hooks();
-
+	public static function post_types(){
 		// Custom Post Types.
 		\Govpack\Core\CPT\Profile::hooks();
+	}
 
-		// get capabilities setup first.
-		\Govpack\Core\Capabilities::hooks();
-
-
-		// Taxonomies.
+	// Taxonomies.
+	public static function taxonomies(){
+		// Custom Post Types.
 		\Govpack\Core\Tax\LegislativeBody::hooks();
 		\Govpack\Core\Tax\OfficeHolderStatus::hooks();
 		\Govpack\Core\Tax\OfficeHolderTitle::hooks();
 		\Govpack\Core\Tax\Party::hooks();
 		\Govpack\Core\Tax\Profile::hooks();
 		\Govpack\Core\Tax\State::hooks();
+
+	}
+	
+
+	public function setup() {
+
+
+		// Functions well need.
+		\Govpack\Core\CPT\AsTaxonomy::hooks();
+
+		// Custom Post Types & taxonomies.
+		self::post_types();
+		self::taxonomies();
+
+		// get capabilities setup first.
+		\Govpack\Core\Capabilities::hooks();
 
 		if ( defined( 'WP_CLI' ) && \WP_CLI ) {
 			\Govpack\Core\CLI::init();

@@ -10,7 +10,6 @@ namespace Govpack\Core\Admin;
 use Govpack\Core\Capabilities;
 use Govpack\Core\CPT\Profile;
 
-
 use Exception;
 
 /**
@@ -38,6 +37,7 @@ class Admin {
 		\add_action( 'current_screen', [ __class__, 'conditional_hooks' ] );
 		\add_action( 'after_setup_theme', [ '\Govpack\Core\Admin\Export', 'hooks' ], 11, 1 );
 	}
+
 
 	/**
 	 * Register Block Assets.
@@ -147,8 +147,6 @@ class Admin {
 	 * Register Govpack JS/CSS Assets for wp-admin 
 	 */
 	public static function register_assets() {
-
-		
 
 		$file = GOVPACK_PLUGIN_BUILD_PATH . 'admin.asset.php';
 

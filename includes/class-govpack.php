@@ -25,8 +25,8 @@ class Govpack {
 	 * @var string REST API Prefix
 	 */
 	const REST_PREFIX = 'govpack/v1';
-	private $dev;
-	private $front_end;
+	private null|Dev_Helpers $dev;
+	private FrontEnd\FrontEnd $front_end;
 	private Admin\Admin $admin;
 	private Blocks $blocks;
 	private Icons $icons;

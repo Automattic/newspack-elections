@@ -26,10 +26,7 @@ class CLI extends \WP_CLI_Command {
 	 * @param array $assoc_args  Associative array of arguments.
 	 */
 	public function seed_taxonomies( $args, $assoc_args ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		$count = \Govpack\Core\Tax\County::seed();
-		if ( $count ) {
-			WP_CLI::success( "Inserted {$count} counties" );
-		}
+		
 
 		$count = \Govpack\Core\Tax\Installation::seed();
 		if ( $count ) {
@@ -281,7 +278,6 @@ class CLI extends \WP_CLI_Command {
 
 		$taxonomies = [
 			'govpack_city',
-			'govpack_county',
 			'govpack_state',
 			'govpack_installation',
 			'govpack_legislative_body',

@@ -18,12 +18,13 @@ import {ReactComponent as OpenStatesIconSVG} from "./../images/openstates.svg"
 import {ReactComponent as OpenSecretsIconSVG} from "./../images/opensecrets.svg"
 import {ReactComponent as RumbleIconSVG} from "./../images/rumble.svg"
 import {ReactComponent as FecIconSVG} from "./../images/fec.svg"
+import {ReactComponent as BallotpediaIconSVG} from "./../images/ballotpedia.svg"
 
 import { Icon } from '@wordpress/components';
 /**
  * External dependencies
  */
- import classnames from 'classnames';
+ import classnames from 'classnames'; 
 
 import { normalize_profile } from './NormaliseProfile';
 import ProfileCommsPanel from "./Panels/ProfileCommsPanel"
@@ -43,20 +44,24 @@ const FacebookIcon = () => ( <Icon icon={ FacebookIconSVG } /> )
 const YouTubeIcon = () => ( <Icon icon={ YouTubeIconSVG } /> )
 const WikipediaIcon = () => ( <Icon icon={ WikipediaIconSVG } /> )
 const GoogleIcon = () => ( <Icon icon={ GoogleIconSVG } /> )
+
+const BallotpediaIcon = () => ( <Icon icon={ BallotpediaIconSVG } /> )
+const FecIcon = () => ( <Icon icon={ FecIconSVG } /> )
 const GabIcon = () => ( <Icon icon={ GabIconSVG } /> )
 const OpenStatesIcon = () => ( <Icon icon={ OpenStatesIconSVG } /> )
 const OpenSecretsIcon = () => ( <Icon icon={ OpenSecretsIconSVG } /> )
 const RumbleIcon = () => ( <Icon icon={ RumbleIconSVG } /> )
-const FecIcon = () => ( <Icon icon={ FecIconSVG } /> )
+
 
 const ProfileLinksIcons = {
-	"google" : GoogleIcon,
-	"wikipedia" : WikipediaIcon,
-	"gab" : GabIcon,
-	"openstates" : OpenStatesIcon,
-	"opensecrets" : OpenSecretsIcon,
-	"rumble" : RumbleIcon,
+	"ballotpedia" : BallotpediaIcon,
 	"fec" : FecIcon,
+	"gab" : GabIcon,
+	"google" : GoogleIcon,
+	"opensecrets" : OpenSecretsIcon,
+	"openstates" : OpenStatesIcon,
+	"rumble" : RumbleIcon,
+	"wikipedia" : WikipediaIcon,
 }
 
 const Link = (props) => {

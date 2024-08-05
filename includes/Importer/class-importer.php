@@ -111,33 +111,7 @@ class Importer {
 			] 
 		);
 
-		\register_rest_route(
-			Govpack::REST_PREFIX,
-			'/import/sources',
-			[
-				'methods'             => 'GET',
-				'callback'            => [ '\Govpack\Core\Importer\OpenStates_Sources', 'urls' ],
-				'permission_callback' => function () {
-				
-					return \current_user_can( Capabilities::CAN_IMPORT );
 
-				},
-			] 
-		);
-
-		\register_rest_route(
-			Govpack::REST_PREFIX,
-			'/import/download',
-			[
-				'methods'             => 'POST',
-				'callback'            => [ '\Govpack\Core\Importer\OpenStates_Sources', 'download' ],
-				'permission_callback' => function () {
-					
-					return \current_user_can( Capabilities::CAN_IMPORT );
-
-				},
-			] 
-		);
 	}
 
 	/**

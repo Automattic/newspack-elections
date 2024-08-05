@@ -172,12 +172,11 @@ class CLI extends \WP_CLI_Command {
 
 
 		$taxonomies = [
-			
-			'govpack_state',
-			'govpack_installation',
 			'govpack_legislative_body',
 			'govpack_officeholder_status',
+			'govpack_officeholder_title',
 			'govpack_party',
+			'govpack_state'
 		];
 
 		foreach ( $taxonomies as $taxonomy ) {

@@ -8,7 +8,7 @@
 namespace Govpack\Core\CPT;
 
 use Govpack\Core\Capabilities;
-use \Govpack\Helpers;
+
 
 /**
  * Register and handle the "Profile" Custom Post Type
@@ -172,7 +172,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 					'title'
 				],
 				'taxonomies'   => [ 'post_tag' ],
-				'as_taxonomy'  => \Govpack\Core\Tax\Profile::TAX_SLUG,
+				
 				'menu_icon'    => 'dashicons-groups',
 				'rewrite'      => [
 					'slug'       => apply_filters( 'govpack_profile_filter_slug', 'profile' ),

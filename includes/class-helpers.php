@@ -14,8 +14,8 @@ class Helpers {
 
 	const CACHE_GROUP = 'govpack';
 
-	const TWITTER_BASE_URL   = 'https://twitter.com/';
-	const FACEBOOK_BASE_URL  = 'https://www.facebook.com/';
+	
+	//const FACEBOOK_BASE_URL  = 'https://www.facebook.com/';
 	const INSTAGRAM_BASE_URL = 'https://www.instagram.com/';
 
 	/**

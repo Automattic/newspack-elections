@@ -72,7 +72,6 @@ class Govpack {
 		\Govpack\Core\Tax\OfficeHolderStatus::hooks();
 		\Govpack\Core\Tax\OfficeHolderTitle::hooks();
 		\Govpack\Core\Tax\Party::hooks();
-		\Govpack\Core\Tax\Profile::hooks();
 		\Govpack\Core\Tax\State::hooks();
 
 	}
@@ -81,8 +80,7 @@ class Govpack {
 	 */
 	public static function hooks() {
 
-		// Functions well need.
-		\Govpack\Core\CPT\AsTaxonomy::hooks();
+	
 
 		// Custom Post Types & taxonomies.
 		self::post_types();

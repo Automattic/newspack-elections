@@ -173,7 +173,7 @@ class CLI extends \WP_CLI_Command {
 
 
 		$taxonomies = [
-			'govpack_city',
+			
 			'govpack_state',
 			'govpack_installation',
 			'govpack_legislative_body',

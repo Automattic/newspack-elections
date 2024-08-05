@@ -139,8 +139,7 @@ class CLI extends \WP_CLI_Command {
 		WP_CLI::line( 'Purging GovPack Data' );
 
 		$post_types = [
-			'govpack_profiles',
-			'govpack_issues',
+			'govpack_profiles'
 		];
 
 		foreach ( $post_types as $post_type ) {

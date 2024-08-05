@@ -526,18 +526,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	}
 
 
-	/**
-	 * Modify Taxonomy Columns on Profile Post List
-	 *
-	 * @param array $columns An array of columns.
-	 */
-	public static function mod_taxonomy_columns( $columns ) {
-
-		unset( $columns['govpack_profile_tax'] );
-		unset( $columns['govpack_issue_tax'] );
-		return $columns;
-
-	}
+	
 
 	/**
 	 * Add The Pfofile Photo to the post Table.

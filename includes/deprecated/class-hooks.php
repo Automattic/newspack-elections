@@ -15,6 +15,8 @@ class Hooks {
 	 * Set up actions and filters.
 	 */
 	public static function setup_hooks() {
+
+
 		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'wp_enqueue_scripts' ] );
 		add_action( 'admin_enqueue_scripts', [ __CLASS__, 'admin_enqueue_scripts' ] );
 		add_filter( 'single_template', [ __CLASS__, 'single_template' ] );
@@ -106,15 +108,5 @@ class Hooks {
 		}
 	}
 
-	/**
-	 * Show banner above profiles.
-	 */
-	public static function admin_notices() {
-		$screen = get_current_screen();
-		if ( ! in_array( $screen->post_type, [ \Govpack\Core\CPT\Profile::CPT_SLUG, \Govpack\Core\CPT\Issue::CPT_SLUG ], true ) ) {
-			return;
-		}
 
-		require_once GOVPACK_PLUGIN_DIR . 'template-parts/banner.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
-	}
 }

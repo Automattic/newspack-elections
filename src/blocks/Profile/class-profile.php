@@ -32,7 +32,7 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 	
 
 	/**
-	 * Shortcode handler for [govpack].
+	 * Block render handler for .
 	 *
 	 * @param array  $attributes    Array of shortcode attributes.
 	 * @param string $content Post content.

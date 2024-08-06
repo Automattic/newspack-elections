@@ -7,6 +7,7 @@
 
 namespace Govpack\Core;
 
+use Govpack\Core\Importer;
 use \WP_CLI as WP_CLI;
 
 /**
@@ -14,115 +15,13 @@ use \WP_CLI as WP_CLI;
  */
 class CLI extends \WP_CLI_Command {
 
-	/**
-	 * Load default taxonomy data.
-	 *
-	 * ## EXAMPLES
-	 * wp govpack seed
-	 *
-	 * @subcommand seed
-	 *
-	 * @param array $args        Array of command-line arguments.
-	 * @param array $assoc_args  Associative array of arguments.
-	 */
-	public function seed_taxonomies( $args, $assoc_args ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		$count = \Govpack\Core\Tax\County::seed();
-		if ( $count ) {
-			WP_CLI::success( "Inserted {$count} counties" );
-		}
-
-		$count = \Govpack\Core\Tax\Installation::seed();
-		if ( $count ) {
-			WP_CLI::success( "Inserted {$count} installation methods" );
-		}
-
-		$count = \Govpack\Core\Tax\LegislativeBody::seed();
-		if ( $count ) {
-			WP_CLI::success( "Inserted {$count} legislative bodies" );
-		}
-
-		$count = \Govpack\Core\Tax\OfficeHolderStatus::seed();
-		if ( $count ) {
-			WP_CLI::success( "Inserted {$count} officeholder statuses" );
-		}
-
-		$count = \Govpack\Core\Tax\Party::seed();
-		if ( $count ) {
-			WP_CLI::success( "Inserted {$count} parties." );
-		}
-
-		$count = \Govpack\Core\Tax\State::seed();
-		if ( $count ) {
-			WP_CLI::success( "Inserted {$count} states." );
-		}
-	}
 
 	/**
-	 * Import data from CSV.
+	 * Import data from a file.
 	 *
 	 * ## OPTIONS
 	 * <file>...
-	 * : The CSV file.
-	 *
-	 * [--state=<abbrev>]
-	 * : State profiles belong to.
-	 *
-	 * [--source=<value>]
-	 * : CSV source.
-	 * ---
-	 * default: govpack
-	 * options:
-	 *   - openstates
-	 *   - usio
-	 *   - govpack
-	 * ---
-	 *
-	 * [--dry-run]
-	 * : Set to false to actually run the command
-	 *
-	 * ## EXAMPLES
-	 * wp govpack import --source=openstates ak.csv --dry-run
-	 * wp govpack import --source=usio usa.csv
-	 *
-	 * @subcommand import
-	 *
-	 * @param array $args        Array of command-line arguments.
-	 * @param array $assoc_args  Associative array of arguments.
-	 */
-	public function import_old( $args, $assoc_args ) {
-		$dry_run = self::is_dry_run();
-
-		$source = $assoc_args['source'] ?? 'govpack';
-		$state  = $assoc_args['state'] ?? '';
-
-		if ( 'usio' === $source ) {
-			$importer = \Govpack\Core\Importer\UnitedStatesIO::make();
-		} elseif ( 'openstates' === $source ) {
-			$importer = \Govpack\Core\Importer\OpenStates::make();
-		} elseif ( 'govpack' === $source ) {
-			$importer = \Govpack\Core\Importer\Govpack::make();
-		} else {
-			WP_CLI::error( "Unsupported source type: $source" );
-		}
-
-		foreach ( $args as $file ) {
-			$result = $importer::import( $file, $state, $dry_run );
-			if ( is_wp_error( $result ) ) {
-				foreach ( $result->errors as $error_info ) {
-					foreach ( $error_info as $message ) {
-						WP_CLI::error( $message );
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Import data from WXR.
-	 *
-	 * ## OPTIONS
-	 * <file>...
-	 * : The WXR file.
+	 * : The  file.
 	 *
 	 * [--dry-run]
 	 * : Set to false to actually run the command
@@ -161,8 +60,8 @@ class CLI extends \WP_CLI_Command {
 	 * @param array $assoc_args  Associative array of arguments.
 	 */
 	public function progress( $args, $assoc_args ) {
-		$importer = \Govpack\Core\Importer\WXR::make();
-		WP_CLI::line( $importer::progress() );
+		
+		WP_CLI::line( Importer\Abstract_Importer::progress() );
 	}
 
 	/**
@@ -236,8 +135,7 @@ class CLI extends \WP_CLI_Command {
 		WP_CLI::line( 'Purging GovPack Data' );
 
 		$post_types = [
-			'govpack_profiles',
-			'govpack_issues',
+			'govpack_profiles'
 		];
 
 		foreach ( $post_types as $post_type ) {
@@ -270,13 +168,11 @@ class CLI extends \WP_CLI_Command {
 
 
 		$taxonomies = [
-			'govpack_city',
-			'govpack_county',
-			'govpack_state',
-			'govpack_installation',
 			'govpack_legislative_body',
 			'govpack_officeholder_status',
+			'govpack_officeholder_title',
 			'govpack_party',
+			'govpack_state'
 		];
 
 		foreach ( $taxonomies as $taxonomy ) {
@@ -358,31 +254,6 @@ class CLI extends \WP_CLI_Command {
 		}
 	}
 		
-
-	/**
-	 * Import data from WXR.
-	 *
-	 * ## OPTIONS
-	 * <file>...
-	 * : The WXR file.
-	 *
-	 * [--dry-run]
-	 * : Set to false to actually run the command
-	 *
-	 * ## EXAMPLES
-	 * wp govpack import address ak.csv --dry-run
-	 *
-	 * @subcommand address
-	 *
-	 * @param array $args        Array of command-line arguments.
-	 * @param array $assoc_args  Associative array of arguments.
-	 */
-	public function address( $args = [], $assoc_args = [] ) {
-
-		$this->import($args, $assoc_args);
-
-	}
-
 	private static function is_dry_run(array $assoc_args = []){
 
 		$dry_run = \WP_CLI\Utils\get_flag_value($assoc_args, "dry-run", false);

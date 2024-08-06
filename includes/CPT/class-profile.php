@@ -12,24 +12,11 @@ use Govpack\Core\Profile_Links;
 use Govpack\Core\Profile_Link_Services;
 use \Govpack\Helpers;
 
+
 /**
  * Register and handle the "Profile" Custom Post Type
  */
 class Profile extends \Govpack\Core\Abstracts\Post_Type {
-
-	/**
-	 * Valid profile formats.
-	 *
-	 * @var array
-	 */
-	public static $profile_formats = [ 'full', 'mini', 'wiki' ];
-
-	/**
-	 * Default profile format.
-	 *
-	 * @var string
-	 */
-	public static $default_profile_format = 'full';
 
 	/**
 	 * Post Type slug. Used when registering and referencing
@@ -41,10 +28,6 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	 */
 	const TEMPLATE_NAME = 'single-' . self::CPT_SLUG . '.php';
 
-	/**
-	 * Shortcode.
-	 */
-	const SHORTCODE = 'govpack';
 
 	/**
 	 * WordPress Hooks
@@ -58,7 +41,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		\add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
 		\add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', [ __CLASS__, 'custom_columns' ] );
 		\add_filter( 'manage_' . self::CPT_SLUG . '_posts_custom_column', [ __CLASS__, 'custom_columns_content' ], 10, 2 );
-		\add_filter( 'manage_taxonomies_for_' . self::CPT_SLUG . '_columns', [ __CLASS__, 'mod_taxonomy_columns' ], 10, 2 );
+		
 		\add_filter( 'default_hidden_columns', [ __CLASS__, 'hidden_columns' ], 10, 2 );
 		\add_action( 'restrict_manage_posts', [ __CLASS__, 'post_table_filters' ], 10, 2 );
 
@@ -255,7 +238,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				'show_in_menu' => 'govpack',
 				'supports'     => [ 'revisions', 'thumbnail', 'editor', 'custom-fields', 'title', 'excerpt', 'author'],
 				'taxonomies'   => [ 'post_tag' ],
-				'as_taxonomy'  => \Govpack\Core\Tax\Profile::TAX_SLUG,
+				
 				'menu_icon'    => 'dashicons-groups',
 				'rewrite'      => [
 					'slug'       => apply_filters( 'govpack_profile_filter_slug', $permalink_structure ),
@@ -628,18 +611,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	}
 
 
-	/**
-	 * Modify Taxonomy Columns on Profile Post List
-	 *
-	 * @param array $columns An array of columns.
-	 */
-	public static function mod_taxonomy_columns( $columns ) {
-
-		unset( $columns['govpack_profile_tax'] );
-		unset( $columns['govpack_issue_tax'] );
-		return $columns;
-
-	}
+	
 
 	/**
 	 * Add The Pfofile Photo to the post Table.
@@ -797,9 +769,9 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	}
 
 	/**
-	 * Fetch profile data into an array. Used for shortcode and block.
+	 * Fetch profile data into an array. Used for block.
 	 *
-	 * @param int $profile_id    Array of shortcode attributes.
+	 * @param int $profile_id    id of profile to get.
 	 *
 	 * @return array Profile data
 	 */
@@ -1000,32 +972,6 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		return $services->toArray();
 	}
 
-	/**
-	 * Shortcode handler for [govpack].
-	 *
-	 * @param array  $atts    Array of shortcode attributes.
-	 * @param string $content Post content.
-	 * @return string HTML for recipe shortcode.
-	 */
-	public static function shortcode_handler_meta( $atts, $content = null ) {
-
-		global $post;
-
-		if ( self::CPT_SLUG !== $post->post_type ) {
-			return;
-		}
-	  
-		$profile_data = self::get_data( $post->ID );
-		if ( ! $profile_data ) {
-			return;
-		}
-
-		ob_start();
-		require_once GOVPACK_PLUGIN_DIR . 'template-parts/profile-self.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
-		$html = ob_get_clean();
-
-		return $html;
-	}
 
 	/**
 	 * Get Default Profile Content.

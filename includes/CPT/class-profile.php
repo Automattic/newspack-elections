@@ -16,28 +16,10 @@ use Govpack\Core\Capabilities;
 class Profile extends \Govpack\Core\Abstracts\Post_Type {
 
 	/**
-	 * Valid profile formats.
-	 *
-	 * @var array
-	 */
-	public static $profile_formats = [ 'full', 'mini', 'wiki' ];
-
-	/**
-	 * Default profile format.
-	 *
-	 * @var string
-	 */
-	public static $default_profile_format = 'full';
-
-	/**
 	 * Post Type slug. Used when registering and referencing
 	 */
 	const CPT_SLUG = 'govpack_profiles';
 
-	/**
-	 * Shortcode.
-	 */
-	const SHORTCODE = 'govpack';
 
 	/**
 	 * WordPress Hooks
@@ -783,34 +765,6 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		return $profile_data;
 	}
 
-
-
-	/**
-	 * Shortcode handler for [govpack].
-	 *
-	 * @param array  $atts    Array of shortcode attributes.
-	 * @param string $content Post content.
-	 * @return string HTML for recipe shortcode.
-	 */
-	public static function shortcode_handler_meta( $atts, $content = null ) {
-
-		global $post;
-
-		if ( self::CPT_SLUG !== $post->post_type ) {
-			return;
-		}
-	  
-		$profile_data = self::get_data( $post->ID );
-		if ( ! $profile_data ) {
-			return;
-		}
-
-		ob_start();
-		require_once GOVPACK_PLUGIN_DIR . 'template-parts/profile-self.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
-		$html = ob_get_clean();
-
-		return $html;
-	}
 
 	/**
 	 * Get Default Profile Content.

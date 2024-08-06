@@ -20,7 +20,7 @@ abstract class Post_Type {
 	public static function hooks() {
 		add_action( 'init', [ get_called_class(), 'register_post_type' ] );
 		add_filter( 'manage_' . static::CPT_SLUG . '_posts_columns', [ __CLASS__, 'manage_columns' ] );
-		//add_shortcode( static::SHORTCODE, [ get_called_class(), 'shortcode_handler' ] );
+		
 	}
 
 	/**

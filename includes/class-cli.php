@@ -238,7 +238,7 @@ class CLI extends \WP_CLI_Command {
 				$old_key = sprintf( '%s_%s', $old_level, $key );
 				$new_key = sprintf( '%s_%s', $new_level, $key );
 
-				$result = $wpdb->update( 
+				$result = $wpdb->update( //phpcs:ignore WordPress.DB.DirectDatabaseQuery
 					$wpdb->postmeta, 
 					[ 'meta_key' => $new_key ], 
 					[ 'meta_key' => $old_key ], 

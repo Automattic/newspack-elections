@@ -52,20 +52,26 @@ class Govpack {
 		\add_action( 'plugins_loaded', [ '\Govpack\Core\ActionScheduler\ActionScheduler', 'hooks' ], 0 );       
 	}
 
+	/**
+	 * Action called by the plugin activation hook.
+	 * Causes rewrite rules to be regenerated so permalinks will work
+	 */
 	public static function activation() {
-		error_log( 'activeate fired' );
-		
-		
 		\Govpack\Core\CPT\Profile::register_post_type();
-		flush_rewrite_rules( false );
+		flush_rewrite_rules( false ); //phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.flush_rewrite_rules_flush_rewrite_rules
 	}
 
-
+	/**
+	 * Registers Plugin Post Types
+	 */
 	public static function post_types() {
 		// Custom Post Types.
 		\Govpack\Core\CPT\Profile::hooks();
 	}
 
+	/**
+	 * Registers Plugin Taxonomies
+	 */
 	public static function taxonomies() {
 		// Custom Post Types.
 		\Govpack\Core\Tax\LegislativeBody::hooks();
@@ -79,8 +85,6 @@ class Govpack {
 	 * WordPress Hooks
 	 */
 	public static function hooks() {
-
-	
 
 		// Custom Post Types & taxonomies.
 		self::post_types();

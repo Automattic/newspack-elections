@@ -50,4 +50,5 @@
 	<exclude-pattern>*/dist/*</exclude-pattern>
 	<exclude-pattern>*/build/*</exclude-pattern>
 	<exclude-pattern>*/cmb2/*</exclude-pattern>
+	<exclude-pattern>version.php</exclude-pattern>
 </ruleset>

@@ -28,7 +28,9 @@ abstract class Abstract_Importer {
 	 */
 	public static $import_group = null;
 
-
+	/**
+	 * Returns a new Importer based on the calling class
+	 */
 	public static function make() {
 		return new static();
 	}

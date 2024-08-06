@@ -31,6 +31,9 @@ class Admin {
 		\add_action( 'after_setup_theme', [ '\Govpack\Core\Admin\Export', 'hooks' ], 11, 1 );
 	}
 
+	/**
+	 * Method that registers actions and hilters on hooks conditionally
+	 */
 	public static function conditional_hooks() {
 		$screen = \get_current_screen();
 		
@@ -84,15 +87,14 @@ class Admin {
 	 * Utility Function that redirects to Profiles archive.
 	 */
 	public static function redirect_to_profiles() {
-		wp_redirect( admin_url( 'edit.php?post_type=' . Profile::CPT_SLUG ), 302 );
+		wp_safe_redirect( admin_url( 'edit.php?post_type=' . Profile::CPT_SLUG ), 302 );
+		exit;
 	}
 
 	/**
 	 * Creates the Govpack Menu in the Dashboard Navigation
 	 */
 	public static function create_menus() {
-
-		
 
 		$menu = new Menu();
 

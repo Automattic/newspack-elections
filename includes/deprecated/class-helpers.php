@@ -14,10 +14,6 @@ class Helpers {
 
 	const CACHE_GROUP = 'govpack';
 
-	
-	// const FACEBOOK_BASE_URL  = 'https://www.facebook.com/';
-	const INSTAGRAM_BASE_URL = 'https://www.instagram.com/';
-
 	/**
 	 * Fetch taxonomy data and cache it in memory.
 	 *

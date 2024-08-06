@@ -49,12 +49,16 @@ class Govpack {
 	public function path($path){
 		return GOVPACK_PLUGIN_PATH . $path;
 		\add_action( 'after_setup_theme', [ __class__, 'hooks' ] );
-		\add_action( 'plugins_loaded', [ '\Govpack\Core\ActionScheduler\ActionScheduler', 'hooks' ], 0 );		
+		\add_action( 'plugins_loaded', [ '\Govpack\Core\ActionScheduler\ActionScheduler', 'hooks' ], 0 );       
 	}
 
-	public static function activation(){
+	/**
+	 * Action called by the plugin activation hook.
+	 * Causes rewrite rules to be regenerated so permalinks will work
+	 */
+	public static function activation() {
 		\Govpack\Core\CPT\Profile::register_post_type();
-		flush_rewrite_rules(false);
+		flush_rewrite_rules( false ); //phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.flush_rewrite_rules_flush_rewrite_rules
 	}
 
 	public function build_path($path){
@@ -77,13 +81,19 @@ class Govpack {
 		\add_action( 'init', [ $this, 'register_blocks' ] );
 	}
 
-	public static function post_types(){
+
+	/**
+	 * Registers Plugin Post Types
+	 */
+	public static function post_types() {
 		// Custom Post Types.
 		\Govpack\Core\CPT\Profile::hooks();
 	}
 
-	// Taxonomies.
-	public static function taxonomies(){
+	/**
+	 * Registers Plugin Taxonomies
+	 */
+	public static function taxonomies() {
 		// Custom Post Types.
 		\Govpack\Core\Tax\LegislativeBody::hooks();
 		\Govpack\Core\Tax\OfficeHolderStatus::hooks();
@@ -96,8 +106,6 @@ class Govpack {
 
 	public function setup() {
 
-
-	
 
 		// Custom Post Types & taxonomies.
 		self::post_types();

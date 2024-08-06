@@ -67,8 +67,9 @@ class Admin {
 	/**
 	 * Utility Function that redirects to Profiles archive.
 	 */
-	public static function redirect_to_profiles(){
-		wp_redirect(admin_url( 'edit.php?post_type=' . Profile::CPT_SLUG ), 302);
+	public static function redirect_to_profiles() {
+		wp_safe_redirect( admin_url( 'edit.php?post_type=' . Profile::CPT_SLUG ), 302 );
+		exit;
 	}
 
 	/**

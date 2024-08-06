@@ -50,7 +50,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		\add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
 		\add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', [ __CLASS__, 'custom_columns' ] );
 		\add_filter( 'manage_' . self::CPT_SLUG . '_posts_custom_column', [ __CLASS__, 'custom_columns_content' ], 10, 2 );
-		\add_filter( 'manage_taxonomies_for_' . self::CPT_SLUG . '_columns', [ __CLASS__, 'mod_taxonomy_columns' ], 10, 2 );
+		
 		\add_filter( 'default_hidden_columns', [ __CLASS__, 'hidden_columns' ], 10, 2 );
 		\add_action( 'restrict_manage_posts', [ __CLASS__, 'post_table_filters' ], 10, 2 );
 

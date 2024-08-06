@@ -7,6 +7,7 @@
 
 namespace Govpack\Core;
 
+use Govpack\Core\Importer;
 use \WP_CLI as WP_CLI;
 
 /**
@@ -16,11 +17,11 @@ class CLI extends \WP_CLI_Command {
 
 
 	/**
-	 * Import data from WXR.
+	 * Import data from a file.
 	 *
 	 * ## OPTIONS
 	 * <file>...
-	 * : The WXR file.
+	 * : The  file.
 	 *
 	 * [--dry-run]
 	 * : Set to false to actually run the command
@@ -64,8 +65,8 @@ class CLI extends \WP_CLI_Command {
 	 * @param array $assoc_args  Associative array of arguments.
 	 */
 	public function progress( $args, $assoc_args ) {
-		$importer = \Govpack\Core\Importer\WXR::make();
-		WP_CLI::line( $importer::progress() );
+		
+		WP_CLI::line( Importer\Abstract_Importer::progress() );
 	}
 
 	/**

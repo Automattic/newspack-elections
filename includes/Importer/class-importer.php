@@ -10,6 +10,7 @@ namespace Govpack\Core\Importer;
 use Exception;
 use Govpack\Core\Govpack;
 use Govpack\Core\Capabilities;
+use Govpack\Core\Importer\Abstracts\Abstract_Importer;
 
 /**
  * Register and handle the "USIO" Importer
@@ -118,7 +119,7 @@ class Importer {
 	 * Called By The REST API to Check the status of an ongoing import
 	 */
 	public static function status() {
-		return WXR::status();
+		return Abstract_Importer::status();
 	}
 
 	
@@ -306,7 +307,7 @@ class Importer {
 	 * Reset all Import Funcions to empty
 	 */
 	public static function clear() {
-		WXR::cancel();
+		Abstract_Importer::cancel();
 		delete_option( 'govpack_import_path' );
 
 		if ( ! \ActionScheduler::is_initialized( __FUNCTION__ ) ) {

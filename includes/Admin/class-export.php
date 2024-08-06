@@ -97,7 +97,7 @@ class Export {
 				if ( 'taxonomy' === $action['type'] ) {
 
 					$terms = get_the_terms( $profile, $action['taxonomy'] );
-					if(!$terms){
+					if ( ! $terms ) {
 						continue;
 					}
 					$labels = array_map(

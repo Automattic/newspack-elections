@@ -366,7 +366,7 @@ class Actions {
 	 */
 	public static function is_profile_update( $post ) {
 		if (
-			( isset($post['ID']) ) && 
+			( isset( $post['ID'] ) ) && 
 			( $post['ID'] ) && 
 			( self::post_exists( $post['ID'] ) )
 		) {

@@ -12,7 +12,7 @@
  * @param string  $value The value to output.
  * @param boolean $display Override to control if this row will output.
  */
-function gp_row( $id , $value = null, $display = null ) {
+function gp_row( $id, $value = null, $display = null ) {
 
 	if ( ! $display ) {
 		return null;

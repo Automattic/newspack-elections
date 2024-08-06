@@ -150,8 +150,12 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				'show_ui'      => true,
 				'show_in_menu' => 'govpack',
 				'supports'     => [ 
-					'revisions', 'thumbnail', 'editor', 'custom-fields', 'excerpt',
-					'title'
+					'revisions',
+					'thumbnail',
+					'editor',
+					'custom-fields',
+					'excerpt',
+					'title',
 				],
 				'taxonomies'   => [ 'post_tag' ],
 				

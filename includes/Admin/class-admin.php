@@ -31,7 +31,7 @@ class Admin {
 		\add_action( 'after_setup_theme', [ '\Govpack\Core\Admin\Export', 'hooks' ], 11, 1 );
 	}
 
-	public static function conditional_hooks(){
+	public static function conditional_hooks() {
 		$screen = \get_current_screen();
 		
 		if ( ! $screen ) {
@@ -39,7 +39,7 @@ class Admin {
 		}
 
 		switch ( $screen->base ) {
-			case "toplevel_page_govpack":
+			case 'toplevel_page_govpack':
 				self::redirect_to_profiles();
 				break;
 		}
@@ -83,8 +83,8 @@ class Admin {
 	/**
 	 * Utility Function that redirects to Profiles archive.
 	 */
-	public static function redirect_to_profiles(){
-		wp_redirect(admin_url( 'edit.php?post_type=' . Profile::CPT_SLUG ), 302);
+	public static function redirect_to_profiles() {
+		wp_redirect( admin_url( 'edit.php?post_type=' . Profile::CPT_SLUG ), 302 );
 	}
 
 	/**

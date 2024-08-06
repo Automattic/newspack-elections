@@ -49,24 +49,24 @@ class Govpack {
 	 */
 	public function __construct() {
 		\add_action( 'after_setup_theme', [ __class__, 'hooks' ] );
-		\add_action( 'plugins_loaded', [ '\Govpack\Core\ActionScheduler\ActionScheduler', 'hooks' ], 0 );		
+		\add_action( 'plugins_loaded', [ '\Govpack\Core\ActionScheduler\ActionScheduler', 'hooks' ], 0 );       
 	}
 
-	public static function activation(){
-		error_log("activeate fired");
+	public static function activation() {
+		error_log( 'activeate fired' );
 		
 		
 		\Govpack\Core\CPT\Profile::register_post_type();
-		flush_rewrite_rules(false);
+		flush_rewrite_rules( false );
 	}
 
 
-	public static function post_types(){
+	public static function post_types() {
 		// Custom Post Types.
 		\Govpack\Core\CPT\Profile::hooks();
 	}
 
-	public static function taxonomies(){
+	public static function taxonomies() {
 		// Custom Post Types.
 		\Govpack\Core\Tax\LegislativeBody::hooks();
 		\Govpack\Core\Tax\OfficeHolderStatus::hooks();

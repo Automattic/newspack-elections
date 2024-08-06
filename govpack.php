@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 
 // Define where the path to the core plugin file.
 if ( ! defined( 'GOVPACK_PLUGIN_FILE' ) ) {
-	define( 'GOVPACK_PLUGIN_FILE',  __FILE__ );
+	define( 'GOVPACK_PLUGIN_FILE', __FILE__ );
 }
 
 // Define where the path to the folder where plugin files live.
@@ -70,5 +70,5 @@ $blocks_autoloader->init();
 // Include the main Govpack class.
 if ( class_exists( '\Govpack\Core\Govpack' ) ) {
 	$GLOBALS['govpack'] = \Govpack\Core\Govpack::instance();
-	register_activation_hook(__FILE__, [ $GLOBALS['govpack'], 'activation' ]);
+	register_activation_hook( __FILE__, [ $GLOBALS['govpack'], 'activation' ] );
 }

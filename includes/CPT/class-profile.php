@@ -612,9 +612,9 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 
 
 	/**
-	 * Fetch profile data into an array. Used for shortcode and block.
+	 * Fetch profile data into an array. Used for block.
 	 *
-	 * @param int $profile_id    Array of shortcode attributes.
+	 * @param int $profile_id    id of profile to get.
 	 *
 	 * @return array Profile data
 	 */

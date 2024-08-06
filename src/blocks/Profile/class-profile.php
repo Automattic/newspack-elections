@@ -31,12 +31,12 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 	}   
 
 	/**
-	 * Shortcode handler for [govpack].
+	 * Block render handler for .
 	 *
-	 * @param array  $attributes    Array of shortcode attributes.
-	 * @param string $content Post content.
+	 * @param array  $attributes    Array of block attributes.
+	 * @param string $content Block content.
 	 *
-	 * @return string HTML for recipe shortcode.
+	 * @return string HTML for Block.
 	 */
 	public static function render( $attributes, $content = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 

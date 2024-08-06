@@ -2,7 +2,7 @@
 
 namespace Govpack\Core;
 
-use  z4kn4fein\SemVer\Version;
+use Govpack\Vendor\z4kn4fein\SemVer\Version;
 
 class Dev_Helpers{
 	
@@ -15,8 +15,7 @@ class Dev_Helpers{
 	private string $release_label;
 	private Version $version;
 
-	public function __construct(Govpack $plugin)
-	{
+	public function __construct(Govpack $plugin){
 		$this->plugin = $plugin;
 	}
 

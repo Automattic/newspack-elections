@@ -1,53 +1,36 @@
 
-
-
-import {ReactComponent as FacebookIconSVG} from "./../images/facebook.svg"
-import {ReactComponent as TwitterIconSVG} from "./../images/twitter.svg"
-import {ReactComponent as XIconSVG} from "./../images/x.svg"
-import {ReactComponent as LinkedinIconSVG} from "./../images/linkedin.svg"
-import {ReactComponent as EmailIconSVG} from "./../images/email.svg"
-import {ReactComponent as InstagramIconSVG} from "./../images/instagram.svg"
-import {ReactComponent as PhoneIconSVG} from "./../images/phone.svg"
-import {ReactComponent as WebIconSVG} from "./../images/globe.svg"
-import {ReactComponent as FaxIconSVG} from "./../images/fax.svg"
-import {ReactComponent as YouTubeIconSVG} from "./../images/youtube.svg"
-import {ReactComponent as GoogleIconSVG} from "./../images/google.svg"
-import {ReactComponent as WikipediaIconSVG} from "./../images/wikipedia.svg"
-import {ReactComponent as GabIconSVG} from "./../images/gab.svg"
-import {ReactComponent as OpenStatesIconSVG} from "./../images/openstates.svg"
-import {ReactComponent as OpenSecretsIconSVG} from "./../images/opensecrets.svg"
-import {ReactComponent as RumbleIconSVG} from "./../images/rumble.svg"
-import {ReactComponent as FecIconSVG} from "./../images/fec.svg"
-
-import { Icon } from '@wordpress/components';
 /**
  * External dependencies
  */
  import classnames from 'classnames';
 
+ /**
+ * Internal Dependencies
+ */
 import { normalize_profile } from './NormaliseProfile';
 import ProfileCommsPanel from "./Panels/ProfileCommsPanel"
  
+import {
+	Facebook as FacebookIcon,
+	Instagram as InstagramIcon,
+	Linkedin as LinkedinIcon,
+	Twitter as TwitterIcon,
+	X as XIcon,
+	YouTube as YouTubeIcon,
 
+	Email as EmailIcon,
+	Fax as FaxIcon,
+	Phone as PhoneIcon,
+	Web as WebIcon,
 
-
-const TwitterIcon = () => ( <Icon icon={ TwitterIconSVG } /> )
-const XIcon = () => ( <Icon icon={ XIconSVG } /> )
-const LinkedinIcon = () => ( <Icon icon={ LinkedinIconSVG } /> )
-const EmailIcon = () => ( <Icon icon={ EmailIconSVG } /> )
-const InstagramIcon = () => ( <Icon icon={ InstagramIconSVG } /> )
-const PhoneIcon = () => ( <Icon icon={ PhoneIconSVG } /> )
-const WebIcon = () => ( <Icon icon={ WebIconSVG } /> )
-const FaxIcon = () => ( <Icon icon={ FaxIconSVG } /> )
-const FacebookIcon = () => ( <Icon icon={ FacebookIconSVG } /> )
-const YouTubeIcon = () => ( <Icon icon={ YouTubeIconSVG } /> )
-const WikipediaIcon = () => ( <Icon icon={ WikipediaIconSVG } /> )
-const GoogleIcon = () => ( <Icon icon={ GoogleIconSVG } /> )
-const GabIcon = () => ( <Icon icon={ GabIconSVG } /> )
-const OpenStatesIcon = () => ( <Icon icon={ OpenStatesIconSVG } /> )
-const OpenSecretsIcon = () => ( <Icon icon={ OpenSecretsIconSVG } /> )
-const RumbleIcon = () => ( <Icon icon={ RumbleIconSVG } /> )
-const FecIcon = () => ( <Icon icon={ FecIconSVG } /> )
+	Fec as FecIcon,
+	Gab as GabIcon,
+	Google as GoogleIcon,
+	OpenSecrets as OpenSecretsIcon,
+	OpenStates as OpenStatesIcon,
+	Rumble as RumbleIcon,
+	Wikipedia as WikipediaIcon
+} from "./Icons"
 
 const ProfileLinksIcons = {
 	"google" : GoogleIcon,

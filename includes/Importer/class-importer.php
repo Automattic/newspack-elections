@@ -22,13 +22,12 @@ class Importer {
 	 */
 	public static function hooks() {
 
-		\add_action( 'rest_api_init', [ __class__, 'register_rest_endpoints' ] );
+		\add_action( 'rest_api_init', [ __CLASS__, 'register_rest_endpoints' ] );
 		
 		Chunked_Upload::hooks();
 		Actions::hooks();
 
-		\add_action( 'admin_enqueue_scripts', [ __class__, 'register_scripts' ] );
-
+		\add_action( 'admin_enqueue_scripts', [ __CLASS__, 'register_scripts' ] );
 	}
 
 	/**
@@ -67,13 +66,12 @@ class Importer {
 			[
 				'methods'             => 'GET',
 				'callback'            => [
-					__class__,
+					__CLASS__,
 					'import',
 				],
 				'permission_callback' => function () {
 				
-					return \current_user_can( Capabilities::CAN_IMPORT );
-
+					return \current_user_can( 'govpack_import' );
 				},
 			] 
 		);
@@ -84,13 +82,12 @@ class Importer {
 			[
 				'methods'             => 'GET',
 				'callback'            => [
-					__class__,
+					__CLASS__,
 					'progress',
 				],
 				'permission_callback' => function () {
 				
-					return \current_user_can( Capabilities::CAN_IMPORT );
-
+					return \current_user_can( 'govpack_import' );
 				},
 			] 
 		);
@@ -101,18 +98,15 @@ class Importer {
 			[
 				'methods'             => 'GET',
 				'callback'            => [
-					__class__,
+					__CLASS__,
 					'status',
 				],
 				'permission_callback' => function () {
 				
-					return \current_user_can( Capabilities::CAN_IMPORT );
-
+					return \current_user_can( 'govpack_import' );
 				},
 			] 
 		);
-
-
 	}
 
 	/**
@@ -147,8 +141,6 @@ class Importer {
 		$importer = self::make( $file );
 
 		return $importer::import( $file, false, $extra );
-
-
 	}
 
 	/**
@@ -238,7 +230,6 @@ class Importer {
 		}
 
 		return $store->query_actions( $args, 'count' );
-
 	}
 
 	/**
@@ -296,7 +287,6 @@ class Importer {
 			self::clean();
 			return;
 		}
-
 	}
 
 	  
@@ -318,7 +308,6 @@ class Importer {
 		$store = \ActionScheduler::store();
 		$store->cancel_actions_by_group( 'govpack' );
 		$store->delete_actions_by_group( 'govpack' );
-
 	}
 
 	/**
@@ -349,19 +338,19 @@ class Importer {
 
 		$post = get_post( $id );
 		if ( ! $post ) {
-			throw new \Exception( sprintf( 'No Entity with ID %s exists', $id ) );
+			throw new \Exception( sprintf( 'No Entity with ID %s exists', $id ) ); //phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 		}
 
 		if ( 'govpack_profiles' !== $post->post_type ) {
-			throw new \Exception( sprintf( 'No Profile with ID %s exists', $id ) );
+			throw new \Exception( sprintf( 'No Profile with ID %s exists', $id ) ); //phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 		}
 
 		if ( ! $post->{$meta_key} ) {
-			throw new \Exception( sprintf( 'Profile %s Does not have an `%s` meta field', $id, $meta_key ) );
+			throw new \Exception( sprintf( 'Profile %s Does not have an `%s` meta field', $id, $meta_key ) ); //phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 		}
 
 		if ( ! \wp_http_validate_url( $post->{$meta_key} ) ) {
-			throw new \Exception( sprintf( 'Image meta field for profile %s does not contain a valid url', $id ) );
+			throw new \Exception( sprintf( 'Image meta field for profile %s does not contain a valid url', $id ) ); //phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 		}
 
 		
@@ -391,5 +380,4 @@ class Importer {
 
 		return true;
 	}
-
 }

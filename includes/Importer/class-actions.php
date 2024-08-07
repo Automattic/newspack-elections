@@ -67,8 +67,6 @@ class Actions {
 
 		\add_filter( 'govpack_import_content', [ self::instance(), 'wrap_content_in_block_grammar' ] );
 		\add_filter( 'govpack_import_content', [ self::instance(), 'inject_block_in_content' ] );
-		
-		
 	}
 
 	/**
@@ -76,8 +74,8 @@ class Actions {
 	 * 
 	 * @param string $list string of items from openstates.
 	 */
-	public static function explode_openstates_list( $list ) {
-		return explode( ';', $list );
+	public static function explode_openstates_list( $os_list ) {
+		return explode( ';', $os_list );
 	}
 
 	/**
@@ -202,7 +200,6 @@ class Actions {
 		$term_id = $result['term_id'];
 
 		do_action( 'wp_import_insert_term', $term_id, $data );
-
 	}
 
 	/**
@@ -235,7 +232,6 @@ class Actions {
 		}
 	
 		return $new_address;
-
 	}
 
 	/**
@@ -374,7 +370,6 @@ class Actions {
 		} 
 		
 		return false;
-		
 	}
 
 	/**
@@ -437,7 +432,6 @@ class Actions {
 
 
 		return $term;
-		
 	}
 
 	/**

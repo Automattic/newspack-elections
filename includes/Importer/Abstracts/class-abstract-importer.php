@@ -60,7 +60,6 @@ abstract class Abstract_Importer {
 		}
 
 		return [ 'status' => 'not_running' ];
-
 	}
 
 	/**

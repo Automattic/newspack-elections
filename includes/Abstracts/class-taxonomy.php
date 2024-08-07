@@ -57,7 +57,7 @@ abstract class Taxonomy {
 			$result = wp_insert_term( $item, static::TAX_SLUG );
 
 			if ( ! is_wp_error( $result ) ) {
-				$count++;
+				++$count;
 			}
 		}
 

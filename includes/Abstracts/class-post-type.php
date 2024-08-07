@@ -7,7 +7,7 @@
 
 namespace Govpack\Core\Abstracts;
 
-use \Govpack\Helpers;
+use Govpack\Helpers;
 
 /**
  * Abstract class for registering and handling of custom post types.
@@ -20,7 +20,6 @@ abstract class Post_Type {
 	public static function hooks() {
 		add_action( 'init', [ get_called_class(), 'register_post_type' ] );
 		add_filter( 'manage_' . static::CPT_SLUG . '_posts_columns', [ __CLASS__, 'manage_columns' ] );
-		
 	}
 
 	/**

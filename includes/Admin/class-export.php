@@ -22,8 +22,8 @@ class Export {
 	 * Adds Hooks used for exporting  
 	 */
 	public static function hooks() {
-		\add_action( 'rest_api_init', [ __class__, 'register_rest_endpoints' ] );
-		\add_action( 'admin_enqueue_scripts', [ __class__, 'register_scripts' ] );
+		\add_action( 'rest_api_init', [ __CLASS__, 'register_rest_endpoints' ] );
+		\add_action( 'admin_enqueue_scripts', [ __CLASS__, 'register_scripts' ] );
 	}
 
 
@@ -48,7 +48,6 @@ class Export {
 			$asset_data['version'] ?? '',
 			true
 		);
-
 	}
 
 	/**
@@ -62,13 +61,12 @@ class Export {
 			[
 				'methods'             => 'GET',
 				'callback'            => [
-					__class__,
+					__CLASS__,
 					'run_export',
 				],
 				'permission_callback' => function () {
 				
-					return \current_user_can( Capabilities::CAN_EXPORT );
-
+					return \current_user_can( 'govpack_export' );
 				},
 			] 
 		);
@@ -99,7 +97,7 @@ class Export {
 						continue;
 					}
 					$labels = array_map(
-						function( $term ) {
+						function ( $term ) {
 							return $term->name;
 						},
 						$terms

@@ -8,7 +8,7 @@
 namespace Govpack\Core;
 
 use Govpack\Core\Importer;
-use \WP_CLI as WP_CLI;
+use WP_CLI;
 
 /**
  * Manages govpack profile and seed data.
@@ -102,7 +102,6 @@ class CLI extends \WP_CLI_Command {
 
 			WP_CLI::error( $e->getMessage() );
 		}
-		
 	}
 
 	/**
@@ -158,7 +157,7 @@ class CLI extends \WP_CLI_Command {
 			foreach ( $posts->posts as $id ) {
 				WP_CLI::line( sprintf( 'Deleting Post : %s', $id ) );
 				wp_delete_post( $id, true );
-				$i++;
+				++$i;
 
 				if ( ( $i % 1000 ) === 1 ) {
 					WP_CLI::line( sprintf( 'Deleting Post : %s of %s', $i, $count ) );
@@ -194,7 +193,6 @@ class CLI extends \WP_CLI_Command {
 				wp_delete_term( $term, $taxonomy );
 			}       
 		}
-
 	}
 
 
@@ -254,9 +252,9 @@ class CLI extends \WP_CLI_Command {
 		}
 	}
 		
-	private static function is_dry_run(array $assoc_args = []){
+	private static function is_dry_run( array $assoc_args = [] ) {
 
-		$dry_run = \WP_CLI\Utils\get_flag_value($assoc_args, "dry-run", false);
+		$dry_run = \WP_CLI\Utils\get_flag_value( $assoc_args, 'dry-run', false );
 		if ( $dry_run === true ) {
 			$dry_run = true;
 			WP_CLI::line( '!!! Doing a dry-run, no profiles will be imported.' );

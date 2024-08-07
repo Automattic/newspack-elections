@@ -2,36 +2,35 @@
 
 namespace Govpack\Core\Admin;
 
-class Permalink_Settings{
+class Permalink_Settings {
 
 	private $permalinks;
 	private $base_slug;
 
-	private $option_name = "govpack_permalinks";
+	private $option_name = 'govpack_permalinks';
 
-	public function __construct(){
+	public function __construct() {
 		$this->add_permalink_settings_section();
 		$this->handle_save();
 
-		$this->base_slug = "guide";
-		
+		$this->base_slug = 'guide';
 	}
 
-	public static function hooks(){
+	public static function hooks() {
 		new self();
 	}
 
-	public function defaults(){
+	public function defaults() {
 		return [
-			"profile_base" => ''
+			'profile_base' => '',
 		];
 	}
 
-	public function get_permalinks(){
-		return (array) get_option( $this->option_name, $this->defaults());
+	public function get_permalinks() {
+		return (array) get_option( $this->option_name, $this->defaults() );
 	}
 
-	public function update_permalinks(){
+	public function update_permalinks() {
 		update_option( $this->option_name, $this->permalinks );
 	}
 
@@ -42,7 +41,7 @@ class Permalink_Settings{
 	 * 
 	 * Sourced from WooCommerce https://github.com/woocommerce/woocommerce/blob/c8202bc72943acfa2caa78be6337c23768b815cd/plugins/woocommerce/includes/wc-formatting-functions.php#L77
 	 */
-	private static function sanitize_permalink($permalink){
+	private static function sanitize_permalink( $permalink ) {
 		global $wpdb;
 
 		$permalink = $wpdb->strip_invalid_text_for_column( $wpdb->options, 'option_value', $permalink ?? '' );
@@ -69,11 +68,11 @@ class Permalink_Settings{
 			return;
 		}
 
-		if(!isset($_POST, $_POST['govpack_profile_permalink'])){
+		if ( ! isset( $_POST, $_POST['govpack_profile_permalink'] ) ) {
 			return;
 		}
-		
-		if( ! wp_verify_nonce( wp_unslash( $_POST['govpack-permalinks-nonce'] ), 'govpack-permalinks' )) {
+
+		if ( ! check_admin_referer( 'govpack-permalinks', 'govpack-permalinks-nonce' ) ) {
 			return;
 		}
 
@@ -81,12 +80,14 @@ class Permalink_Settings{
 	}
 
 	public function save() {
+		//phpcs:disable WordPress.Security.NonceVerification.Missing
+		// sanitisation handled in handle_save();.
+		$profile_base = isset( $_POST['govpack_profile_permalink'] ) ? // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			wp_unslash( $_POST['govpack_profile_permalink'] ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			: ''; 
 
-		
-		$profile_base = isset( $_POST['govpack_profile_permalink'] ) ? wp_unslash( $_POST['govpack_profile_permalink'] )  : ''; // WPCS: input var ok, sanitization ok.
-
-		if($profile_base === "custom"){
-			if ( isset( $_POST['govpack_profile_permalink_structure'] ) ) { // WPCS: input var ok.
+		if ( $profile_base === 'custom' ) {
+			if ( isset( $_POST['govpack_profile_permalink_structure'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 				
 				// Taken from WC but with breaking down to understand.
 				// Working form the Inner Most call outwards
@@ -95,47 +96,46 @@ class Permalink_Settings{
 				// str_replace('#'... removes # characters that would cause everything after them to be treated as anchors
 				// preg_replace( '#/+#', '/', '/' .... replaces every forward slash (or group of forward slashes) with a single '/'
 				// eg / => /, // => /, /// => / . Note it adds a / at the start of the string to make sure there is always at least one /
-				$profile_base = preg_replace( '#/+#', '/', '/' . str_replace( '#', '', trim( wp_unslash( $_POST['govpack_profile_permalink_structure'] ) ) ) ); // WPCS: input var ok, sanitization ok.
+				$profile_base = preg_replace( '#/+#', '/', '/' . str_replace( '#', '', trim( wp_unslash( $_POST['govpack_profile_permalink_structure'] ) ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		
 			} else {
 				$profile_base = '/';
-			}
-
+			}       
 		} elseif ( empty( $profile_base ) ) {
 			$profile_base = 'profile';
 		}
-
-		$this->permalinks = $this->get_permalinks();
-		$this->permalinks['profile_base'] = self::sanitize_permalink($profile_base);
-
+		//phpcs:enable WordPress.Security.NonceVerification.Missing
+		
+		$this->permalinks                 = $this->get_permalinks();
+		$this->permalinks['profile_base'] = self::sanitize_permalink( $profile_base );
+		
 		$this->update_permalinks();
-
 	}
 
 	
 
 	public function add_permalink_settings_section() {
 
-		$setting_section_id = "govpack-permalink";
+		$setting_section_id = 'govpack-permalink';
 
 		\add_settings_section( 
 			$setting_section_id, 
 			__( 'Govpack Permalinks', 'govpack' ), 
-			array( $this, 'settings' ), 
+			[ $this, 'settings' ], 
 			'permalink' 
 		);
 	}
 
 	public function settings() {
 		wp_nonce_field( 'govpack-permalinks', 'govpack-permalinks-nonce' );
-		echo wp_kses_post( wpautop( sprintf( __( 'You may use a custom base for your Govpack Profile\'s URLs here. For example, using <code>candidate</code> would make your profile links like <code>%scandidate/jo-smith/</code>.', 'govpack' ), esc_url( home_url( '/' ) ) ) ) );
+		echo wp_kses_post( wpautop( sprintf( 'You may use a custom base for your Govpack Profile\'s URLs here. For example, using <code>candidate</code> would make your profile links like <code>%scandidate/jo-smith/</code>.', esc_url( home_url( '/' ) ) ) ) );
 		
 		$this->permalinks = $this->get_permalinks();
 		
-		$structures = array(
+		$structures = [
 			0 => '',
 			1 => '/' . trailingslashit( $this->base_slug ),
-		);
+		];
 
 		?>
 		<table class="form-table">
@@ -183,6 +183,6 @@ class Permalink_Settings{
 		</tbody>
 	</table>
 
-	<?php
+		<?php
 	}
 }

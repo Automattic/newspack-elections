@@ -159,11 +159,11 @@ class Menu {
 		foreach ( $required as $key ) {
 
 			if ( null === $this->$key ) {
-				throw new Exception( 'Required Menu Property ' . $key . ' is unset' );
+				throw new Exception( 'Required Menu Property ' . $key . ' is unset' ); //phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 			}
 
 			if ( '' === $this->$key ) {
-				throw new Exception( 'Required Menu Property ' . $key . ' is an empty string and much have a value' );
+				throw new Exception( 'Required Menu Property ' . $key . ' is an empty string and much have a value' ); //phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 			}
 		}
 	}
@@ -186,12 +186,12 @@ class Menu {
 
 			\add_action(
 				'admin_menu',
-				function() {
+				function () {
 
 					\add_menu_page( 
 						$this->page_title, 
 						$this->menu_title, 
-						$this->capability, 
+						$this->capability, //phpcs:ignore WordPress.WP.Capabilities.Undetermined
 						$this->menu_slug,
 						$this->function,
 						$this->icon_url,
@@ -227,13 +227,18 @@ class Menu {
 
 		
 			// Sub-menus only.
-			if ( ! $tax->show_in_which_menu || "govpack" !== $tax->show_in_which_menu ) {
+			if ( ! $tax->show_in_which_menu || 'govpack' !== $tax->show_in_which_menu ) {
 				continue;
 			}
 
 
-			\add_submenu_page( $tax->show_in_which_menu, $tax->labels->name, $tax->labels->name, $tax->cap->manage_terms, "edit-tags.php?taxonomy=$tax->name&post_type=govpack_profiles" );
+			\add_submenu_page( 
+				$tax->show_in_which_menu, 
+				$tax->labels->name, 
+				$tax->labels->name, 
+				$tax->cap->manage_terms, //phpcs:ignore WordPress.WP.Capabilities.Undetermined
+				'edit-tags.php?taxonomy=' . $tax->name . '&post_type=govpack_profiles' 
+			);
 		}
 	}
-
 }

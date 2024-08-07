@@ -16,17 +16,17 @@ defined( 'ABSPATH' ) || exit;
  */
 class Profile extends \Govpack\Core\Abstracts\Block {
 
-	public $block_name = "govpack/profile";
-	public $template = "profile";
+	public $block_name = 'govpack/profile';
+	public $template   = 'profile';
 
 
-	public function disable_block( $allowed_blocks, $editor_context ){
+	public function disable_block( $allowed_blocks, $editor_context ) {
 		return false;
 	}
 
 
-	public function block_build_path() : string {
-		return trailingslashit(GOVPACK_PLUGIN_BUILD_PATH . 'blocks/Profile');
+	public function block_build_path(): string {
+		return trailingslashit( GOVPACK_PLUGIN_BUILD_PATH . 'blocks/Profile' );
 	}
 	
 	
@@ -61,7 +61,7 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 	 * @param string $content Any HTML or content redurned form the block.
 	 * @param WP_Block $template The filename of the template-part to use.
 	 */
-	public function handle_render(array $attributes, string $content, WP_Block $block ) {
+	public function handle_render( array $attributes, string $content, WP_Block $block ) {
 
 		
 		
@@ -80,15 +80,13 @@ class Profile extends \Govpack\Core\Abstracts\Block {
 			$content, 
 			$block, 
 			[
-				"profile_block" => $this,
-				"profile_data" => $profile
+				'profile_block' => $this,
+				'profile_data'  => $profile,
 			] 
 		);
-
 	}
 
-	public function template() : string {
-		return sprintf("blocks/%s", $this->template);
+	public function template(): string {
+		return sprintf( 'blocks/%s', $this->template );
 	}
-
 }

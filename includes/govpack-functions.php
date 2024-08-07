@@ -1,31 +1,31 @@
 <?php
 
-if(!function_exists("gp")){
-	function gp(){
+if ( ! function_exists( 'gp' ) ) {
+	function gp() {
 		return Govpack\Core\Govpack::instance();
 	}
 }
 
-if(!function_exists("gp_template_loader")){
-	function gp_template_loader(){
+if ( ! function_exists( 'gp_template_loader' ) ) {
+	function gp_template_loader() {
 		return gp()->front_end()->template_loader();
 	}
 }
 
-if(!function_exists("gp_get_template_part")){
+if ( ! function_exists( 'gp_get_template_part' ) ) {
 	function gp_get_template_part( $slug, $name = '', $data = [] ) {
-		return gp_template_loader()->get_template_part($slug, $name, true, $data);
+		return gp_template_loader()->get_template_part( $slug, $name, true, $data );
 	}
 }
 
-if(!function_exists("gp_get_block_part")){
-	function gp_get_block_part( $slug, $name = '', $attributes = [], $content = "", $block = null, $extra = null ) {
-		return gp_template_loader()->get_block_part($slug, $name, $attributes, $content, $block, $extra);
+if ( ! function_exists( 'gp_get_block_part' ) ) {
+	function gp_get_block_part( $slug, $name = '', $attributes = [], $content = '', $block = null, $extra = null ) {
+		return gp_template_loader()->get_block_part( $slug, $name, $attributes, $content, $block, $extra );
 	}
 }
 
-if(!function_exists("gp_get_permalink_structure")){
-	function gp_get_permalink_structure(){
+if ( ! function_exists( 'gp_get_permalink_structure' ) ) {
+	function gp_get_permalink_structure() {
 		return Govpack\Core\Permalinks::instance()->permalinks();
 	}
 }
@@ -40,8 +40,10 @@ if(!function_exists("gp_get_permalink_structure")){
  * 
  * See https://developer.wordpress.org/reference/functions/_doing_it_wrong/ for info.
  */
-if(!function_exists("gp_doing_it_wrong")){
-	function gp_doing_it_wrong(string $function_name, string $message, string $version) : void {
+if ( ! function_exists( 'gp_doing_it_wrong' ) ) {
+	function gp_doing_it_wrong( string $function_name, string $message, string $version ): void {
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 		_doing_it_wrong( $function_name, $message, $version );
+		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

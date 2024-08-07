@@ -3,17 +3,17 @@ namespace Govpack\Core\ProfileLinks;
 
 class OpenSecrets extends \Govpack\Core\ProfileLinks\ProfileLink {
 
-	protected $slug = "opensecrets";
+	protected $slug = 'opensecrets';
 
-	public function meta_key(){
+	public function meta_key() {
 		return 'opensecrets_id';
 	}
 
-	public function label(){
+	public function label() {
 		return 'OpenSecrets';
 	}
 
-	public function enabled(){
+	public function enabled() {
 		return true;
 	}
 }

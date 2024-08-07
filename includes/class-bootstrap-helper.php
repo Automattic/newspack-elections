@@ -1,13 +1,13 @@
 <?php
 
-class Govpack_Bootstrap_Helper {
+class Bootstrap_Helper {
 
-	static $notice_defaults = array(
+	private static $notice_defaults = [
 		'type'               => 'error',
 		'dismissible'        => true,
-		'additional_classes' => array( 'inline', 'notice-alt' ),
-		'attributes'         => array( 'data-slug' => 'govpack' )
-	);
+		'additional_classes' => [ 'inline', 'notice-alt' ],
+		'attributes'         => [ 'data-slug' => 'govpack' ],
+	];
 
 	public static function notice_vendor_missing() {
 		\wp_admin_notice(
@@ -29,5 +29,4 @@ class Govpack_Bootstrap_Helper {
 			self::$notice_defaults
 		);
 	}
-
 }

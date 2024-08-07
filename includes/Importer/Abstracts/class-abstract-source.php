@@ -91,7 +91,7 @@ abstract class Abstract_Source {
 		$sources = self::flattened_urls();
 		$source  = array_filter(
 			$sources,
-			function( $val ) use ( $key ) {
+			function ( $val ) use ( $key ) {
 				return ( $val['key'] === $key );
 			}
 		);
@@ -151,15 +151,15 @@ abstract class Abstract_Source {
 			'test_size' => true,
 		];
 
-		add_filter( 'upload_dir', [ __class__, 'change_upload_dir' ] );
+		add_filter( 'upload_dir', [ __CLASS__, 'change_upload_dir' ] );
 		// PHPCS Ignore bellow, as we specific XML.
-		add_filter( 'upload_mimes', [ __class__, 'extra_upload_mimes' ], 1, 1 ); //phpcs:ignore WordPressVIPMinimum.Hooks.RestrictedHooks.upload_mimes
+		add_filter( 'upload_mimes', [ __CLASS__, 'extra_upload_mimes' ], 1, 1 ); //phpcs:ignore WordPressVIPMinimum.Hooks.RestrictedHooks.upload_mimes
 
 		// Move the temporary file into the uploads directory.
 		$results = wp_handle_sideload( $file, $overrides );
 
-		remove_filter( 'upload_dir', [ __class__, 'change_upload_dir' ] );
-		remove_filter( 'upload_mimes', [ __class__, 'extra_upload_mimes' ], 1, 1 );
+		remove_filter( 'upload_dir', [ __CLASS__, 'change_upload_dir' ] );
+		remove_filter( 'upload_mimes', [ __CLASS__, 'extra_upload_mimes' ], 1, 1 );
 
 		return $results;
 	}
@@ -202,5 +202,4 @@ abstract class Abstract_Source {
 			return new \WP_Error( $e->getMessage() );
 		}
 	}
-
 }

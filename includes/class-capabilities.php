@@ -39,7 +39,7 @@ class Capabilities {
 	 * Test for if capabilites are working
 	 */
 	public static function test_capabilities() {
-		current_user_can( self::CAN_IMPORT );
+		current_user_can( 'govpack_import' );
 	}
 
 	/**
@@ -73,5 +73,4 @@ class Capabilities {
 			'create_posts'           => "edit_$plural",
 		];
 	}
-
 }

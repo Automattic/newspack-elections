@@ -8,7 +8,7 @@
 namespace Govpack\Core\FrontEnd;
 
 use Exception;
-use \Govpack\Core\TemplateLoader;
+use Govpack\Core\TemplateLoader;
 
 /**
  * GovPack FrontEnd Hooks
@@ -48,29 +48,29 @@ class FrontEnd {
 	 * Adds Hooks Specifically for the Frontend display
 	 */
 	public function hooks() {
-		add_filter( 'newspack_can_show_post_thumbnail', [ __class__, 'newspack_can_show_post_thumbnail' ], 10, 1 );
-		add_action( 'enqueue_block_assets', [ __class__, 'enqueue_front_end_style' ] );
+		add_filter( 'newspack_can_show_post_thumbnail', [ __CLASS__, 'newspack_can_show_post_thumbnail' ], 10, 1 );
+		add_action( 'enqueue_block_assets', [ __CLASS__, 'enqueue_front_end_style' ] );
 
-		add_action( 'govpack_before_main_content', [$this, "output_wrapper_start" ] );
-		add_action( 'govpack_after_main_content', [$this, "output_wrapper_end" ] );
-		add_action( 'govpack_sidebar', [$this, "output_sidebar" ] );
+		add_action( 'govpack_before_main_content', [ $this, 'output_wrapper_start' ] );
+		add_action( 'govpack_after_main_content', [ $this, 'output_wrapper_end' ] );
+		add_action( 'govpack_sidebar', [ $this, 'output_sidebar' ] );
 	}
 
-	public function output_sidebar(){
-		return gp_get_template_part("global/sidebar");
+	public function output_sidebar() {
+		return gp_get_template_part( 'global/sidebar' );
 	}
 
-	public function output_wrapper_start(){
-		return gp_get_template_part("global/wrapper-start");
+	public function output_wrapper_start() {
+		return gp_get_template_part( 'global/wrapper-start' );
 	}
 
-	public function output_wrapper_end(){
-		return gp_get_template_part("global/wrapper-end");
+	public function output_wrapper_end() {
+		return gp_get_template_part( 'global/wrapper-end' );
 	}
 
-	public function template_loader(){
+	public function template_loader() {
 
-		if(!isset($this->template_loader )){
+		if ( ! isset( $this->template_loader ) ) {
 			$this->template_loader = new TemplateLoader();
 			$this->template_loader->hooks();
 		}
@@ -93,7 +93,6 @@ class FrontEnd {
 			'screen'
 		);
 		wp_enqueue_style( 'govpack-block-styles' );
-
 	}
 
 
@@ -126,4 +125,3 @@ class FrontEnd {
 		return \Govpack\Core\CPT\Profile::default_profile_content();
 	}
 }
-

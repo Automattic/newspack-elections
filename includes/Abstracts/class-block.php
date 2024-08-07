@@ -23,16 +23,14 @@ abstract class Block {
 	 */
 	public function hooks() {
 		
-		add_action( 'init', 					[ $this, 'register_script' ], 11 );
-		add_action( 'wp_print_styles', 			[ $this, 'remove_view_styles' ], 10 );
-		add_filter( 'allowed_block_types_all', 	[ $this, 'handle_disable_block' ], 99, 2 );
+		add_action( 'init', [ $this, 'register_script' ], 11 );
+		add_action( 'wp_print_styles', [ $this, 'remove_view_styles' ], 10 );
+		add_filter( 'allowed_block_types_all', [ $this, 'handle_disable_block' ], 99, 2 );
 	}
 
-	public function disable_block( $allowed_blocks, $editor_context ){
-		return false;
-	}
+	abstract public function disable_block( $allowed_blocks, $editor_context );
 
-	abstract public function block_build_path() : string;
+	abstract public function block_build_path(): string;
 
 	/**
 	 * Registers the block.
@@ -47,52 +45,49 @@ abstract class Block {
 				'render_callback' => [ $this, 'render' ],
 			]
 		);
-
 	}
 
-	public function needs_view_assets_enqueued() : bool{
+	public function needs_view_assets_enqueued(): bool {
 		return wp_is_block_theme();
 	}
 
-	public function remove_view_styles(){	
+	public function remove_view_styles() {   
 
-		if(!isset($this->block_type)){
+		if ( ! isset( $this->block_type ) ) {
 			return;
 		}
 
 		if ( ! $this->needs_view_assets_enqueued() ) {
-			foreach($this->block_type->style_handles as $handle){
-				wp_dequeue_style($handle);
+			foreach ( $this->block_type->style_handles as $handle ) {
+				wp_dequeue_style( $handle );
 			}
 		}
-
 	}
 
-	public function handle_disable_block($allowed_blocks, $editor_context){
+	public function handle_disable_block( $allowed_blocks, $editor_context ) {
 
-		if(!$this->disable_block($allowed_blocks, $editor_context)){
+		if ( ! $this->disable_block( $allowed_blocks, $editor_context ) ) {
 			return $allowed_blocks;
 		}
 
-		if($allowed_blocks === true){
+		if ( $allowed_blocks === true ) {
 			$allowed_blocks = \WP_Block_Type_Registry::get_instance()->get_all_registered();
 		}
 
-		unset($allowed_blocks[$this->block_name]);
+		unset( $allowed_blocks[ $this->block_name ] );
 
-		return array_keys($allowed_blocks);
-
+		return array_keys( $allowed_blocks );
 	}
 
-	public function enqueue_view_assets(){
+	public function enqueue_view_assets() {
 
 		if ( ! $this->needs_view_assets_enqueued() ) {
 			return;
 		}
 
-		foreach($this->block_type->style_handles as $handle){
-			if( ! wp_style_is($handle, "enqueued")){
-				wp_enqueue_style($handle);
+		foreach ( $this->block_type->style_handles as $handle ) {
+			if ( ! wp_style_is( $handle, 'enqueued' ) ) {
+				wp_enqueue_style( $handle );
 			}
 		}
 	}
@@ -103,8 +98,7 @@ abstract class Block {
 	 *
 	 * @return void
 	 */
-	public function register_script(){
-
+	public function register_script() {
 	}
 
 
@@ -144,7 +138,7 @@ abstract class Block {
 	
 		$block_attributes = array_merge(
 			...array_map(
-				function( $key, $value ) {
+				function ( $key, $value ) {
 					return [ $key => $value['default'] ?? false ];
 				},
 				array_keys( $block->attributes ),
@@ -152,8 +146,8 @@ abstract class Block {
 			)
 		);
 
-		if(!isset($block_attributes["className"])){
-			$block_attributes["className"] = wp_get_block_default_classname($block_name);
+		if ( ! isset( $block_attributes['className'] ) ) {
+			$block_attributes['className'] = wp_get_block_default_classname( $block_name );
 		}
 		return $block_attributes;
 	}

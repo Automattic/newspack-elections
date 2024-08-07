@@ -65,6 +65,12 @@
 	"qa:psalm":[
 		"psalm"
 	],
+	"qa:cs":[
+		"phpcs"
+	],
+	"qa:cbf":[
+		"phpcbf"
+	],
 	"generate_version": "\\Govpack\\Scripts\\GenerateVersionFileCommand"
   },
   "scripts-descriptions": {

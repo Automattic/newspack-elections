@@ -10,7 +10,7 @@ require_once GOVPACK_PLUGIN_FILE . 'vendor/woocommerce/action-scheduler/action-s
 $autoloader = new WP_Namespace_Autoloader(
 	[
 		'directory'         => __DIR__,       // Directory of your project. It can be your theme or plugin. Defaults to __DIR__ (probably your best bet).
-		'namespace_prefix'  => "Govpack\Core", // Main namespace of your project. E.g My_Project\Admin\Tests should be My_Project. Defaults to the namespace of the instantiating file.
+		'namespace_prefix'  => 'Govpack\Core', // Main namespace of your project. E.g My_Project\Admin\Tests should be My_Project. Defaults to the namespace of the instantiating file.
 		'classes_dir'       => 'includes',         // (optional). It is where your namespaced classes are located inside your project. If your classes are in the root level, leave this empty. If they are located on 'src' folder, write 'src' here
 		'debug'             => true,
 		'prepend_interface' => false,

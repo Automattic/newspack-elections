@@ -21,6 +21,4 @@ class Export {
 		wp_enqueue_style( 'wp-components' );
 		include __DIR__ . './../Views/export.php';
 	}
-
-
 }

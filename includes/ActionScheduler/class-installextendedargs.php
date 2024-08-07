@@ -105,7 +105,7 @@ class InstallExtendedArgs {
 	
 
 		foreach ( $methods_to_execute as $method ) {
-			call_user_func( __class__ . '::' . $method['method'] );
+			call_user_func( __CLASS__ . '::' . $method['method'] );
 			update_option( self::$version_options_key, $method['version'] );
 		}
 	}
@@ -117,7 +117,6 @@ class InstallExtendedArgs {
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		$table = self::get_table_definition();
 		dbDelta( $table ); //phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.dbDelta_dbdelta
-		
 	}
 
 	/**
@@ -136,6 +135,5 @@ class InstallExtendedArgs {
             extended_args text DEFAULT NULL,
             PRIMARY KEY  (extended_action_id)
             ) $charset_collate";
-		
 	}
 }

@@ -52,7 +52,7 @@ class Menu_Item extends Menu {
 				$this->parent_slug,
 				$this->page_title, 
 				$this->menu_title, 
-				$this->capability, 
+				$this->capability, //phpcs:ignore WordPress.WP.Capabilities.Undetermined
 				$this->menu_slug,
 				$this->function,
 				$this->position 
@@ -64,4 +64,3 @@ class Menu_Item extends Menu {
 		}
 	}
 }
-

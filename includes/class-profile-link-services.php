@@ -13,12 +13,10 @@ class Profile_Link_Services {
 	 */
 	private $services;
 
-	public function __construct()
-	{
-
+	public function __construct() {
 	}
 
-	public function getLinkable(){
+	public function get_linkable() {
 
 		// a list of known classes
 		$linkable = [
@@ -39,41 +37,48 @@ class Profile_Link_Services {
 		
 
 		//generate the FullyQualified Class names
-		$classes = array_map(function($class){
-			return __NAMESPACE__ . '\\ProfileLinks\\' . $class;
-		}, $linkable);
-
-		
+		$classes = array_map(
+			function ( $classname ) {
+				return __NAMESPACE__ . '\\ProfileLinks\\' . $classname;
+			},
+			$linkable
+		);
 
 		// filter down to only classes the definitly exist
-		$classes = array_filter($classes, function($class){
-			return class_exists($class);
-		});
+		$classes = array_filter(
+			$classes,
+			function ( $classname ) {
+				return class_exists( $classname );
+			}
+		);
 
 		
 		
 		return $classes;
 	}
 
-	public function get_services(){
+	public function get_services() {
 		
-		if(isset($this->services)){
+		if ( isset( $this->services ) ) {
 			return $this->services;
-		}	
+		}   
 		
 		$this->services = [];
 		
-		foreach($this->getLinkable() as $class){
-			$linkable = new $class($this);
-			$this->services[$linkable->get_slug()] = $linkable;
+		foreach ( $this->get_linkable() as $class ) {
+			$linkable                                = new $class( $this );
+			$this->services[ $linkable->get_slug() ] = $linkable;
 		}
 
 		return $this->services;
 	}
 
-	public function toArray(){
-		return array_map(function($link){
-			return $link->get_service();
-		}, $this->get_services());
+	public function to_array() {
+		return array_map(
+			function ( $link ) {
+				return $link->get_service();
+			},
+			$this->get_services()
+		);
 	}
 }

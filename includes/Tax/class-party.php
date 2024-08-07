@@ -64,9 +64,8 @@ class Party extends \Govpack\Core\Abstracts\Taxonomy {
 				'show_in_rest'       => true,
 				'show_ui'            => true,
 				'show_in_which_menu' => 'govpack',
-				'show_in_nav_menus'  => false
+				'show_in_nav_menus'  => false,
 			]
 		);
 	}
-
 }

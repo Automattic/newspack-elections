@@ -7,7 +7,7 @@
 
 namespace Govpack\Core\Admin\Pages;
 
-use \Govpack\Core\CPT\Profile;
+use Govpack\Core\CPT\Profile;
 
 /**
  * GovPack Class to Handle Import
@@ -35,6 +35,4 @@ class Import {
 
 		include __DIR__ . './../Views/import.php';
 	}
-
-
 }

@@ -7,8 +7,8 @@
 
 namespace Govpack\Core;
 
-use \Govpack\Vendor\Monolog\Logger as MonoLog;
-use \Govpack\Vendor\Monolog\Handler\StreamHandler;
+use Govpack\Vendor\Monolog\Logger as MonoLog;
+use Govpack\Vendor\Monolog\Handler\StreamHandler;
 
 /**
  * WordPress filters and actions.
@@ -188,6 +188,4 @@ class Logger {
 			$message = self::maybe_extract_wp_error( $message );
 			$this->log->debug( $message, $context );
 	}
-	   
-
 }

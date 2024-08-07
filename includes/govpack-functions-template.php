@@ -4,214 +4,220 @@
  * 
  * @package Govpack
  */
-if(!function_exists("gp_get_available_widths")){
- function gp_get_available_widths(){
-	return [
-		'small'  => [
-			'label'    => 'Small',
-			'value'    => 'small',
-			'maxWidth' => '300px',
-		],
-		'medium' => [
-			'label'    => 'Medium',
-			'value'    => 'medium',
-			'maxWidth' => '400px',
-		],
-		'large'  => [
-			'label'    => 'Large',
-			'value'    => 'large',
-			'maxWidth' => '600px',
-		],
-		'full'   => [
-			'label'    => 'Full',
-			'value'    => 'full',
-			'maxWidth' => '100%',
-		],
-		'auto'   => [
-			'label'    => 'Auto',
-			'value'    => 'auto',
-			'maxWidth' => 'none',
-		]
+if ( ! function_exists( 'gp_get_available_widths' ) ) {
+	function gp_get_available_widths() {
+		return [
+			'small'  => [
+				'label'    => 'Small',
+				'value'    => 'small',
+				'maxWidth' => '300px',
+			],
+			'medium' => [
+				'label'    => 'Medium',
+				'value'    => 'medium',
+				'maxWidth' => '400px',
+			],
+			'large'  => [
+				'label'    => 'Large',
+				'value'    => 'large',
+				'maxWidth' => '600px',
+			],
+			'full'   => [
+				'label'    => 'Full',
+				'value'    => 'full',
+				'maxWidth' => '100%',
+			],
+			'auto'   => [
+				'label'    => 'Auto',
+				'value'    => 'auto',
+				'maxWidth' => 'none',
+			],
 		];
- }
+	}
 }
 
-if(!function_exists("gp_classnames")){
- function gp_classnames($classnames = "", $candidates = [] ){
+if ( ! function_exists( 'gp_classnames' ) ) {
+	function gp_classnames( $classnames = '', $candidates = [] ) {
 
-	return trim($classnames . " ". join(
-		" ",
-		array_filter(
-			$candidates
-		)
-	)); 
- }
+		return trim(
+			$classnames . ' ' . join(
+				' ',
+				array_filter(
+					$candidates
+				)
+			)
+		); 
+	}
 }
 
-if(!function_exists("gp_line_attributes")){
-	function gp_line_attributes($line, $attributes){
+if ( ! function_exists( 'gp_line_attributes' ) ) {
+	function gp_line_attributes( $line, $attributes ) {
 		
 		$elm_attributes = [
-			"id" => esc_attr(sprintf("govpack-profile-block-%s", $line["key"])),
-			"class" =>  esc_attr(gp_classnames("wp-block-govpack-profile__line", [
-				"wp-block-govpack-profile__line--" . $line["key"],
-				"govpack-line",
-				"govpack-line--labels-" . ($attributes["labelsAbove"] ? "above" : "beside"),
-			]))
+			'id'    => esc_attr( sprintf( 'govpack-profile-block-%s', $line['key'] ) ),
+			'class' => esc_attr(
+				gp_classnames(
+					'wp-block-govpack-profile__line',
+					[
+						'wp-block-govpack-profile__line--' . $line['key'],
+						'govpack-line',
+						'govpack-line--labels-' . ( $attributes['labelsAbove'] ? 'above' : 'beside' ),
+					]
+				)
+			),
 		];
 
-		return gp_normalise_html_element_args($elm_attributes);
-	
+		return gp_normalise_html_element_args( $elm_attributes );
 	}
 }
 
 
- if(!function_exists("gp_normalise_html_element_args")){
-	function gp_normalise_html_element_args($elm_attributes){
+if ( ! function_exists( 'gp_normalise_html_element_args' ) ) {
+	function gp_normalise_html_element_args( $elm_attributes ) {
 
-		$normalized_attributes = array();
+		$normalized_attributes = [];
 		foreach ( $elm_attributes as $key => $value ) {
 			$normalized_attributes[] = $key . '="' . esc_attr( $value ) . '"';
 		}
 
 		$elm_attributes = implode( ' ', $normalized_attributes );
 
-		return trim($elm_attributes);
+		return trim( $elm_attributes );
 	}
- }
+}
 
- if(!function_exists("gp_get_show_data")){
-	function gp_get_show_data($profile_data, $attributes){
+if ( ! function_exists( 'gp_get_show_data' ) ) {
+	function gp_get_show_data( $profile_data, $attributes ) {
 
 		$show = [
-			"photo" => ( has_post_thumbnail( $profile_data['id'] ) && $attributes['showAvatar'] ),
-			"name" => ( isset( $profile_data['name'] ) && $attributes['showName'] ),
-			"status_tag" => ( isset( $profile_data['status'] ) && $attributes['showStatusTag'] ),
-			"secondary_address" => ( isset( $profile_data['address']['secondary'] ) &&  ( $profile_data['address']['secondary'] !== $profile_data['address']['default'] ) ),
-			"social" => ($attributes['showSocial'] && $profile_data['hasSocial']),
-			"bio" => ($attributes['showBio'] && $profile_data['bio']),
-			"endorsements" => ($attributes['showEndorsements'] && $profile_data['endorsements']),
-			"labels" => (isset( $attributes['showLabels'] ) && ($attributes['showLabels']) )
+			'photo'             => ( has_post_thumbnail( $profile_data['id'] ) && $attributes['showAvatar'] ),
+			'name'              => ( isset( $profile_data['name'] ) && $attributes['showName'] ),
+			'status_tag'        => ( isset( $profile_data['status'] ) && $attributes['showStatusTag'] ),
+			'secondary_address' => ( isset( $profile_data['address']['secondary'] ) && ( $profile_data['address']['secondary'] !== $profile_data['address']['default'] ) ),
+			'social'            => ( $attributes['showSocial'] && $profile_data['hasSocial'] ),
+			'bio'               => ( $attributes['showBio'] && $profile_data['bio'] ),
+			'endorsements'      => ( $attributes['showEndorsements'] && $profile_data['endorsements'] ),
+			'labels'            => ( isset( $attributes['showLabels'] ) && ( $attributes['showLabels'] ) ),
 		];
 
 		return $show;
 	}
 }
 
-if(!function_exists("gp_get_profile_lines")){
-	function gp_get_profile_lines($attributes, $profile_data) {
-		$show = gp_get_show_data($profile_data, $attributes);
+if ( ! function_exists( 'gp_get_profile_lines' ) ) {
+	function gp_get_profile_lines( $attributes, $profile_data ) {
+		$show  = gp_get_show_data( $profile_data, $attributes );
 		$lines = [ 
 		
 			[
-				"key" => "age",
-				"value" => esc_html($profile_data["age"]),
-				"label" => "Age",
-				"shouldShow" => $attributes["showAge"]
+				'key'        => 'age',
+				'value'      => esc_html( $profile_data['age'] ),
+				'label'      => 'Age',
+				'shouldShow' => $attributes['showAge'],
 			],
 			[
-				"key" => "leg_body",
-				"value" => esc_html($profile_data["legislative_body"]),
-				"label" => "Legislative Body",
-				"shouldShow" => $attributes["showLegislativeBody"]
+				'key'        => 'leg_body',
+				'value'      => esc_html( $profile_data['legislative_body'] ),
+				'label'      => 'Legislative Body',
+				'shouldShow' => $attributes['showLegislativeBody'],
 			],
 			[
-				"key" => "position",
-				"value" => esc_html($profile_data["position"]),
-				"label" => "Position",
-				"shouldShow" => $attributes["showPosition"]
+				'key'        => 'position',
+				'value'      => esc_html( $profile_data['position'] ),
+				'label'      => 'Position',
+				'shouldShow' => $attributes['showPosition'],
 			],
 			[
-				"key" => "party",
-				"value" => esc_html($profile_data["party"]),
-				"label" => "Party",
-				"shouldShow" => $attributes["showParty"]
+				'key'        => 'party',
+				'value'      => esc_html( $profile_data['party'] ),
+				'label'      => 'Party',
+				'shouldShow' => $attributes['showParty'],
 			],
 			[
-				"key" => "district",
-				"value" => esc_html($profile_data["district"]),
-				"label" => "District",
-				"shouldShow" => $attributes["showDistrict"]
+				'key'        => 'district',
+				'value'      => esc_html( $profile_data['district'] ),
+				'label'      => 'District',
+				'shouldShow' => $attributes['showDistrict'],
 			],
 			[
-				"key" => "state",
-				"value" => esc_html($profile_data["state"]),
-				"label" => "State",
-				"shouldShow" => $attributes["showState"]
+				'key'        => 'state',
+				'value'      => esc_html( $profile_data['state'] ),
+				'label'      => 'State',
+				'shouldShow' => $attributes['showState'],
 			],
 			[
-				"key" => "status",
-				"value" => esc_html($profile_data["status"]),
-				"label" => "Status",
-				"shouldShow" => $attributes["showDistrict"]
+				'key'        => 'status',
+				'value'      => esc_html( $profile_data['status'] ),
+				'label'      => 'Status',
+				'shouldShow' => $attributes['showDistrict'],
 			],
 			[
-				"key" => "social",
-				"value" => gp_social_media( $profile_data, $attributes ),
-				"label" => "Social Media",
-				"shouldShow" => $show["social"]
+				'key'        => 'social',
+				'value'      => gp_social_media( $profile_data, $attributes ),
+				'label'      => 'Social Media',
+				'shouldShow' => $show['social'],
 			],
 			[
-				"key" => "endorsements",
-				"value" => esc_html($profile_data["endorsements"]),
-				"label" => "Endorsements",
-				"shouldShow" => $show["endorsements"]
+				'key'        => 'endorsements',
+				'value'      => esc_html( $profile_data['endorsements'] ),
+				'label'      => 'Endorsements',
+				'shouldShow' => $show['endorsements'],
 			],
 			
 			[
-				"key" => "comms_capitol",
-				"value" => gp_contact_info( 'Capitol', $profile_data['comms']['capitol'], $attributes['selectedCapitolCommunicationDetails'] ),
-				"label" => "Contact Info (Capitol)",
-				"shouldShow" => $attributes["showCapitolCommunicationDetails"]
+				'key'        => 'comms_capitol',
+				'value'      => gp_contact_info( 'Capitol', $profile_data['comms']['capitol'], $attributes['selectedCapitolCommunicationDetails'] ),
+				'label'      => 'Contact Info (Capitol)',
+				'shouldShow' => $attributes['showCapitolCommunicationDetails'],
 			],
 			[
-				"key" => "comms_district",
-				"value" => gp_contact_info( 'District', $profile_data['comms']['district'], $attributes['selectedDistrictCommunicationDetails'] ),
-				"label" => "Contact Info (District)",
-				"shouldShow" => $attributes["showDistrictCommunicationDetails"]
+				'key'        => 'comms_district',
+				'value'      => gp_contact_info( 'District', $profile_data['comms']['district'], $attributes['selectedDistrictCommunicationDetails'] ),
+				'label'      => 'Contact Info (District)',
+				'shouldShow' => $attributes['showDistrictCommunicationDetails'],
 			],
 			[
-				"key" => "comms_campaign",
-				"value" => gp_contact_info( 'Campaign', $profile_data['comms']['campaign'], $attributes['selectedCampaignCommunicationDetails'] ),
-				"label" => "Contact Info (Campaign)",
-				"shouldShow" => $attributes["showCampaignCommunicationDetails"]
+				'key'        => 'comms_campaign',
+				'value'      => gp_contact_info( 'Campaign', $profile_data['comms']['campaign'], $attributes['selectedCampaignCommunicationDetails'] ),
+				'label'      => 'Contact Info (Campaign)',
+				'shouldShow' => $attributes['showCampaignCommunicationDetails'],
 			],
 			[
-				"key" => "comms_other",
-				"value" => gp_contact_other( 'Other', $profile_data['comms']['other'], $attributes['selectedOtherCommunicationDetails'] ),
-				"label" => "Contact Info (Campaign)",
-				"shouldShow" => $attributes["showOtherCommunicationDetails"]
+				'key'        => 'comms_other',
+				'value'      => gp_contact_other( 'Other', $profile_data['comms']['other'], $attributes['selectedOtherCommunicationDetails'] ),
+				'label'      => 'Contact Info (Campaign)',
+				'shouldShow' => $attributes['showOtherCommunicationDetails'],
 			],
 			[
-				"key" => "more_about",
-				"value" => gp_maybe_link( sprintf('More About %s', $profile_data['name']['name']), $profile_data['link'], isset($attributes['showProfileLink']) && $attributes['showProfileLink']),
-				"shouldShow" => (isset($attributes['showProfileLink']) && $attributes['showProfileLink'])
+				'key'        => 'more_about',
+				'value'      => gp_maybe_link( sprintf( 'More About %s', $profile_data['name']['name'] ), $profile_data['link'], isset( $attributes['showProfileLink'] ) && $attributes['showProfileLink'] ),
+				'shouldShow' => ( isset( $attributes['showProfileLink'] ) && $attributes['showProfileLink'] ),
 			],
 			[
-				"key" => "links",
-				"value" => gp_the_profile_links($profile_data, $attributes),
-				"shouldShow" => shouldShowLinks($profile_data, $attributes)
-			]
+				'key'        => 'links',
+				'value'      => gp_the_profile_links( $profile_data, $attributes ),
+				'shouldShow' => should_show_links( $profile_data, $attributes ),
+			],
 		];
 
 		return $lines;
 	}
 }
 
-if(!function_exists("shouldShowLinks")){
-	function shouldShowLinks($profile_data, $attributes){
-		if(isset($attributes['showOtherLinks'])){
+if ( ! function_exists( 'should_show_links' ) ) {
+	function should_show_links( $profile_data, $attributes ) {
+		if ( isset( $attributes['showOtherLinks'] ) ) {
 			return $attributes['showOtherLinks'];
 		}
 
-		if(!isset($profile_data['links']) || empty($profile_data['links'])){
+		if ( ! isset( $profile_data['links'] ) || empty( $profile_data['links'] ) ) {
 			return false;
 		}
 
-		if(
-			(!isset($attributes['selectedLinks'])) ||
-			(empty($profile_data['selectedLinks']))
-		){
+		if (
+			( ! isset( $attributes['selectedLinks'] ) ) ||
+			( empty( $profile_data['selectedLinks'] ) )
+		) {
 			return true;
 		}
 
@@ -219,98 +225,99 @@ if(!function_exists("shouldShowLinks")){
 	}
 }
 
-if(!function_exists("gp_get_profile_links")){
-	function gp_get_profile_links($profile_data, $attributes){
+if ( ! function_exists( 'gp_get_profile_links' ) ) {
+	function gp_get_profile_links( $profile_data ) {
 		
-		if(!isset($profile_data['links'])){
+		if ( ! isset( $profile_data['links'] ) ) {
 			return [];
 		}
 
-		if(empty($profile_data['links'])){
+		if ( empty( $profile_data['links'] ) ) {
 			return [];
 		}
 
 		
-		$links = apply_filters("govpack_profile_links", $profile_data['links'] ?? [], $profile_data["id"], $profile_data );
-		foreach($links as &$link){
+		$links = apply_filters( 'govpack_profile_links', $profile_data['links'] ?? [], $profile_data['id'], $profile_data );
+		foreach ( $links as &$link ) {
 
-			$link = apply_filters("govpack_profile_link", $link, $profile_data["id"], $profile_data );
+			$link = apply_filters( 'govpack_profile_link', $link, $profile_data['id'], $profile_data );
 
-			$link_attrs = array_filter($link, function($value, $key){
-				if(($value === null) || ($value === "")){
-					return false;
-				}
+			$link_attrs = array_filter(
+				$link,
+				function ( $value, $key ) {
+					if ( ( $value === null ) || ( $value === '' ) ) {
+						return false;
+					}
 
-				if(($key === "text") || ($key === "meta")){
-					return false;
-				}
+					if ( ( $key === 'text' ) || ( $key === 'meta' ) ) {
+						return false;
+					}
 				
-				if(is_array($value) && (empty($value))){
-					return false;
-				}
+					if ( is_array( $value ) && ( empty( $value ) ) ) {
+						return false;
+					}
 
-				return true;
+					return true;
+				},
+				ARRAY_FILTER_USE_BOTH
+			);
 
-			}, ARRAY_FILTER_USE_BOTH);
-
-			$link["src"] = sprintf("<a %s>%s</a>", gp_normalise_html_element_args($link_attrs), $link["text"]);
+			$link['src'] = sprintf( '<a %s>%s</a>', gp_normalise_html_element_args( $link_attrs ), $link['text'] );
 			
 		}
 
 		return $links;
-
 	}
 }
 
-if(!function_exists("gp_should_show_link")){
-	function gp_should_show_link($key, $attributes ){
-		if(!isset($attributes['showOtherLinks'])){
+if ( ! function_exists( 'gp_should_show_link' ) ) {
+	function gp_should_show_link( $key, $attributes ) {
+		if ( ! isset( $attributes['showOtherLinks'] ) ) {
 			return false;
 		}
 
-		if(
-			(isset($attributes['selectedLinks'])) &&
-			(isset($attributes['selectedLinks'][$key])) &&
-			($attributes['selectedLinks'][$key] === false)
-		){
+		if (
+			( isset( $attributes['selectedLinks'] ) ) &&
+			( isset( $attributes['selectedLinks'][ $key ] ) ) &&
+			( $attributes['selectedLinks'][ $key ] === false )
+		) {
 			return false;
 		}
 
 		return true;
-
 	}
 }
 
 
 
 
-if(!function_exists("gp_get_photo_styles")){
-	function gp_get_photo_styles($attributes){
+if ( ! function_exists( 'gp_get_photo_styles' ) ) {
+	function gp_get_photo_styles( $attributes ) {
 
 		// CSS props to embed with a value getter or boolean.
-		$rules = array(
-			"border-radius" => (isset($attributes['avatarBorderRadius']) ? esc_attr($attributes['avatarBorderRadius']) : false),
-			"width" => (isset($attributes['avatarSize']) ? esc_attr($attributes['avatarSize'] . "px") : false),
-			"height" => (isset($attributes['avatarSize']) ? esc_attr($attributes['avatarSize'] . "px") : false)
-		);
+		$rules = [
+			'border-radius' => ( isset( $attributes['avatarBorderRadius'] ) ? esc_attr( $attributes['avatarBorderRadius'] ) : false ),
+			'width'         => ( isset( $attributes['avatarSize'] ) ? esc_attr( $attributes['avatarSize'] . 'px' ) : false ),
+			'height'        => ( isset( $attributes['avatarSize'] ) ? esc_attr( $attributes['avatarSize'] . 'px' ) : false ),
+		];
 
-		return gp_style_attr_generator($rules);
+		return gp_style_attr_generator( $rules );
 	}
 }
 
-if(!function_exists("gp_style_attr_generator")){
-	function gp_style_attr_generator($rules){
+if ( ! function_exists( 'gp_style_attr_generator' ) ) {
+	function gp_style_attr_generator( $rules ) {
 		// filter the rules where the getter returns false;
-		$rules = array_filter($rules);
+		$rules = array_filter( $rules );
 
 		// normalise the rules into css syntax;
-		$normalized_rules = array();
+		$normalized_rules = [];
 		foreach ( $rules as $property => $rule ) {
-			$normalized_rules[] = sprintf("%s: %s;", $property, $rule);
+			$normalized_rules[] = sprintf( '%s: %s;', $property, $rule );
 		}
 
 		// join all the normalsed rules and trim any excess whitespace
-		return trim(join(" ", $normalized_rules));
+		return trim( join( ' ', $normalized_rules ) );
 	}
 }
 
@@ -321,7 +328,7 @@ if(!function_exists("gp_style_attr_generator")){
  * @param string  $value The value to output.
  * @param boolean $display Override to control if this row will output.
  */
-if(!function_exists("gp_row")){
+if ( ! function_exists( 'gp_row' ) ) {
 	function gp_row( $id, $value, $display ) {
 
 		if ( ! $display ) {
@@ -334,7 +341,6 @@ if(!function_exists("gp_row")){
 
 		// No escaping here. $value here needs to handle HTML beyond what wp_kses can realistically handle. Escaping should be done before passing to this function.
 		echo '<div id="govpack-profile-block-' . $id . '" class="wp-block-govpack-profile__line wp-block-govpack-profile__line--' . $id . '">' . $value . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
 	}
 }
 /**
@@ -343,7 +349,7 @@ if(!function_exists("gp_row")){
  * @param string  $url The url to link to.
  * @param boolean $title Name of the profile to link to eg More About {$title}.
  */
-if(!function_exists("gp_link")){
+if ( ! function_exists( 'gp_link' ) ) {
 	function gp_link( $url, $title ) {
 		return '<a href=' . esc_url( $url ) . '>More About ' . esc_html( $title ) . '</a>';
 	}
@@ -355,7 +361,7 @@ if(!function_exists("gp_link")){
  * @param string  $url The URL to link to.
  * @param boolean $use_link Condition control, outputs link if true.
  */
-if(!function_exists("gp_maybe_link")){
+if ( ! function_exists( 'gp_maybe_link' ) ) {
 	function gp_maybe_link( $content, $url, $use_link ) {
 
 		if ( ! $use_link ) {
@@ -371,7 +377,7 @@ if(!function_exists("gp_maybe_link")){
  * 
  * @param array $websites Data about websites from the profile.
  */
-if(!function_exists("gp_websites")){
+if ( ! function_exists( 'gp_websites' ) ) {
 	function gp_websites( $websites ) {
 
 		$campaign    = '';
@@ -396,7 +402,6 @@ if(!function_exists("gp_websites")){
 			$campaign ?? '',
 			$legislative ?? '',
 		);
-
 	}
 }
 
@@ -406,7 +411,7 @@ if(!function_exists("gp_websites")){
  * @param array $profile_data Data about the profile.
  * @param array $attributes Attributes from the Block.
  */
-if(!function_exists("gp_contacts")){
+if ( ! function_exists( 'gp_contacts' ) ) {
 	function gp_contacts( $profile_data, $attributes ) {
 
 		$icons = gp_get_icons();
@@ -414,12 +419,12 @@ if(!function_exists("gp_contacts")){
 		$icon = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
 
 		if ( $attributes['showEmail'] && $profile_data['email'] ) {
-			$email_icon = sprintf( $icon, 'email', gp_get_icon('email') );
+			$email_icon = sprintf( $icon, 'email', gp_get_icon( 'email' ) );
 			$classes    = [
 				'wp-block-govpack-profile__contact--hide-label',
 			];
 
-			$classes = join( ' ', $classes );
+			$classes = esc_attr( join( ' ', $classes ) );
 
 			$email = "<li class=\"wp-block-govpack-profile__contact {$classes}\">
 				<a href=\"mailto:{$profile_data['email']}\" class=\"wp-block-govpack-profile__contact__link\">
@@ -448,10 +453,10 @@ if(!function_exists("gp_contacts")){
 					"wp-block-govpack-profile__contact--{$service}",
 				];
 		
-				$classes = join( ' ', $classes );
+				$classes = esc_attr( join( ' ', $classes ) );
 
 
-				$contact_icon = sprintf( $icon, $service, gp_get_icons($service) );
+				$contact_icon = sprintf( $icon, $service, gp_get_icons( $service ) );
 				$social      .=  
 				"<li class=\"{$classes} \">
 					<a href=\"{$profile_data[$service]}\" class=\"wp-block-govpack-profile__contact__link\">
@@ -477,22 +482,26 @@ if(!function_exists("gp_contacts")){
 	}
 }
 
-if(!function_exists("gp_the_profile_links")){
+if ( ! function_exists( 'gp_the_profile_links' ) ) {
 
-	function gp_the_profile_links($profile_data, $attributes){
+	function gp_the_profile_links( $profile_data, $attributes ) {
 
-		$links = gp_get_profile_links($profile_data, $attributes);
+		$links = gp_get_profile_links( $profile_data );
 
-		foreach($links as $key => &$link){
-			$link["show"] = gp_should_show_link($key, $attributes);
-		}	
+		foreach ( $links as $key => &$link ) {
+			$link['show'] = gp_should_show_link( $key, $attributes );
+		}   
 
-		$links = array_filter($links, function($link, $key){
-			return $link["show"];
-		}, ARRAY_FILTER_USE_BOTH );
+		$links = array_filter(
+			$links,
+			function ( $link ) {
+				return $link['show'];
+			},
+			ARRAY_FILTER_USE_BOTH 
+		);
 
-		if(count($links) <= 0){
-			return "";
+		if ( count( $links ) <= 0 ) {
+			return '';
 		}
 
 
@@ -502,9 +511,9 @@ if(!function_exists("gp_the_profile_links")){
 			<div class="wp-block-govpack-profile__label">Links:</div>
 			<ul class="wp-block-govpack-profile__comms-icons govpack-inline-list">
 				<?php
-				foreach($links as &$link){
+				foreach ( $links as &$link ) {
 
-					if(!gp_icon_exists($link['slug'])){
+					if ( ! gp_icon_exists( $link['slug'] ) ) {
 						continue;
 					}
 					
@@ -516,13 +525,13 @@ if(!function_exists("gp_the_profile_links")){
 					$classes = join( ' ', $classes );
 
 					?>
-					<li class="<?php echo $classes; ?>">
-						<a href="<?php echo $link["href"];?>" title="Link to <?php echo $link['text']; ?>">
-							<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--<?php echo $link['slug']; ?>">
-								<?php echo gp_get_icon($link['slug']); ?>
+					<li class="<?php echo esc_attr( $classes ); ?>">
+						<a href="<?php echo esc_url( $link['href'] ); ?>" title="Link to <?php echo esc_attr( $link['text'] ); ?>">
+							<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--<?php echo esc_attr( $link['slug'] ); ?>">
+								<?php echo esc_svg( gp_get_icon( $link['slug'] ) ); ?>
 							</span>
 							<span class="wp-block-govpack-profile__contact__label">
-								<?php echo $link["text"]; ?>
+								<?php echo esc_html( $link['text'] ); ?>
 							</span>
 						</a>
 					</li>
@@ -531,8 +540,6 @@ if(!function_exists("gp_the_profile_links")){
 		</div>
 		<?php
 		return ob_get_clean();
-
-		
 	}
 }
 
@@ -542,7 +549,7 @@ if(!function_exists("gp_the_profile_links")){
  * @param array $profile_data Data about the profile.
  * @param array $attributes Attributes from the Block.
  */
-if(!function_exists("gp_social_media")){
+if ( ! function_exists( 'gp_social_media' ) ) {
 	function gp_social_media( $profile_data, $attributes ) {
 
 		$template = '<div class="wp-block-govpack-profile__social">
@@ -566,25 +573,24 @@ if(!function_exists("gp_social_media")){
 		}
 
 		return sprintf( $template, $content ); 
-
 	}
 }
 
-if(!function_exists("gp_get_icons")){
-	function gp_get_icons(){
+if ( ! function_exists( 'gp_get_icons' ) ) {
+	function gp_get_icons() {
 		return gp()->icons()->all();
 	}
 }
 
-if(!function_exists("gp_get_icon")){
-	function gp_get_icon($key){
-		return gp()->icons()->get($key);
+if ( ! function_exists( 'gp_get_icon' ) ) {
+	function gp_get_icon( $key ) {
+		return gp()->icons()->get( $key );
 	}
 }
 
-if(!function_exists("gp_has_icon")){
-	function gp_icon_exists($key){
-		return gp()->icons()->exists($key);
+if ( ! function_exists( 'gp_has_icon' ) ) {
+	function gp_icon_exists( $key ) {
+		return gp()->icons()->exists( $key );
 	}
 }
 /**
@@ -593,7 +599,7 @@ if(!function_exists("gp_has_icon")){
  * @param string $label Row label to shoe.
  * @param array  $links Links for social media profiles.
  */
-if(!function_exists("gp_social_media_row")){
+if ( ! function_exists( 'gp_social_media_row' ) ) {
 	function gp_social_media_row( $label, $links = [] ) {
 
 
@@ -623,7 +629,7 @@ if(!function_exists("gp_social_media_row")){
 			$classes = join( ' ', $classes );
 
 			$icon         = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
-			$contact_icon = sprintf( $icon, $service, gp_get_icon($service) );
+			$contact_icon = sprintf( $icon, $service, gp_get_icon( $service ) );
 
 			$content .=  
 			"<li class=\"{$classes} \">
@@ -645,7 +651,7 @@ if(!function_exists("gp_social_media_row")){
  * @param array $links Data about the profile.
  * @param array $attrs Attributes from the Block.
  */
-if(!function_exists("gp_contact_info")){
+if ( ! function_exists( 'gp_contact_info' ) ) {
 	function gp_contact_info( $label, $links, $attrs ) {
 		$outer_template = '
 		<div class="wp-block-govpack-profile__comms">
@@ -688,7 +694,7 @@ if(!function_exists("gp_contact_info")){
 			$classes = join( ' ', $classes );
 
 			$icon         = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
-			$contact_icon = sprintf( $icon, $service, gp_get_icon($service) );
+			$contact_icon = sprintf( $icon, $service, gp_get_icon( $service ) );
 
 			if ( ( 'phone' === $service ) || ( 'fax' === $service ) ) {
 				$protocol = 'tel:';
@@ -734,7 +740,7 @@ if(!function_exists("gp_contact_info")){
  * @param array $links Data about the profile.
  * @param array $attrs Attributes from the Block.
  */
-if(!function_exists("gp_contact_other")){
+if ( ! function_exists( 'gp_contact_other' ) ) {
 	function gp_contact_other( $label, $links, $attrs ) {
 		$outer_template = '
 		<div class="wp-block-govpack-profile__comms-other">
@@ -759,31 +765,30 @@ if(!function_exists("gp_contact_other")){
 	}
 }
 
-if(!function_exists("gp_get_the_term")){
-	function gp_get_the_term($term){
+if ( ! function_exists( 'gp_get_the_term' ) ) {
+	function gp_get_the_term( $term ) {
 
-		if(!is_a($term, "\WP_Term")){
-			$term = get_term($term);
+		if ( ! is_a( $term, '\WP_Term' ) ) {
+			$term = get_term( $term );
 		}
 
-		$classNames = [
-			"govpack-tag",
-			"govpack-tag--" . $term->taxonomy,
-			"govpack-tag--" . $term->slug,
-			"govpack-tag--" . $term->term_id,
+		$classnames = [
+			'govpack-tag',
+			'govpack-tag--' . $term->taxonomy,
+			'govpack-tag--' . $term->slug,
+			'govpack-tag--' . $term->term_id,
 		];
 
-		$classNames = implode(" ", $classNames);
+		$classnames = implode( ' ', $classnames );
 
-		return '<span rel="tag" class="'. $classNames .'">' . $term->name . '</span>';;
-
+		return '<span rel="tag" class="' . esc_attr( $classnames ) . '">' . esc_html( $term->name ) . '</span>';
 	}
 }
 
-if(!function_exists("gp_get_the_status_terms_list")){
-	function gp_get_the_status_terms_list( $post_id, $before = "", $sep = "", $after = ""){
-		$taxonomy = "govpack_officeholder_status";
-		$terms = get_the_terms( $post_id, $taxonomy );
+if ( ! function_exists( 'gp_get_the_status_terms_list' ) ) {
+	function gp_get_the_status_terms_list( $post_id, $before = '', $sep = '', $after = '' ) {
+		$taxonomy = 'govpack_officeholder_status';
+		$terms    = get_the_terms( $post_id, $taxonomy );
 
 		if ( is_wp_error( $terms ) ) {
 			return $terms;
@@ -793,12 +798,31 @@ if(!function_exists("gp_get_the_status_terms_list")){
 			return false;
 		}
 
-		$tags = array();
+		$tags = [];
 
 		foreach ( $terms as $term ) {
-			$tags[] = gp_get_the_term($term);
+			$tags[] = gp_get_the_term( $term );
 		}
 
-		return $before . implode( $sep, $tags ) . $after;
+		return trim( $before . implode( $sep, $tags ) . $after );
+	}
+}
+
+if ( ! function_exists( 'esc_svg' ) ) {
+	function esc_svg( $svg_string ) {
+		return wp_kses(
+			$svg_string,
+			[
+				'svg'  => [
+					'xmlns'   => [], 
+					'width'   => [], 
+					'height'  => [], 
+					'viewbox' => [], //lowercase not camelcase!
+				], 
+				'path' => [
+					'd' => [],
+				],
+			]
+		);
 	}
 }

@@ -68,5 +68,4 @@ class State extends \Govpack\Core\Abstracts\Taxonomy {
 			]
 		);
 	}
-
 }

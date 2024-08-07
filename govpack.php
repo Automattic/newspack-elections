@@ -17,24 +17,24 @@ defined( 'ABSPATH' ) || exit;
 
 // Define GOVPACK_PLUGIN_FILE.
 if ( ! defined( 'GOVPACK_PLUGIN_FILE' ) ) {
-	define( 'GOVPACK_PLUGIN_FILE', trailingslashit(plugin_dir_path( __FILE__ )) );
+	define( 'GOVPACK_PLUGIN_FILE', trailingslashit( plugin_dir_path( __FILE__ ) ) );
 	define( 'GOVPACK_PLUGIN_PATH', GOVPACK_PLUGIN_FILE );
 }
 
 if ( ! defined( 'GOVPACK_PLUGIN_BUILD_PATH' ) ) {
-	define( 'GOVPACK_PLUGIN_BUILD_PATH', trailingslashit(GOVPACK_PLUGIN_PATH . 'build') );
+	define( 'GOVPACK_PLUGIN_BUILD_PATH', trailingslashit( GOVPACK_PLUGIN_PATH . 'build' ) );
 }
 
 if ( ! defined( 'GOVPACK_PLUGIN_URL' ) ) {
-	define( 'GOVPACK_PLUGIN_URL', trailingslashit(plugin_dir_url( __FILE__ )));
+	define( 'GOVPACK_PLUGIN_URL', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 }
 
 
 if ( ! defined( 'GOVPACK_PLUGIN_BUILD_URL' ) ) {
-	define( 'GOVPACK_PLUGIN_BUILD_URL', trailingslashit(GOVPACK_PLUGIN_URL . 'build') );
+	define( 'GOVPACK_PLUGIN_BUILD_URL', trailingslashit( GOVPACK_PLUGIN_URL . 'build' ) );
 }
 
-require_once(__DIR__ . "/includes/class-bootstrap.php");
+require_once __DIR__ . '/includes/class-bootstrap-helper.php';
 
 if ( ! file_exists( GOVPACK_PLUGIN_PATH . 'vendor/autoload.php' ) ) {
 	add_action( 'all_admin_notices', 'Govpack_Bootstrap_Helper::notice_vendor_missing' );
@@ -51,7 +51,7 @@ if ( ! is_dir( GOVPACK_PLUGIN_PATH . 'build' ) ) {
 	return;
 }
 
-require_once GOVPACK_PLUGIN_PATH . "autoloader.php";
+require_once GOVPACK_PLUGIN_PATH . 'autoloader.php';
 
 
 // Include the main Govpack class.

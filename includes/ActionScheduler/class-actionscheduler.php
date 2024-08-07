@@ -16,10 +16,10 @@ class ActionScheduler {
 	 * Add Hooks for Messing with ActionScheduler Loader
 	 */
 	public static function hooks() {
-		add_filter( 'action_scheduler_store_class', [ __class__, 'replace_store' ] );
-		add_filter( 'action_scheduler_queue_runner_concurrent_batches', [ __class__, 'as_concurrent_batches' ] );
-		add_filter( 'action_scheduler_logger_class', [ __class__, 'replace_logger' ] );
-		add_filter( 'action_scheduler_failure_period', [ __class__, 'set_timeout_seconds' ] );
+		add_filter( 'action_scheduler_store_class', [ __CLASS__, 'replace_store' ] );
+		add_filter( 'action_scheduler_queue_runner_concurrent_batches', [ __CLASS__, 'as_concurrent_batches' ] );
+		add_filter( 'action_scheduler_logger_class', [ __CLASS__, 'replace_logger' ] );
+		add_filter( 'action_scheduler_failure_period', [ __CLASS__, 'set_timeout_seconds' ] );
 	}
 
 	/**

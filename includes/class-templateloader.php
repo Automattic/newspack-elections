@@ -42,44 +42,40 @@ class TemplateLoader extends \Govpack_Vendor_Gamajo_Template_Loader {
 		 */
 		protected $plugin_directory = GOVPACK_PLUGIN_PATH;
 
-		public function hooks(){
-			add_filter( 'template_include', [ $this, 'template_include' ] );
-		}
+	public function hooks() {
+		add_filter( 'template_include', [ $this, 'template_include' ] );
+	}
 
-		public function template_include($template){
+	public function template_include( $template ) {
 
-			if ( is_embed() ) {
-				return $template;
-			}
-
-			if ( wp_is_block_theme() ) {
-				return $template;
-			}
-
-			if(is_singular(\Govpack\Core\CPT\Profile::CPT_SLUG)){
-				return $this->locate_template( \Govpack\Core\CPT\Profile::TEMPLATE_NAME );
-			}
-
+		if ( is_embed() ) {
 			return $template;
 		}
 
-		public function render_block($slug, $attributes = [], $content = "", $block = null, $extra = null){
-			$template = $this->get_template_part($slug, null, false);
-		
-			ob_start();
-			require $template;
-			$html = ob_get_clean();
-
-			return $html;
+		if ( wp_is_block_theme() ) {
+			return $template;
 		}
 
-		public function get_block_part($slug, $name = null, $attributes = [], $content = "", $block = null, $extra = null){
-			
-			$template = $this->get_template_part($slug, $name, false);
-			ob_start();
-			require $template;
-			$html = ob_get_clean();
-
-			echo $html;
+		if ( is_singular( \Govpack\Core\CPT\Profile::CPT_SLUG ) ) {
+			return $this->locate_template( \Govpack\Core\CPT\Profile::TEMPLATE_NAME );
 		}
+
+		return $template;
+	}
+
+	private function do_render( $template, $attributes = [], $content = '', $block = null, $extra = null ) {
+		ob_start();
+		require $template; //phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+		$html = ob_get_clean();
+		return $html;
+	}
+	public function render_block( $slug, $attributes = [], $content = '', $block = null, $extra = null ) {
+		$template = $this->get_template_part( $slug, null, false );
+		return $this->do_render( $template, $attributes, $content, $block, $extra );
+	}
+
+	public function get_block_part( $slug, $name = null, $attributes = [], $content = '', $block = null, $extra = null ) {
+		// Directly echoing HTML here, this comes from a template, so not escapable. Escaping shoulld be handled in the actual template.
+		echo $this->do_render( $this->get_template_part( $slug, $name, false ), $attributes, $content, $block, $extra );//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
 }

@@ -26,7 +26,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	/**
 	 * Post Type slug. Used when registering and referencing
 	 */
-	const TEMPLATE_NAME = 'single-' . self::CPT_SLUG . '.php';
+	const TEMPLATE_NAME = 'single-govpack-profiles.php';
 
 
 	/**
@@ -35,7 +35,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	public static function hooks() {
 		parent::hooks();
 		\add_action( 'init', [ __CLASS__, 'register_post_meta' ] );
-		//\add_filter( 'wp_insert_post_data', [ __CLASS__, 'set_profile_title' ], 10, 3 );
+		
 		\add_action( 'wp_after_insert_post', [ __CLASS__, 'set_profile_title' ], 10, 4 );
 		\add_action( 'edit_form_after_editor', [ __CLASS__, 'show_profile_title' ] );
 		\add_filter( 'manage_edit-' . self::CPT_SLUG . '_sortable_columns', [ __CLASS__, 'sortable_columns' ] );
@@ -46,89 +46,95 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		\add_action( 'restrict_manage_posts', [ __CLASS__, 'post_table_filters' ], 10, 2 );
 
 		add_filter( 'disable_months_dropdown', [ __CLASS__, 'disable_months_dropdown' ], 10, 2 );
-		//add_filter( 'wpseo_enable_editor_features_' . self::CPT_SLUG, '__return_false' );
 
-		
 		add_filter( 'bulk_actions-edit-' . self::CPT_SLUG, [ __CLASS__, 'filter_bulk_actions' ], 10 );
 		add_filter( 'handle_bulk_actions-edit-' . self::CPT_SLUG, [ __CLASS__, 'handle_bulk_publish' ], 10, 3 );
 
-		add_filter( 'govpack_profile_register_meta_field_args', [ __CLASS__, 'filter_meta_registration_for_links' ], 10, 2);
+		add_filter( 'govpack_profile_register_meta_field_args', [ __CLASS__, 'filter_meta_registration_for_links' ], 10, 2 );
 
-		add_action('rest_api_init', [__CLASS__, "add_rest_fields"]);
+		add_action( 'rest_api_init', [ __CLASS__, 'add_rest_fields' ] );
 
-		add_filter('default_post_metadata', [__CLASS__, "fallback_x_meta_fields_to_twitter"], 10, 5);
+		add_filter( 'default_post_metadata', [ __CLASS__, 'fallback_x_meta_fields_to_twitter' ], 10, 5 );
 	}
 
-	public static function fallback_x_meta_fields_to_twitter($value, $object_id, $meta_key, $single, $meta_type){
+	public static function fallback_x_meta_fields_to_twitter( $value, $object_id, $meta_key, $single, $meta_type ) {
 
 		// check for an empty string if we expect a string, exit otherwise
-		if($single && $value !== ""){
+		if ( $single && $value !== '' ) {
 			return $value;
 		}
 
 		// check for an empty array if we expect an array, exit otherwise
-		if(!$single && !empty($value) ){
+		if ( ! $single && ! empty( $value ) ) {
 			return $value;
 		}
 		
 		// if we're looking at some other entity type then exit
-		if($meta_type !== "post"){
+		if ( $meta_type !== 'post' ) {
 			return $value;
 		}
 
 		// if not a request for one of our specific keys, exit
-		$target_keys = ["x_official", "x_campaign", "x_personal"];
-		if(!in_array($meta_key, $target_keys)){
+		$target_keys = [ 'x_official', 'x_campaign', 'x_personal' ];
+		if ( ! in_array( $meta_key, $target_keys, true ) ) {
 			return $value;
 		}
 
-		$fallback_key = str_replace("x_", "twitter_", $meta_key);
+		$fallback_key = str_replace( 'x_', 'twitter_', $meta_key );
 		
-		return get_metadata($meta_type, $object_id, $fallback_key, $single);
+		return get_metadata( $meta_type, $object_id, $fallback_key, $single );
 	}
 
-	public static function add_rest_fields(){
-		register_rest_field( self::CPT_SLUG, "profile_links", [
-			"get_callback" => function($request){
+	public static function add_rest_fields() {
+		register_rest_field(
+			self::CPT_SLUG,
+			'profile_links',
+			[
+				'get_callback'    => function ( $request ) {
 				
-				return self::generate_links_for_profile($request['id']);
-			},
-			"update_callback" => false,
-			"schema" => [
-				'description'  => "Links to 3rd party services and pages for this profile",
-                'type'         => 'array',
-				'items' => array(
-					'type'   => 'object',
-					'properties' => array(
-						'meta'   => 'string',
-						'target' => 'string',
-						'href' => 'string',
-						'id' => 'string',
-						'rel' => 'string',
-						'class' => 'string',
-					),
-				),
-                'context'      => array( 'view', "edit"),
-                'readonly'     => true,
-			]
-		] );
+					return self::generate_links_for_profile( $request['id'] );
+				},
+				'update_callback' => false,
+				'schema'          => [
+					'description' => 'Links to 3rd party services and pages for this profile',
+					'type'        => 'array',
+					'items'       => [
+						'type'       => 'object',
+						'properties' => [
+							'meta'   => 'string',
+							'target' => 'string',
+							'href'   => 'string',
+							'id'     => 'string',
+							'rel'    => 'string',
+							'class'  => 'string',
+						],
+					],
+					'context'     => [ 'view', 'edit' ],
+					'readonly'    => true,
+				],
+			] 
+		);
 
-		register_rest_field( self::CPT_SLUG, "link_services", [
-			"get_callback" => function($request){
-				return self::generate_link_services($request['id']);
-			},
-			"update_callback" => false,
-			"schema" => [
-				'description'  => "Links to 3rd party services and pages for this profile",
-                'type'         => 'array',
-				'items' => array(
-					'type'   => 'object',
-					'properties' => array(),
-				),
-                'context'      => array( 'edit' ),
-                'readonly'     => true,
-			]
-		] );
+		register_rest_field(
+			self::CPT_SLUG,
+			'link_services',
+			[
+				'get_callback'    => function ( $request ) {
+					return self::generate_link_services( $request['id'] );
+				},
+				'update_callback' => false,
+				'schema'          => [
+					'description' => 'Links to 3rd party services and pages for this profile',
+					'type'        => 'array',
+					'items'       => [
+						'type'       => 'object',
+						'properties' => [],
+					],
+					'context'     => [ 'edit' ],
+					'readonly'    => true,
+				],
+			] 
+		);
 	}
 
 	/**
@@ -155,7 +161,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				]
 			);
 
-			$published++;
+			++$published;
 		
 		}
 		return add_query_arg( 'published', $published, $sendback );
@@ -210,44 +216,47 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	 */
 	public static function register_post_type() {
 
-		$permalinks = gp_get_permalink_structure();
-		$permalink_structure = (isset($permalinks['profile_base']) ? $permalinks['profile_base'] : "profile" );
+		$permalinks          = gp_get_permalink_structure();
+		$permalink_structure = ( isset( $permalinks['profile_base'] ) ? $permalinks['profile_base'] : 'profile' );
 		
 		return register_post_type( // phpcs:ignore WordPress.NamingConventions.ValidPostTypeSlug.NotStringLiteral
 			self::CPT_SLUG,
-			\apply_filters("govpack_register_post_type_profile", [
-				'labels'       => [
-					'name'               => _x( 'Profiles', 'post type general name', 'govpack' ),
-					'singular_name'      => _x( 'Profile', 'post type singular name', 'govpack' ),
-					'menu_name'          => _x( 'Profiles', 'admin menu', 'govpack' ),
-					'name_admin_bar'     => _x( 'Profile', 'add new on admin bar', 'govpack' ),
-					'add_new'            => _x( 'Add New', 'popup', 'govpack' ),
-					'add_new_item'       => __( 'Add New Profile', 'govpack' ),
-					'new_item'           => __( 'New Profile', 'govpack' ),
-					'edit_item'          => __( 'Edit Profile', 'govpack' ),
-					'view_item'          => __( 'View Profile', 'govpack' ),
-					'all_items'          => __( 'Profiles', 'govpack' ),
-					'search_items'       => __( 'Search Profiles', 'govpack' ),
-					'not_found'          => __( 'No profiles found.', 'govpack' ),
-					'not_found_in_trash' => __( 'No profiles found in Trash.', 'govpack' ),
-				],
-				'has_archive'  => true,
-				'public'       => true,
-				'show_in_rest' => true,
-				'show_ui'      => true,
-				'show_in_menu' => 'govpack',
-				'supports'     => [ 'revisions', 'thumbnail', 'editor', 'custom-fields', 'title', 'excerpt', 'author'],
-				'taxonomies'   => [ 'post_tag' ],
+			\apply_filters(
+				'govpack_register_post_type_profile',
+				[
+					'labels'       => [
+						'name'               => _x( 'Profiles', 'post type general name', 'govpack' ),
+						'singular_name'      => _x( 'Profile', 'post type singular name', 'govpack' ),
+						'menu_name'          => _x( 'Profiles', 'admin menu', 'govpack' ),
+						'name_admin_bar'     => _x( 'Profile', 'add new on admin bar', 'govpack' ),
+						'add_new'            => _x( 'Add New', 'popup', 'govpack' ),
+						'add_new_item'       => __( 'Add New Profile', 'govpack' ),
+						'new_item'           => __( 'New Profile', 'govpack' ),
+						'edit_item'          => __( 'Edit Profile', 'govpack' ),
+						'view_item'          => __( 'View Profile', 'govpack' ),
+						'all_items'          => __( 'Profiles', 'govpack' ),
+						'search_items'       => __( 'Search Profiles', 'govpack' ),
+						'not_found'          => __( 'No profiles found.', 'govpack' ),
+						'not_found_in_trash' => __( 'No profiles found in Trash.', 'govpack' ),
+					],
+					'has_archive'  => true,
+					'public'       => true,
+					'show_in_rest' => true,
+					'show_ui'      => true,
+					'show_in_menu' => 'govpack',
+					'supports'     => [ 'revisions', 'thumbnail', 'editor', 'custom-fields', 'title', 'excerpt', 'author' ],
+					'taxonomies'   => [ 'post_tag' ],
 				
-				'menu_icon'    => 'dashicons-groups',
-				'rewrite'      => [
-					'slug'       => apply_filters( 'govpack_profile_filter_slug', $permalink_structure ),
-					'with_front' => false,
-				],
-				'template'     => [
-					[ 'govpack/profile-self' ],
-				],
-			])
+					'menu_icon'    => 'dashicons-groups',
+					'rewrite'      => [
+						'slug'       => apply_filters( 'govpack_profile_filter_slug', $permalink_structure ),
+						'with_front' => false,
+					],
+					'template'     => [
+						[ 'govpack/profile-self' ],
+					],
+				]
+			)
 		);
 	}
 
@@ -303,7 +312,6 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		];
 
 		return apply_filters( 'govpack_profile_import_model', $model );
-
 	}
 
 	/**
@@ -356,7 +364,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'date_of_birth',
 			'date_of_death',
 			'district',
-			"endorsements",
+			'endorsements',
 
 			// office panel.
 			'contact_form_url',
@@ -423,7 +431,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'lis_id', // cant link to
 			'committee_id', //fernando made this up
 
-			'links' // will contain an object with links
+			'links', // will contain an object with links
 		];
 
 		// Social Panel.
@@ -459,27 +467,31 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	public static function register_meta( string $slug, array $args = [] ) {
 
 
-		$args = apply_filters("govpack_profile_register_meta_field_args", array_merge(
-			[
-				'show_in_rest'  => true,
-				'single'        => true,
-				'type'          => 'string',
-				'auth_callback' => function() {
-					return current_user_can( 'edit_posts' );
-				},
-			],
-			$args
-		), $slug );
+		$args = apply_filters(
+			'govpack_profile_register_meta_field_args',
+			array_merge(
+				[
+					'show_in_rest'  => true,
+					'single'        => true,
+					'type'          => 'string',
+					'auth_callback' => function () {
+						return current_user_can( 'edit_posts' );
+					},
+				],
+				$args
+			),
+			$slug 
+		);
 
 		register_post_meta( self::CPT_SLUG, $slug, $args );
 	}
 
-	public static function filter_meta_registration_for_links($args = [], $slug = ""){
-		if($slug !== "links"){
+	public static function filter_meta_registration_for_links( $args = [], $slug = '' ) {
+		if ( $slug !== 'links' ) {
 			return $args;
 		}
 
-		$args['type'] = 'object';
+		$args['type']    = 'object';
 		$args['default'] = [];
 
 		return $args;
@@ -552,7 +564,6 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		self::taxonomy_dropdown( \Govpack\Core\Tax\Party::TAX_SLUG, $post_type );
 		self::taxonomy_dropdown( \Govpack\Core\Tax\OfficeHolderStatus::TAX_SLUG, $post_type );
 		self::taxonomy_dropdown( \Govpack\Core\Tax\OfficeHolderTitle::TAX_SLUG, $post_type );
-		
 	}
 
 
@@ -656,50 +667,49 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 
 	 * @return array
 	 */
-	public static function set_profile_title( $post_id, $post, $update, $post_before) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public static function set_profile_title( $post_id, $post, $update, $post_before ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		
 		
-		if($post->post_type !== self::CPT_SLUG){
+		if ( $post->post_type !== self::CPT_SLUG ) {
 			return;
 		}
 
-		if(
-			($post->post_title) && ($post->post_title !== "")
-		){
+		if (
+			( $post->post_title ) && ( $post->post_title !== '' )
+		) {
 			return;
 		}
 
-		if(($post->name) && ($post->name !== "")){
+		if ( ( $post->name ) && ( $post->name !== '' ) ) {
 			$post_title = $post->name;
 		} else {
 			$post_title = join( ' ', array_filter( [ $post->name_first ?? '', $post->name_last ?? '' ] ) );
 		}
 
-		$post_title = trim($post_title);
+		$post_title = trim( $post_title );
 
-		if($post_title === ""){
+		if ( $post_title === '' ) {
 			return;
 		}
 
 		$post_parent = ! empty( $post->post_parent ) ? $post->post_parent : 0;
-		$post_name = wp_unique_post_slug(
-			sanitize_title($post_title),
+		$post_name   = wp_unique_post_slug(
+			sanitize_title( $post_title ),
 			$post->ID,
 			'publish',
 			$post->post_type,
 			$post_parent
 		);
 
-		$postarr = (array) $post;
-		$postarr["post_title"] = $post_title;
-		$postarr["post_name"] = $post_name;
-		if($post->name === ""){
-			$postarr["meta_input"] = [];
-			$postarr["meta_input"]["name"] = $post_title;
+		$postarr               = (array) $post;
+		$postarr['post_title'] = $post_title;
+		$postarr['post_name']  = $post_name;
+		if ( $post->name === '' ) {
+			$postarr['meta_input']         = [];
+			$postarr['meta_input']['name'] = $post_title;
 		}
 
-		wp_update_post($postarr);
-	
+		wp_update_post( $postarr );
 	}
 
 	/**
@@ -734,7 +744,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 	
 		$address = array_filter(
 			$address,
-			function( $line ) {
+			function ( $line ) {
 				return (
 				( '' !== $line ) 
 				);
@@ -746,26 +756,26 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		return ( empty( $address ) ? null : join( $seperator, $address ) );
 	}
 
-	static function age_from_epoc($dob){
+	public static function age_from_epoc( $dob ) {
 		
-		if($dob === ""){
-			return "";
+		if ( $dob === '' ) {
+			return '';
 		}
 		
 		// attempt to convert a string to a date
-		if(is_string($dob)){
-			$dob = strtotime($dob);
+		if ( is_string( $dob ) ) {
+			$dob = strtotime( $dob );
 		}
 
-		if(!$dob){
-			return "";
+		if ( ! $dob ) {
+			return '';
 		}
 
-		$today = new \DateTime();
-		$dateOfBirth = new \DateTime();
-		$dateOfBirth->setTimestamp(($dob / 1000)); //js timestime is milliseconds, we just want seconds since epoc
-		$diff = $dateOfBirth->diff($today);
-		return sprintf("%d Years", $diff->y);
+		$today         = new \DateTime();
+		$date_of_birth = new \DateTime();
+		$date_of_birth->setTimestamp( ( $dob / 1000 ) ); //js timestime is milliseconds, we just want seconds since epoc
+		$diff = $date_of_birth->diff( $today );
+		return sprintf( '%d Years', $diff->y );
 	}
 
 	/**
@@ -804,7 +814,7 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		);
 		$term_data    = array_reduce(
 			$term_objects,
-			function( $carry, $item ) {
+			function ( $carry, $item ) {
 				$carry[ $item->taxonomy ] = $item->name;
 				return $carry;
 			},
@@ -824,15 +834,15 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 			'website'          => $profile_raw_meta_data['leg_url'][0] ?? '',
 			'biography'        => $profile_raw_meta_data['biography'][0] ?? '',
 			'district'         => $profile_raw_meta_data['district'][0] ?? '',
-			"endorsements"     => $profile_raw_meta_data['endorsements'][0] ?? '',
-			'age'              => self::age_from_epoc($profile_raw_meta_data['date_of_birth'][0] ?? false),
+			'endorsements'     => $profile_raw_meta_data['endorsements'][0] ?? '',
+			'age'              => self::age_from_epoc( $profile_raw_meta_data['date_of_birth'][0] ?? false ),
 
 			'party'            => $term_data[ \Govpack\Core\Tax\Party::TAX_SLUG ] ?? '',
 			'state'            => $term_data[ \Govpack\Core\Tax\State::TAX_SLUG ] ?? '',
 			'legislative_body' => $term_data[ \Govpack\Core\Tax\LegislativeBody::TAX_SLUG ] ?? '',
 			'position'         => $term_data[ \Govpack\Core\Tax\OfficeHolderTitle::TAX_SLUG ] ?? '',
 			'status'           => $term_data[ \Govpack\Core\Tax\OfficeHolderStatus::TAX_SLUG ] ?? '',
-			'name'             => $profile_raw_data->post_title ?? '',
+
 			'bio'              => get_the_excerpt( $profile_raw_data ) ?? '',
 			'link'             => get_permalink( $profile_id ),
 			'websites'         => [
@@ -904,25 +914,8 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				],
 				
 			],
-			'links' => self::generate_links_for_profile($profile_id),
-			'name' => self::generate_name_for_profile($profile_id),
-			/*
-			'name'  => [
-				'name'  => $profile_raw_meta_data['name'][0] ?? \get_the_title( $profile_id ) ?? null,
-				'full'  => implode(
-					' ',
-					[
-					$profile_raw_meta_data['name_prefix'][0] ?? null,
-					$profile_raw_meta_data['name_first'][0] ?? null,
-					$profile_raw_meta_data['name_middle'][0] ?? null,
-					$profile_raw_meta_data['name_last'][0] ?? null,
-					$profile_raw_meta_data['name_suffix'][0] ?? null,
-					]
-				),
-				'first' => $profile_raw_meta_data['name_first'][0] ?? null ?? null,
-				'last'  => $profile_raw_meta_data['name_last'][0] ?? null ?? null,
-				],
-			*/
+			'links'            => self::generate_links_for_profile( $profile_id ),
+			'name'             => self::generate_name_for_profile( $profile_id ),
 		];
 
 		
@@ -931,45 +924,44 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 		$profile_data['social']      = array_filter( $profile_data['social'] );
 		$profile_data['hasSocial']   = ! ( empty( $profile_data['social']['official'] ) && empty( $profile_data['social']['personal'] ) && empty( $profile_data['social']['campaign'] ) ?? false );
 		
-		return apply_filters("govpack_profile_data", $profile_data);
+		return apply_filters( 'govpack_profile_data', $profile_data );
 	}
 
-	public static function generate_name_for_profile(int $profile_id) : array {
+	public static function generate_name_for_profile( int $profile_id ): array {
 
 		$name_parts = [
-			"prefix" 	=> get_post_meta($profile_id, "name_prefix", true) ?? null,
-			"first" 	=> get_post_meta($profile_id, "name_first",  true) ?? null,
-			"middle" 	=> get_post_meta($profile_id, "name_middle", true) ?? null,
-			"last" 		=> get_post_meta($profile_id, "name_last",   true) ?? null,
-			"suffix" 	=> get_post_meta($profile_id, "name_suffix", true) ?? null,
+			'prefix' => get_post_meta( $profile_id, 'name_prefix', true ) ?? null,
+			'first'  => get_post_meta( $profile_id, 'name_first', true ) ?? null,
+			'middle' => get_post_meta( $profile_id, 'name_middle', true ) ?? null,
+			'last'   => get_post_meta( $profile_id, 'name_last', true ) ?? null,
+			'suffix' => get_post_meta( $profile_id, 'name_suffix', true ) ?? null,
 		];
 		
-		$provided_name = get_post_meta($profile_id, "name", true) ?? null;
-		$provided_name = ($provided_name === "" ? null : $provided_name);
+		$provided_name = get_post_meta( $profile_id, 'name', true ) ?? null;
+		$provided_name = ( $provided_name === '' ? null : $provided_name );
 		
-		$generated_name = trim(implode( ' ', $name_parts ));
-		$generated_name = ($generated_name === "" ? null : $generated_name);
+		$generated_name = trim( implode( ' ', $name_parts ) );
+		$generated_name = ( $generated_name === '' ? null : $generated_name );
 
-		$name_data = array(
+		$name_data = [
 			'name'  => $provided_name ?? \get_the_title( $profile_id ) ?? $generated_name ?? null,
-			'full'  => $generated_name ??  \get_the_title( $profile_id ) ,
+			'full'  => $generated_name ?? \get_the_title( $profile_id ),
 			'first' => $name_parts['first'] ?? null,
 			'last'  => $name_parts['last'] ?? null,
-		);
+		];
 
 		return $name_data;
-
 	}
 
-	public static function generate_links_for_profile($profile_id){
-		$pl = new Profile_Links($profile_id);
+	public static function generate_links_for_profile( $profile_id ) {
+		$pl = new Profile_Links( $profile_id );
 		$pl->generate();
-		return $pl->toArray();
+		return $pl->to_array();
 	}
 
-	public static function generate_link_services(){
+	public static function generate_link_services() {
 		$services = new Profile_Link_Services();
-		return $services->toArray();
+		return $services->to_array();
 	}
 
 

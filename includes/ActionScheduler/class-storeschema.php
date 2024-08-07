@@ -19,7 +19,6 @@ class StoreSchema extends \ActionScheduler_StoreSchema {
 
 		$this->schema_version = $this->schema_version + 0.1;
 		parent::__construct();
-
 	}
 
 	/**
@@ -36,5 +35,4 @@ class StoreSchema extends \ActionScheduler_StoreSchema {
 
 		return str_replace( 'varchar(8000)', 'text', $definition );
 	}
-
 }

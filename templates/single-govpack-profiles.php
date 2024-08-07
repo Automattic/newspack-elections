@@ -16,7 +16,7 @@ get_header( 'govpack' ); ?>
 
 	<?php
 		/**
-		 * govpack_before_main_content hook.
+		 * Hook govpack_before_main_content.
 		 *
 		 * @hooked govpack_output_content_wrapper - 10 (opening div for the content)
 		 */
@@ -36,16 +36,16 @@ get_header( 'govpack' ); ?>
 
 		<?php
 		/**
-		 * govpack_sidebar hook.
+		 * Hook govpack_sidebar.
 		 *
 		 * @hooked govpack_get_sidebar - 10
 		 */
 		do_action( 'govpack_sidebar' );
-	?>
+		?>
 
 	<?php
 		/**
-		 * govpack_after_main_content hook.
+		 * Hook govpack_after_main_content.
 		 *
 		 * @hooked woocommerce_output_content_wrapper_end - 10 (closing div for the content)
 		 */

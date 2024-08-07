@@ -41,7 +41,7 @@ class Chunked_Upload {
 	 * Adds Actions to Hooks 
 	 */
 	public static function hooks() {
-		add_action( 'rest_api_init', [ __class__, 'register_rest_endpoints' ] );
+		add_action( 'rest_api_init', [ __CLASS__, 'register_rest_endpoints' ] );
 	}
 
 	/**
@@ -54,17 +54,14 @@ class Chunked_Upload {
 			[
 				'methods'             => 'POST',
 				'callback'            => [
-					__class__,
+					__CLASS__,
 					'upload',
 				],
 				'permission_callback' => function () {
-					return \current_user_can( Capabilities::CAN_IMPORT );
-
+					return \current_user_can( 'govpack_import' );
 				},
 			] 
 		);
-
-		
 	}
 
 	/**
@@ -126,6 +123,5 @@ class Chunked_Upload {
 		\update_option( 'govpack_import_path', $path );
 		
 		return $resp;
-		
 	}
 }

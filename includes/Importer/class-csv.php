@@ -35,10 +35,13 @@ class CSV extends \Govpack\Core\Importer\Abstracts\Abstract_Importer {
 			throw new Exception( 'Each column in your CSV needs to have a heading, there is at least 1 un-named column' );
 		}
 
-		// Normalise the column names in the CSV to all be lowercase, dont actually pass this back to the CSV reader, just pass it to the validation
-		$header = array_map(function($col){
-			return strtolower($col);
-		}, $reader->getHeader());
+		// Normalise the column names in the CSV to all be lowercase, dont actually pass this back to the CSV reader, just pass it to the validation.
+		$header = array_map(
+			function ( $col ) {
+				return strtolower( $col );
+			},
+			$reader->getHeader()
+		);
 
 		
 		self::has_required_columns( $header );
@@ -72,7 +75,7 @@ class CSV extends \Govpack\Core\Importer\Abstracts\Abstract_Importer {
 
 		if ( count( $missing ) > 0 ) {
 			$missing_fields = join( '", "', $missing );
-			throw new Exception( 'Your CSV is missing the some required fields ["' . $missing_fields . '"]' );
+			throw new Exception( 'Your CSV is missing the some required fields ["' . $missing_fields . '"]' ); //phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 		}
 
 		return true;
@@ -108,7 +111,5 @@ class CSV extends \Govpack\Core\Importer\Abstracts\Abstract_Importer {
 		if ( $use_action_scheduler ) {
 			as_enqueue_async_action( 'govpack_import_cleanup', [], self::import_group() );
 		}
-
 	}
-
 }

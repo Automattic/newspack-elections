@@ -8,9 +8,9 @@
 // $profile_data is defined elsewhere.
 // phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 
-$profile_data = $extra["profile_data"];
-$block_class = $attributes["className"];
-$show = gp_get_show_data($profile_data, $attributes);
+$profile_data     = $extra['profile_data'];
+$block_class      = $attributes['className'];
+$show             = gp_get_show_data( $profile_data, $attributes );
 $available_widths = gp_get_available_widths();
 
 $container_classes = join(
@@ -29,21 +29,29 @@ $container_classes = join(
 
 ?>
 
-<aside <?php echo get_block_wrapper_attributes([
-	'class' => gp_classnames("", [
-		//( isset( $attributes['align'] ) ? 'align' . $attributes['align'] : false ),
-		( (isset( $attributes['showLabels'] ) && ($attributes['showLabels']) ) ? "wp-block-govpack-profile--show-labels": false ),
-	] ),
-	'style' => gp_style_attr_generator([
-		//"max-width" => $available_widths[ $attributes['width'] ?? 'auto' ]['maxWidth']
-	])
-]); ?>>
+<aside 
+<?php
+echo get_block_wrapper_attributes(
+	[
+		'class' => gp_classnames(
+			'',
+			[
+				( ( isset( $attributes['showLabels'] ) && ( $attributes['showLabels'] ) ) ? 'wp-block-govpack-profile--show-labels' : false ),
+			] 
+		),
+		'style' => gp_style_attr_generator(
+			[]
+		),
+	]
+);
+?>
+>
 	<!-- start __container -->
 	<div class="<?php echo esc_attr( $container_classes ); ?>">	
-		<?php gp_get_block_part("blocks/parts/profile", "photo", $attributes, $content, $block, $extra);  ?>
+		<?php gp_get_block_part( 'blocks/parts/profile', 'photo', $attributes, $content, $block, $extra ); ?>
 		<dl class="wp-block-govpack-profile__info ">
-			<?php gp_get_block_part("blocks/parts/profile", "header", $attributes, $content, $block, $extra);  ?>
-			<?php gp_get_block_part("blocks/parts/profile", "lines", $attributes, $content, $block, $extra);  ?>
+			<?php gp_get_block_part( 'blocks/parts/profile', 'header', $attributes, $content, $block, $extra ); ?>
+			<?php gp_get_block_part( 'blocks/parts/profile', 'lines', $attributes, $content, $block, $extra ); ?>
 
 			
 		</dl>

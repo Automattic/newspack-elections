@@ -18,6 +18,7 @@ import {ReactComponent as GoogleIconSVG} from "./../assets/icons/profile-links/g
 import {ReactComponent as OpenStatesIconSVG} from "./../assets/icons/profile-links/openstates.svg"
 import {ReactComponent as OpenSecretsIconSVG} from "./../assets/icons/profile-links/opensecrets.svg"
 import {ReactComponent as RumbleIconSVG} from "./../assets/icons/profile-links/rumble.svg"
+import {ReactComponent as VoteSmartSVG} from "./../assets/icons/profile-links/votesmart.svg"
 import {ReactComponent as WikipediaIconSVG} from "./../assets/icons/profile-links/wikipedia.svg"
 
 
@@ -39,6 +40,7 @@ export const Google = () => ( <Icon icon={ GoogleIconSVG } /> )
 export const OpenSecrets = () => ( <Icon icon={ OpenSecretsIconSVG } /> )
 export const OpenStates = () => ( <Icon icon={ OpenStatesIconSVG } /> )
 export const Rumble = () => ( <Icon icon={ RumbleIconSVG } /> )
+export const VoteSmart = () => ( <Icon icon={ VoteSmartSVG } /> )
 export const Wikipedia = () => ( <Icon icon={ WikipediaIconSVG } /> )
 
 

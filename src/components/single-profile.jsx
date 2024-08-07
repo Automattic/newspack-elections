@@ -29,17 +29,21 @@ import {
 	OpenSecrets as OpenSecretsIcon,
 	OpenStates as OpenStatesIcon,
 	Rumble as RumbleIcon,
+	VoteSmart as VoteSmartIcon,
 	Wikipedia as WikipediaIcon
 } from "./Icons"
 
 const ProfileLinksIcons = {
-	"google" : GoogleIcon,
-	"wikipedia" : WikipediaIcon,
+	"fec" : FecIcon,
 	"gab" : GabIcon,
+	"google" : GoogleIcon,
+	
+	
 	"openstates" : OpenStatesIcon,
 	"opensecrets" : OpenSecretsIcon,
 	"rumble" : RumbleIcon,
-	"fec" : FecIcon,
+	"votesmart" : VoteSmartIcon,
+	"wikipedia" : WikipediaIcon,
 }
 
 const Link = (props) => {

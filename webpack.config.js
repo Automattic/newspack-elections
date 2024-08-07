@@ -1,7 +1,8 @@
-const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
-const { getWebpackEntryPoints, getPackageProp, hasPackageProp} = require("@wordpress/scripts/utils")
+let defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
+const { getWebpackEntryPoints, getPackageProp, hasPackageProp,getWordPressSrcDirectory } = require("@wordpress/scripts/utils")
 const { basename } = require( 'path' );
-
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const { optimize } = require('svgo');
 
 function getEntryPoints(){
 	return {
@@ -53,6 +54,28 @@ function getEntryPointsFromPackage(){
 
 	return entryPoints
 
+}
+
+defaultConfig = {
+	...defaultConfig,
+	"plugins": [
+		...defaultConfig.plugins,
+		new CopyWebpackPlugin({
+			patterns: [{
+				context: getWordPressSrcDirectory(),
+				from : "assets/icons/**/*.svg",
+				to : "icons/[name][ext]",
+				transform : {
+					transformer(content, absoluteFrom) {
+						//console.log(content.toString())
+						//return content.toString();
+						let result = optimize(content.toString())
+						return result.data;
+					}
+				}
+			}]
+		})
+	]
 }
 
 module.exports = {

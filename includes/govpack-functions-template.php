@@ -822,6 +822,12 @@ if ( ! function_exists( 'esc_svg' ) ) {
 				'path' => [
 					'd' => [],
 				],
+				'g' => [
+					'path' => []
+				],
+				'defs' => [],
+				'clippath' => []
+				
 			]
 		);
 	}

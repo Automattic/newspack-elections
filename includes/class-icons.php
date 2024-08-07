@@ -19,7 +19,7 @@ class Icons {
 	];
 
 	public function icon_dir() {
-		return GOVPACK_PLUGIN_FILE . '/src/images';
+		return GOVPACK_PLUGIN_BUILD_PATH . '/icons';
 	}
 	/**
 	 * Load an SVG icon from disk

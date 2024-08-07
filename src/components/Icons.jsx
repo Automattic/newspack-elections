@@ -12,6 +12,7 @@ import {ReactComponent as FaxIconSVG} from "./../assets/icons/contact/fax.svg"
 import {ReactComponent as WebIconSVG} from "./../assets/icons/contact/globe.svg"
 import {ReactComponent as PhoneIconSVG} from "./../assets/icons/contact/phone.svg"
 
+import {ReactComponent as BallotpediaIconSVG} from "./../assets/icons/profile-links/ballotpedia.svg"
 import {ReactComponent as FecIconSVG} from "./../assets/icons/profile-links/fec.svg"
 import {ReactComponent as GabIconSVG} from "./../assets/icons/profile-links/gab.svg"
 import {ReactComponent as GoogleIconSVG} from "./../assets/icons/profile-links/google.svg"
@@ -34,6 +35,7 @@ export const Fax = () => ( <Icon icon={ FaxIconSVG } /> )
 export const Phone = () => ( <Icon icon={ PhoneIconSVG } /> )
 export const Web = () => ( <Icon icon={ WebIconSVG } /> )
 
+export const Ballotpedia = () => ( <Icon icon={ BallotpediaIconSVG } /> )
 export const Fec = () => ( <Icon icon={ FecIconSVG } /> )
 export const Gab = () => ( <Icon icon={ GabIconSVG } /> )
 export const Google = () => ( <Icon icon={ GoogleIconSVG } /> )

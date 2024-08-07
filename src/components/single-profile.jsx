@@ -2,7 +2,7 @@
 /**
  * External dependencies
  */
- import classnames from 'classnames';
+ import classnames from 'classnames'; 
 
  /**
  * Internal Dependencies
@@ -23,6 +23,7 @@ import {
 	Phone as PhoneIcon,
 	Web as WebIcon,
 
+	Ballotpedia as BallotpediaIcon,
 	Fec as FecIcon,
 	Gab as GabIcon,
 	Google as GoogleIcon,
@@ -34,6 +35,7 @@ import {
 } from "./Icons"
 
 const ProfileLinksIcons = {
+	"ballotpedia" : BallotpediaIcon,
 	"fec" : FecIcon,
 	"gab" : GabIcon,
 	"google" : GoogleIcon,

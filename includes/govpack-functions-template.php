@@ -813,20 +813,20 @@ if ( ! function_exists( 'esc_svg' ) ) {
 		return wp_kses(
 			$svg_string,
 			[
-				'svg'  => [
+				'svg'      => [
 					'xmlns'   => [], 
 					'width'   => [], 
 					'height'  => [], 
 					'viewbox' => [], //lowercase not camelcase!
 				], 
-				'path' => [
+				'path'     => [
 					'd' => [],
 				],
-				'g' => [
-					'path' => []
+				'g'        => [
+					'path' => [],
 				],
-				'defs' => [],
-				'clippath' => []
+				'defs'     => [],
+				'clippath' => [],
 				
 			]
 		);

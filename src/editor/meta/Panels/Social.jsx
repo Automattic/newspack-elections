@@ -9,8 +9,6 @@ export const SocialPanel = (props) => {
 
 	const {meta, setPostMeta} = usePanel()
 
-	console.log(meta)
-
 	return (
         <GovPackSidebarPanel 
             title="Social"

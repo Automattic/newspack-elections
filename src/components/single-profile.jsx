@@ -468,7 +468,6 @@ const SingleProfile = (props) => {
 	
 	const hasSocial = (testObj) => {
 
-		console.log( "in hasSocial", testObj)
 		let found = false
 
 		for(const key in testObj){
@@ -476,12 +475,10 @@ const SingleProfile = (props) => {
 			if (typeof testObj[key] === "object") {
 				found = hasSocial(testObj[key])
 			} else if(testObj[key] !== ""){
-				console.log("Set To True")
 				found = true;
 			}
 			
 			if(found){
-				console.log("should skip now")
 				break;
 			}
 		}
@@ -492,10 +489,7 @@ const SingleProfile = (props) => {
 
 	const doShowSocial = ((showSocial) && (selectedSocial.showOfficial || selectedSocial.showCampaign || selectedSocial.showPersonal) && (hasSocial(profile.social)));		
 
-	
-	console.log("social args", showSocial, selectedSocial, hasSocial(profile.social), profile.social)
-	//console.log("doShowSocial", doShowSocial)
-	
+		
     return (
        <div className= {classnames(`${blockClassName}__container`, {
             [`${blockClassName}__container--right`] : (avatarAlignment === "right"),

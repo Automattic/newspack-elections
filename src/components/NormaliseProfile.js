@@ -151,6 +151,60 @@ export function normalize_profile(profile){
 				}
 			}
 		},
-		links : profile.profile_links ?? {}
+		links : generateLinks(),
+		link_services : profile.link_services ?? {}
     }
+
+	function generateLinks(){
+
+		const services = Object.keys(profile.link_services).filter( (key) => {
+
+			let service = profile.link_services[key]
+			return service?.enabled ?? false;
+
+		}).filter( (key) => {
+
+			let service = profile.link_services[key]
+
+			if (typeof profile.meta[service.meta_key] === "undefined"){
+				return false;
+			}
+			if (profile.meta[service.meta_key] === false){
+				return false;
+			}
+			
+			if (profile.meta[service.meta_key] === ""){
+				return false;
+			} 
+
+			if (!profile.meta[service.meta_key]){
+				return false;
+			}
+
+			return true
+		}).reduce( (prev, current) => {
+
+			let service = profile.link_services[current]
+
+			const link = {
+				'meta'   : profile.meta[service.meta_key],
+				'target' : '_blank',
+				'href'   : service.template.replace('{' + service.meta_key+ '}', profile.meta[service.meta_key] ),
+				'text'   : service.label,
+				'slug'   : service.slug,
+				'id'     : null,
+				'rel'    : null,
+				'class'  : "",
+			}
+			return {
+				...prev,
+				...{
+					[current] : link
+				}
+			}
+		}, {})
+
+		
+		return services
+	}
 }

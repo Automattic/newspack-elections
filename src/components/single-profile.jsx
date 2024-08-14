@@ -40,7 +40,7 @@ const ProfileLinksIcons = {
 	"gab" : GabIcon,
 	"google" : GoogleIcon,
 	
-	
+	"linkedin" : LinkedinIcon,
 	"openstates" : OpenStatesIcon,
 	"opensecrets" : OpenSecretsIcon,
 	"rumble" : RumbleIcon,
@@ -229,7 +229,7 @@ const SingleProfile = (props) => {
 
     const SocialMedia = (props) => {
 
-		console.log("Social Media Row")
+		
 
 		const SocialRow = (props) => {
   
@@ -396,6 +396,8 @@ const SingleProfile = (props) => {
 		)
 	}
 
+
+	console.log("profile", profile)
 	const ProfileLinks = (props) => {
 
 		const {
@@ -403,6 +405,7 @@ const SingleProfile = (props) => {
 			data
 		} = props			
 
+		console.log("selectedLinks", selectedLinks)
 		return (
 			<div className={`${blockClassName}__comms`}>
 				<div className={`${blockClassName}__label`}>{label}:</div>
@@ -471,7 +474,7 @@ const SingleProfile = (props) => {
 		let found = false
 
 		for(const key in testObj){
-			console.log(key, testObj[key], typeof testObj[key], testObj[key] !== "")
+			
 			if (typeof testObj[key] === "object") {
 				found = hasSocial(testObj[key])
 			} else if(testObj[key] !== ""){
@@ -554,7 +557,7 @@ const SingleProfile = (props) => {
 					<Row key="comms_district" id="comms_district" label="Contact Info (District)" value={hasCommsData(profile.comms.district) && <Comms data={profile.comms.district} label="District" show={selectedDistrictCommunicationDetails}/>} display={showDistrictCommunicationDetails} />
 					<Row key="comms_campaign" id="comms_campaign" label="Contact Info (Campaign)" value={hasCommsData(profile.comms.campaign) && <Comms data={profile.comms.campaign} label="Campaign" show={selectedCampaignCommunicationDetails}/>} display={showCampaignCommunicationDetails} />
 					<Row key="comms_other" id="comms_other" label="Contact Info (Other)" value={hasCommsOtherData(profile.comms.other) && <CommsOther data={profile.comms.other} label="Other" show={selectedOtherCommunicationDetails}/>} display={showOtherCommunicationDetails} />
-					<Row key="links" id="links" label="Links" value={hasLinksData(profile.links) && <ProfileLinks data={profile.links} show={selectedLinks}/>} display={showOtherLinks} />
+					<Row key="links" id="links" label="Links" value={hasLinksData(profile.link) && <ProfileLinks data={profile.links} show={selectedLinks}/>} display={showOtherLinks} />
 					<Row key="url" id="more_about" label="More" value={<Link> More about {profile.title}</Link>} display={showProfileLink}/>
                 </div>
             </div>  

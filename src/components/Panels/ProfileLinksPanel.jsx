@@ -15,7 +15,16 @@ export const ProfileLinksPanel = (props) => {
 		profile
     } = props
 
+	const setSubAttributes = (attrs) => {
 
+		console.log("setSubAttributes", attrs)
+		const newAttrs = {
+			...attributes[parentAttributeKey],
+			...attrs
+		}
+
+		setAttributes({ [parentAttributeKey] : newAttrs })
+	}
 	/**
 	 * When The Links and IDs are enabled and populated, this should default it to on.
 	 * 
@@ -24,15 +33,33 @@ export const ProfileLinksPanel = (props) => {
 	 * Batch these into a single object to update all at once
 	 */
 	useEffect( () => {
-	
+		
+		console.log("ProfileLinkPanel, useEffect", profile.profile_links, profile)
 		const linksToEnable = {} 
 
-		Object.keys(profile.profile_links).filter( (key) => {
-			let link = profile.profile_links[key];
-			if(!link.href){
+		Object.keys(profile.link_services).filter( (key) => {
+			let link = profile.link_services[key];
+			return link?.enabled ?? false
+		}).filter( (key) => {
+			let link = profile.link_services[key];
+
+			if (typeof profile.meta[link.meta_key] === "undefined"){
 				return false;
 			}
-			return true;
+			if (profile.meta[link.meta_key] === false){
+				return false;
+			}
+			
+			if (profile.meta[link.meta_key] === ""){
+				return false;
+			} 
+
+			if (!profile.meta[link.meta_key]){
+				return false;
+			}
+
+			return true
+
 		}).filter( (key) => {
 			return (typeof attributes[parentAttributeKey][key] === "undefined")
 		}).forEach( (key) => {
@@ -50,16 +77,7 @@ export const ProfileLinksPanel = (props) => {
 	}
 
 	
-	const setSubAttributes = (attrs) => {
-
-		console.log("setSubAttributes", attrs)
-		const newAttrs = {
-			...attributes[parentAttributeKey],
-			...attrs
-		}
-
-		setAttributes({ [parentAttributeKey] : newAttrs })
-	}
+	
 
 	console.log(attributes[parentAttributeKey])
 
@@ -90,7 +108,7 @@ export const ProfileLinksPanel = (props) => {
 							label={ profile.link_services[key].label}
 							checked={  isActive(key) }
 							onChange={ () => setSubAttributes( { [key]: !isActive(key) } ) }
-							disabled = {isDisabled(key)}
+							//disabled = {isDisabled(key)}
 						/>
 					</PanelRow>
 				))}

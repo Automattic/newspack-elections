@@ -1,4 +1,5 @@
 import { decodeEntities } from '@wordpress/html-entities';
+import {isURL} from "@wordpress/url";
 import { isArray, isEmpty, isNil } from 'lodash';
 
 export function normalize_profile(profile){
@@ -189,7 +190,7 @@ export function normalize_profile(profile){
 			const link = {
 				'meta'   : profile.meta[service.meta_key],
 				'target' : '_blank',
-				'href'   : service.template.replace('{' + service.meta_key+ '}', profile.meta[service.meta_key] ),
+				'href'   : isURL(profile.meta[service.meta_key]) ? profile.meta[service.meta_key] : service.template.replace('{' + service.meta_key+ '}', profile.meta[service.meta_key] ),
 				'text'   : service.label,
 				'slug'   : service.slug,
 				'id'     : null,

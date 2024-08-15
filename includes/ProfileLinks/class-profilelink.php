@@ -110,6 +110,7 @@ abstract class ProfileLink {
 		}
 		
 		$new_url = $this->generate_url();
+		
 		if ( $this->is_url_valid( $new_url ) ) {
 			return $new_url;
 		}

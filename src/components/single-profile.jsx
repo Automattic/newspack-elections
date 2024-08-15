@@ -9,6 +9,7 @@
  */
 import { normalize_profile } from './NormaliseProfile';
 import ProfileCommsPanel from "./Panels/ProfileCommsPanel"
+import {prependHTTPS} from "@wordpress/url"
  
 import {
 	Facebook as FacebookIcon,
@@ -213,11 +214,14 @@ const SingleProfile = (props) => {
 	
 	
 	const Contact = (props) => {
+
+		const href= prependHTTPS(props.href)
+
         return (
             <li className={classnames(`${blockClassName}__contact`, {
                 [`${blockClassName}__contact--hide-label`] : true
             })}>
-                <a href={props.href} className={`${blockClassName}__link`} title={props.tooltip ?? props.label ?? ""}>
+                <a href={href} className={`${blockClassName}__link`} title={props.tooltip ?? props.label ?? ""}>
                     {props.icon && (
                         <span className={`${blockClassName}__contact__icon ${blockClassName}__contact__icon--${props.service}`}>{props.icon}</span>
                     )}
@@ -397,7 +401,7 @@ const SingleProfile = (props) => {
 	}
 
 
-	console.log("profile", profile)
+	
 	const ProfileLinks = (props) => {
 
 		const {
@@ -405,7 +409,7 @@ const SingleProfile = (props) => {
 			data
 		} = props			
 
-		console.log("selectedLinks", selectedLinks)
+		
 		return (
 			<div className={`${blockClassName}__comms`}>
 				<div className={`${blockClassName}__label`}>{label}:</div>

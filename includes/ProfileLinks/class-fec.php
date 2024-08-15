@@ -13,6 +13,10 @@ class Fec extends \Govpack\Core\ProfileLinks\ProfileLink {
 		return 'Federal Election Comission';
 	}
 
+	public function enabled() {
+		return false;
+	}
+
 	public function url_template() {
 		return 'https://www.fec.gov/data/candidate/{fec_id}/';
 	}

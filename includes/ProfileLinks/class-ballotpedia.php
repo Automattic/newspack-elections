@@ -14,6 +14,6 @@ class BallotPedia extends \Govpack\Core\ProfileLinks\ProfileLink {
 	}
 
 	public function url_template() {
-		return 'https://ballotpedia.org/{balletpedia_id}/';
+		return 'https://ballotpedia.org/{balletpedia_id}';
 	}
 }

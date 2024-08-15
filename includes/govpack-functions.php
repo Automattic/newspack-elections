@@ -30,6 +30,17 @@ if ( ! function_exists( 'gp_get_permalink_structure' ) ) {
 	}
 }
 
+if ( ! function_exists( 'gp_is_url_valid' ) ) {
+	function gp_is_url_valid( $url ) {
+		if ( ! filter_var( $url, FILTER_VALIDATE_URL ) ) {
+			return false;
+		}
+
+		return true;
+	}
+}
+
+
 /**
  * Provides Developer feedback if using a hook, method or function is being used incorrectly.
  * 

@@ -920,8 +920,29 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 
 		
 		$profile_data['hasWebsites'] = ( $profile_data['websites']['campaign'] ?? $profile_data['websites']['legislative'] ?? false );
+
+		
+		// array filter via map to remove the inner empty values, the directly to remove the outer
 		$profile_data['social']      = array_map( 'array_filter', $profile_data['social'] );
 		$profile_data['social']      = array_filter( $profile_data['social'] );
+
+		// force all social media links to have a protocal in the url
+		$profile_data['social'] = array_map( function ($social_set) {
+			return array_map( function($service) {
+				if(gp_is_url_valid($service)){
+					return $service;
+				}
+
+				if( str_starts_with($service, "http://") || str_starts_with($service, "https://")){
+					return $service;
+				}
+
+				return set_url_scheme("//" . $service, "https");
+			}, $social_set );
+		}, $profile_data['social']);
+
+
+		
 		$profile_data['hasSocial']   = ! ( empty( $profile_data['social']['official'] ) && empty( $profile_data['social']['personal'] ) && empty( $profile_data['social']['campaign'] ) ?? false );
 		
 		return apply_filters( 'govpack_profile_data', $profile_data );

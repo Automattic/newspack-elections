@@ -13,11 +13,12 @@ export const MetadataIdsPanel = (props) => {
             title="Metadata & IDS"
             name="gov-metadataids-communications"
         >
-
+			{/*
 			<PanelRow>
                 <PanelTextControl meta={meta} label= "Ballotpedia ID" meta_key="balletpedia_id" onChange={setPostMeta} placeholder="" />
             </PanelRow>
-
+			*/}
+			
 			<PanelRow>
                 <PanelTextControl meta={meta} label= "FEC ID" meta_key="fec_id" onChange={setPostMeta} placeholder="" />
             </PanelRow>

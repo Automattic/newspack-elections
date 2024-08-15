@@ -34,6 +34,17 @@ const DefaultControl = (props, Control) => {
     )
 }
 
+export const PanelUrlControl = (props) => {
+	return DefaultControl({
+		...props,
+		"type": "url",
+		onChange : (value, event) => {
+			console.log("URL On Change", value, event)
+			props.onChange(value)
+		}
+	}, TextControl)
+}
+
 export const PanelTextControl = (props) => {
 	return DefaultControl(props, TextControl)
 }

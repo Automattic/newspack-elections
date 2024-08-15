@@ -14,6 +14,9 @@ class OpenSecrets extends \Govpack\Core\ProfileLinks\ProfileLink {
 	}
 
 	public function enabled() {
-		return true;
+		return false;
 	}
+
+
+
 }

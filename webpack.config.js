@@ -3,6 +3,7 @@ const { getWebpackEntryPoints, getPackageProp, hasPackageProp,getWordPressSrcDir
 const { basename } = require( 'path' );
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { optimize } = require('svgo');
+const TerserPlugin = require( 'terser-webpack-plugin' );
 
 function getEntryPoints(){
 	return {
@@ -20,6 +21,27 @@ function pathToEntry(path){
 
 	return [ entryName, path ];
 };
+
+const terserOptions = {
+	parallel: true,
+	terserOptions: {
+		output: {
+			comments: /translators:/i,
+		},
+		compress: {
+			passes: 2,
+			drop_console: true
+		},
+		mangle: {
+			reserved: [ '__', '_n', '_nx', '_x' ],
+		},
+	},
+	extractComments: false,
+}
+
+/*
+const minifier = new TerserPlugin( terserOptions )
+*/
 
 function getEntryPointsFromPackage(){
 	
@@ -58,7 +80,13 @@ function getEntryPointsFromPackage(){
 
 defaultConfig = {
 	...defaultConfig,
-	"plugins": [
+	optimization : {
+		...defaultConfig.optimization,
+		minimizer : [
+			new TerserPlugin( terserOptions )
+		]
+	},
+	plugins: [
 		...defaultConfig.plugins,
 		new CopyWebpackPlugin({
 			patterns: [{

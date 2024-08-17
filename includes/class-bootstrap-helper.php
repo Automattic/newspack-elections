@@ -1,6 +1,6 @@
 <?php
 
-class Bootstrap_Helper {
+class Govpack_Bootstrap_Helper {
 
 	private static $notice_defaults = [
 		'type'               => 'error',
@@ -28,5 +28,9 @@ class Bootstrap_Helper {
 			__( 'Govpack: Compiled CSS and JavaScript are missing. Please run <code>npm install && npm run build</code> in the plugin directory.', 'govpack' ),
 			self::$notice_defaults
 		);
+	}
+
+	public static function is_dir_empty($dir){
+		return !( new \FilesystemIterator($dir))->valid();
 	}
 }

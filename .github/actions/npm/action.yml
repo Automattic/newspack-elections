@@ -1,0 +1,19 @@
+name: NPM
+description: Install NPM Dependencies and Run build Scripts
+runs:
+  using: "composite"
+  steps:
+  - name: Cache NPM packages
+    id: npm-cache
+    uses: actions/cache@v4
+    with:
+      path: node_modules
+      key: ${{ runner.os }}-php-${{ hashFiles('**/package.json') }}
+      restore-keys: |
+        ${{ runner.os }}-js-
+  - name: Install NPM Dependencies
+    run: npm install
+    shell: bash
+  - name: Build NPM Dependencies
+    run: npm run build
+    shell: bash

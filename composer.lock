@@ -4,28 +4,28 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf94ab4de060ed79e1b62d9c3cef57ee",
+    "content-hash": "24652ea5b3d4153c65a437c7fa81ae45",
     "packages": [
         {
             "name": "brianhenryie/strauss",
-            "version": "0.17.0",
+            "version": "0.19.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BrianHenryIE/strauss.git",
-                "reference": "f03e9176f463cf2c3f2fca5b2796c03c8e9e5729"
+                "reference": "7212a4dd8ec397095c59023591681b4cb0f8611d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BrianHenryIE/strauss/zipball/f03e9176f463cf2c3f2fca5b2796c03c8e9e5729",
-                "reference": "f03e9176f463cf2c3f2fca5b2796c03c8e9e5729",
+                "url": "https://api.github.com/repos/BrianHenryIE/strauss/zipball/7212a4dd8ec397095c59023591681b4cb0f8611d",
+                "reference": "7212a4dd8ec397095c59023591681b4cb0f8611d",
                 "shasum": ""
             },
             "require": {
                 "composer/composer": "*",
                 "json-mapper/json-mapper": "^2.2",
                 "league/flysystem": "^2.1|^3.0",
-                "symfony/console": "^4|^5|^6",
-                "symfony/finder": "^4|^5|^6"
+                "symfony/console": "^4|^5|^6|^7",
+                "symfony/finder": "^4|^5|^6|^7"
             },
             "replace": {
                 "coenjacobs/mozart": "*"
@@ -68,9 +68,9 @@
             "description": "Composes all dependencies as a package inside a WordPress plugin",
             "support": {
                 "issues": "https://github.com/BrianHenryIE/strauss/issues",
-                "source": "https://github.com/BrianHenryIE/strauss/tree/0.17.0"
+                "source": "https://github.com/BrianHenryIE/strauss/tree/0.19.2"
             },
-            "time": "2024-03-19T03:19:58+00:00"
+            "time": "2024-06-10T20:51:59+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -1375,161 +1375,6 @@
                 }
             ],
             "time": "2022-08-04T09:53:51+00:00"
-        },
-        {
-            "name": "nette/php-generator",
-            "version": "v4.1.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nette/php-generator.git",
-                "reference": "690b00d81d42d5633e4457c43ef9754573b6f9d6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nette/php-generator/zipball/690b00d81d42d5633e4457c43ef9754573b6f9d6",
-                "reference": "690b00d81d42d5633e4457c43ef9754573b6f9d6",
-                "shasum": ""
-            },
-            "require": {
-                "nette/utils": "^3.2.9 || ^4.0",
-                "php": "8.0 - 8.3"
-            },
-            "require-dev": {
-                "jetbrains/phpstorm-attributes": "dev-master",
-                "nette/tester": "^2.4",
-                "nikic/php-parser": "^4.18 || ^5.0",
-                "phpstan/phpstan": "^1.0",
-                "tracy/tracy": "^2.8"
-            },
-            "suggest": {
-                "nikic/php-parser": "to use ClassType::from(withBodies: true) & ClassType::fromCode()"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.1-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause",
-                "GPL-2.0-only",
-                "GPL-3.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "David Grudl",
-                    "homepage": "https://davidgrudl.com"
-                },
-                {
-                    "name": "Nette Community",
-                    "homepage": "https://nette.org/contributors"
-                }
-            ],
-            "description": "🐘 Nette PHP Generator: generates neat PHP code for you. Supports new PHP 8.3 features.",
-            "homepage": "https://nette.org",
-            "keywords": [
-                "code",
-                "nette",
-                "php",
-                "scaffolding"
-            ],
-            "support": {
-                "issues": "https://github.com/nette/php-generator/issues",
-                "source": "https://github.com/nette/php-generator/tree/v4.1.5"
-            },
-            "time": "2024-05-12T17:31:02+00:00"
-        },
-        {
-            "name": "nette/utils",
-            "version": "v4.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nette/utils.git",
-                "reference": "d3ad0aa3b9f934602cb3e3902ebccf10be34d218"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/d3ad0aa3b9f934602cb3e3902ebccf10be34d218",
-                "reference": "d3ad0aa3b9f934602cb3e3902ebccf10be34d218",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.0 <8.4"
-            },
-            "conflict": {
-                "nette/finder": "<3",
-                "nette/schema": "<1.2.2"
-            },
-            "require-dev": {
-                "jetbrains/phpstorm-attributes": "dev-master",
-                "nette/tester": "^2.5",
-                "phpstan/phpstan": "^1.0",
-                "tracy/tracy": "^2.9"
-            },
-            "suggest": {
-                "ext-gd": "to use Image",
-                "ext-iconv": "to use Strings::webalize(), toAscii(), chr() and reverse()",
-                "ext-intl": "to use Strings::webalize(), toAscii(), normalize() and compare()",
-                "ext-json": "to use Nette\\Utils\\Json",
-                "ext-mbstring": "to use Strings::lower() etc...",
-                "ext-tokenizer": "to use Nette\\Utils\\Reflection::getUseStatements()"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.0-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause",
-                "GPL-2.0-only",
-                "GPL-3.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "David Grudl",
-                    "homepage": "https://davidgrudl.com"
-                },
-                {
-                    "name": "Nette Community",
-                    "homepage": "https://nette.org/contributors"
-                }
-            ],
-            "description": "🛠  Nette Utils: lightweight utilities for string & array manipulation, image handling, safe JSON encoding/decoding, validation, slug or strong password generating etc.",
-            "homepage": "https://nette.org",
-            "keywords": [
-                "array",
-                "core",
-                "datetime",
-                "images",
-                "json",
-                "nette",
-                "paginator",
-                "password",
-                "slugify",
-                "string",
-                "unicode",
-                "utf-8",
-                "utility",
-                "validation"
-            ],
-            "support": {
-                "issues": "https://github.com/nette/utils/issues",
-                "source": "https://github.com/nette/utils/tree/v4.0.4"
-            },
-            "time": "2024-01-17T16:50:36+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -3514,58 +3359,6 @@
                 "source": "https://github.com/z4kn4fein/php-semver/tree/v3.0.0"
             },
             "time": "2024-04-01T16:17:27+00:00"
-        },
-        {
-            "name": "zerodahero/address-normalization",
-            "version": "2.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zerodahero/address-normalization.git",
-                "reference": "0ae06662122af810f483274379b12abdd4bdeb7f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zerodahero/address-normalization/zipball/0ae06662122af810f483274379b12abdd4bdeb7f",
-                "reference": "0ae06662122af810f483274379b12abdd4bdeb7f",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^7.5",
-                "symfony/var-dumper": "^4.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "ZeroDaHero\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Zack Teska",
-                    "email": "zerodahero@gmail.com"
-                },
-                {
-                    "name": "Kieran Hartnett",
-                    "email": "khartnet@gmail.com"
-                }
-            ],
-            "description": "Converts mailing addresses into a normalized format",
-            "keywords": [
-                "address",
-                "mailing",
-                "normalization"
-            ],
-            "support": {
-                "source": "https://github.com/zerodahero/address-normalization/tree/2.1.1"
-            },
-            "time": "2020-01-20T22:23:32+00:00"
         }
     ],
     "packages-dev": [

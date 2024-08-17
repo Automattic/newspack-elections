@@ -1,78 +1,78 @@
-name: WordPress Plugin Build and Release to WP.ORG
+#name: WordPress Plugin Build and Release to WP.ORG
 
-on:
-  push:
-    tags:
-      - "v*.*.*"
-      - "!v*.*.*-*"
-permissions:
-  contents: read
+#on:
+#  push:
+#    tags:
+#      - "v*.*.*"
+#      - "!v*.*.*-*"
+#permissions:
+#  contents: read
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
     
-    - uses: actions/checkout@v3
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict
+#    - uses: actions/checkout@v3
+#    - name: Validate composer.json and composer.lock
+#      run: composer validate --strict
 
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v3
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+#    - name: Cache Composer packages
+#      id: composer-cache
+#      uses: actions/cache@v3
+#      with:
+#        path: vendor
+#        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+#        restore-keys: |
+#          ${{ runner.os }}-php-
 
-    - name: Install Composer Dependencies
-      run: composer install --prefer-dist --no-progress --no-dev
+#    - name: Install Composer Dependencies
+#      run: composer install --prefer-dist --no-progress --no-dev
       
-    - name: Cache NPM packages
-      id: npm-cache
-      uses: actions/cache@v3
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-php-${{ hashFiles('**/package.json') }}
-        restore-keys: |
-          ${{ runner.os }}-js-
+#    - name: Cache NPM packages
+#      id: npm-cache
+#      uses: actions/cache@v3
+#      with:
+#        path: node_modules
+#        key: ${{ runner.os }}-php-${{ hashFiles('**/package.json') }}
+#        restore-keys: |
+#          ${{ runner.os }}-js-
       
-    - name: Install NPM Dependencies
-      run: |
-        npm install
+#    - name: Install NPM Dependencies
+#      run: |
+#        npm install
     
-    - name: Build NPM Dependencies
-      run: |
-        npm run build
+#    - name: Build NPM Dependencies
+#      run: |
+#        npm run build
 
-    - name: Rename readme from md to txt
-      run: |
-       mv README.md readme.txt
+#    - name: Rename readme from md to txt
+#      run: |
+#       mv README.md readme.txt
     
-    - name: WordPress Plugin Deploy
-      id: deploy
-      uses: 10up/action-wordpress-plugin-deploy@stable
-      with:
-        generate-zip: true
-      env:
-        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-        ASSETS_DIR: "assets"
-        SLUG: "govpack"
+#    - name: WordPress Plugin Deploy
+#      id: deploy
+#      uses: 10up/action-wordpress-plugin-deploy@stable
+#      with:
+#        generate-zip: true
+#      env:
+#        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+#        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+#        ASSETS_DIR: "assets"
+#        SLUG: "govpack"
         
     #- name: Rename Zip for Github
     #  run: |
     #      mv ${{steps.deploy.outputs.zip-path}} ${GITHUB_WORKSPACE}/govpack.zip
 
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
+#    - name: Release
+#      uses: softprops/action-gh-release@v1
+#      if: startsWith(github.ref, 'refs/tags/')
+#      with:
         # note you'll typically need to create a personal access token
         # with permissions to create releases in the other repo
-        token: ${{ secrets.RELEASE_TOKEN }}
-        files: ${{ steps.deploy.outputs.zip-path }}
-      env: 
-        GITHUB_REPOSITORY: "govpack-wp/govpack-plugin"
+#        token: ${{ secrets.RELEASE_TOKEN }}
+#        files: ${{ steps.deploy.outputs.zip-path }}
+#      env: 
+#        GITHUB_REPOSITORY: "govpack-wp/govpack-plugin"
 

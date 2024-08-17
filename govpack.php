@@ -41,7 +41,7 @@ if ( ! file_exists( GOVPACK_PLUGIN_PATH . 'vendor/autoload.php' ) ) {
 	return;
 }
 
-if ( ! file_exists( GOVPACK_PLUGIN_PATH . 'vendor-prefixed/autoload.php' ) ) {
+if ( Govpack_Bootstrap_Helper::is_dir_empty( GOVPACK_PLUGIN_PATH . 'vendor-prefixed' ) ) {
 	add_action( 'all_admin_notices', 'Govpack_Bootstrap_Helper::notice_prefixed_vendor_missing' );
 	return;
 }

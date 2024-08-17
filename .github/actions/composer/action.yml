@@ -1,0 +1,22 @@
+name: Composer
+description: Install Composer Dependencies and Prefixes Them
+runs:
+  using: "composite"
+  steps:
+  - uses: actions/cache@v4
+    name: Attempt to Cache Composer packages
+    id: composer-cache
+    with:
+      path: vendor
+      key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+      restore-keys: |
+        ${{ runner.os }}-php-
+  - name: Install Composer Dependencies
+    run: composer install --no-dev --prefer-dist --no-progress
+    shell: bash
+  - name: Prefix Dependencies
+    run: vendor/bin/strauss
+    shell: bash
+  - name: Generate Autoloader
+    run: composer dump-autoload --no-scripts
+    shell: bash

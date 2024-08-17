@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
-use z4kn4fein\SemVer\Version;
+use Govpack\Vendor\z4kn4fein\SemVer\Version;
 
 class GenerateVersionFileCommand extends Command {
 

@@ -1,77 +1,57 @@
-name: Create a release for GitHub when NOT deploying to WP.ORG
+name: Create a PLugin Zip file and GitHub Release when a version is tagged.
 
 on:
   push:
-    tags:
-      - "v*.*.*-*"
+    branches:
+      - "dx/split-gh-actions-into-bits"
 permissions:
   contents: read
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    env:
+       ZIP_NAME: "govpack.zip"
+    runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout The Repos
+        uses: actions/checkout@v4
 
-      - name: Extract Git Tag Name
+      - name: PHP Install & Build
+        uses: ./.github/actions/composer
+
+      - name: JS Install & Build
+        uses: ./.github/actions/npm
+
+      - name: Extract Git Tag Version Info (eg -rc*, -dev, -alpha)
         uses: olegtarasov/get-tag@v2.1.3
-        id: tagName
+        id: tagVersion
         with:
           tagRegex: "-(.*)"  # Optional. Returns specified group text as tag name. Full tag string is returned if regex is not defined.
           tagRegexGroup: 1 # Optional. Default is 1.
 
-     # - name: Modify version number
-     #   uses: mingjun97/file-regex-replace@v1
-     #   with:
-     #     regex: '^([\s]+\* Version:[ ]*([\S]+))$'
-     #     replacement: "$1-${{ steps.tagName.outputs.tag }}"
-     #     flags: "gm"                  # Optional, defaults to "g"
-     #     include: 'govpack\.php'    # Optional, defaults to ".*"
-     #     exclude: '.^'               # Optional, defaults to '.^'
-     #     encoding: 'utf8'            # Optional, defaults to 'utf8'
-     #     path: '.'                   # Optional, defaults to '.'
-      - name: Cache Composer packages
-        id: composer-cache
-        uses: actions/cache@v4
-        with:
-          path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-
-      - name: Install Composer Dependencies
-        run: |  
-          composer install --no-dev --prefer-dist --no-progress --no-scripts
-            vendor/bin/strauss 
-            composer dump-autoload --no-scripts
-            composer generate_version --pre-release ${{ steps.tagName.outputs.tag }} --build ${{github.run_number}}
-      - name: Cache NPM packages
-        id: npm-cache
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-php-${{ hashFiles('**/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-js-
-      - name: Install NPM Dependencies
-        run: |
-          npm install
-      - name: Build NPM Dependencies
-        run: |
-          npm run build
+      - name: Extracted version
+        run: echo ${{steps.tagVersion.outputs.tag}}
+
+      - name: Generate the release file for a release candidate
+        run: composer generate_version --pre-release ${{ steps.tagVersion.outputs.tag }} --build ${{github.run_number}}
+        if: ${{steps.tagVersion.outputs.tag != ''}}
+
+      - name: Generate the release file for a normal release & remove the dev helper class
+        run: composer generate_version --build ${{github.run_number}} && rm -f ./includes/class-dev-helper.php
+        if: ${{steps.tagVersion.outputs.tag == ''}}
+
       - name: Rename readme from md to txt
-        run: |
-         mv README.md readme.txt
+        run: mv README.md readme.txt
+
       - name: Create a Zip
-        run: |
-          zip -r "${GITHUB_WORKSPACE}/govpack.zip" . -x @.distignore
+        run: zip -r "${GITHUB_WORKSPACE}/${{ env.ZIP_NAME }}" . -x @.distignore
+
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-        # note you'll typically need to create a personal access token
-        # with permissions to create releases in the other repo
           token: ${{ secrets.RELEASE_TOKEN }}
-          files: "govpack.zip"
+          files: ${{ env.ZIP_NAME }}
         env: 
-          GITHUB_REPOSITORY: "govpack-wp/govpack-plugin"
+          GITHUB_REPOSITORY: ${{ github.repository }}
 

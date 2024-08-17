@@ -2,8 +2,9 @@ name: Create a PLugin Zip file and GitHub Release when a version is tagged.
 
 on:
   push:
-    branches:
-      - "dx/split-gh-actions-into-bits"
+    tags:
+      - "v*.*.*-*"
+      - "v*.*.*"
 permissions:
   contents: read
 

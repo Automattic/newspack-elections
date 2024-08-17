@@ -7,7 +7,7 @@
 .github/*
 .circleci
 deprecated/*
-.cache/*
+
 .DS_Store
 Thumbs.db
 README.md
@@ -18,13 +18,14 @@ gruntfile.js
 *.zip
 
 tests
-bin
-./babel/*
-/.git
-/.circleci
-/.cache
-/.DS_Store
 
+/babel/*
+/bin/*
+/dist/*
+
+/.circleci
+/.cache/*
+/.DS_Store
 /.cache
 /.git/*
 /.github/*
@@ -33,6 +34,7 @@ bin
 /.eslintignore
 /.eslint.rc
 /.gitignore
+.wp-env.json
 captainhook.json
 composer.json
 composer.lock
@@ -44,5 +46,5 @@ webpack.config.js
 webpack.config.prod.js
 
 /vendor/bin/*
-/vendor/brianhenryie/strauss
-/vendor-prefixed/brianhenryie/strauss
+/vendor/brianhenryie/strauss/*
+/vendor-prefixed/brianhenryie/strauss/*

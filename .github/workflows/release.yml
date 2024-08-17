@@ -38,7 +38,7 @@ jobs:
         if: ${{steps.tagVersion.outputs.tag != ''}}
 
       - name: Generate the release file for a normal release & remove the dev helper class
-        run: composer generate_version --build ${{github.run_number}} && rm -f ./includes/class-dev-helper.php
+        run: composer generate_version --build ${{github.run_number}} && rm -f ./includes/class-dev-helpers.php
         if: ${{steps.tagVersion.outputs.tag == ''}}
 
       - name: Rename readme from md to txt

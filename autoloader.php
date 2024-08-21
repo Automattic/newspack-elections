@@ -2,7 +2,7 @@
 use Govpack\Vendor\Pablo_Pacheco\WP_Namespace_Autoloader\WP_Namespace_Autoloader;
 
 
-//require_once GOVPACK_PLUGIN_FILE . 'vendor-prefixed/autoload.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+require_once GOVPACK_PLUGIN_FILE . 'vendor-prefixed/autoload.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 require_once GOVPACK_PLUGIN_FILE . 'vendor/autoload.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 require_once GOVPACK_PLUGIN_FILE . 'vendor/woocommerce/action-scheduler/action-scheduler.php';// phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 

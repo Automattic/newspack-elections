@@ -33,10 +33,7 @@
 	"files" : [
 		"includes/govpack-functions-template.php",
 		"includes/govpack-functions.php"
-	],
-	"classmap": [
-        "vendor-prefixed/"
-    ]
+	]
   },
   "autoload-dev": {
 	"classmap": ["bin/scripts/"]
@@ -52,9 +49,7 @@
 	"pre-update-cmd" : [
 		"mkdir -p ./vendor-prefixed"
 	],
-	"post-autoload-dump": [
-		"[ $COMPOSER_DEV_MODE -eq 0 ] || @githooks:refresh"
-	],
+	
     "post-install-cmd": [
         "@prefix-namespaces"
     ],

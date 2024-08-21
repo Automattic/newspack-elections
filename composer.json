@@ -1,4 +1,5 @@
 {
+  "$schema": "https://getcomposer.org/schema.json",
   "name": "govpack/govpack",
   "description": "Govpack",
   "type": "wordpress-plugin",

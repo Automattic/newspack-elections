@@ -1,5 +1,12 @@
 name: 'Generate WordPress Archive'
 description: 'Generates a zip archive of a WordPress project using WP-CLI'
+outputs:
+  wp_cli_response:
+    description: "WP ClI Command Output"
+    value: ${{ steps.generate-archive.outputs }}
+  filename:
+   description: "Name of the Generate Archive"
+   value: ${{ steps.get-file-name.outputs }}
 runs:
   using: "composite"
   steps:
@@ -13,5 +20,10 @@ runs:
       run: wp package install wp-cli/dist-archive-command
       shell: bash
     - name: Generate the Archive
+      id: generate-archive
       run: wp dist-archive . ./artifacts --plugin-dirname=govpack --create-target-dir
+      shell: bash
+    - name: Get The File Name
+      id: get-file-name
+      run: "sed -E 's/^(Success: Created )//g;t' <<< ${{ steps.generate-archive.outputs }}"
       shell: bash

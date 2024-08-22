@@ -42,10 +42,12 @@ jobs:
         run: mv README.md readme.txt
 
       - name: Generate WP Archive
+        id: generate-archive
         uses: ./.github/actions/wp-cli-dist-archive
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
+          name: ${{steps.generate-archive.outputs.filename}}
           path: ./artifacts/*
 

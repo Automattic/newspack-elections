@@ -1,6 +1,7 @@
 name: Create a PLugin Zip file and GitHub Release when a version is tagged.
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - "v*.*.*-*"

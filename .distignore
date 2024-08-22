@@ -29,7 +29,7 @@ tests
 /.cache
 /.git/*
 /.github/*
-./node_modules/*
+/node_modules/*
 /.editorconfig
 /.eslintignore
 /.eslint.rc

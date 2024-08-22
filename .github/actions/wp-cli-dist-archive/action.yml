@@ -1,0 +1,17 @@
+name: 'Generate WordPress Archive'
+description: 'Generates a zip archive of a WordPress project using WP-CLI'
+runs:
+  using: "composite"
+  steps:
+    - name: Install WP CLI
+      run: |
+        wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+        chmod +x wp-cli.phar
+        sudo mv wp-cli.phar /usr/local/bin/wp
+      shell: bash
+    - name: Install Dist Archive Command for WP CLI
+      run: wp package install wp-cli/dist-archive-command
+      shell: bash
+    - name: Generate the Archive
+      run: wp dist-archive . ./artifacts --plugin-dirname=govpack --create-target-dir
+      shell: bash

@@ -25,5 +25,5 @@ runs:
       shell: bash
     - name: Get The File Name
       id: get-file-name
-      run: "echo filename=$(sed -E 's/^(Success: Created )//g;t' <<< ${{ steps.generate-archive.outputs }}) >> $GITHUB_OUTPUT"
+      run: "echo filename=$(sed -E 's/^(Success: Created )//g;t' <<< ${{ steps.generate-archive.outputs.response }}) >> $GITHUB_OUTPUT"
       shell: bash

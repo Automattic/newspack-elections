@@ -6,8 +6,8 @@
  * Author:            Govpack, poweredbycoffee, thefuturewasnow
  * Text Domain:       govpack
  * Domain Path:       /languages
- * Version:           1.1.0
- * Requires at least: 5.9 
+ * Version:           1.1.1
+ * Requires at least: 6.4 
  *
  * @package         Govpack
  */

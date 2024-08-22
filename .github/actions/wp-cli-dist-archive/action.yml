@@ -3,10 +3,10 @@ description: 'Generates a zip archive of a WordPress project using WP-CLI'
 outputs:
   wp_cli_response:
     description: "WP ClI Command Output"
-    value: ${{ steps.generate-archive.outputs }}
+    value: ${{ steps.generate-archive.outputs.response }}
   filename:
    description: "Name of the Generate Archive"
-   value: ${{ steps.get-file-name.outputs }}
+   value: ${{ steps.get-file-name.outputs.filename }}
 runs:
   using: "composite"
   steps:
@@ -21,7 +21,7 @@ runs:
       shell: bash
     - name: Generate the Archive
       id: generate-archive
-      run: wp dist-archive . ./artifacts --plugin-dirname=govpack --create-target-dir
+      run: "echo response=$(wp dist-archive . ./artifacts --plugin-dirname=govpack --create-target-dir) >> $GITHUB_OUTPUT"
       shell: bash
     - name: Get The File Name
       id: get-file-name

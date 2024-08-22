@@ -12,8 +12,10 @@ export const ProfileLinksPanel = (props) => {
         setAttributes,
 		display = true,
 		parentAttributeKey,
-		profile
+		profile = {}
     } = props
+
+	const { profile_links = false } = profile
 
 	const setSubAttributes = (attrs) => {
 
@@ -34,7 +36,11 @@ export const ProfileLinksPanel = (props) => {
 	 */
 	useEffect( () => {
 		
-		console.log("ProfileLinkPanel, useEffect", profile.profile_links, profile)
+		if(profile_links === false){
+			return;
+		}
+
+		console.log("ProfileLinkPanel, useEffect", profile_links, profile)
 		const linksToEnable = {} 
 
 		Object.keys(profile.link_services).filter( (key) => {
@@ -55,7 +61,7 @@ export const ProfileLinksPanel = (props) => {
 			} 
 
 			if (!profile.meta[link.meta_key]){
-				return false;
+				return false; 
 			}
 
 			return true
@@ -70,7 +76,7 @@ export const ProfileLinksPanel = (props) => {
 			setSubAttributes(linksToEnable)
 		}
 
-	}, [ attributes[parentAttributeKey], profile.profile_links ]) 
+	}, [ attributes[parentAttributeKey], profile_links ]) 
 
 	if(!display){
 		return null

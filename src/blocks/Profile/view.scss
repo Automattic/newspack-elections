@@ -167,11 +167,17 @@
 	.editor-styles-wrapper &__contacts,
 	.editor-styles-wrapper &__comms,
 	.editor-styles-wrapper &__social,
-	.editor-styles-wrapper &__services,
+
 	&__social,
 	&__comms,
-    &__contacts,
-	&__services{
+    &__contacts
+	{
+
+		ul{
+            margin:0;
+            padding:0;
+            list-style: none;
+        }
 
         ul li{
             margin-right:.5rem;

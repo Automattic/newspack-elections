@@ -6,7 +6,8 @@
 .git/*
 .github/*
 .circleci
-deprecated/*
+./deprecated/*
+./includes/deprecated/*
 
 .DS_Store
 Thumbs.db

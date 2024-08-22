@@ -1,0 +1,46 @@
+name: Generate WordPress Archive
+on:
+  workflow_dispatch
+  
+permissions:
+  contents: read
+
+jobs:
+  build:
+    env:
+       ZIP_NAME: "govpack.zip"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout The Repos
+        uses: actions/checkout@v4
+
+      - name: PHP Install & Build
+        uses: ./.github/actions/composer
+
+      - name: JS Install & Build
+        uses: ./.github/actions/npm
+
+      - name: Extract Git Tag Version Info (eg -rc*, -dev, -alpha)
+        uses: olegtarasov/get-tag@v2.1.3
+        id: tagVersion
+        with:
+          tagRegex: "-(.*)"  # Optional. Returns specified group text as tag name. Full tag string is returned if regex is not defined.
+          tagRegexGroup: 1 # Optional. Default is 1.
+
+      - name: Extracted version
+        run: echo ${{steps.tagVersion.outputs.tag}}
+
+      - name: Generate the release file for a release candidate
+        run: composer generate_version --pre-release ${{ steps.tagVersion.outputs.tag }} --build ${{github.run_number}}
+        if: ${{steps.tagVersion.outputs.tag != ''}}
+
+      - name: Generate the release file for a normal release & remove the dev helper class
+        run: composer generate_version --build ${{github.run_number}} && rm -f ./includes/class-dev-helpers.php
+        if: ${{steps.tagVersion.outputs.tag == ''}}
+
+      - name: Rename readme from md to txt
+        run: mv README.md readme.txt
+
+      - name: Generating zip
+        uses: rudlinkon/action-wordpress-build-zip@master
+

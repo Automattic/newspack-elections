@@ -9,7 +9,7 @@ import {ReactComponent as YouTubeIconSVG} from "./../assets/icons/social/youtube
 
 import {ReactComponent as EmailIconSVG} from "./../assets/icons/contact/email.svg"
 import {ReactComponent as FaxIconSVG} from "./../assets/icons/contact/fax.svg"
-import {ReactComponent as WebIconSVG} from "./../assets/icons/contact/globe.svg"
+import {ReactComponent as WebIconSVG} from "./../assets/icons/contact/website.svg"
 import {ReactComponent as PhoneIconSVG} from "./../assets/icons/contact/phone.svg"
 
 import {ReactComponent as BallotpediaIconSVG} from "./../assets/icons/profile-links/ballotpedia.svg"

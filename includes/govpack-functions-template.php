@@ -693,7 +693,7 @@ if ( ! function_exists( 'gp_contact_info' ) ) {
 
 			$classes = join( ' ', $classes );
 
-			$icon         = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
+			$icon         = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--%s">%s</span>';
 			$contact_icon = sprintf( $icon, $service, gp_get_icon( $service ) );
 
 			if ( ( 'phone' === $service ) || ( 'fax' === $service ) ) {

@@ -7,6 +7,26 @@ outputs:
   filename:
    description: "Name of the Generate Archive"
    value: ${{ steps.get-file-name.outputs.filename }}
+inputs: 
+  path:
+    required: false
+    description: "Path to the project that includes a .distignore file."
+    default: '.'
+  target:
+    required: false
+    description: "Path and optional file name for the distribution archive. If only a path is provided, the file name defaults to the project directory name plus the version, if discoverable. Also, if only a path is given, the directory that it points to has to already exist for the command to function correctly."
+    default: '.'
+  plugin-dirname:
+    required: false
+    description: "Set the archive extract directory name. Defaults to project directory name."
+  format:
+    required: false
+    description: "Choose the format for the archive. zip or targz"
+    default: "zip"
+  filename-format:
+    required: false
+    default: "{name}.{version}"
+    description: "Use a custom format for archive filename. Available substitutions: {name}, {version}. This is ignored if the <target> parameter is provided or the version cannot be determined."
 runs:
   using: "composite"
   steps:
@@ -21,8 +41,14 @@ runs:
       shell: bash
     - name: Generate the Archive
       id: generate-archive
-      run: "echo response=$(wp dist-archive . ./artifacts --plugin-dirname=govpack --create-target-dir) >> $GITHUB_OUTPUT"
+      run: "echo response=$(wp dist-archive $INPUT_PATH $INPUT_TARGET_PATH --plugin-dirname=$INPUT_PLUGIN_DIRNAME --format=$INPUT_FORMAT --filename-format=$FILENAME_FORMAT --create-target-dir) >> $GITHUB_OUTPUT"
       shell: bash
+      env:
+        INPUT_PATH: ${{ inputs.path }}
+        INPUT_TARGET_PATH: ${{ inputs.target }}
+        INPUT_PLUGIN_DIRNAME: ${{ inputs.plugin-dirname }}
+        INPUT_FORMAT: ${{ inputs.format }}
+        INPUT_FILENAME_FORMAT: ${{ inputs.filename-format }}
     - name: Get The File Name
       id: get-file-name
       run: "echo filename=$(sed -E 's/^(Success: Created )//g;t' <<< \"${{ steps.generate-archive.outputs.response }}\") >> $GITHUB_OUTPUT"

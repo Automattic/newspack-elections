@@ -49,12 +49,21 @@ jobs:
         id: generate-archive
         uses: ./.github/actions/wp-cli-dist-archive
 
+      - name: Generate Release File name
+        uses: mad9000/actions-find-and-replace-string@5
+        id: release-candidate-file-name
+        with:
+          source: ${{steps.generate-archive.outputs.filename}}
+          find: '.zip'
+          replace: "-${{steps.tagVersion.outputs.tag}}.zip"
+        if: ${{steps.tagVersion.outputs.tag != ''}}
+
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           token: ${{ secrets.RELEASE_TOKEN }}
-          files: ./artifacts/${{steps.generate-archive.outputs.filename}}
+          files: ./artifacts/${{steps.release-candidate-file-name.outputs.value}}
         env: 
           GITHUB_REPOSITORY: ${{ github.repository }}
 

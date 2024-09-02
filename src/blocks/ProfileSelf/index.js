@@ -33,16 +33,22 @@ registerBlockType( 'govpack/profile-self', {
 } );  
 
 
-
 function unregisterProfileSelf(){
 	let currentPostType
 	const unsubscribe = subscribe( ( ) => {
 		currentPostType = select("core/editor").getCurrentPostType()
 	
-		if(currentPostType !== "govpack_profiles"){
-			unregisterBlockType( 'govpack/profile-self' );
-			unsubscribe()
+		if(currentPostType === null) {
+			return;
 		}
+		
+		if(currentPostType === "govpack_profiles"){
+			return;
+		}
+
+		unregisterBlockType( 'govpack/profile-self' );
+		unsubscribe()
+		
 	}, "core/editor")
 }
 

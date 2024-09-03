@@ -56,7 +56,7 @@ class Admin {
 			[
 				[
 					'slug'  => 'govpack-blocks',
-					'title' => \__( 'Govpack Blocks', 'govpack' ),
+					'title' => __( 'Newspack Election Blocks', 'newspack-elections' ),
 				],
 			]
 		);
@@ -108,8 +108,8 @@ class Admin {
 	
 		$menu = new Menu();
 
-		$menu->set_page_title( 'GovPack' )
-			->set_menu_title( 'GovPack' )
+		$menu->set_page_title( __('Newspack Elections', "newspack-elections" ) )
+			->set_menu_title( __('Newspack Elections', "newspack-elections" ) )
 			->set_menu_slug( 'govpack' )
 			->set_icon( $this->create_menu_svg() )
 			->set_callback(
@@ -120,8 +120,8 @@ class Admin {
 
 		$item = new Menu_Item();
 		$menu->add_item(
-			$item->set_page_title( 'Import' )
-				->set_menu_title( 'Import' )
+			$item->set_page_title( __('Import', "newspack-elections" ) )
+				->set_menu_title( __('Import', "newspack-elections" ) )
 				->set_menu_slug( 'govpack_import' )
 				->set_capability( Capabilities::CAN_IMPORT )
 				->set_callback( [ '\Govpack\Core\Admin\Pages\Import', 'view' ] ) 
@@ -129,8 +129,8 @@ class Admin {
 
 		$item = new Menu_Item();
 		$menu->add_item(
-			$item->set_page_title( 'Export' )
-				->set_menu_title( 'Export' )
+			$item->set_page_title( __('Export', "newspack-elections" ) )
+				->set_menu_title( __('Export', "newspack-elections" ) )
 				->set_menu_slug( 'govpack_export' )
 				->set_capability( Capabilities::CAN_EXPORT )
 				->set_callback( [ '\Govpack\Core\Admin\Pages\Export', 'view' ] ) 

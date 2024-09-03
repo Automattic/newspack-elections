@@ -125,7 +125,7 @@ class Permalink_Settings {
 
 		\add_settings_section( 
 			$setting_section_id, 
-			__( 'Govpack Permalinks', 'govpack' ), 
+			__( 'Newspack Elections Permalinks', 'newspack-elections' ), 
 			[ $this, 'settings' ], 
 			'permalink' 
 		);
@@ -133,18 +133,18 @@ class Permalink_Settings {
 
 	public function settings() {
 		wp_nonce_field( 'govpack-permalinks', 'govpack-permalinks-nonce' );
-		echo wp_kses_post( wpautop( sprintf( 'You may use a custom base for your Govpack Profile\'s URLs here. For example, using <code>candidate</code> would make your profile links like <code>%scandidate/jo-smith/</code>.', esc_url( home_url( '/' ) ) ) ) );
+		echo wp_kses_post( wpautop( sprintf( 'You may use a custom base for your Newspack Elections Profile\'s URLs here. For example, using <code>candidate</code> would make your profile links like <code>%scandidate/jo-smith/</code>.', esc_url( home_url( '/' ) ) ) ) );
 		
 		$this->permalinks = $this->get_permalinks();
 
 	
 		$structures = [
 			0 => [
-				'label' => 'Profile Base (Default)',
+				'label' => __('Profile Base (Default)', "newspack-elections"),
 				'slug'  => $this->base_slug,
 			],
 			1 => [
-				'label' => 'Guide Base',
+				'label' => __('Guide Base', "newspack-elections"),
 				'slug'  => 'guide',
 			],
 		];
@@ -185,7 +185,7 @@ class Permalink_Settings {
 				<th>
 					<label>
 						<input name="govpack_profile_permalink" type="radio" value="custom" class="tog" <?php checked( $is_custom, true ); ?> /> 
-						<?php esc_html_e( 'Custom Base', 'govpack' ); ?>
+						<?php esc_html_e( 'Custom Base', 'newspack-elections' ); ?>
 					</label>
 				</th>
 				<td>
@@ -193,7 +193,7 @@ class Permalink_Settings {
 						name="govpack_profile_permalink_structure" 
 						id="govpack_profile_permalink_structure" 
 						type="text" value="<?php echo esc_attr( $custom_base ); ?>" class="regular-text code"> <br />
-					<span class="description"><?php esc_html_e( 'Enter a custom base to use for GovPack Profiles. If not set the base of profile will be used.', 'govpack' ); ?></span>
+					<span class="description"><?php esc_html_e( 'Enter a custom base to use for Newspack Election Profiles. If not set the base of profile will be used.', 'newspack-elections' ); ?></span>
 				</td>
 			</tr>
 		</tbody>

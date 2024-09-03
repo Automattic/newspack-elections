@@ -1,7 +1,7 @@
 import { registerBlockType, unregisterBlockType } from '@wordpress/blocks';
 import domReady from '@wordpress/dom-ready';
 import {subscribe, select} from "@wordpress/data"
-
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -17,15 +17,15 @@ import './view.scss';
 import metadata from './block.json';
 const { name, attributes, category } = metadata;
 
-export const title = 'GovPack Profile Self'
+
 
 registerBlockType( 'govpack/profile-self', {
 	apiVersion: 2,
-	title,
+	title : __("Newspack Election Profile Self", "newspack-elections"),
     category,
     attributes,
 	icon: 'groups',
-	keywords: [ 'govpack' ],
+	keywords: [ ],
 	edit : Edit,
 	save() {
 		return null;

@@ -7,5 +7,5 @@
 
 ?>
 <div class="govpack-banner">
-	<a href="https://govpack.org/" target="_blank" class="logo"></a>
+	<a href="https://newspack.com/" target="_blank" class="logo"></a>
 </div>

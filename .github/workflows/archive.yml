@@ -7,8 +7,6 @@ permissions:
 
 jobs:
   build:
-    env:
-       ZIP_NAME: "govpack.zip"
     runs-on: "ubuntu-latest"
     steps:
       - name: Checkout The Repos

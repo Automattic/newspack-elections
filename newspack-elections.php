@@ -1,18 +1,20 @@
 <?php
 /**
- * Plugin Name:       Govpack
- * Plugin URI:        https://govpack.org/
- * Description:       Govpack
- * Author:            Govpack, poweredbycoffee, thefuturewasnow
- * Text Domain:       govpack
+ * Plugin Name:       Newspack Elections
+ * Plugin URI:        https://newspack.org/
+ * Description:       Newspack Elections
+ * Author:            Automattic, poweredbycoffee, thefuturewasnow
+ * Author URI:        https://automattic.com/
+ * Text Domain:       newspack-elections
  * Domain Path:       /languages
- * Version:           1.1.1
+ * Version:           1.2.0
  * Requires at least: 6.4 
  *
- * @package         Govpack
+ * @package         Newspack_Elections
  */
 
 defined( 'ABSPATH' ) || exit;
+
 
 
 // Define GOVPACK_PLUGIN_FILE.

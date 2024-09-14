@@ -33,7 +33,8 @@
   },
   "devDependencies": {
     "@wordpress/scripts": "^27.6.0",
-	"jscpd": "^3.5.10"
+	"jscpd": "^3.5.10",
+	"webpack": ">=5.94.0"
   },
   "config": {
     "entrypoints": {

@@ -1,4 +1,7 @@
-import { registerBlockType } from '@wordpress/blocks';
+import { registerBlockType, unregisterBlockType } from '@wordpress/blocks';
+import domReady from '@wordpress/dom-ready';
+import {subscribe, select} from "@wordpress/data"
+
 
 /**
  * Internal dependencies
@@ -28,3 +31,19 @@ registerBlockType( 'govpack/profile-self', {
 		return null;
 	},
 } );  
+
+
+
+function unregisterProfileSelf(){
+	let currentPostType
+	const unsubscribe = subscribe( ( ) => {
+		currentPostType = select("core/editor").getCurrentPostType()
+	
+		if(currentPostType !== "govpack_profiles"){
+			unregisterBlockType( 'govpack/profile-self' );
+			unsubscribe()
+		}
+	}, "core/editor")
+}
+
+domReady( unregisterProfileSelf );

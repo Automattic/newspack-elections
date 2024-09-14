@@ -41,6 +41,13 @@ jobs:
       - name: Rename readme from md to txt
         run: mv README.md readme.txt
 
-      - name: Generating zip
-        uses: rudlinkon/action-wordpress-build-zip@master
+      - name: Generate WP Archive
+        id: generate-archive
+        uses: ./.github/actions/wp-cli-dist-archive
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{steps.generate-archive.outputs.filename}}
+          path: ./artifacts/*
 

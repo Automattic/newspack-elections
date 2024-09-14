@@ -75,7 +75,10 @@
 	"qa:cbf":[
 		"phpcbf"
 	],
-	"generate_version": "\\Govpack\\Scripts\\GenerateVersionFileCommand"
+	"generate_version": "\\Govpack\\Scripts\\GenerateVersionFileCommand",
+	"build:dist": [
+		"wp dist-archive . --plugin-dirname=govpack"
+	]
   },
   "scripts-descriptions": {
 	"githooks:install" : "Add new hook files to `.git/hooks` without disturbing existing hooks.",

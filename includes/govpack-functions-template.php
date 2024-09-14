@@ -189,15 +189,16 @@ if ( ! function_exists( 'gp_get_profile_lines' ) ) {
 				'shouldShow' => $attributes['showOtherCommunicationDetails'],
 			],
 			[
-				'key'        => 'more_about',
-				'value'      => gp_maybe_link( sprintf( 'More About %s', $profile_data['name']['name'] ), $profile_data['link'], isset( $attributes['showProfileLink'] ) && $attributes['showProfileLink'] ),
-				'shouldShow' => ( isset( $attributes['showProfileLink'] ) && $attributes['showProfileLink'] ),
-			],
-			[
 				'key'        => 'links',
 				'value'      => gp_the_profile_links( $profile_data, $attributes ),
 				'shouldShow' => should_show_links( $profile_data, $attributes ),
 			],
+			[
+				'key'        => 'more_about',
+				'value'      => gp_maybe_link( sprintf( 'More About %s', $profile_data['name']['name'] ), $profile_data['link'], isset( $attributes['showProfileLink'] ) && $attributes['showProfileLink'] ),
+				'shouldShow' => ( isset( $attributes['showProfileLink'] ) && $attributes['showProfileLink'] ),
+			]
+			
 		];
 
 		return $lines;
@@ -693,7 +694,7 @@ if ( ! function_exists( 'gp_contact_info' ) ) {
 
 			$classes = join( ' ', $classes );
 
-			$icon         = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--{%s}">%s</span>';
+			$icon         = '<span class="wp-block-govpack-profile__contact__icon wp-block-govpack-profile__contact__icon--%s">%s</span>';
 			$contact_icon = sprintf( $icon, $service, gp_get_icon( $service ) );
 
 			if ( ( 'phone' === $service ) || ( 'fax' === $service ) ) {

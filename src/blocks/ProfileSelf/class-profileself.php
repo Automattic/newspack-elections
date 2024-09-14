@@ -37,6 +37,6 @@ class ProfileSelf extends \Govpack\Blocks\Profile\Profile {
 	}
 
 	public function disable_block( $allowed_blocks, $editor_context ) {
-		return ( $editor_context->post->post_type !== 'govpack_profiles' );   
+		return false;
 	}
 }   

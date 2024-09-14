@@ -248,7 +248,12 @@ class Actions {
 		$data = [];
 
 		foreach ( $data_input as $key => $value ) {
-			$data[ trim( strtolower( $key ) ) ] = trim( $value );
+			
+			if(is_string($value)){
+				$value = trim($value);
+			}
+			
+			$data[ trim( strtolower( $key ) ) ] = $value ;
 		}
 
 		$model = Profile::get_import_model();

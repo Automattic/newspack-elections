@@ -812,8 +812,10 @@ class Profile extends \Govpack\Core\Abstracts\Post_Type {
 				\Govpack\Core\Tax\OfficeHolderStatus::TAX_SLUG,
 			] 
 		);
+
+		
 		$term_data    = array_reduce(
-			$term_objects,
+			is_wp_error($term_objects) ? [] : $term_objects,
 			function ( $carry, $item ) {
 				$carry[ $item->taxonomy ] = $item->name;
 				return $carry;

@@ -16,17 +16,17 @@ const ProfileLabelPanel = (props) => {
 
 	return (
 		<Panel>
-			<PanelBody title={ __( 'Label', 'govpack' ) }>
+			<PanelBody title={ __( 'Label', 'newspack-elections' ) }>
 				<PanelRow>
 					<ToggleControl
-						label={ __( 'Display Row Labels', 'govpack' ) }
+						label={ __( 'Display Row Labels', 'newspack-elections' ) }
 						checked={ showLabels }
 						onChange={ () => setAttributes( { showLabels: ! showLabels } ) }
 					/>
 				</PanelRow>
 				<PanelRow>
 					<ToggleControl
-						label={ __( 'Position Labels Above', 'govpack' ) }
+						label={ __( 'Position Labels Above', 'newspack-elections' ) }
 						checked={ labelsAbove }
 						onChange={ () => setAttributes( { labelsAbove: ! labelsAbove } ) }
 						help={

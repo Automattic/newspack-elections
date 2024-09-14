@@ -21,7 +21,7 @@ const { name, attributes, category } = metadata;
 
 registerBlockType( 'govpack/profile-self', {
 	apiVersion: 2,
-	title : __("Newspack Election Profile Self", "newspack-elections"),
+	title : __("Election Profile (Self)", "newspack-elections"),
     category,
     attributes,
 	icon: 'groups',

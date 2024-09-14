@@ -105,21 +105,21 @@ const ProfileSelector = ( {
 	return (
 		<Placeholder
             icon={ <Icon icon={ postAuthor } /> }
-            label={ __( 'Profile', 'govpack-blocks' ) }
+            label={ __( 'Profile', 'newspack-elections' ) }
         >
             { isLoading && (
 						<div className="is-loading">
-							{ __( 'Fetching profile info…', 'govpack' ) }
+							{ __( 'Fetching profile info…', 'newspack-elections' ) }
 							<Spinner />
 						</div>
 			) }
 
             { ! isLoading && (
                 <AutocompleteWithSuggestions
-                    label={ __( 'Search for a profile to display', 'govpack' ) }
+                    label={ __( 'Search for a profile to display', 'newspack-elections' ) }
                     help={ __(
                         'Begin typing name, click autocomplete result to select.',
-                        'govpack'
+                        'newspack-elections'
                     ) }
 
                     fetchSuggestions={ async ( search = null, offset = 0 ) => {
@@ -153,7 +153,7 @@ const ProfileSelector = ( {
 
 							return {
 								value: _profile.id,
-								label: label || __( '(no name)', 'govpack' ),
+								label: label || __( '(no name)', 'newspack-elections' ),
 							} 
 						} );
                     } }
@@ -162,8 +162,8 @@ const ProfileSelector = ( {
 						let profileId = parseInt( items[ 0 ].value );
 						setProfile(profileId)
 					}}
-					postTypeLabel={ __( 'profile', 'govpack-blocks' ) }
-					postTypeLabelPlural={ __( 'profiles', 'govpack-blocks' ) }
+					postTypeLabel={ __( 'profile', 'newspack-elections' ) }
+					postTypeLabelPlural={ __( 'profiles', 'newspack-elections' ) }
 					selectedItems={ [] }
 				/>
 			)}
@@ -249,7 +249,7 @@ function Edit( props ) {
                         </>
                     ) : (
 						<div className="is-loading">
-							{ __( 'Fetching profile info…', 'govpack' ) }
+							{ __( 'Fetching profile info…', 'newspack-elections' ) }
 							<Spinner />
 						</div>
 					) }

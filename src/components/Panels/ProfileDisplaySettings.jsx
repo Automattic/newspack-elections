@@ -108,7 +108,7 @@ const ProfileDisplaySettings = (props) => {
 	return (
 		<ControlledPanel 
 			controls = {controls} 
-			title = {__( 'Govpack Profile Settings', 'govpack' )} 
+			title = {__( 'Election Profile Settings', 'newspack-elections' )} 
 		/>
 
     )

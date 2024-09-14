@@ -38,7 +38,7 @@ const ProfileSelector = ( { props } ) => {
 	};
 
 	const OutputControl = () => {
-		const label = __( 'Select a profile', 'govpack' );
+		const label = __( 'Select a profile', 'newspack-elections' );
 		const options = profilesMapped();
 
 		if ( ! options ) {
@@ -47,7 +47,7 @@ const ProfileSelector = ( { props } ) => {
 
 		if ( options.length === 0 ) {
 			return (
-				<RichText tagName={ 'p' } value={ __( 'No profiles have been created', 'govpack' ) } />
+				<RichText tagName={ 'p' } value={ __( 'No profiles have been created', 'newspack-elections' ) } />
 			);
 		}
 

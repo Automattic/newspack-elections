@@ -55,8 +55,8 @@ class Admin {
 			$categories,
 			[
 				[
-					'slug'  => 'govpack-blocks',
-					'title' => __( 'Newspack Election Blocks', 'newspack-elections' ),
+					'slug'  => 'newspack-elections',
+					'title' => __( 'Newspack Election', 'newspack-elections' ),
 				],
 			]
 		);
@@ -107,9 +107,8 @@ class Admin {
 
 	
 		$menu = new Menu();
-
-		$menu->set_page_title( __('Newspack Elections', "newspack-elections" ) )
-			->set_menu_title( __('Newspack Elections', "newspack-elections" ) )
+		$menu->set_page_title( __('Elections', "newspack-elections" ) )
+			->set_menu_title( __('Elections', "newspack-elections" ) )
 			->set_menu_slug( 'govpack' )
 			->set_icon( $this->create_menu_svg() )
 			->set_callback(

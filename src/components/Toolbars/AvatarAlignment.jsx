@@ -23,19 +23,19 @@ const AvatarAlignmentToolBar = (props) => {
                 controls={ [
                     {
                         icon: <Icon icon={ pullLeft } />,
-                        title: __( 'Show avatar on left', 'govpack' ),
+                        title: __( 'Show avatar on left', 'newspack-elections' ),
                         isActive: avatarAlignment === 'left',
                         onClick: () => setAttributes( { avatarAlignment: 'left' } ),
                     },
 					{
                         icon: <Icon icon={ positionCenter } />,
-                        title: __( 'Show avatar above', 'govpack' ),
+                        title: __( 'Show avatar above', 'newspack-elections' ),
                         isActive: avatarAlignment === 'center',
                         onClick: () => setAttributes( { avatarAlignment: 'center' } ),
                     },
                     {
                         icon: <Icon icon={ pullRight } />,
-                        title: __( 'Show avatar on right', 'govpack' ),
+                        title: __( 'Show avatar on right', 'newspack-elections' ),
                         isActive: avatarAlignment === 'right',
                         onClick: () => setAttributes( { avatarAlignment: 'right' } ),
                     },

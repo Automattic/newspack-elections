@@ -41,21 +41,21 @@ const ProfileCommsSocialPanel = (props) => {
 			<PanelBody title={ title }>
 				<PanelRow>
 					<ToggleControl
-						label={ __( 'Display Official', 'govpack' ) }
+						label={ __( 'Display Official', 'newspack-elections' ) }
 						checked={ showOfficial ?? true }
 						onChange={ () => setSubAttributes( { showOfficial: ! showOfficial } ) }
 					/>
 				</PanelRow>
 				<PanelRow>
 					<ToggleControl
-						label={ __( 'Display Campaign', 'govpack' ) }
+						label={ __( 'Display Campaign', 'newspack-elections' ) }
 						checked={ showCampaign ?? true }
 						onChange={ () => setSubAttributes( { showCampaign: ! showCampaign } ) }
 					/>
 				</PanelRow>
 				<PanelRow>
 					<ToggleControl
-						label={ __( 'Display Personal', 'govpack' ) }
+						label={ __( 'Display Personal', 'newspack-elections' ) }
 						checked={ showPersonal ?? true }
 						onChange={ () => setSubAttributes( { showPersonal: ! showPersonal } ) }
 					/>

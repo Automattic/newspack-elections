@@ -26,37 +26,37 @@ const units = [
 export const avatarSizeOptions = [
 	{
 		value: 72,
-		label: /* translators: label for small avatar size option */ __( 'Small', 'govpack-blocks' ),
+		label: /* translators: label for small avatar size option */ __( 'Small', 'newspack-elections' ),
 		shortName: /* translators: abbreviation for small avatar size option */ __(
 			'S',
-			'govpack-blocks'
+			'newspack-elections'
 		),
 	},
 	{
 		value: 128,
-		label: /* translators: label for medium avatar size option */ __( 'Medium', 'govpack-blocks' ),
+		label: /* translators: label for medium avatar size option */ __( 'Medium', 'newspack-elections' ),
 		shortName: /* translators: abbreviation for medium avatar size option */ __(
 			'M',
-			'govpack-blocks'
+			'newspack-elections'
 		),
 	},
 	{
 		value: 192,
-		label: /* translators: label for large avatar size option */ __( 'Large', 'govpack-blocks' ),
+		label: /* translators: label for large avatar size option */ __( 'Large', 'newspack-elections' ),
 		shortName: /* translators: abbreviation for large avatar size option */ __(
 			'L',
-			'govpack-blocks'
+			'newspack-elections'
 		),
 	},
 	{
 		value: 256,
 		label: /* translators: label for extra-large avatar size option */ __(
 			'Extra-large',
-			'govpack-blocks'
+			'newspack-elections'
 		),
 		shortName: /* translators: abbreviation for extra-large avatar size option  */ __(
 			'XL',
-			'govpack-blocks'
+			'newspack-elections'
 		),
 	},
 ];
@@ -79,10 +79,10 @@ const ProfileAvatarPanel = (props) => {
 
     return (
                 <Panel>
-					<PanelBody title={ __( 'Photo', 'govpack' ) }>
+					<PanelBody title={ __( 'Photo', 'newspack-elections' ) }>
                         <PanelRow>
 						    <ToggleControl
-				    			label={ __( 'Display Photo', 'govpack' ) }
+				    			label={ __( 'Display Photo', 'newspack-elections' ) }
 			    				checked={ showAvatar }
 		    					onChange={ () => setAttributes( { showAvatar: ! showAvatar } ) }
 	    					/>
@@ -90,7 +90,7 @@ const ProfileAvatarPanel = (props) => {
                         { showAvatar && showRadiusControl && (
 						<PanelRow>
 							<UnitControl
-								label={ __( 'Photo border radius', 'govpack' ) }
+								label={ __( 'Photo border radius', 'newspack-elections' ) }
 								labelPosition="edge"
 								__unstableInputWidth="80px"
 								units={ units }
@@ -103,13 +103,13 @@ const ProfileAvatarPanel = (props) => {
 					) }
                     { showAvatar && showSizeControl &&(
 						<BaseControl
-							label={ __( 'Photo size', 'govpack' ) }
+							label={ __( 'Photo size', 'newspack-elections' ) }
 							id="govpack__avatar-size-control"
 						>
 							<PanelRow>
 								<ButtonGroup
 									id="govpack__avatar-size-control-buttons"
-									aria-label={ __( 'Avatar size', 'govpack' ) }
+									aria-label={ __( 'Avatar size', 'newspack-elections' ) }
 								>
 									{ avatarSizeOptions.map( option => {
 										const isCurrent = avatarSize === option.value;

@@ -17,7 +17,7 @@ export const Exporter = () => {
 		  link.href = url;
 		  link.setAttribute(
 			'download',
-			'govpack-export.csv',
+			'newspack-elections-export.csv',
 		  );
 	  
 		  // Append to html link element page

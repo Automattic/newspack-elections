@@ -140,7 +140,7 @@ function Edit( props ) {
 
 			{ hasResolved ? (
 				<div className="is-loading">
-					{ __( 'Fetching profile info…', 'govpack-blocks' ) }
+					{ __( 'Fetching profile info…', 'newspack-elections' ) }
 					<Spinner />
 				</div>
 			) : (

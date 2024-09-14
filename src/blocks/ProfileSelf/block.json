@@ -2,7 +2,7 @@
 	"name": "govpack/profile-self",
 	"style": ["govpack-profile-style", "file:./index.css"],
     "editorScript": "file:./index.js",
-	"category": "govpack-blocks",
+	"category": "newspack-elections",
 	"attributes": {
 		
 		"profileId": {

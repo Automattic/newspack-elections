@@ -9,7 +9,7 @@ namespace Govpack\Core;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'GOVPACK_VERSION', '1.1.0' );
+define( 'GOVPACK_VERSION', '1.1.1' );
 
 /**
  * Main Govpack Class.

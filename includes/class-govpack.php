@@ -35,10 +35,10 @@ class Govpack {
 	 * Inits the class and registeres the hooks call.
 	 */
 	public function __construct() {
-		
 		$this->hooks();
 		$this->require( 'includes/govpack-functions.php' );
 		$this->require( 'includes/govpack-functions-template.php' );
+		$this->require( 'includes/class-block-patterns.php' );
 
 		if ( class_exists( '\Govpack\Core\Dev_Helpers' ) ) {
 			$this->dev = new \Govpack\Core\Dev_Helpers( $this );
@@ -47,7 +47,7 @@ class Govpack {
 	}
 
 	public function path( $path ) {
-		return GOVPACK_PLUGIN_PATH . $path; 
+		return GOVPACK_PLUGIN_PATH . $path;
 	}
 
 	/**
@@ -61,7 +61,7 @@ class Govpack {
 
 	public function build_path( $path ) {
 		return trailingslashit(
-			trailingslashit( $this->path( 'build' ) ) . $path 
+			trailingslashit( $this->path( 'build' ) ) . $path
 		);
 	}
 
@@ -99,7 +99,7 @@ class Govpack {
 		\Govpack\Core\Tax\Party::hooks();
 		\Govpack\Core\Tax\State::hooks();
 	}
-	
+
 
 	public function setup() {
 
@@ -121,7 +121,7 @@ class Govpack {
 		if ( is_admin() ) {
 			$this->admin();
 		}
-		
+
 		if ( ! is_admin() ) {
 			$this->front_end();
 		}
@@ -140,7 +140,7 @@ class Govpack {
 			$this->front_end = FrontEnd\FrontEnd::instance();
 			$this->front_end->hooks();
 			$this->front_end->template_loader();
-		} 
+		}
 
 		return $this->front_end;
 	}
@@ -151,7 +151,7 @@ class Govpack {
 			$this->blocks = new Blocks();
 			$this->blocks->hooks();
 		}
-		
+
 		return $this->blocks;
 	}
 
@@ -160,7 +160,7 @@ class Govpack {
 		if ( ! isset( $this->icons ) ) {
 			$this->icons = new Icons();
 		}
-		
+
 		return $this->icons;
 	}
 

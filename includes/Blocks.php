@@ -45,25 +45,25 @@ class Blocks {
 
 		wp_enqueue_style(
 			$handle,
-			$this->plugin->build_url( $asset_name . '.css'),
+			$this->plugin->build_url( $asset_name . '.css' ),
 			[],
 			1
 		);
 
-		wp_style_add_data( $handle, 'path', $this->plugin->build_path($asset_name . '.css' ) );
-	}	
+		wp_style_add_data( $handle, 'path', $this->plugin->build_path( $asset_name . '.css' ) );
+	}   
 
 	public function register_script( $handle, $asset_name ) {
-		$file = $this->plugin->build_path($asset_name . '.asset.php');
+		$file = $this->plugin->build_path( $asset_name . '.asset.php' );
 	
 
 		if ( file_exists( $file ) ) {
-			$asset_data = require_once $file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+			$asset_data = require $file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
 		}
 
 		wp_register_script(
 			$handle,
-			$this->plugin->build_url( $asset_name . '.js'),
+			$this->plugin->build_url( $asset_name . '.js' ),
 			$asset_data['dependencies'] ?? '',
 			$asset_data['version'] ?? '',
 			true

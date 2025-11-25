@@ -19,8 +19,8 @@ class Export {
 
 	use PluginAware;
 
-	public function __construct(Govpack $plugin){
-		$this->plugin($plugin);
+	public function __construct( Govpack $plugin ) {
+		$this->plugin( $plugin );
 	}
 	/**
 	 * Adds Hooks used for exporting  
@@ -35,11 +35,11 @@ class Export {
 	/**
 	 * Adds ASSETS used for importing  
 	 */
-	public  function register_scripts(): void {
+	public function register_scripts(): void {
 
 		
 
-		$file = $this->plugin->build_path('exporter.asset.php');
+		$file = $this->plugin->build_path( 'exporter.asset.php' );
 		if ( file_exists( $file ) ) {
 			$asset_data = require_once $file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
 		}
@@ -48,7 +48,7 @@ class Export {
 
 		wp_register_script(
 			$script_handle,
-			 $this->plugin->build_url('exporter.js'),
+			$this->plugin->build_url( 'exporter.js' ),
 			$asset_data['dependencies'] ?? [],
 			$asset_data['version'] ?? '',
 			true
@@ -100,19 +100,19 @@ class Export {
 
 					$terms = get_the_terms( $profile, $action['taxonomy'] );
 					if ( ! $terms ) {
-						continue;
+						// if no terms then keep it blank.
+						$data[ $key ] = '';
+					} else {
+						$labels       = array_map(
+							function ( $term ) {
+								return $term->name;
+							},
+							$terms
+						);
+						$data[ $key ] = implode( ';', $labels );
 					}
-					$labels = array_map(
-						function ( $term ) {
-							return $term->name;
-						},
-						$terms
-					);
-
-					$data[ $key ] = implode( ';', $labels );
-
 				} elseif ( 'post' === $action['type'] ) {
-					$data[ $key ] = $profile->{$action['key']} ?? ' ';
+					$data[ $key ] = wp_strip_all_tags( $profile->{$action['key']} ?? ' ' );
 				} elseif ( 'meta' === $action['type'] ) {
 					$data[ $key ] = $profile->{$action['key']} ?? ' ';
 				} elseif ( 'media' === $action['type'] ) {

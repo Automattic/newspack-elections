@@ -55,7 +55,11 @@ function Edit( props ) {
 
 	const [ link ] = useEntityProp( 'postType', postType, 'link', profileId );
 	const hasValue = !isEmpty(value)
-	let textValue = field.field_type.valueToText(value)
+	let textValue = field?.field_type?.valueToText( value );
+
+	if ( 'preview' === profileId ) {
+		textValue = __( 'Preview Profile', 'govpack' );
+	}
 
 	if(!postTypeSupportsTitle){
 		return null

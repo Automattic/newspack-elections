@@ -73,12 +73,21 @@ export const useProfileId = (props, pid = null) => {
 
 /**
  * Get the profile specified by the ID passed
+ * @param {number|string} profileId ID of the profile to fetch
  */
 export const useProfile = ( profileId ) => {
-
-	const query = useSelect( (select) => {
-
-		
+	const query = useSelect(
+		( select ) => {
+			if ( 'preview' === profileId ) {
+				return {
+					profile: {},
+					hasStartedLoading: false,
+					hasFinishedLoading: true,
+					hasFailed: false,
+					hasLoaded: true,
+					isLoading: false,
+				};
+			}
 
 		const selectorArgs = [ 
 			'postType', 

@@ -6,7 +6,7 @@
  * Inserter: true
  */
 
-$services = ['ballotpedia', 'fec_id', 'gab', 'wikipedia', 'openstates_id', 'opensecrets_id', 'linkedin', 'rumble'];
+$services = [ 'ballotpedia', 'fec_id', 'gab', 'wikipedia', 'openstates_id', 'opensecrets_id', 'linkedin', 'rumble' ];
 
 ?>
 <!-- wp:npe/profile-social-links {"openInNewTab":true,"size":"has-small-icon-size","className":"is-style-logos-only","style":{"spacing":{"blockGap":{"left":"5px"}}}} -->

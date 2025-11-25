@@ -31,10 +31,11 @@ class ProfileFieldLink extends \Govpack\Blocks\ProfileFieldText {
 	 * @param WP_Block $template The filename of the template-part to use.
 	 */
 	public function handle_render( array $attributes, string $content, WP_Block $block ) {
-		
+
+		$wrapper_attributes = get_block_wrapper_attributes( [ 'class' => $this->get_css_class( $attributes ) ] );
 		?>
-		<div <?php echo get_block_wrapper_attributes(); ?>>
-			<?php echo $this->output() ; ?>
+		<div <?php echo $wrapper_attributes; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+			<?php echo $this->output();  //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		</div>
 		<?php
 	}
@@ -57,10 +58,10 @@ class ProfileFieldLink extends \Govpack\Blocks\ProfileFieldText {
 
 		$url = $link['url'];
 
-		if( is_email($url)) {
-			$url = "mailto:" . antispambot( $url );
-		} elseif( $this->get_field()->type->slug === "phone"){
-			$url = "tel:" . $url;
+		if ( is_email( $url ) ) {
+			$url = 'mailto:' . antispambot( $url );
+		} elseif ( $this->get_field()->type->slug === 'phone' ) {
+			$url = 'tel:' . $url;
 		}
 
 		if ( ! wp_parse_url( $url, PHP_URL_SCHEME ) && ! str_starts_with( $url, '//' ) && ! str_starts_with( $url, '#' ) ) {
@@ -86,7 +87,7 @@ class ProfileFieldLink extends \Govpack\Blocks\ProfileFieldText {
 		}
 
 		if ( $this->attribute( 'linkFormat' ) === 'icon' ) {
-			return $this->get_field()->icon_markup() ?? "";
+			return $this->get_field()->icon_markup() ?? '';
 		}
 
 
@@ -131,5 +132,33 @@ class ProfileFieldLink extends \Govpack\Blocks\ProfileFieldText {
 		}
 
 		return $variations;
+	}
+
+	/**
+	 * Get CSS class for the block wrapper.
+	 *
+	 * @param array $attributes Block attributes.
+	 * @return string CSS class.
+	 */
+	public function get_css_class( $attributes ): string {
+		$classes     = [];
+		$link_format = '';
+
+		if ( ! empty( $attributes['linkFormat'] ) ) {
+			$link_format = sanitize_html_class( $attributes['linkFormat'] );
+			if ( $link_format ) {
+				$classes[] = 'is-format-' . $link_format;
+			}
+		}
+	
+		// Add iconSize class only for icon format
+		if ( $link_format === 'icon' && ! empty( $attributes['iconSize'] ) ) {
+			$icon_size = sanitize_html_class( $attributes['iconSize'] );
+			if ( $icon_size ) {
+				$classes[] = $icon_size;
+			}
+		}
+	
+		return implode( ' ', $classes );
 	}
 }

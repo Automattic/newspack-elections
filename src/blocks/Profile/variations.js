@@ -5,7 +5,7 @@ import { DEFAULT_TEMPLATE, FULL_TEMPLATE, HORIZONTAL_TEMPLATE } from "./edit/def
 
 const defaultProfile = {
 	'name' : "profile-default",
-	'title' : "Profile (No Tint)",
+	'title' : "Profile",
 	'description' : "Profile",
 	isDefault : true,
 	icon : layout,
@@ -17,7 +17,7 @@ const defaultProfile = {
 
 const miniProfile = {
 	'name' : "profile-mini",
-	'title' : "Mini Profile (No Tint)",
+	'title' : "Mini Profile",
 	isDefault : false,
 	isActive: [ 'variation', 'className' ],
 	icon : justifyLeft,
@@ -174,46 +174,7 @@ const fullProfile = {
 
 export const variations = [
 	defaultProfile,
-	{
-		...defaultProfile,
-		name : "profile-default-blue-tint",
-		title : "Profile (Blue Tint)",
-		attributes: {
-			...defaultProfile.attributes,
-			className: "is-style-blue-tint"
-		}
-	},
-	{
-		...defaultProfile,
-		name : "profile-default-red-tint",
-		title : "Profile (Red Tint)",
-		attributes: {
-			...defaultProfile.attributes,
-			className: "is-style-red-tint"
-		}
-	},
-	{
-		...defaultProfile
-	},
 	fullProfile,
-	{
-		...fullProfile,
-		name : "profile-full-blue-tint",
-		title : "Full Profile (Blue Tint)",
-		attributes: {
-			...fullProfile.attributes,
-			className: "is-style-blue-tint"
-		}
-	},
-	{
-		...fullProfile,
-		name : "profile-full-red-tint",
-		title : "Full Profile (Red Tint)",
-		attributes: {
-			...fullProfile.attributes,
-			className: "is-style-red-tint"
-		}
-	},
 	{
 		'name' : "gp-profile-full-inline",
 		'title' : "Inline Profile",
@@ -296,24 +257,6 @@ export const variations = [
 			
 	},
 	miniProfile,
-	{
-		...miniProfile,
-		name : "profile-mini-blue-tint",
-		title : "Mini Profile (Blue Tint)",
-		attributes: {
-			...miniProfile.attributes,
-			className: "is-style-blue-tint"
-		}
-	},
-	{
-		...miniProfile,
-		name : "profile-mini-red-tint",
-		title : "Mini Profile (Red Tint)",
-		attributes: {
-			...miniProfile.attributes,
-			className: "is-style-red-tint"
-		}
-	},
 	{
 		name : "horizontal-profile",
 		title : "Horizontal Profile",

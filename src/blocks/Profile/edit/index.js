@@ -4,7 +4,7 @@ import {useSelect, select} from "@wordpress/data"
 import {store as blockEditorStore, useInnerBlocksProps, useBlockProps, BlockContextProvider} from "@wordpress/block-editor"
 import { store as blocksStore } from '@wordpress/blocks';
 import { store as editorStore } from '@wordpress/editor';
-import { useCallback, useState } from '@wordpress/element';
+import { useCallback, useState, useEffect } from '@wordpress/element';
 
 import { ProfileBlockEdit } from "./edit"
 import { ProfileVariationSelector } from "./variation-selector"
@@ -62,8 +62,24 @@ export const ProfileEdit = ( props ) => {
 		setAttributes({"postId" : newProfileId})
 	}, [setAttributes])
 
-	
-	
+	/*
+	 * This code block is for determining if the block is inserted in the editor or is it in inserter preview
+	 * We can use this to render the profile selector if block with preview profileId is inserted in the editor
+	 */
+	const { isSelected } = useSelect(
+		( select ) => {
+			const be = select( 'core/block-editor' );
+			return { isSelected: be.isBlockSelected( clientId ) };
+		},
+		[ clientId ]
+	);
+
+	useEffect( () => {
+		if ( attributes?.postId === 'preview' && isSelected ) {
+			setProfile( 0 );
+		}
+	}, [ attributes?.postId, isSelected ] );
+
 	const isProfilePage = (currentPostType === PROFILE_POST_TYPE) && (context.postId === currentPostId)
 	const isInQueryLoop = (!isNil(queryId))
 	//const isEmbeded = (!isProfilePage && !isInQueryLoop)

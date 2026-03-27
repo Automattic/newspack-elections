@@ -25,18 +25,21 @@ class Profile extends \Govpack\Blocks\LegacyProfile {
 	protected $plugin;
 
 	public function __construct( $plugin ) {
-		
+
 		$this->plugin = $plugin;
 		//add_filter( 'render_block_context', [$this, 'modify_context'], 10, 3);
 		//add_filter( 'render_block_data', [$this, 'modify_block_data'], 10, 3);
-		add_filter( 'pre_render_block', [ $this, 'pre_render_block' ], 10, 3 ); 
+		add_filter( 'pre_render_block', [ $this, 'pre_render_block' ], 10, 3 );
 	}
 
 	public function pre_render_block( $pre_render, $parsed_block, $parent_block ) {
 		global $post;
 
 		if ( is_null( $pre_render ) && ( isset( $parsed_block['attrs']['postId'] ) ) ) {
-			$post = get_post( $parsed_block['attrs']['postId'] );
+			$new_post = get_post( $parsed_block['attrs']['postId'] );
+			if ( ! is_null( $new_post ) ) {
+				$post = $new_post;
+			}
 		}
 
 		return $pre_render;
@@ -61,7 +64,7 @@ class Profile extends \Govpack\Blocks\LegacyProfile {
 		}
 
 		$parsed_block['attrs']['postId'] = $parsed_block['attrs']['profileId'];
-		
+
 
 		return $parsed_block;
 	}
@@ -82,19 +85,19 @@ class Profile extends \Govpack\Blocks\LegacyProfile {
 	public function block_build_path(): string {
 		return $this->plugin->build_path( 'blocks/Profile' );
 	}
-	
+
 	public function filter_kses_for_svg($tags, $context){
 		if($context !== "post"){
 			return $tags;
 		}
-		
+
 		$tags = \array_merge($tags, [
 			'svg'      => [
-				'xmlns'   => [], 
-				'width'   => [], 
-				'height'  => [], 
+				'xmlns'   => [],
+				'width'   => [],
+				'height'  => [],
 				'viewbox' => [], //lowercase not camelcase!
-			], 
+			],
 			'path'     => [
 				'd' => [],
 			],
@@ -129,7 +132,7 @@ class Profile extends \Govpack\Blocks\LegacyProfile {
 		if ( \is_admin() ) {
 			return false;
 		}
-	
+
 		if (isset($attributes['postId']) && ($attributes['postId'] ) ) {
 			$this->profile = \Govpack\Profile\Profile::get( $attributes["postId"] );
 		} else if($post->post_type = "govpack_profiles") {
@@ -141,7 +144,7 @@ class Profile extends \Govpack\Blocks\LegacyProfile {
 		}
 
 		$this->allow_svg_in_wp_kses();
-	
+
 		$this->attributes = self::merge_attributes_with_block_defaults( $this->block_name, $attributes );
 		$this->enqueue_view_assets();
 
@@ -161,11 +164,11 @@ class Profile extends \Govpack\Blocks\LegacyProfile {
 	 * @param WP_Block $template The filename of the template-part to use.
 	 */
 	public function handle_render( array $attributes, string $content, WP_Block $block ) {
-		
+
 		$tag_name = $this->attributes['tagName'] ?? 'div';
-		
+
 		$block_html = sprintf(
-			'<%s %s>%s</%s>', 
+			'<%s %s>%s</%s>',
 			$tag_name,
 			get_block_wrapper_attributes(
 				$this->get_new_block_wrapper_attributes()
@@ -174,12 +177,12 @@ class Profile extends \Govpack\Blocks\LegacyProfile {
 			$content,
 			$tag_name
 		);
-		
+
 		echo  wp_kses_post($block_html);
 	}
 
-	
-	
+
+
 	public function template(): string {
 		return sprintf( 'blocks/%s', $this->template );
 	}
@@ -191,19 +194,19 @@ class Profile extends \Govpack\Blocks\LegacyProfile {
 
 
 		if ( isset( $this->attributes['align'] ) && $this->attributes['customWidth'] ) {
-			
+
 			$styles['max-width'] = $this->attributes['customWidth'];
 		}
 
 		if ( ! empty( $styles ) ) {
 			$new_attrs['style'] = trim(
 				implode(
-					' ', 
+					' ',
 					array_map(
 						function ( $rule, $value ) {
 							return sprintf( '%s: %s;', $rule, $value );
-						}, 
-						array_keys( $styles ), 
+						},
+						array_keys( $styles ),
 						array_values( $styles )
 					)
 				)
@@ -211,11 +214,11 @@ class Profile extends \Govpack\Blocks\LegacyProfile {
 		}
 
 		$classes = apply_filters( 'newspack_elections_profile_block_classes', $this->get_wrapper_classes() );
-		
+
 		if ( ! empty( $classes ) ) {
 			$new_attrs['class'] = trim( implode( ' ', $classes ) );
 		}
-		
+
 		return $new_attrs;
 	}
 

@@ -135,7 +135,7 @@ class Profile extends \Govpack\Blocks\LegacyProfile {
 
 		if (isset($attributes['postId']) && ($attributes['postId'] ) ) {
 			$this->profile = \Govpack\Profile\Profile::get( $attributes["postId"] );
-		} else if($post->post_type = "govpack_profiles") {
+		} else if( $post instanceof \WP_Post && $post->post_type === "govpack_profiles" ) {
 			$this->profile = \Govpack\Profile\Profile::get( $post->ID );
 		}
 

@@ -7,8 +7,8 @@
  * Author URI:        https://automattic.com/
  * Text Domain:       newspack-elections
  * Domain Path:       /languages
- * Version:           2.0.0
- * Requires at least: 6.7 
+ * Version:           2.0.1
+ * Requires at least: 6.7
  * License:           GPL2
  *
  * @package         Newspack_Elections

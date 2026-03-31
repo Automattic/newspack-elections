@@ -7,7 +7,7 @@ outputs:
   filename:
    description: "Name of the Generate Archive"
    value: ${{ steps.get-file-name.outputs.filename }}
-inputs: 
+inputs:
   path:
     required: false
     description: "Path to the project that includes a .distignore file."
@@ -37,7 +37,7 @@ runs:
         sudo mv wp-cli.phar /usr/local/bin/wp
       shell: bash
     - name: Install Dist Archive Command for WP CLI
-      run: wp package install wp-cli/dist-archive-command
+      run: wp package install wp-cli/dist-archive-command:v3.1.0
       shell: bash
     - name: Generate the Archive
       id: generate-archive

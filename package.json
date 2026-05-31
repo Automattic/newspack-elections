@@ -35,6 +35,10 @@
     "@wordpress/scripts": "^27.6.0",
 	"jscpd": "^3.5.10"
   },
+  "overrides": {
+    "basic-ftp": "5.2.1",
+    "form-data": "4.0.4"
+  },
   "config": {
     "entrypoints": {
       "editor": "./src/editor/index.js",

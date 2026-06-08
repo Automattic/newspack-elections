@@ -12,7 +12,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: Checkout The Repos
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
 
       - name: PHP Install & Build
         uses: ./.github/actions/composer
@@ -46,7 +46,7 @@ jobs:
         uses: ./.github/actions/wp-cli-dist-archive
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{steps.generate-archive.outputs.filename}}
           path: ./artifacts/*

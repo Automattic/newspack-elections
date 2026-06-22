@@ -3,7 +3,7 @@ description: Install Composer Dependencies and Prefixes Them
 runs:
   using: "composite"
   steps:
-  - uses: actions/cache@v4
+  - uses: actions/cache@v5
     name: Attempt to Cache Composer packages
     id: composer-cache
     with:

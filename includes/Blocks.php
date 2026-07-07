@@ -27,17 +27,15 @@ class Blocks {
 	 * Register Block Assets.
 	 */
 	public function enqueue_block_assets(): void {
-		
-
-		$this->register_script( 'npe-editor', 'npe-editor' );
-		wp_enqueue_script( 'npe-editor' );
+		if ( is_admin() ) {
+			$this->register_script( 'npe-editor', 'npe-editor' );
+			wp_enqueue_script( 'npe-editor' );
+			$this->register_style( 'npe-blocks-editor-style', 'npe-blocks' );
+			wp_enqueue_style( 'npe-blocks-editor-style' );
+		}
 
 		$this->register_script( 'npe-blocks', 'npe-blocks' );
 		wp_enqueue_script( 'npe-blocks' );
-
-		$this->register_style( 'npe-blocks-editor-style', 'npe-blocks' );
-		wp_enqueue_style( 'npe-blocks-editor-style' );
-
 		$this->register_style( 'npe-blocks-shared-styles', 'profile-shared-styles' );
 	}
 

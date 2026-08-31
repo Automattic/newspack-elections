@@ -1,14 +1,7 @@
-import { useState } from "@wordpress/element"
-import Moment from "moment"
-
-import { TextControl, TextareaControl, DatePicker, SelectControl, Spinner, Dropdown, Button } from "@wordpress/components";
+import { TextControl, TextareaControl, SelectControl, Spinner } from "@wordpress/components";
 import { compose } from "@wordpress/compose";
-import { withSelect, useSelect } from "@wordpress/data";
+import { withSelect } from "@wordpress/data";
 import { useEntityId, useEntityProp } from "@wordpress/core-data";
-import {store as editorStore} from "@wordpress/editor"
-import { date, dateI18n, getSettings } from "@wordpress/date"
-import {MaskedTextControl} from "./MaskedTextControl"
-import MaskedDateControl from "./DateInput";
 
 
 
@@ -68,81 +61,21 @@ export const PanelTextareaControl = (props) => {
 	return DefaultControl(props, TextareaControl)
 }
 
+/**
+ * A native date input via TextControl's `type` pass-through (the same
+ * mechanism PanelUrlControl uses). The input's value IDL attribute is
+ * guaranteed by the HTML spec to be the ISO `yyyy-MM-dd` string (or empty)
+ * regardless of the locale the browser displays — the same canonical form
+ * the profile meta stores, so the string passes through with no parse/format
+ * step and no timezone math.
+ *
+ * A stored value in a non-canonical legacy format (millisecond-epoch strings
+ * from the previous control) renders as an empty field: the browser rejects
+ * it and keeps the meta untouched until the user picks a new date.
+ */
 export const PanelDateControl = (props) => {
-	return DefaultControl(props, DateControl)
+	return DefaultControl({ ...props, type: "date" }, TextControl)
 }
-
-export const DateControl = (props) => {
-
-	return (
-		<MaskedDateControl
-			label = {props.label}
-			value={	props.value }
-			placeholder = "05/31/2021"
-			help = "mm/dd/yyyy (eg 05/01/2021)"
-			onChange = {props.onChange}
-			maskProps = {{
-				mask : "99/99/9999",
-				alwaysShowMask : true,
-				permanents : [2, 5],
-			}}
-		/>
-	)
-}
-
-/*
-export const PanelDateControl = (props) => {
-
-	const {onChange, meta, ...restProps} = props
-	const [ date, setDate ] = useState( new Date() );
-	const [ inputValue, setInputValue ] = useState( null );
-	const [ isValid, setIsValid ] = useState( false );
-	const [ isTouched, setIsTouched ] = useState( false );
-
-	let settings = getSettings()
-	
-
-
-	let dateValue = props.meta?.[props.meta_key]
-	if(dateValue){
-		dateValue = moment(parseInt(dateValue)).format("MM/DD/YYYY")
-	}
-
-	return (
-		<VStack>
-			<MaskedTextControl
-				label = {props.label}
-				value={	inputValue ?? dateValue ?? "" }
-				onChange={ ( value ) => {
-					setInputValue(value)
-					let timestamp = moment(value, "MM/DD/YYYY", true)
-					if(timestamp.isValid()){
-					onChange( { [props.meta_key]: timestamp.valueOf().toString() } )
-						setIsValid(true)
-					} else {
-						setIsValid(false)
-					}
-				}}
-				placeholder = "05/31/2021"
-				help = "mm/dd/yyyy (eg 05/01/2021)"
-				maskProps = {{
-					mask : "99/99/9999",
-					alwaysShowMask : true,
-					permanents : [2, 5],
-				}}
-				isValid = {isValid}
-				isTouched = {isTouched}
-				onFocus={ () => {
-					setIsTouched(true)
-				} }
-				{...restProps}
-			/>
-		</VStack>
-	)
-	
-
-}
-*/
 
 export const PanelSelectControl = (props) => {
     return (

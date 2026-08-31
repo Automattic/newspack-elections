@@ -1029,31 +1029,24 @@ class CPT extends \Govpack\Abstracts\PostType {
 		return ( empty( $address ) ? null : join( $seperator, $address ) );
 	}
 
-	public static function age_from_epoc( string|int $dob ): string {
-		
-		if ( $dob === '' ) {
+	public static function age_from_epoc( mixed $dob ): string {
+
+		$date_of_birth = \Govpack\Fields\DateValue::to_datetime( $dob );
+
+		if ( null === $date_of_birth ) {
 			return '';
 		}
 
-		if ( is_int( $dob ) ) {
-			$dob = ( $dob / 1000 );
-		}
-		
-		// attempt to convert a string to a date
-		if ( is_string( $dob ) ) {
-			$dob = strtotime( $dob );
-		}
+		$diff = $date_of_birth->diff( new \DateTime() );
 
-		if ( ! $dob ) {
+		// A future birth date has no age; DateInterval years are unsigned,
+		// so without this a typo'd date renders as a plausible small age.
+		if ( 1 === $diff->invert ) {
 			return '';
 		}
 
-		$today         = new \DateTime();
-		$date_of_birth = new \DateTime();
-		$date_of_birth->setTimestamp( ( $dob ) ); //js timestime is milliseconds, we just want seconds since epoc
-		
-		$diff = $date_of_birth->diff( $today );
-		return sprintf( '%d years old', $diff->y );
+		/* translators: %d: age in years */
+		return sprintf( __( '%d years old', 'newspack-elections' ), $diff->y );
 	}
 
 	/**

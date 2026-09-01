@@ -75,7 +75,14 @@ export default class DateField extends FieldType {
 			return null
 		}
 
-		return this.plausible( new Date(value) )
+		// Rebuild the parsed calendar day at UTC midnight: the parse is
+		// local-time, and every branch of this reader emits UTC midnight so
+		// the block's gmdate consumer shows the same day in any timezone.
+		const parsed = new Date(value)
+		if( isNaN( parsed.getTime() ) ){
+			return null
+		}
+		return this.plausible( new Date( Date.UTC( parsed.getFullYear(), parsed.getMonth(), parsed.getDate() ) ) )
 	}
 }
 

@@ -66,6 +66,17 @@ describe( 'DateField.value()', () => {
 		expect( value.getUTCDate() ).toBe( 6 );
 	} );
 
+	it( 'parses a free-form imported value to UTC midnight in any timezone', () => {
+		// The block consumer formats via gmdate (UTC); a local-midnight parse
+		// would preview one day early in positive-offset browsers.
+		const value = field.value( '08/06/1982' );
+
+		expect( value.getUTCFullYear() ).toBe( 1982 );
+		expect( value.getUTCMonth() ).toBe( 7 );
+		expect( value.getUTCDate() ).toBe( 6 );
+		expect( value.getUTCHours() ).toBe( 0 );
+	} );
+
 	it( 'returns null for a digit string whose resulting year is implausible', () => {
 		expect( field.value( '12345678901234567' ) ).toBeNull();
 	} );

@@ -50,12 +50,18 @@ export default class DateField extends FieldType {
 			return this.plausible( new Date( `${value}-01-01T00:00:00Z` ) )
 		}
 
-		// Compact yyyyMMdd. Only when it is a real calendar date; otherwise
-		// the digits fall through to the epoch branch.
+		// Compact yyyyMMdd. A valid calendar date resolves; an invalid one
+		// whose leading digits read as a plausible year is a malformed date,
+		// not an epoch — it must not fall through and render as January 1970.
+		// Digits that cannot be a year (86400000) continue to the epoch branch.
 		if( /^\d{8}$/.test(value) ){
 			const compact = new Date( `${value.slice(0,4)}-${value.slice(4,6)}-${value.slice(6,8)}T00:00:00Z` )
 			if( ! isNaN( compact.getTime() ) && compact.getUTCDate() === Number( value.slice(6,8) ) ){
 				return this.plausible( compact )
+			}
+			const leadingYear = Number( value.slice(0,4) )
+			if( leadingYear >= 1500 && leadingYear <= 2500 ){
+				return null
 			}
 		}
 
@@ -63,9 +69,14 @@ export default class DateField extends FieldType {
 		// editor control (negative for pre-1970 dates). No seconds support:
 		// nothing in this codebase ever wrote epoch seconds, and a unit
 		// heuristic misreads near-epoch milliseconds — the 1966-1973 band —
-		// as seconds.
+		// as seconds. The instant's UTC calendar day is kept and its time of
+		// day dropped, so every branch of this reader emits UTC midnight.
 		if( /^-?\d+$/.test(value) ){
-			return this.plausible( new Date( Number(value) ) )
+			const instant = new Date( Number(value) )
+			if( isNaN( instant.getTime() ) ){
+				return null
+			}
+			return this.plausible( new Date( Date.UTC( instant.getUTCFullYear(), instant.getUTCMonth(), instant.getUTCDate() ) ) )
 		}
 
 		// Free-form fallback (CSV-imported values). Require an explicit 4-digit

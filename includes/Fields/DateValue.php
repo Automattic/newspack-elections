@@ -48,12 +48,18 @@ class DateValue {
 			return self::plausible( self::strict_from_format( '!Y-m-d', $value . '-01-01' ) );
 		}
 
-		// Compact Ymd, only when it is a real calendar date; otherwise the
-		// digits fall through to the epoch branch.
+		// Compact Ymd. A valid calendar date resolves; an invalid one whose
+		// leading digits read as a plausible year is a malformed date, not an
+		// epoch — it must not fall through and render as January 1970. Digits
+		// that cannot be a year (86400000) continue to the epoch branch.
 		if ( preg_match( '/^\d{8}$/', $value ) ) {
 			$compact = self::strict_from_format( '!Ymd', $value );
 			if ( null !== $compact ) {
 				return self::plausible( $compact );
+			}
+			$leading_year = (int) substr( $value, 0, 4 );
+			if ( $leading_year >= 1500 && $leading_year <= 2500 ) {
+				return null;
 			}
 		}
 
@@ -62,10 +68,13 @@ class DateValue {
 		// nothing in this codebase ever wrote epoch seconds, and a unit
 		// heuristic misreads near-epoch milliseconds — the 1966-1973 band,
 		// the demographic center of officeholder birth dates — as seconds.
+		// The instant's time of day is dropped so every branch emits midnight
+		// (PHP's default timezone is UTC under WordPress), keeping the age
+		// math on calendar days rather than instants.
 		if ( preg_match( '/^-?\d+$/', $value ) ) {
-			return self::plausible(
-				( new \DateTime() )->setTimestamp( intdiv( (int) $value, 1000 ) )
-			);
+			$date = ( new \DateTime() )->setTimestamp( intdiv( (int) $value, 1000 ) );
+			$date->setTime( 0, 0, 0 );
+			return self::plausible( $date );
 		}
 
 		// A value shaped like Y-m-d is decided by the strict parse alone —

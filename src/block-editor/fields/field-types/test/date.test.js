@@ -66,6 +66,21 @@ describe( 'DateField.value()', () => {
 		expect( value.getUTCDate() ).toBe( 6 );
 	} );
 
+	it( 'returns null for an impossible compact date instead of reading it as an epoch', () => {
+		// 20210231 (Feb 31) must not fall through to the millisecond branch,
+		// where 20,210,231 ms would render as January 1970.
+		expect( field.value( '20210231' ) ).toBeNull();
+	} );
+
+	it( 'normalizes an epoch value with a time of day to UTC midnight', () => {
+		// 397551600000 ms = 1982-08-07T07:00:00Z; the age math and the gmdate
+		// consumer both need the calendar day, not the instant.
+		const value = field.value( '397551600000' );
+
+		expect( value.getUTCDate() ).toBe( 7 );
+		expect( value.getUTCHours() ).toBe( 0 );
+	} );
+
 	it( 'parses a free-form imported value to UTC midnight in any timezone', () => {
 		// The block consumer formats via gmdate (UTC); a local-midnight parse
 		// would preview one day early in positive-offset browsers.

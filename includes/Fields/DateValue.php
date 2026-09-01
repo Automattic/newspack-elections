@@ -71,6 +71,13 @@ class DateValue {
 		// The instant's time of day is dropped so every branch emits midnight
 		// (PHP's default timezone is UTC under WordPress), keeping the age
 		// math on calendar days rather than instants.
+		//
+		// Policy: the instant resolves to its UTC calendar day. The retired
+		// writer stored browser-local midnight without recording the offset,
+		// so a day authored at a positive UTC offset can read one day early —
+		// that ambiguity is unrecoverable here and belongs to the import-time
+		// migration follow-up; any individual profile is correctable in the
+		// editor.
 		if ( preg_match( '/^-?\d+$/', $value ) ) {
 			$date = ( new \DateTime() )->setTimestamp( intdiv( (int) $value, 1000 ) );
 			$date->setTime( 0, 0, 0 );
@@ -84,10 +91,24 @@ class DateValue {
 			return self::plausible( self::strict_from_format( '!Y-m-d', $value ) );
 		}
 
+		// US-format m/d/Y (or m-d-Y) dates are validated component-wise:
+		// strtotime rolls an impossible 02/31/2021 into March instead of
+		// rejecting it.
+		if ( preg_match( '#^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$#', $value, $us_shape ) ) {
+			[ , $month, $day, $year ] = array_map( 'intval', $us_shape );
+			if ( ! checkdate( $month, $day, $year ) ) {
+				return null;
+			}
+			return self::plausible(
+				self::strict_from_format( '!Y-m-d', sprintf( '%04d-%02d-%02d', $year, $month, $day ) )
+			);
+		}
+
 		// Free-form fallback (CSV-imported values). Require an explicit
 		// 4-digit year so a partial value like "08/06" is rejected instead of
 		// being silently completed with the current year, and reject anything
-		// strtotime cannot parse instead of defaulting to now.
+		// strtotime cannot parse instead of defaulting to now. The parsed
+		// instant's time of day is dropped like every other branch.
 		if ( ! preg_match( '/\d{4}/', $value ) ) {
 			return null;
 		}
@@ -97,7 +118,9 @@ class DateValue {
 			return null;
 		}
 
-		return self::plausible( ( new \DateTime() )->setTimestamp( $timestamp ) );
+		$date = ( new \DateTime() )->setTimestamp( $timestamp );
+		$date->setTime( 0, 0, 0 );
+		return self::plausible( $date );
 	}
 
 	/**

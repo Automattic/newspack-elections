@@ -79,6 +79,19 @@ export default class DateField extends FieldType {
 			return this.plausible( new Date( Date.UTC( instant.getUTCFullYear(), instant.getUTCMonth(), instant.getUTCDate() ) ) )
 		}
 
+		// US-format m/d/Y (or m-d-Y) dates are validated component-wise: the
+		// generic Date parser rolls an impossible 02/31/2021 into March
+		// instead of rejecting it.
+		const usShape = value.match( /^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/ )
+		if( usShape ){
+			const [ , month, day, year ] = usShape.map( Number )
+			const usDate = new Date( Date.UTC( year, month - 1, day ) )
+			if( usDate.getUTCMonth() !== month - 1 || usDate.getUTCDate() !== day ){
+				return null
+			}
+			return this.plausible( usDate )
+		}
+
 		// Free-form fallback (CSV-imported values). Require an explicit 4-digit
 		// year so a partial value like "08/06" is rejected instead of being
 		// silently completed with the current year.

@@ -37,6 +37,10 @@ describe( 'DateField.value()', () => {
 		expect( field.value( '2021-02-31' ) ).toBeNull();
 	} );
 
+	it( 'returns null for an impossible US-format date instead of rolling it over', () => {
+		expect( field.value( '02/31/2021' ) ).toBeNull();
+	} );
+
 	it( 'parses a negative millisecond-epoch string (a pre-1970 birth date)', () => {
 		// -631152000000 ms = 1950-01-01T00:00:00Z.
 		expect( field.value( '-631152000000' ).getUTCFullYear() ).toBe( 1950 );

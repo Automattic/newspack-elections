@@ -1046,7 +1046,7 @@ class CPT extends \Govpack\Abstracts\PostType {
 		}
 
 		/* translators: %d: age in years */
-		return sprintf( __( '%d years old', 'newspack-elections' ), $diff->y );
+		return sprintf( _n( '%d year old', '%d years old', $diff->y, 'newspack-elections' ), $diff->y );
 	}
 
 	/**

@@ -79,7 +79,15 @@ class DateValue {
 		// migration follow-up; any individual profile is correctable in the
 		// editor.
 		if ( preg_match( '/^-?\d+$/', $value ) ) {
-			$date = ( new \DateTime() )->setTimestamp( intdiv( (int) $value, 1000 ) );
+			$milliseconds = (int) $value;
+			$timestamp    = intdiv( $milliseconds, 1000 );
+			// intdiv truncates toward zero; milliseconds-to-seconds needs the
+			// floor, or a negative instant just before midnight lands on the
+			// next day and disagrees with the JS reader.
+			if ( $milliseconds % 1000 < 0 ) {
+				--$timestamp;
+			}
+			$date = ( new \DateTime() )->setTimestamp( $timestamp );
 			$date->setTime( 0, 0, 0 );
 			return self::plausible( $date );
 		}

@@ -41,6 +41,11 @@ describe( 'DateField.value()', () => {
 		expect( field.value( '02/31/2021' ) ).toBeNull();
 	} );
 
+	it( 'rejects a US-format year outside the plausible range instead of letting Date.UTC remap it', () => {
+		// Date.UTC maps years 0-99 into 1900-1999; 01/01/0099 must not become 1999.
+		expect( field.value( '01/01/0099' ) ).toBeNull();
+	} );
+
 	it( 'parses a negative millisecond-epoch string (a pre-1970 birth date)', () => {
 		// -631152000000 ms = 1950-01-01T00:00:00Z.
 		expect( field.value( '-631152000000' ).getUTCFullYear() ).toBe( 1950 );

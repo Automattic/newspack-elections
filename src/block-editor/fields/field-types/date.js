@@ -85,6 +85,11 @@ export default class DateField extends FieldType {
 		const usShape = value.match( /^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/ )
 		if( usShape ){
 			const [ , month, day, year ] = usShape.map( Number )
+			// Checked before construction: Date.UTC remaps years 0-99 into
+			// 1900-1999, which would smuggle 0099 past the plausible() bound.
+			if( year < 1500 || year > 2500 ){
+				return null
+			}
 			const usDate = new Date( Date.UTC( year, month - 1, day ) )
 			if( usDate.getUTCMonth() !== month - 1 || usDate.getUTCDate() !== day ){
 				return null

@@ -58,6 +58,9 @@ class FrontEnd {
 	 */
 	public function hooks(): void {
 		add_filter( 'newspack_can_show_post_thumbnail', [ __CLASS__, 'newspack_can_show_post_thumbnail' ], 10, 1 );
+		add_filter( 'body_class', [ __CLASS__, 'body_class' ] );
+		add_filter( 'newspack_listings_hide_author', [ __CLASS__, 'hide_author' ] );
+		add_filter( 'newspack_listings_hide_publish_date', [ __CLASS__, 'hide_publish_date' ] );
 		add_action( 'enqueue_block_assets', [ $this, 'enqueue_front_end_style' ], 10, 0 );
 
 		add_action( 'govpack_before_main_content', [ $this, 'output_wrapper_start' ] );
@@ -104,6 +107,67 @@ class FrontEnd {
 		wp_enqueue_style( 'govpack-block-styles' );
 	}
 
+
+	/**
+	 * Alias the page-template body class to the one Newspack's themes style.
+	 *
+	 * Their CSS keys on `post-template-*`; WordPress emits
+	 * `govpack_profiles-template-*`. Newspack Listings aliases the same.
+	 *
+	 * @param string[] $classes Body classes.
+	 * @return string[]
+	 */
+	public static function body_class( array $classes ): array {
+
+		if ( ! is_singular( \Govpack\Profile\CPT::CPT_SLUG ) ) {
+			return $classes;
+		}
+
+		$template = get_page_template_slug();
+
+		if ( 'single-feature.php' === $template ) {
+			$classes[] = 'post-template-single-feature';
+		} elseif ( 'single-wide.php' === $template ) {
+			$classes[] = 'post-template-single-wide';
+		}
+
+		return $classes;
+	}
+
+	/**
+	 * Hide the publish date on a profile.
+	 *
+	 * The date records when the profile was entered, not anything about its
+	 * subject.
+	 *
+	 * @param bool $hide Whether the date is hidden.
+	 * @return bool
+	 */
+	public static function hide_publish_date( $hide ): bool {
+
+		if ( \Govpack\Profile\CPT::CPT_SLUG === get_post_type() ) {
+			return true;
+		}
+
+		return (bool) $hide;
+	}
+
+	/**
+	 * Hide the byline and author bio on a profile.
+	 *
+	 * A profile's author is whoever entered the record, not its subject.
+	 *
+	 * @param bool $hide Whether the author is hidden.
+	 * @return bool
+	 */
+	public static function hide_author( $hide ): bool {
+
+		if ( \Govpack\Profile\CPT::CPT_SLUG === get_post_type() ) {
+			return true;
+		}
+
+		return (bool) $hide;
+	}
 
 	/**
 	 * Filter newspack Templates to show thumbnails

@@ -69,11 +69,45 @@ class TemplateLoader extends \Govpack_Vendor_Gamajo_Template_Loader {
 			return $template;
 		}
 
-		if ( is_singular( \Govpack\Profile\CPT::CPT_SLUG ) ) {
-			return $this->locate_template( \Govpack\Profile\CPT::TEMPLATE_NAME );
+		if ( ! is_singular( \Govpack\Profile\CPT::CPT_SLUG ) ) {
+			return $template;
 		}
 
-		return $template;
+		$located = $this->locate_template( \Govpack\Profile\CPT::TEMPLATE_NAME );
+
+		// A theme copy under govpack/ is an explicit opt-in; it outranks both.
+		if ( $located && 0 !== strpos( $located, $this->plugin_directory ) ) {
+			return $located;
+		}
+
+		if ( $this->theme_handles_single_profile( $template ) ) {
+			return $template;
+		}
+
+		return $located;
+	}
+
+	/**
+	 * Whether to leave the profile for the theme to render.
+	 *
+	 * True for every classic theme with a single.php. The bundle renders outside
+	 * the column themes constrain article text to, and replaces an editor-chosen
+	 * page template.
+	 *
+	 * @param string $template Template the hierarchy resolved to.
+	 * @return bool
+	 */
+	private function theme_handles_single_profile( $template ): bool {
+
+		$handles = ! empty( $template ) && 'index.php' !== basename( $template );
+
+		/**
+		 * Filters whether the theme renders a single profile in place of the bundled template.
+		 *
+		 * @param bool   $handles  Whether the theme renders the profile.
+		 * @param string $template Template the hierarchy resolved to.
+		 */
+		return (bool) apply_filters( 'govpack_theme_handles_single_profile', $handles, $template );
 	}
 
 	private function do_render( string $template, array $attributes = [], string $content = '', mixed $block = null, mixed $extra = null ): string {

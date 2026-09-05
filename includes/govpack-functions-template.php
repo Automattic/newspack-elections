@@ -162,19 +162,24 @@ if ( ! function_exists( 'gp_style_attribute_generator' ) ) {
 }
 
 /**
- * Utility Function that conditionally Outputs a link to a profile around some other content
- * 
- * @param string  $content The content to wrap with a link.
+ * Utility Function that conditionally Outputs a link to a profile around some other content.
+ *
+ * Takes plain text and returns HTML that is safe to echo: the content is
+ * escaped on every path, linked or not, so a caller never has to know which
+ * branch it took. Pass text, not markup.
+ *
+ * @param string  $content The plain-text content to wrap with a link.
  * @param string  $url The URL to link to.
  * @param boolean $use_link Condition control, outputs link if true.
+ * @return string Escaped HTML.
  */
 if ( ! function_exists( 'gp_maybe_link' ) ) {
-	function gp_maybe_link( string $content, string $url, bool $use_link ) {
+	function gp_maybe_link( string $content, string $url, bool $use_link ): string {
 
 		if ( ! $use_link ) {
-			return $content;
+			return esc_html( $content );
 		}
-		return '<a href=' . esc_url( $url ) . '>' . $content . '</a>';
+		return '<a href="' . esc_url( $url ) . '">' . esc_html( $content ) . '</a>';
 	}
 }
 

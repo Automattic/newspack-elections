@@ -62,8 +62,8 @@ class ProfileReadMore extends \Govpack\Blocks\ProfileFieldText {
 		}
 
 		$link_text = $this->attribute( 'linkText' );
-		$prefix    = $this->attribute( 'prefixWithName' ) ? $this->get_profile()->value( 'name' ) : '';
-		$suffix    = $this->attribute( 'suffixWithName' ) ? $this->get_profile()->value( 'name' ) : '';
+		$prefix    = $this->attribute( 'prefixWithName' ) ? esc_html( $this->get_profile()->value( 'name' ) ) : '';
+		$suffix    = $this->attribute( 'suffixWithName' ) ? esc_html( $this->get_profile()->value( 'name' ) ) : '';
 		$link_text = trim( sprintf( '%s %s %s', $prefix, $link_text, $suffix ) );
 		
 

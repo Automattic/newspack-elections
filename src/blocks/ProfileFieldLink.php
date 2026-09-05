@@ -35,7 +35,7 @@ class ProfileFieldLink extends \Govpack\Blocks\ProfileFieldText {
 		$wrapper_attributes = get_block_wrapper_attributes( [ 'class' => $this->get_css_class( $attributes ) ] );
 		?>
 		<div <?php echo $wrapper_attributes; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-			<?php echo $this->output();  //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php echo $this->output(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output() escapes each operand before assembling the anchor. ?>
 		</div>
 		<?php
 	}
@@ -68,9 +68,14 @@ class ProfileFieldLink extends \Govpack\Blocks\ProfileFieldText {
 			$url = 'https://' . $url;
 		}
 		
-		return sprintf( '<a href="%s">%s</a>', $url, $this->linkText() );
+		return sprintf( '<a href="%s">%s</a>', esc_url( $url ), $this->linkText() );
 	}
 
+	/**
+	 * The anchor's inner content, escaped for the format it takes: the icon
+	 * format returns SVG markup and goes through esc_svg(), every other format
+	 * is text and goes through esc_html().
+	 */
 	public function linkText(): string {
 		$link = $this->get_value();
 
@@ -79,19 +84,19 @@ class ProfileFieldLink extends \Govpack\Blocks\ProfileFieldText {
 		$default_label      = $has_default_label ? $link['linkText'] : 'Link';
 		
 		if ( $this->attribute( 'linkFormat' ) === 'url' ) {
-			return $link['url'] ?? '';
+			return esc_html( $link['url'] ?? '' );
 		}
 
 		if ( $this->attribute( 'linkFormat' ) === 'label' ) {
-			return ( $has_label_override ? $this->attribute( 'linkTextOverride' ) : $default_label );
+			return esc_html( $has_label_override ? $this->attribute( 'linkTextOverride' ) : $default_label );
 		}
 
 		if ( $this->attribute( 'linkFormat' ) === 'icon' ) {
-			return $this->get_field()->icon_markup() ?? '';
+			return esc_svg( $this->get_field()->icon_markup() ?? '' );
 		}
 
 
-		return $default_label;
+		return esc_html( $default_label );
 	}
 
 	public function variations(): array {

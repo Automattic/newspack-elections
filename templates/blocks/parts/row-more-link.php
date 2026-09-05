@@ -7,6 +7,4 @@ if ( ! $profile_block->show( 'profile_link' ) ) {
 	return;
 }
 
-$more_link = sprintf( '<a href="%s">%s %s</a>', $profile_data['link'], 'More About', $profile_data['name']['name'] );
-
-echo wp_kses_post( $more_link );
+echo gp_maybe_link( sprintf( 'More About %s', $profile_data['name']['name'] ), $profile_data['link'], true );

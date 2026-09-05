@@ -48,9 +48,12 @@ class ProfileName extends \Govpack\Blocks\ProfileFieldText {
 
 	public function output(): string {
 
-		// If we're not outputting a link then just use the output as normal
+		// The name is text on both paths; escape it here so the anchor below
+		// is assembled from escaped operands rather than relying on kses.
+		$name = esc_html( parent::output() );
+
 		if ( ! $this->attribute( 'isLink' ) ) {
-			return parent::output();
+			return $name;
 		}
 
 		// Great an array of html attributes for the link
@@ -63,7 +66,7 @@ class ProfileName extends \Govpack\Blocks\ProfileFieldText {
 			$link_attrs['rel'] = $this->attribute( 'rel' );
 		}
 
-		return sprintf( '<a %s>%s</a>', self::array_to_html_attributes( $link_attrs ), parent::output() );
+		return sprintf( '<a %s>%s</a>', self::array_to_html_attributes( $link_attrs ), $name );
 	}
 
 	

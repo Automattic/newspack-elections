@@ -671,8 +671,8 @@ const SingleProfile = (props) => {
 						{profile.status}
 					</Row>
 
-					<Row {...defaultRowProps} key="age" id="age" label="Age" display={showAge}>
-						{profile.age} 
+					<Row {...defaultRowProps} key="age" id="age" label="Age" display={showAge && !! profile.age}>
+						{profile.age}
 					</Row>
                     
                     <Row {...defaultRowProps} key="states" id="states" label="State" display={showState} >

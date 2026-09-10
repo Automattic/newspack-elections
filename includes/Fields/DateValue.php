@@ -43,9 +43,18 @@ class DateValue {
 			return null;
 		}
 
+		// ISO calendar dates, padded or not: the canonical editor format and
+		// CSV cells written as 2021-2-3. Validated component-wise so an
+		// impossible day (2021-2-31) is rejected rather than handed to
+		// strtotime, which would roll it over to a different real date.
+		if ( preg_match( '/^(\d{4})-(\d{1,2})-(\d{1,2})$/', $value, $iso_shape ) ) {
+			[ , $year, $month, $day ] = array_map( 'intval', $iso_shape );
+			return self::calendar_date( $year, $month, $day );
+		}
+
 		// Bare year (e.g. a congress_year CSV cell): January 1 of that year.
 		if ( preg_match( '/^\d{4}$/', $value ) ) {
-			return self::plausible( self::strict_from_format( '!Y-m-d', $value . '-01-01' ) );
+			return self::calendar_date( (int) $value, 1, 1 );
 		}
 
 		// Compact Ymd. A valid calendar date resolves; an invalid one whose
@@ -68,9 +77,8 @@ class DateValue {
 		// nothing in this codebase ever wrote epoch seconds, and a unit
 		// heuristic misreads near-epoch milliseconds — the 1966-1973 band,
 		// the demographic center of officeholder birth dates — as seconds.
-		// The instant's time of day is dropped so every branch emits midnight
-		// (PHP's default timezone is UTC under WordPress), keeping the age
-		// math on calendar days rather than instants.
+		// The instant's time of day is dropped so every branch emits UTC
+		// midnight, keeping the age math on calendar days rather than instants.
 		//
 		// Policy: the instant resolves to its UTC calendar day. The retired
 		// writer stored browser-local midnight without recording the offset,
@@ -87,16 +95,9 @@ class DateValue {
 			if ( $milliseconds % 1000 < 0 ) {
 				--$timestamp;
 			}
-			$date = ( new \DateTime() )->setTimestamp( $timestamp );
+			$date = ( new \DateTime( 'now', self::utc() ) )->setTimestamp( $timestamp );
 			$date->setTime( 0, 0, 0 );
 			return self::plausible( $date );
-		}
-
-		// A value shaped like Y-m-d is decided by the strict parse alone —
-		// letting an invalid one (2021-02-31) fall through would hand it to
-		// strtotime, which rolls it over to a different real date.
-		if ( preg_match( '/^\d{4}-\d{2}-\d{2}$/', $value ) ) {
-			return self::plausible( self::strict_from_format( '!Y-m-d', $value ) );
 		}
 
 		// US-format m/d/Y (or m-d-Y) dates are validated component-wise:
@@ -104,31 +105,54 @@ class DateValue {
 		// rejecting it.
 		if ( preg_match( '#^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$#', $value, $us_shape ) ) {
 			[ , $month, $day, $year ] = array_map( 'intval', $us_shape );
-			if ( ! checkdate( $month, $day, $year ) ) {
-				return null;
-			}
-			return self::plausible(
-				self::strict_from_format( '!Y-m-d', sprintf( '%04d-%02d-%02d', $year, $month, $day ) )
-			);
+			return self::calendar_date( $year, $month, $day );
 		}
 
 		// Free-form fallback (CSV-imported values). Require an explicit
 		// 4-digit year so a partial value like "08/06" is rejected instead of
-		// being silently completed with the current year, and reject anything
-		// strtotime cannot parse instead of defaulting to now. The parsed
-		// instant's time of day is dropped like every other branch.
-		if ( ! preg_match( '/\d{4}/', $value ) ) {
+		// being silently completed with the current year; reject a leading
+		// year of five or more digits, which the parser reads as a different
+		// year (10000-01-01 as 2000-01-01); and reject anything the parser
+		// cannot read instead of defaulting to now. The parsed instant is taken
+		// in UTC and its time of day dropped like every other branch.
+		if ( ! preg_match( '/\d{4}/', $value ) || preg_match( '/^\d{5,}-/', $value ) ) {
 			return null;
 		}
 
-		$timestamp = strtotime( $value );
-		if ( false === $timestamp ) {
+		$date = date_create( $value, self::utc() );
+		if ( false === $date ) {
 			return null;
 		}
 
-		$date = ( new \DateTime() )->setTimestamp( $timestamp );
+		$date->setTimezone( self::utc() );
 		$date->setTime( 0, 0, 0 );
 		return self::plausible( $date );
+	}
+
+	/**
+	 * Midnight UTC of a calendar day, or null when the components do not name
+	 * a real, plausible day. checkdate() rejects an impossible day (February 31)
+	 * that DateTime would otherwise roll over into the next month.
+	 *
+	 * @param int $year  Year.
+	 * @param int $month Month, 1-12.
+	 * @param int $day   Day of the month.
+	 */
+	private static function calendar_date( int $year, int $month, int $day ): ?\DateTime {
+		if ( ! checkdate( $month, $day, $year ) ) {
+			return null;
+		}
+		return self::plausible(
+			self::strict_from_format( '!Y-m-d', sprintf( '%04d-%02d-%02d', $year, $month, $day ) )
+		);
+	}
+
+	/**
+	 * Every date here is built and read in UTC explicitly, so the calendar day
+	 * matches the JS reader whatever the process default timezone is.
+	 */
+	private static function utc(): \DateTimeZone {
+		return new \DateTimeZone( 'UTC' );
 	}
 
 	/**
@@ -140,7 +164,7 @@ class DateValue {
 	 * @param string $value  Value to parse.
 	 */
 	private static function strict_from_format( string $format, string $value ): ?\DateTime {
-		$date = \DateTime::createFromFormat( $format, $value );
+		$date = \DateTime::createFromFormat( $format, $value, self::utc() );
 		if ( false === $date ) {
 			return null;
 		}

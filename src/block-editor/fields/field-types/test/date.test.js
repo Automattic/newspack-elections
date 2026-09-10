@@ -11,7 +11,7 @@
  * The PHP twin of this contract is includes/Fields/DateValue.php; the two
  * change together.
  */
-import DateField from '../date';
+import DateField, { ageInYears } from '../date';
 
 const field = new DateField( { slug: 'date', label: 'Date' } );
 
@@ -37,6 +37,27 @@ describe( 'DateField.value()', () => {
 		expect( field.value( '2021-02-31' ) ).toBeNull();
 	} );
 
+	it( 'reads an unpadded ISO date the same way the PHP reader does', () => {
+		// The CSV importer stores cells as written, and the published page
+		// renders 2021-2-3 as February 3, 2021; the editor must agree.
+		const value = field.value( '2021-2-3' );
+
+		expect( value.getUTCFullYear() ).toBe( 2021 );
+		expect( value.getUTCMonth() ).toBe( 1 );
+		expect( value.getUTCDate() ).toBe( 3 );
+		expect( field.value( '1982-8-6' ).getUTCDate() ).toBe( 6 );
+	} );
+
+	it( 'ignores whitespace around a stored value, as the PHP reader does', () => {
+		// The Date parser tolerates padding around most shapes; around an
+		// epoch it gives up, so this is the shape that proves the trim.
+		expect( field.value( ' 397526400000 ' ).getUTCDate() ).toBe( 7 );
+	} );
+
+	it( 'returns null for an impossible unpadded ISO date instead of rolling it over', () => {
+		expect( field.value( '2021-2-31' ) ).toBeNull();
+	} );
+
 	it( 'returns null for an impossible US-format date instead of rolling it over', () => {
 		expect( field.value( '02/31/2021' ) ).toBeNull();
 	} );
@@ -59,12 +80,13 @@ describe( 'DateField.value()', () => {
 		expect( field.value( '-63158400000' ).getUTCFullYear() ).toBe( 1968 );
 	} );
 
-	it( 'reads a bare four-digit year as January 1 of that year', () => {
+	it( 'reads a bare four-digit year as January 1 of that year, within the plausible range', () => {
 		const value = field.value( '1982' );
 
 		expect( value.getUTCFullYear() ).toBe( 1982 );
 		expect( value.getUTCMonth() ).toBe( 0 );
 		expect( value.getUTCDate() ).toBe( 1 );
+		expect( field.value( '0999' ) ).toBeNull();
 	} );
 
 	it( 'reads a compact yyyyMMdd date', () => {
@@ -111,5 +133,28 @@ describe( 'DateField.value()', () => {
 
 	it( 'returns null for a partial date with no year, instead of inventing one', () => {
 		expect( field.value( '08/06' ) ).toBeNull();
+	} );
+} );
+
+describe( 'ageInYears()', () => {
+	// 17:00 UTC on 2026-09-10 is already 2026-09-11 in Asia/Tokyo and still
+	// 2026-09-10 in America/Chicago, so a local-time reading splits from the
+	// UTC day the published page uses, in either direction.
+	const now = new Date( '2026-09-10T17:00:00Z' );
+
+	it( 'counts whole years on UTC calendar days, matching the published age', () => {
+		expect( ageInYears( '1988-09-11', now ) ).toBe( 37 );
+		expect( ageInYears( '1988-09-10', now ) ).toBe( 38 );
+	} );
+
+	it( 'reads a legacy millisecond-epoch date of birth', () => {
+		// 397526400000 ms = 1982-08-07.
+		expect( ageInYears( '397526400000', now ) ).toBe( 44 );
+	} );
+
+	it( 'returns null for a future or unusable date of birth', () => {
+		expect( ageInYears( '2030-01-01', now ) ).toBeNull();
+		expect( ageInYears( 'not a date at all', now ) ).toBeNull();
+		expect( ageInYears( '', now ) ).toBeNull();
 	} );
 } );

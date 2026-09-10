@@ -13,10 +13,11 @@ import { render, fireEvent } from '@testing-library/react';
 import { PanelDateControl } from '../index';
 import { __setMockMeta, __mockSetMeta } from '@wordpress/core-data';
 
-const renderControl = () =>
-	render(
-		<PanelDateControl label="Date of Birth" meta_key="date_of_birth" onChange={ null } />
-	);
+// A fresh element each call: React skips re-rendering an identical one, and
+// the typing test needs each rerender to read the meta the last change wrote.
+const control = () => <PanelDateControl label="Date of Birth" meta_key="date_of_birth" onChange={ null } />;
+
+const renderControl = () => render( control() );
 
 describe( 'PanelDateControl', () => {
 	beforeEach( () => {
@@ -46,6 +47,20 @@ describe( 'PanelDateControl', () => {
 		expect( __mockSetMeta ).toHaveBeenCalledWith( { date_of_birth: '1980-12-25' } );
 	} );
 
+	it( 'keeps each state of a year typed digit by digit, never blanking the field mid-entry', () => {
+		// A native date input commits 0001-09-11, 0019-09-11, 0198-09-11 and
+		// then 1988-09-11 as each year digit lands; blanking an intermediate
+		// state discards the rest of the typing.
+		const { container, rerender } = renderControl();
+
+		for ( const typed of [ '0001-09-11', '0019-09-11', '0198-09-11', '1988-09-11' ] ) {
+			fireEvent.change( container.querySelector( 'input' ), { target: { value: typed } } );
+			rerender( control() );
+
+			expect( container.querySelector( 'input' ).value ).toBe( typed );
+		}
+	} );
+
 	it( 'commits clearing the field as an empty string, exactly once', () => {
 		__setMockMeta( { date_of_birth: '1982-08-06' } );
 
@@ -58,12 +73,15 @@ describe( 'PanelDateControl', () => {
 		expect( __mockSetMeta ).toHaveBeenCalledWith( { date_of_birth: '' } );
 	} );
 
-	it( 'renders a legacy epoch-string value as an empty field without touching meta', () => {
-		__setMockMeta( { date_of_birth: '397526400000' } );
+	it.each( [
+		[ 'a millisecond epoch', '397526400000', '1982-08-07' ],
+		[ 'an unpadded import', '1982-8-6', '1982-08-06' ],
+	] )( 'shows %s as the date it resolves to, without touching meta', ( _label, stored, shown ) => {
+		__setMockMeta( { date_of_birth: stored } );
 
 		const { container } = renderControl();
 
-		expect( container.querySelector( 'input' ).value ).toBe( '' );
+		expect( container.querySelector( 'input' ).value ).toBe( shown );
 		expect( __mockSetMeta ).not.toHaveBeenCalled();
 	} );
 } );

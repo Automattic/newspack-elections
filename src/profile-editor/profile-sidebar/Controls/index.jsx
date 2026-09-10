@@ -3,6 +3,8 @@ import { compose } from "@wordpress/compose";
 import { withSelect } from "@wordpress/data";
 import { useEntityId, useEntityProp } from "@wordpress/core-data";
 
+import { normalizeDate } from "../../../block-editor/fields/field-types/date";
+
 
 
 export const PanelFieldset = ({legend = null, children}) => {
@@ -17,7 +19,7 @@ export const PanelFieldset = ({legend = null, children}) => {
 	)
 }
 
-const DefaultControl = (props, Control) => {
+const DefaultControl = (props, Control, toDisplayValue = ( stored ) => stored) => {
 	const {onChange = null, value, ...restProps} = props
 
 	
@@ -33,7 +35,7 @@ const DefaultControl = (props, Control) => {
 			key = {`npe-field-input-${props.meta_key}`}
 			__nextHasNoMarginBottom = {true}
             label = {props.label}
-            value={ meta[props.meta_key] }
+            value={ toDisplayValue( meta[props.meta_key] ) }
             onChange={ ( value ) => {
                 setMeta( { [props.meta_key]: value } )
             }}
@@ -69,12 +71,24 @@ export const PanelTextareaControl = (props) => {
  * the profile meta stores, so the string passes through with no parse/format
  * step and no timezone math.
  *
- * A stored value in a non-canonical legacy format (millisecond-epoch strings
- * from the previous control) renders as an empty field: the browser rejects
- * it and keeps the meta untouched until the user picks a new date.
+ * The input accepts nothing but that ISO form, so a value stored in an older
+ * format (a millisecond epoch from the previous control, an unpadded import)
+ * is shown as the date it resolves to — the same date the published page
+ * renders. Display only: the stored value is untouched until the user edits
+ * the field.
  */
+const toDateInputValue = ( stored ) => {
+	// A value already in the input's own form passes through untouched: a
+	// year typed digit by digit commits 0001, 0019 and 0198 on the way to
+	// 1988, and converting those states would blank the field mid-entry.
+	if ( /^\d{4}-\d{2}-\d{2}$/.test( stored ?? "" ) ) {
+		return stored
+	}
+	return normalizeDate( stored )?.toISOString().slice( 0, 10 ) ?? ""
+}
+
 export const PanelDateControl = (props) => {
-	return DefaultControl({ ...props, type: "date" }, TextControl)
+	return DefaultControl({ ...props, type: "date" }, TextControl, toDateInputValue)
 }
 
 export const PanelSelectControl = (props) => {

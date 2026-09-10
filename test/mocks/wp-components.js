@@ -3,6 +3,9 @@
  * Structural only, so the component logic under test stays the real code.
  * TextControl mirrors the real component's contract: renders a labeled input
  * carrying the forwarded `type`, and calls onChange with the string value.
+ * That the real TextControl forwards `type` is assumed, not asserted — the
+ * package is a webpack external absent from node_modules — so a test reading
+ * `input.type` pins what the plugin passes, not what WordPress renders.
  */
 import { createElement } from '@wordpress/element';
 

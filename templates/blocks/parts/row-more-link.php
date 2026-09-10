@@ -7,4 +7,9 @@ if ( ! $profile_block->show( 'profile_link' ) ) {
 	return;
 }
 
-echo gp_maybe_link( sprintf( 'More About %s', $profile_data['name']['name'] ), $profile_data['link'], true );
+echo gp_maybe_link(
+	/* translators: %s: the profile's name. */
+	sprintf( __( 'More About %s', 'newspack-elections' ), $profile_data['name']['name'] ),
+	$profile_data['link'],
+	true
+);

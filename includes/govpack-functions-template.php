@@ -383,19 +383,32 @@ if ( ! function_exists( 'esc_svg' ) ) {
 			$svg_string,
 			[
 				'svg'      => [
-					'xmlns'   => [], 
-					'width'   => [], 
-					'height'  => [], 
-					'viewbox' => [], //lowercase not camelcase!
-				], 
+					'xmlns'       => [],
+					'width'       => [],
+					'height'      => [],
+					'viewbox'     => [], //lowercase not camelcase!
+					'fill'        => [],
+					'aria-hidden' => [],
+					'role'        => [],
+					'focusable'   => [],
+					'class'       => [],
+				],
 				'path'     => [
-					'd' => [],
+					'd'         => [],
+					'fill'      => [],
+					'fill-rule' => [],
+					'clip-rule' => [],
+					'clip-path' => [],
 				],
 				'g'        => [
-					'path' => [],
+					'path'      => [],
+					'fill'      => [],
+					'clip-path' => [],
 				],
 				'defs'     => [],
-				'clippath' => [],
+				'clippath' => [
+					'id' => [],
+				],
 				
 			]
 		);

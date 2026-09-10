@@ -72,9 +72,7 @@ class ProfileFieldLink extends \Govpack\Blocks\ProfileFieldText {
 	}
 
 	/**
-	 * The anchor's inner content, escaped for the format it takes: the icon
-	 * format returns SVG markup and goes through esc_svg(), every other format
-	 * is text and goes through esc_html().
+	 * The anchor's inner content, already escaped for the format it takes.
 	 */
 	public function linkText(): string {
 		$link = $this->get_value();

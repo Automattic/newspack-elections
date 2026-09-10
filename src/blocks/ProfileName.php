@@ -59,7 +59,7 @@ class ProfileName extends \Govpack\Blocks\ProfileFieldText {
 		// Great an array of html attributes for the link
 		$link_attrs = [
 			'target' => $this->attribute( 'linkTarget' ),
-			'href'   => $this->get_profile()->permalink(),
+			'href'   => esc_url( $this->get_profile()->permalink() ),
 		];
 
 		if ( $this->attribute( 'rel' ) ) {

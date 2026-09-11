@@ -1,0 +1,26 @@
+name: Unit Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  js:
+    runs-on: ubuntu-latest
+    # The date readers must resolve the same calendar day on both sides of
+    # UTC; a UTC-only run cannot tell a local-time parse from a UTC one.
+    strategy:
+      matrix:
+        tz: [ Asia/Tokyo, America/Chicago ]
+    env:
+      TZ: ${{ matrix.tz }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run test:unit

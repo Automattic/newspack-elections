@@ -7,7 +7,6 @@
 
 namespace Govpack\Blocks;
 
-use DateTime;
 use WP_Block;
 
 defined( 'ABSPATH' ) || exit;
@@ -25,18 +24,10 @@ class ProfileFieldDate extends \Govpack\Blocks\ProfileFieldText {
 	}
 
 	public function get_value(): string {
-		
-		$date = \DateTime::createFromFormat( 'Y-m-d', parent::get_value() ); 
-		
-		try {
-			if($date === false){
-				$date = new DateTime( parent::get_value() );
-			}
-		} catch (\Exception $e) {
-			$date = false;
-		}
-		
-		if ( $date === false ) {
+
+		$date = \Govpack\Fields\DateValue::to_datetime( parent::get_value() );
+
+		if ( null === $date ) {
 			return '';
 		}
 

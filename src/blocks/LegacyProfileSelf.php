@@ -40,6 +40,9 @@ class LegacyProfileSelf extends \Govpack\Blocks\LegacyProfile {
 	/**
 	 * Enqueues this block's styles plus the Profile block's, which the single profile markup also uses.
 	 *
+	 * Runs on every theme type on purpose: classic themes dequeue these handles in the head
+	 * (see remove_view_styles()), and this render-time enqueue restores them.
+	 *
 	 * @return void
 	 */
 	public function enqueue_view_assets(): void {

@@ -1,327 +1,306 @@
-
-
-
-.wp-block-govpack-profile{
-
-    $block : &;
-
+.wp-block-govpack-profile {
 	// force a gap between the block and content
-    margin-bottom:1rem;
+	margin-bottom: 1rem;
 
 	// good baseline font size
 	font-size: 1rem;
 
-	// give us a nice border radius that clips images etc
-	&__container{
-		border-radius: 8px;
-		overflow: hidden;
-		border: 1px solid var(--npe-profile-default-border-color);
-		background-color: var(--npe-profile-background-color, tranparent);
-	}
-
 	// the photo has to be 100% wide by default
 	&__avatar {
-        width:100%;
+		width: 100%;
 		aspect-ratio: 1/1;
 		overflow: hidden;
-
-		
-    }
-
-	&__name{
-		margin:0;
 	}
 
-
+	&__name {
+		margin: 0;
+	}
 
 	// the info box needs some spacing between it and the border
-	&__info{
+	&__info {
 		padding: 1rem 2rem;
 		margin: 0;
 	}
 
 	&__heading {
-		margin:0 0 .3rem 0;
-		padding:0;
-		font-size:1rem;
+		margin: 0 0 0.3rem 0;
+		padding: 0;
+		font-size: 1rem;
 	}
 
-	.npe-profile-sub-heading,	
+	.npe-profile-sub-heading,
 	&__sub-heading {
-		margin:0;
-		padding:0;
-		font-size:0.9rem;
+		margin: 0;
+		padding: 0;
+		font-size: 0.9rem;
 	}
 
 	&__group {
-		&, &-items{
-			margin:0;
-			padding:0;
 
-			display:flex;
+		&,
+		&-items {
+			margin: 0;
+			padding: 0;
+			display: flex;
 			flex-direction: column;
 		}
 
-		&-items{
+		&-items {
 			gap: 0.5rem;
 		}
 	}
 
-	&__label{
+	&__label {
 		white-space: nowrap;
 	}
 
 	.npe-profile-heading,
 	&__heading,
 	.npe-profile-sub-heading,
-	.npe-profile-row__content--party{
+	.npe-profile-row__content--party {
 		font-weight: 700;
 	}
 
-
-	
-
-	&__comms-other{
+	&__comms-other {
 		width: 100%;
-		margin-top:0;
+		margin-top: 0;
 		overflow: auto;
 
-        .aligncenter & {
-            text-align: center;
-
-            dt,dd {
-                float: none;
-                padding: 0;
-            }
-        }
-
-		dt,dd{
+		dt,
+		dd {
 			font-size: 0.8rem;
-			float:left;
-			margin: 0;   
+			float: left;
+			margin: 0;
 		}
 
-		dt{
-			clear:left;
+		dt {
+			clear: left;
 
-			&:after{
-				display:inline-block;
+			&::after {
+				display: inline-block;
 				content: ": ";
-				margin-right:.5em;
+				margin-right: 0.5em;
 			}
 		}
 
-        dd{
-            .alignright & {
-                float: right;
-            }
-        }
+		.aligncenter & {
+			text-align: center;
 
+			dt,
+			dd {
+				float: none;
+				padding: 0;
+			}
+		}
+
+		dd {
+
+			.alignright & {
+				float: right;
+			}
+		}
 	}
 
-	
-
-    &__container {
-
-        $element : &;
-		display:flex;
+	&__container {
+		display: flex;
 		flex-direction: column;
+		border-radius: 8px;
+		overflow: hidden;
+		border: 1px solid var(--npe-profile-default-border-color);
+		background-color: var(--npe-profile-background-color, transparent);
 
 		&--left,
 		&--right {
-			padding:1.5rem;
-			gap:1.5rem;
-			.wp-block-govpack-profile__info{
-				padding:0;
+			padding: 1.5rem;
+			gap: 1.5rem;
+
+			.wp-block-govpack-profile__info {
+				padding: 0;
 			}
 		}
 
-        &--right {
-            flex-direction: row-reverse;
-        }
+		&--right {
+			flex-direction: row-reverse;
+		}
 
-        &--left {
-            flex-direction: row;
-        }
-		
+		&--left {
+			flex-direction: row;
+		}
 
-        &--align-center{
-            margin-left: auto;
-            margin-right: auto;
 
-            #{$block}__social_group, #{$block}__comms{
-                justify-content: center;                
-            }
+		&--align-center {
+			margin-left: auto;
+			margin-right: auto;
 
-            #{$block}__comms-icons{
-                flex-grow: 0;
-            }
+			.wp-block-govpack-profile__social_group,
+			.wp-block-govpack-profile__comms {
+				justify-content: center;
+			}
 
-            #{$block}__comms-other {
-                text-align: center;
+			.wp-block-govpack-profile__comms-icons {
+				flex-grow: 0;
+			}
 
-                dt,dd {
-                    float: none;
-                    padding: 0;
-                }
-            }
-        }
+			.wp-block-govpack-profile__comms-other {
+				text-align: center;
 
-        &--align-right{
-            #{$block}__comms-other {                
+				dt,
+				dd {
+					float: none;
+					padding: 0;
+				}
+			}
+		}
 
-                dd {
-                    float: right;                    
-                }
-            }
-        }
+		&--align-right {
 
-    }
+			.wp-block-govpack-profile__comms-other {
 
-	&__icon-set{
+				dd {
+					float: right;
+				}
+			}
+		}
+	}
+
+	&__icon-set {
 		list-style: none;
 		display: flex;
 		flex-direction: row;
 		gap: 0.5rem;
 		align-items: center;
-		padding-left:0;
-		margin:0;
+		padding-left: 0;
+		margin: 0;
 	}
 
-	&__icon{
-		&, svg {
+	&__icon {
+
+		&,
+		svg {
 			display: flex;
 			width: 1rem;
 			height: auto;
 			max-height: 1rem;
 		}
-		svg, path {
-			fill : currentColor;
+
+		svg,
+		path {
+			fill: currentcolor;
 		}
 
 		&--x {
-			max-width:18px;
-			max-height:18px;
+			max-width: 18px;
+			max-height: 18px;
 		}
 	}
-	
-	&__social_group{
+
+	&__social_group {
 		display: flex;
 		align-items: center;
 
-        .aligncenter & {
-            justify-content: center;
-            align-items: center;
-        }
+		.aligncenter & {
+			justify-content: center;
+			align-items: center;
+		}
 
-        .alignright & {
-            justify-content: flex-end;
-        }
+		.alignright & {
+			justify-content: flex-end;
+		}
 	}
 
+	&__contact {
+
+		&__link,
+		a {
+			display: block;
+			text-decoration: none;
+		}
+
+		&__icon {
+			display: inline-block;
+			max-width: 20px;
+			max-height: 20px;
+			width: 100%;
+			height: auto;
 
 
-
-   
-
-
-    &__contact {
-
-        $elm : &;
-
-        &__link,
-        a{
-            display:block;
-            text-decoration: none;
-        }
-
-        &__icon{
-            display:inline-block;
-            max-width:20px;
-            max-height:20px;
-            width:100%;
-            height:auto;
-			
-			
-            svg{
-                max-width:20px;
-                max-height:20px;
-                display:block;
-				width:100%;
-            }
-
-			svg, path {
-				fill : currentColor;
+			svg {
+				max-width: 20px;
+				max-height: 20px;
+				display: block;
+				width: 100%;
 			}
 
-			
-        }
+			svg,
+			path {
+				fill: currentcolor;
+			}
+		}
 
-        &__label{
-            display:inline-block;
-        }
+		&__label {
+			display: inline-block;
+		}
 
-        &--hide-label{
-            #{$elm}__label{
-                display:none;
-            }
-        }
-    }
+		&--hide-label {
 
+			.wp-block-govpack-profile__contact__label {
+				display: none;
+			}
+		}
+	}
 
+	&.is-style-boxed_centered,
+	&.is-style-center {
 
+		.wp-block-govpack-profile__avatar {
+			margin-left: 0;
+			margin-right: 0;
+			margin-bottom: 1rem;
+		}
 
-    &.is-style-boxed_centered,
-    &.is-style-center{
+		.wp-block-govpack-profile__info,
+		.wp-block-govpack-profile__container {
+			flex-direction: column;
+			width: 100%;
+			align-items: center;
+			align-content: center;
+		}
 
-        #{$block}__avatar {
-            margin-left:0;
-            margin-right:0;
-            margin-bottom:1rem;
-        }
-        #{$block}__info,
-        #{$block}__container {
-            flex-direction: column;
-            width:100%;
-            align-items: center;
-            align-content: center;
-        }
+		.wp-block-govpack-profile__line {
+			width: 100%;
+			text-align: center;
+		}
 
-        #{$block}__line{
-            width:100%;
-            text-align:center;
-        }
+		.wp-block-govpack-profile__contacts ul {
+			justify-content: center;
+		}
+	}
 
-        #{$block}__contacts ul{
-            justify-content: center;
-        }
-    }
-
-    &.is-style-boxed_centered,
-    &.is-style-boxed{
-        padding:1.5rem;
-        border:1px solid rgba(0,0,0,0.04);
-        background-color:rgba(0,0,0,0.02);
-        margin-top: 0 !important;
+	&.is-style-boxed_centered,
+	&.is-style-boxed {
+		padding: 1.5rem;
+		border: 1px solid rgba(0, 0, 0, 0.04);
+		background-color: rgba(0, 0, 0, 0.02);
+		margin-top: 0 !important;
 		word-break: normal;
-    }
+	}
 
-	&__name:has(+ &__status-tag ) {
+	&__name:has(+ &__status-tag) {
 		display: inline-block;
 		margin: 0;
 	}
-	
-	&--flex-left{
+
+	&--flex-left {
 		display: flex;
-		flex-direction:row;
+		flex-direction: row;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: .33rem;
+		gap: 0.33rem;
 	}
 
-	&__line-label{
-		margin:0;
-		padding:0;
+	&__line-label {
+		margin: 0;
+		padding: 0;
 	}
 
 	a,
@@ -329,21 +308,20 @@
 	&.is-style-red a,
 	&.is-style-blue,
 	&.is-style-yellow,
-
 	.wp-block-govpack-profile__name,
 	.npe-profile-row__content--party {
-		color : var(--npe-profile-contrast-color, inherit)
+		color: var(--npe-profile-contrast-color, inherit);
 	}
 
 	&.is-style-red-tint,
-
 	&.is-style-blue-tint,
 	&.is-style-yellow-tint {
 
 		a {
-			color : var(--npe-profile-contrast-color, inherit)
+			color: var(--npe-profile-contrast-color, inherit);
 		}
-		#{$block}__container{
+
+		.wp-block-govpack-profile__container {
 			border: none;
 		}
 	}
@@ -351,75 +329,65 @@
 }
 
 .gp-profile-contact {
-
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	margin-right:0;
-	column-gap:.5rem;
-	row-gap: .25rem;
+	margin-right: 0;
+	column-gap: 0.5rem;
+	row-gap: 0.25rem;
 
-	&__icons{
+	&__icons {
 		flex-grow: 1;
 	}
 
-	&__label{
-        display:inline-block;
-    }
+	&__label {
+		display: inline-block;
+	}
 
 	address {
 		width: 100%;
 		flex-grow: 1;
-		margin-bottom: 0rem;
+		margin-bottom: 0;
 		font-style: normal;
-		font-size:0.9em;
+		font-size: 0.9em;
 	}
 
-	&__link{
-		&--hide-label{
-			.gp-profile-contact__label{
-				display:none;
+	&__link {
+
+		&--hide-label {
+
+			.gp-profile-contact__label {
+				display: none;
 			}
 		}
 	}
 }
 
-.wp-block-column .wp-block-govpack-profile{
-	margin-right:0;
+.wp-block-column .wp-block-govpack-profile {
+	margin-right: 0;
 }
 
 .govpack-tag {
-	display: block;
 	padding: 0.2rem 0.4rem;
 	background-color: #eee;
 	display: inline-block;
-	font-size:0.8rem;
+	font-size: 0.8rem;
 	border-radius: 3px;
 }
 
-
-
-
-
-
-
-
-.npe-profile-row {	
-	$block : &;
-
-	padding-top:.5rem;
-    padding-bottom:.5rem;
-    border-bottom: 1px solid;
+.npe-profile-row {
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	border-bottom: 1px solid;
 	border-color: #ccc;
 
-	
-	&:first-of-type{
-		padding-top:0rem;
+	&:first-of-type {
+		padding-top: 0;
 	}
 
-	&:last-child{
-		padding-bottom:0rem;
-		border-bottom: 0px;
+	&:last-child {
+		padding-bottom: 0;
+		border-bottom: 0;
 	}
 
 	.alignright & {
@@ -430,114 +398,62 @@
 		margin: 0;
 	}
 
-	&--labels-above, &{
-		#{$block}__label,
-		#{$block}__content{
-			display:block;
+	&--labels-above,
+	& {
+
+		.npe-profile-row__label,
+		.npe-profile-row__content {
+			display: block;
 		}
 	}
 
-	&--labels-beside{
-		#{$block}__label,
-		#{$block}__content{
-			display:inline;
+	&--labels-beside {
+
+		.npe-profile-row__label,
+		.npe-profile-row__content {
+			display: inline;
 		}
 
-		#{$block}__label::after{
-			content:":\00a0";
+		.npe-profile-row__label::after {
+			content: ":\00a0";
 		}
 	}
-	
+
 	&__label {
-		font-size: .9rem;
-		font-weight: bold;
+		font-size: 0.9rem;
+		font-weight: 700;
 
-		#{$block} &--hide{
+		.npe-profile-row &--hide {
 			display: none;
 		}
-		#{$block} &--show{
+
+		.npe-profile-row &--show {
 			display: initial;
 		}
 	}
 
 	&__content {
-		line-height:1.2;
+		line-height: 1.2;
 		margin: 0;
 		padding-left: 0;
 	}
-
-	
 }
-
-
 
 .govpack-photo {
 	margin: 0 auto;
-	overflow:hidden;
+	overflow: hidden;
 
 	.govpack-photo-image,
 	img {
-		display:block;
-		width:100%;
+		display: block;
+		width: 100%;
 		height: 100%;
 		object-fit: cover;
 		object-position: center;
 	}
 
 	.wp-block-govpack-profile__container--right & img,
-	.wp-block-govpack-profile__container--left  & img{
+	.wp-block-govpack-profile__container--left  & img {
 		border-radius: 4px;
 	}
 }
-
-
-
-/*
-.govpack-inline-list {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-
-	> li {
-		float: left;
-	}
-}
-
-.govpack-vertical-list {
-	&,
-	.editor-styles-wrapper &{
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-}
-
-
-.wp-block-govpack-profile{
-	.editor-styles-wrapper &__contacts,
-	.editor-styles-wrapper &__contact,
-	.editor-styles-wrapper &__comms,
-	.editor-styles-wrapper &__social,
-
-	&__social,
-	&__comms,
-    &__contact,
-	&__contacts
-	{
-
-		ul{
-            margin:0;
-            padding:0;
-            list-style: none;
-        }
-
-        ul li{
-            margin-right:.5rem;
-
-            &:last-of-type{
-                margin-right:0;
-            }
-        }
-    }
-}
-	*/

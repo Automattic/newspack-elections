@@ -1,6 +1,6 @@
 {
 	"name": "govpack/profile-self",
-	"style": ["govpack-profile-style", "npe-blocks-shared-styles", "file:./view.css"],
+	"style": ["npe-blocks-shared-styles", "file:./view.css"],
     "editorScript": "file:./index.js",
 	"category": "newspack-elections",
 	"styles": [

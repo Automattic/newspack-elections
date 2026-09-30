@@ -9,21 +9,21 @@ License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 
-Newspack Elections allows WordPress users to create and maintain profiles of elected officials that can be inserted into posts with Gutenberg blocks. 
+Newspack Elections allows WordPress users to create and maintain profiles of elected officials that can be inserted into posts with Gutenberg blocks.
 
 ## Description ##
 
 
-Govpack is a WordPress plugin and data research service intended to make building election guides easier as well as provide voters and constituents with easier access to contact information for public officials. 
+Govpack is a WordPress plugin and data research service intended to make building election guides easier as well as provide voters and constituents with easier access to contact information for public officials.
 
 
-In development since 2020 with generous support from [Newspack](https://newspack.pub/), the [American Press Institute](https://www.americanpressinstitute.org/), the [Knight Lab at Northwestern University](https://knightlab.northwestern.edu/), [Chicago Standard](https://chicagostandard.co/) and core development led by [Powered by Coffee](https://poweredbycoffee.co.uk/), it was created by [Fernando Diaz](https://twitter.com/thefuturewasnow) to leverage [WordPress](https://wordpress.org/) and [Gutenberg](https://wordpress.org/gutenberg/) blocks to streamline the production process of voter education materials and establish a standard for structured data about public officials.  
+In development since 2020 with generous support from [Newspack](https://newspack.pub/), the [American Press Institute](https://www.americanpressinstitute.org/), the [Knight Lab at Northwestern University](https://knightlab.northwestern.edu/), [Chicago Standard](https://chicagostandard.co/) and core development led by [Powered by Coffee](https://poweredbycoffee.co.uk/), it was created by [Fernando Diaz](https://twitter.com/thefuturewasnow) to leverage [WordPress](https://wordpress.org/) and [Gutenberg](https://wordpress.org/gutenberg/) blocks to streamline the production process of voter education materials and establish a standard for structured data about public officials.
 
 
-Govpack was also created to address the wide gap in structured data about local elected officials, typically considered “down ballot” races at election time. Because elections in the U.S. are managed by various agencies at the local, state and federal level, there is currently no standard for data about public officials. Govpack researchers partner with local news organizations to compile data from primary sources as well as trusted third-party sources to collect as much information as is possible about candidates for public office and elected officials. 
+Govpack was also created to address the wide gap in structured data about local elected officials, typically considered “down ballot” races at election time. Because elections in the U.S. are managed by various agencies at the local, state and federal level, there is currently no standard for data about public officials. Govpack researchers partner with local news organizations to compile data from primary sources as well as trusted third-party sources to collect as much information as is possible about candidates for public office and elected officials.
 
 
-The first release includes support for more than 70 data points that are found in sources like [Open States](https://openstates.org/), [Ballotpedia](https://ballotpedia.org/Main_Page), the [Center for Tech and Civic Life](https://www.techandciviclife.org/), [Open Secrets](https://www.opensecrets.org/), [ProPublica Congress API](https://projects.propublica.org/api-docs/congress-api/) and [the @unitedstates project](https://theunitedstates.io/). 
+The first release includes support for more than 70 data points that are found in sources like [Open States](https://openstates.org/), [Ballotpedia](https://ballotpedia.org/Main_Page), the [Center for Tech and Civic Life](https://www.techandciviclife.org/), [Open Secrets](https://www.opensecrets.org/), [ProPublica Congress API](https://projects.propublica.org/api-docs/congress-api/) and [the @unitedstates project](https://theunitedstates.io/).
 
 
 ## How to install Govpack ##
@@ -32,13 +32,30 @@ The first release includes support for more than 70 data points that are found i
 If you'd like to install Govpack on your site, you should download the latest plugin release from [WordPress.org](https://wordpress.org/plugins/govpack/) or the [GitHub Releases](https://github.com/govpack-wp/govpack-plugin/releases) page and upload that file using the plugin installer in your WordPress admin interface. If you have any trouble, please contact hello@govpack.org
 
 
+## Releases ##
+
+
+Releases are built from `main` and triggered by pushing a version tag.
+
+1. Merge everything that belongs in the release into `main`.
+2. Commit a version bump directly to `main`: update the `Version:` header in `newspack-elections.php` and use the commit message `chore(release): vX.Y.Z` (see [the v2.0.4 bump](https://github.com/Automattic/newspack-elections/commit/341e994727cfe4673b45432cf10815a0df43614b)). This is the only place the version is set; `version.php` is generated during the release build. Pushing directly to `main` requires a repository role that can bypass the branch ruleset.
+3. Tag the bump commit and push the tag:
+
+    ```
+    git tag vX.Y.Z
+    git push origin vX.Y.Z
+    ```
+
+4. The tag starts the release workflow (`.github/workflows/release.yml`). It builds `newspack-elections-vX.Y.Z.zip` and publishes a GitHub Release with the zip attached. Check the Actions tab for the run, and the Releases page for the result.
+
+
 # Frequently Asked Questions #
 
 
 ## Why did you make Govpack? ##
 
 
-We were Inspired by Poderopedia, Open States, Chi.Vote and the experience of covering numerous elections over years and in different communities. Oftentimes, news organizations are scrambling to put together comprehensive election guides with limited resources and time. Then, after the election is over, they move on. All of those efforts are trapped in time and of limited value. Govpack provides a CMS-native solution that leverages the investment in editorial resources and allows for its dynamic reuse well after an election. 
+We were Inspired by Poderopedia, Open States, Chi.Vote and the experience of covering numerous elections over years and in different communities. Oftentimes, news organizations are scrambling to put together comprehensive election guides with limited resources and time. Then, after the election is over, they move on. All of those efforts are trapped in time and of limited value. Govpack provides a CMS-native solution that leverages the investment in editorial resources and allows for its dynamic reuse well after an election.
 
 
 ## What can I do with Govpack? ##
@@ -50,19 +67,19 @@ Govpack was designed for news organizations that want to create election guides 
 ## How much does it cost to use Govpack? ##
 
 
-The plugin is, and always will be, free. The project is currently self-funded by Chicago Standard and will soon be seeking funding to build out new features and respond to user feedback. Chicago Standard also provides data and research as a service for modest fees that allow for college students to participate in the process in a paid capacity. 
+The plugin is, and always will be, free. The project is currently self-funded by Chicago Standard and will soon be seeking funding to build out new features and respond to user feedback. Chicago Standard also provides data and research as a service for modest fees that allow for college students to participate in the process in a paid capacity.
 
 
 ## Can I use Govpack if I’m still using the Classic Editor? ##
 
 
-Unfortunately, no. Govpack leverages the Gutenberg editor to make it easy to insert profiles using the profile block, which is a fork of the standard WordPress Author block; populating the top of a public official’s profile page with the meta profile block; and combining multiple blocks to create associations like elections, caucuses, or directories. There has been some interest in making a version that can leverage short codes to insert profiles into posts but that feature is not currently on the roadmap.  
+Unfortunately, no. Govpack leverages the Gutenberg editor to make it easy to insert profiles using the profile block, which is a fork of the standard WordPress Author block; populating the top of a public official’s profile page with the meta profile block; and combining multiple blocks to create associations like elections, caucuses, or directories. There has been some interest in making a version that can leverage short codes to insert profiles into posts but that feature is not currently on the roadmap.
 
 
 ## Where does your data come from? ##
 
 
-We obtain our data from a number of sources, both paid and free, that include Ballotpedia, the Center for Tech and Civic Life, ProPublica Congress API, Open Secrets and the election agencies that are primary sources for this information. We attempt to provide a base for our partners to “seed” their directories that they can later complement with local officials that are not in those larger data sets. When resources and time allow, we assign researchers to “complete” profiles by locating information about candidates on the internet, other sources and if needed - and possible - contacting the candidates and/or public officials directly.   
+We obtain our data from a number of sources, both paid and free, that include Ballotpedia, the Center for Tech and Civic Life, ProPublica Congress API, Open Secrets and the election agencies that are primary sources for this information. We attempt to provide a base for our partners to “seed” their directories that they can later complement with local officials that are not in those larger data sets. When resources and time allow, we assign researchers to “complete” profiles by locating information about candidates on the internet, other sources and if needed - and possible - contacting the candidates and/or public officials directly.
 
 
 ## Do I need to know how to code to use Govpack? ##
@@ -74,7 +91,7 @@ Nope! That’s one of the main reasons we built Govpack. Previous efforts at sop
 ## Do you provide training or research support? ##
 
 
-We’re happy to provide training for newsrooms that want to use the tool and are currently working with more than a dozen to produce election guides and other materials for the 2022 U.S. midterm elections. We can also provide research support for modest fees. 
+We’re happy to provide training for newsrooms that want to use the tool and are currently working with more than a dozen to produce election guides and other materials for the 2022 U.S. midterm elections. We can also provide research support for modest fees.
 
 
 ## Can I use Govpack to track legislation? ##

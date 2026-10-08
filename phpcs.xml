@@ -45,6 +45,7 @@
 			<element value="get_block_wrapper_attributes" />
 			<element value="gp_line_attributes" />
 			<element value="gp_get_the_status_terms_list" />
+			<element value="gp_maybe_link" />
 		</property>
 	</properties>
 </rule>

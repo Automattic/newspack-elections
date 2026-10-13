@@ -68,6 +68,11 @@ class ProfileRow extends \Govpack\Blocks\ProfileField {
 			return false;
 		}
 
+		// Date blocks hide stored dates they can't read, so the row treats those as empty too.
+		if ( 'date' === $this->get_field()->type->slug && null === \Govpack\Fields\DateValue::to_datetime( $value ) ) {
+			return false;
+		}
+
 		return true;
 	}
 

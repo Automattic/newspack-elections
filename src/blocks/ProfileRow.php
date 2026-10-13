@@ -55,11 +55,12 @@ class ProfileRow extends \Govpack\Blocks\ProfileField {
 	}
 
 	public function show_block(): bool {
-		
-		//if ( $this->should_hide_if_empty() && ( ! $this->has_field() || ! $this->get_value() ) ) {
-		//	return false;
-		//}
-		
+
+		// Rows without a profile field (e.g. Free Text) hold their own content, so they're never treated as empty.
+		if ( $this->should_hide_if_empty() && $this->has_field() && ! $this->get_value() ) {
+			return false;
+		}
+
 		return true;
 	}
 

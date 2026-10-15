@@ -118,7 +118,7 @@ abstract class Abstract_Source {
 
    
 	/**
-	 * Downloads the selected source file amnd saves it to the govpack directory.
+	 * Downloads the selected source file and saves it to the govpack directory.
 	 *
 	 * @param array $source Existsing Mimetypes.
 	 *
@@ -169,7 +169,7 @@ abstract class Abstract_Source {
 	}
 
 	/**
-	 * Downloads the selected source file amnd saves it to the govpack directory.
+	 * Downloads the selected source file and saves it to the govpack directory.
 	 *
 	 * @param string $dir Upload directory definition.
 	 *
@@ -184,7 +184,7 @@ abstract class Abstract_Source {
 	}
 
 	/**
-	 * Downloads the selected source filem saves it to the govpack directory and stores a reference for the importer to use.
+	 * Downloads the selected source file, saves it to the govpack directory and stores a reference for the importer to use.
 	 *
 	 * @param \WP_REST_Request $request REST Request Definition.
 	 *

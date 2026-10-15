@@ -227,9 +227,9 @@ abstract class ProfileField extends \Govpack\Abstracts\Block implements ProfileF
 		$attributes = array_map(
 			function ( $key, $value ) {
 				return sprintf(
-					'%s="%s"', 
-					trim( $key ), 
-					trim( $value )
+					'%s="%s"',
+					trim( $key ),
+					esc_attr( trim( $value ) )
 				);
 			}, 
 			array_keys( $args ), 

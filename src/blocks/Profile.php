@@ -24,25 +24,66 @@ class Profile extends \Govpack\Blocks\LegacyProfile {
 	public $attributes = [];
 	protected $plugin;
 
+	/**
+	 * Posts that were global before each profile block swapped itself in, most recent last.
+	 *
+	 * @var array<int, \WP_Post|null>
+	 */
+	private $previous_posts = [];
+
 	public function __construct( $plugin ) {
 
 		$this->plugin = $plugin;
 		//add_filter( 'render_block_context', [$this, 'modify_context'], 10, 3);
 		//add_filter( 'render_block_data', [$this, 'modify_block_data'], 10, 3);
-		add_filter( 'pre_render_block', [ $this, 'pre_render_block' ], 10, 3 );
+		add_filter( 'render_block_data', [ $this, 'swap_global_post' ], 10, 1 );
+		add_filter( 'render_block_' . $this->block_name, [ $this, 'restore_global_post' ], 10, 1 );
 	}
 
-	public function pre_render_block( $pre_render, $parsed_block, $parent_block ) {
+	/**
+	 * Make the profile the global post while this block renders.
+	 *
+	 * Hooked to render_block_data rather than pre_render_block because core only applies it once the block is
+	 * certain to render, so every save here is matched by the restore in restore_global_post(). The current post is
+	 * saved even when there is no profile to swap in, so each block's restore takes back only its own entry.
+	 *
+	 * @param array $parsed_block The block being rendered.
+	 * @return array
+	 */
+	public function swap_global_post( $parsed_block ) {
 		global $post;
 
-		if ( is_null( $pre_render ) && ( isset( $parsed_block['attrs']['postId'] ) ) ) {
-			$new_post = get_post( $parsed_block['attrs']['postId'] );
-			if ( ! is_null( $new_post ) ) {
-				$post = $new_post;
-			}
+		if ( $this->block_name !== $parsed_block['blockName'] ) {
+			return $parsed_block;
 		}
 
-		return $pre_render;
+		$this->previous_posts[] = $post;
+
+		$new_post = isset( $parsed_block['attrs']['postId'] ) ? get_post( $parsed_block['attrs']['postId'] ) : null;
+		if ( ! is_null( $new_post ) ) {
+			$post = $new_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		}
+
+		return $parsed_block;
+	}
+
+	/**
+	 * Put back the post that was global before this profile block rendered.
+	 *
+	 * This runs after WP_Block::render() restores the post it saved before the render callback, which is already the
+	 * profile, so restoring here is what stops the profile leaking into anything rendered after the block content.
+	 *
+	 * @param string $block_content The rendered block.
+	 * @return string
+	 */
+	public function restore_global_post( $block_content ) {
+		global $post;
+
+		if ( ! empty( $this->previous_posts ) ) {
+			$post = array_pop( $this->previous_posts ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		}
+
+		return $block_content;
 	}
 
 	public function modify_block_data( $parsed_block, $source_block, $parent_block ) {

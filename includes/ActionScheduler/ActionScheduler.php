@@ -16,11 +16,24 @@ class ActionScheduler {
 	 * Add Hooks for Messing with ActionScheduler Loader
 	 */
 	public static function hooks(): void {
+		add_action( 'action_scheduler_pre_init', [ __CLASS__, 'keep_migration_complete' ] );
 		add_filter( 'action_scheduler_store_class', [ __CLASS__, 'replace_store' ] );
 		//add_filter( 'action_scheduler_queue_runner_concurrent_batches', [ __CLASS__, 'as_concurrent_batches' ] );
 		add_filter( 'action_scheduler_logger_class', [ __CLASS__, 'replace_logger' ] );
-		add_filter( 'action_scheduler_failure_period', [ __CLASS__, 'set_timeout_seconds' ] );
-		add_filter( 'action_scheduler_queue_runner_time_limit', [ __CLASS__, 'increase_time_limit' ] );
+	}
+
+	/**
+	 * Restore Action Scheduler's migration flag before Action Scheduler reads it.
+	 *
+	 * Action Scheduler deletes the flag whenever a plugin is deactivated. Without it, our store counts
+	 * as a custom store, so the migration callback is never registered but the migration action is
+	 * still scheduled, and it fails every minute or two. Our store already uses Action Scheduler's
+	 * tables, so there is nothing to migrate.
+	 */
+	public static function keep_migration_complete(): void {
+		if ( ! \ActionScheduler_DataController::is_migration_complete() ) {
+			\ActionScheduler_DataController::mark_migration_complete();
+		}
 	}
 
 	/**
@@ -55,21 +68,5 @@ class ActionScheduler {
 	 */
 	public static function replace_logger( $current_logging_class ): string { //phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		return 'ActionScheduler_DBLogger';
-	}
-	
-	public static function increase_time_limit( $time_limit ): int { //phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
-		return 59;
-	}
-	
-
-	/**
-	 * Action added to set how long to wait for an action to timeout.
-	 *
-	 * @param integer $seconds Seconds to wait for the action.
-	 *
-	 * @psalm-return 10
-	 */
-	public static function set_timeout_seconds( $seconds ): int { //phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
-		return 10;
 	}
 }

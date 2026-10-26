@@ -10,7 +10,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: Checkout The Repos
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: PHP Install & Build
         uses: ./.github/actions/composer
@@ -53,7 +53,7 @@ jobs:
         run: touch ./artifacts/keep
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
             name: artifact-newspack-elections-${{github.run_number}}
             path: ./artifacts/newspack-elections-${{github.run_number}}.zip

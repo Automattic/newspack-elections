@@ -25,10 +25,9 @@ class ActionScheduler {
 	/**
 	 * Restore Action Scheduler's migration flag before Action Scheduler reads it.
 	 *
-	 * Action Scheduler deletes the flag whenever a plugin is deactivated. Without it, our store counts
-	 * as a custom store, so the migration callback is never registered but the migration action is
-	 * still scheduled, and it fails every minute or two. Our store already uses Action Scheduler's
-	 * tables, so there is nothing to migrate.
+	 * Action Scheduler deletes the flag when a plugin is deactivated. Without it, Action Scheduler
+	 * schedules a migration for our custom store that it never runs, so the action fails repeatedly.
+	 * Our store already uses Action Scheduler's tables, so there is nothing to migrate.
 	 */
 	public static function keep_migration_complete(): void {
 		if ( ! \ActionScheduler_DataController::is_migration_complete() ) {

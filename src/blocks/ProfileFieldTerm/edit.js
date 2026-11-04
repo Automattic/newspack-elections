@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from "@wordpress/block-editor"
 import { store as coreDataStore } from '@wordpress/core-data';
 import { useSelect } from '@wordpress/data';
-import { Spinner, PanelBody, PanelRow, ToggleControl, TextControl, RangeControl} from "@wordpress/components";
+import { PanelBody, PanelRow, ToggleControl, TextControl, RangeControl} from "@wordpress/components";
 import { decodeEntities } from '@wordpress/html-entities';
 
 import { useProfileFieldAttributes, PROFILE_POST_TYPE} from "@npe/editor"
@@ -108,7 +108,7 @@ const ProfileTerms = ({terms, displayLinks, separator, termLimit}) => {
 function EditTermBlock( props ) {
 	
 	const { attributes, setAttributes, context, isSelected } = props
-	const { fieldKey, field, value, profileId, ...restField } =  useProfileFieldAttributes(props) 
+	const { fieldKey, field, value, profileId, ...restField } =  useProfileFieldAttributes(props)
 	const blockProps = useBlockProps();
 
 	
@@ -127,7 +127,7 @@ function EditTermBlock( props ) {
 	
 	const FieldUnsetValue = `No Value Set for ${field.label}`
 
-	const { profileTerms, hasProfileTerms, isLoading } = useProfileTerms( profileId, selectedTaxonomy )
+	const { profileTerms, hasProfileTerms } = useProfileTerms( value, selectedTaxonomy )
 	const hasProfile = (profileId);
 
     return (
@@ -181,8 +181,7 @@ function EditTermBlock( props ) {
 			</PanelBody>
 		</InspectorControls>
 		<div {...blockProps}  >
-			{ isLoading && hasProfile && <Spinner /> }
-			{ !isLoading && hasProfile && hasProfileTerms && 
+			{ hasProfile && hasProfileTerms &&
 				<ProfileTerms 
 					terms={profileTerms} 
 					displayLinks={displayLinks} 
@@ -190,7 +189,7 @@ function EditTermBlock( props ) {
 					termLimit = {termLimit}
 				/>
 		 	}
-			{ !isLoading && hasProfile && !hasProfileTerms && 
+			{ hasProfile && !hasProfileTerms &&
 				<>{FieldUnsetValue}</>
 		 	}
 		</div>

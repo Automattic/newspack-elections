@@ -4,6 +4,7 @@ import { store as coreDataStore } from '@wordpress/core-data';
 import { store as editorStore } from '@wordpress/editor';
 
 import { PROFILE_POST_TYPE } from './constants';
+import { getProfileRecordArgs } from './record-args';
 import { useAttributeOverContext, useContextOverAttribute } from './utils';
 import { useFieldAttributes, useFields } from "./../fields"
 
@@ -89,15 +90,7 @@ export const useProfile = ( profileId ) => {
 				};
 			}
 
-		const selectorArgs = [ 
-			'postType', 
-			PROFILE_POST_TYPE,
-			profileId,
-			{
-				_embed : true,
-				context: 'edit'
-			}
-		]
+		const selectorArgs = getProfileRecordArgs( profileId )
 
 		const hasStartedResolution = select( coreDataStore ).hasStartedResolution(
 			"getEntityRecord", // _selectorName_
@@ -247,9 +240,9 @@ export const useProfileFieldAttributes = (props, pid = null) => {
 
 	const {profile} = useProfile( profileId )
 	const value = profile?.profile?.[fieldAttrs?.fieldKey] ?? null;
-	
+
 	//console.log("fieldAttrs", fieldAttrs.fieldKey, value, pid, profileId, profile)
-	
+
 	return {
 		profileId,
 		profile,

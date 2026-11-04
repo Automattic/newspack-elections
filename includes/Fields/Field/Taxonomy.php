@@ -38,4 +38,31 @@ class Taxonomy extends \Govpack\Fields\Field {
 		
 		return [];
 	}
+
+	/**
+	 * Value for the REST API: the profile's terms, each with its archive link.
+	 *
+	 * The block editor renders the term block from this value, so it does not
+	 * request the profile's terms separately for each block.
+	 *
+	 * @param Profile $model The profile to read the terms from.
+	 * @return array
+	 */
+	public function value_for_rest( Profile $model ) {
+
+		return array_map(
+			function ( $term ) {
+				if ( ! $term instanceof \WP_Term ) {
+					return $term;
+				}
+
+				$data         = $term->to_array();
+				$link         = get_term_link( $term );
+				$data['link'] = is_wp_error( $link ) ? '' : $link;
+
+				return $data;
+			},
+			$this->raw( $model )
+		);
+	}
 }

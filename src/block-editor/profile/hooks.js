@@ -89,14 +89,15 @@ export const useProfile = ( profileId ) => {
 				};
 			}
 
-		const selectorArgs = [ 
-			'postType', 
+		// Request the plain record, with no query. Core blocks inside the
+		// profile, such as the featured image, request it the same way
+		// through block context, so core-data fetches each profile once.
+		// The `profile` REST field already carries the field values and
+		// terms that the profile blocks render, so nothing needs `_embed`.
+		const selectorArgs = [
+			'postType',
 			PROFILE_POST_TYPE,
 			profileId,
-			{
-				_embed : true,
-				context: 'edit'
-			}
 		]
 
 		const hasStartedResolution = select( coreDataStore ).hasStartedResolution(
@@ -245,14 +246,15 @@ export const useProfileFieldAttributes = (props, pid = null) => {
 	const profileId = useProfileId(props, pid)
 	const fieldAttrs  = useFieldAttributes( props )
 
-	const {profile} = useProfile( profileId )
+	const { profile, ...profileQuery } = useProfile( profileId )
 	const value = profile?.profile?.[fieldAttrs?.fieldKey] ?? null;
-	
+
 	//console.log("fieldAttrs", fieldAttrs.fieldKey, value, pid, profileId, profile)
-	
+
 	return {
 		profileId,
 		profile,
+		profileQuery,
 		value,
 		...fieldAttrs
 	}

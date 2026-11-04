@@ -108,7 +108,7 @@ const ProfileTerms = ({terms, displayLinks, separator, termLimit}) => {
 function EditTermBlock( props ) {
 	
 	const { attributes, setAttributes, context, isSelected } = props
-	const { fieldKey, field, value, profileId, ...restField } =  useProfileFieldAttributes(props) 
+	const { fieldKey, field, value, profileId, profile, profileQuery, ...restField } =  useProfileFieldAttributes(props)
 	const blockProps = useBlockProps();
 
 	
@@ -127,7 +127,7 @@ function EditTermBlock( props ) {
 	
 	const FieldUnsetValue = `No Value Set for ${field.label}`
 
-	const { profileTerms, hasProfileTerms, isLoading } = useProfileTerms( profileId, selectedTaxonomy )
+	const { profileTerms, hasProfileTerms, isLoading } = useProfileTerms( profile, profileQuery, fieldKey, selectedTaxonomy )
 	const hasProfile = (profileId);
 
     return (

@@ -1,8 +1,7 @@
 /**
- * The term block reads its terms from the `profile` REST field of the profile
- * record it already has, so it sends no terms request of its own. That field
- * holds WP_Term data (`term_id`, no `id`) plus the archive `link`, and the
- * block renders `id`, `name`, `slug`, `taxonomy`, `parent` and `link`.
+ * getProfileTerms() turns a profile field's WP_Term data (`term_id`, no `id`,
+ * plus the archive `link`) into the terms the term block renders: each gets an
+ * `id` from `term_id`, and only a publicly queryable taxonomy returns terms.
  */
 import { getProfileTerms } from '../profile-terms';
 

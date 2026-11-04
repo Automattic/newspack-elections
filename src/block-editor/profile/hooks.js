@@ -238,7 +238,7 @@ export const useProfileFieldAttributes = (props, pid = null) => {
 	const profileId = useProfileId(props, pid)
 	const fieldAttrs  = useFieldAttributes( props )
 
-	const { profile, ...profileQuery } = useProfile( profileId )
+	const {profile} = useProfile( profileId )
 	const value = profile?.profile?.[fieldAttrs?.fieldKey] ?? null;
 
 	//console.log("fieldAttrs", fieldAttrs.fieldKey, value, pid, profileId, profile)
@@ -246,7 +246,6 @@ export const useProfileFieldAttributes = (props, pid = null) => {
 	return {
 		profileId,
 		profile,
-		profileQuery,
 		value,
 		...fieldAttrs
 	}

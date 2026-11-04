@@ -46,12 +46,12 @@ class Taxonomy extends \Govpack\Fields\Field {
 	 * request the profile's terms separately for each block.
 	 *
 	 * @param Profile $model The profile to read the terms from.
-	 * @return array
+	 * @return array WP_Term fields of each term, plus `link`.
 	 */
-	public function value_for_rest( Profile $model ) {
+	public function value_for_rest( Profile $model ): array {
 
 		return array_map(
-			function ( $term ) {
+			static function ( $term ) {
 				if ( ! $term instanceof \WP_Term ) {
 					return $term;
 				}

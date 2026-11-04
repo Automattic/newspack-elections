@@ -4,6 +4,7 @@ import { store as coreDataStore } from '@wordpress/core-data';
 import { store as editorStore } from '@wordpress/editor';
 
 import { PROFILE_POST_TYPE } from './constants';
+import { getProfileRecordArgs } from './record-args';
 import { useAttributeOverContext, useContextOverAttribute } from './utils';
 import { useFieldAttributes, useFields } from "./../fields"
 
@@ -89,16 +90,7 @@ export const useProfile = ( profileId ) => {
 				};
 			}
 
-		// Request the plain record, with no query. Core blocks inside the
-		// profile, such as the featured image, request it the same way
-		// through block context, so core-data fetches each profile once.
-		// The `profile` REST field already carries the field values and
-		// terms that the profile blocks render, so nothing needs `_embed`.
-		const selectorArgs = [
-			'postType',
-			PROFILE_POST_TYPE,
-			profileId,
-		]
+		const selectorArgs = getProfileRecordArgs( profileId )
 
 		const hasStartedResolution = select( coreDataStore ).hasStartedResolution(
 			"getEntityRecord", // _selectorName_

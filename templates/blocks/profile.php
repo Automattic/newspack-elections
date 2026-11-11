@@ -56,7 +56,7 @@ echo get_block_wrapper_attributes(
 			<?php if ( $profile_block->show( 'name' ) || $profile_block->show( 'status_tag' ) ) { ?>
 				<div class="wp-block-govpack-profile__line wp-block-govpack-profile--flex-left">
 				<?php if ( $profile_block->show( 'name' ) ) { ?>
-					<h3 class="wp-block-govpack-profile__name"> <?php echo GP_Maybe_Link( $profile_data['name']['name'], $profile_data['link'], $attributes['showProfileLink'] );  //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></h3>
+					<h3 class="wp-block-govpack-profile__name"> <?php echo gp_maybe_link( $profile_data['name']['name'], $profile_data['link'], $attributes['showProfileLink'] ); ?></h3>
 				<?php } ?>
 				<?php if ( $profile_block->show( 'status_tag' ) ) { ?>
 					<div class="wp-block-govpack-profile__status-tag">

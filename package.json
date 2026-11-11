@@ -28,12 +28,12 @@
   },
   "dependencies": {
     "@emotion/styled": "^11.13.5",
-    "@mona-health/react-input-mask": "^3.0.3",
     "@wordpress/icons": "^10.9.0",
     "axios": "^0.24.0",
     "date-fns": "^4.1.0"
   },
   "devDependencies": {
+    "@testing-library/react": "^14.3.1",
     "@wordpress/scripts": "^30.1.0",
     "jscpd": "^3.5.10"
   },
@@ -44,7 +44,7 @@
       "importer": "./src/importer/index.js",
       "frontend": "./src/frontend/index.js",
       "exporter": "./src/admin/exporter/index.js",
-	  "profile-shared-styles" : "./src/block-styles/profile-blocks-shared-vars.scss"
+      "profile-shared-styles": "./src/block-styles/profile-blocks-shared-vars.scss"
     }
   },
   "jscpd": {

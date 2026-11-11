@@ -19,6 +19,8 @@ gruntfile.js
 *.zip
 
 tests
+test
+*/test/*
 
 /babel/*
 /bin/*

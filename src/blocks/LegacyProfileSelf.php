@@ -37,6 +37,28 @@ class LegacyProfileSelf extends \Govpack\Blocks\LegacyProfile {
 		return $this->handle_render( $attributes, $content, $block );
 	}
 
+	/**
+	 * Enqueues this block's styles plus the Profile block's, which the single profile markup also uses.
+	 *
+	 * Runs on every theme type on purpose: classic themes dequeue these handles in the head
+	 * (see remove_view_styles()), and this render-time enqueue restores them.
+	 *
+	 * @return void
+	 */
+	public function enqueue_view_assets(): void {
+		parent::enqueue_view_assets();
+
+		$profile_block = \WP_Block_Type_Registry::get_instance()->get_registered( 'govpack/profile' );
+
+		if ( ! $profile_block ) {
+			return;
+		}
+
+		foreach ( $profile_block->style_handles as $handle ) {
+			wp_enqueue_style( $handle );
+		}
+	}
+
 	public function disable_block( $allowed_blocks, $editor_context ): bool {
 		return false;
 	}

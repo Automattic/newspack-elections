@@ -55,11 +55,24 @@ class ProfileRow extends \Govpack\Blocks\ProfileField {
 	}
 
 	public function show_block(): bool {
-		
-		//if ( $this->should_hide_if_empty() && ( ! $this->has_field() || ! $this->get_value() ) ) {
-		//	return false;
-		//}
-		
+
+		// Rows without a profile field (e.g. Free Text) hold their own content, so they're never treated as empty.
+		if ( ! $this->should_hide_if_empty() || ! $this->has_field_key() ) {
+			return true;
+		}
+
+		// Match the inner field blocks, which treat only '' and [] as empty, so a stored '0' still shows.
+		$value = $this->get_value();
+
+		if ( '' === $value || [] === $value ) {
+			return false;
+		}
+
+		// Date blocks hide stored dates they can't read, so the row treats those as empty too.
+		if ( 'date' === $this->get_field()->type->slug && null === \Govpack\Fields\DateValue::to_datetime( $value ) ) {
+			return false;
+		}
+
 		return true;
 	}
 

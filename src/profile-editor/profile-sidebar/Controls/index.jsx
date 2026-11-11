@@ -1,14 +1,9 @@
-import { useState } from "@wordpress/element"
-import Moment from "moment"
-
-import { TextControl, TextareaControl, DatePicker, SelectControl, Spinner, Dropdown, Button } from "@wordpress/components";
+import { TextControl, TextareaControl, SelectControl, Spinner } from "@wordpress/components";
 import { compose } from "@wordpress/compose";
-import { withSelect, useSelect } from "@wordpress/data";
+import { withSelect } from "@wordpress/data";
 import { useEntityId, useEntityProp } from "@wordpress/core-data";
-import {store as editorStore} from "@wordpress/editor"
-import { date, dateI18n, getSettings } from "@wordpress/date"
-import {MaskedTextControl} from "./MaskedTextControl"
-import MaskedDateControl from "./DateInput";
+
+import { normalizeDate } from "../../../block-editor/fields/field-types/date";
 
 
 
@@ -24,7 +19,7 @@ export const PanelFieldset = ({legend = null, children}) => {
 	)
 }
 
-const DefaultControl = (props, Control) => {
+const DefaultControl = (props, Control, toDisplayValue = ( stored ) => stored) => {
 	const {onChange = null, value, ...restProps} = props
 
 	
@@ -40,7 +35,7 @@ const DefaultControl = (props, Control) => {
 			key = {`npe-field-input-${props.meta_key}`}
 			__nextHasNoMarginBottom = {true}
             label = {props.label}
-            value={ meta[props.meta_key] }
+            value={ toDisplayValue( meta[props.meta_key] ) }
             onChange={ ( value ) => {
                 setMeta( { [props.meta_key]: value } )
             }}
@@ -68,81 +63,33 @@ export const PanelTextareaControl = (props) => {
 	return DefaultControl(props, TextareaControl)
 }
 
-export const PanelDateControl = (props) => {
-	return DefaultControl(props, DateControl)
-}
-
-export const DateControl = (props) => {
-
-	return (
-		<MaskedDateControl
-			label = {props.label}
-			value={	props.value }
-			placeholder = "05/31/2021"
-			help = "mm/dd/yyyy (eg 05/01/2021)"
-			onChange = {props.onChange}
-			maskProps = {{
-				mask : "99/99/9999",
-				alwaysShowMask : true,
-				permanents : [2, 5],
-			}}
-		/>
-	)
-}
-
-/*
-export const PanelDateControl = (props) => {
-
-	const {onChange, meta, ...restProps} = props
-	const [ date, setDate ] = useState( new Date() );
-	const [ inputValue, setInputValue ] = useState( null );
-	const [ isValid, setIsValid ] = useState( false );
-	const [ isTouched, setIsTouched ] = useState( false );
-
-	let settings = getSettings()
-	
-
-
-	let dateValue = props.meta?.[props.meta_key]
-	if(dateValue){
-		dateValue = moment(parseInt(dateValue)).format("MM/DD/YYYY")
+/**
+ * A native date input via TextControl's `type` pass-through (the same
+ * mechanism PanelUrlControl uses). The input's value IDL attribute is
+ * guaranteed by the HTML spec to be the ISO `yyyy-MM-dd` string (or empty)
+ * regardless of the locale the browser displays — the same canonical form
+ * the profile meta stores, so the string passes through with no parse/format
+ * step and no timezone math.
+ *
+ * The input accepts nothing but that ISO form, so a value stored in an older
+ * format (a millisecond epoch from the previous control, an unpadded import)
+ * is shown as the date it resolves to — the same date the published page
+ * renders. Display only: the stored value is untouched until the user edits
+ * the field.
+ */
+const toDateInputValue = ( stored ) => {
+	// A value already in the input's own form passes through untouched: a
+	// year typed digit by digit commits 0001, 0019 and 0198 on the way to
+	// 1988, and converting those states would blank the field mid-entry.
+	if ( /^\d{4}-\d{2}-\d{2}$/.test( stored ?? "" ) ) {
+		return stored
 	}
-
-	return (
-		<VStack>
-			<MaskedTextControl
-				label = {props.label}
-				value={	inputValue ?? dateValue ?? "" }
-				onChange={ ( value ) => {
-					setInputValue(value)
-					let timestamp = moment(value, "MM/DD/YYYY", true)
-					if(timestamp.isValid()){
-					onChange( { [props.meta_key]: timestamp.valueOf().toString() } )
-						setIsValid(true)
-					} else {
-						setIsValid(false)
-					}
-				}}
-				placeholder = "05/31/2021"
-				help = "mm/dd/yyyy (eg 05/01/2021)"
-				maskProps = {{
-					mask : "99/99/9999",
-					alwaysShowMask : true,
-					permanents : [2, 5],
-				}}
-				isValid = {isValid}
-				isTouched = {isTouched}
-				onFocus={ () => {
-					setIsTouched(true)
-				} }
-				{...restProps}
-			/>
-		</VStack>
-	)
-	
-
+	return normalizeDate( stored )?.toISOString().slice( 0, 10 ) ?? ""
 }
-*/
+
+export const PanelDateControl = (props) => {
+	return DefaultControl({ ...props, type: "date" }, TextControl, toDateInputValue)
+}
 
 export const PanelSelectControl = (props) => {
     return (

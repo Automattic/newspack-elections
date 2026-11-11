@@ -1,6 +1,9 @@
 import { decodeEntities } from '@wordpress/html-entities';
+import { _n, sprintf } from '@wordpress/i18n';
 import {isURL} from "@wordpress/url";
 import { isArray, isEmpty, isNil, isObject } from 'lodash';
+
+import { ageInYears } from '../../block-editor/fields/field-types/date';
 
 export function normalize_profile(profile){
 
@@ -36,19 +39,16 @@ export function normalize_profile(profile){
 		return isEmpty(address) ? null : address.join(", ")
 	}
 
-  const getAgeFromEpoch = (dateOfBirthMs) => {
-	
-    // dateOfBirth is in milliseconds since the epoch.
-    let today = new Date();
-    let dateOfBirth = new Date(dateOfBirthMs);
-
-	
-	
-    // Did the birthday pass this month yet?
-    let birthdayThisYearYet = (today.getMonth() > dateOfBirth.getMonth() ||
-                               (today.getMonth() == dateOfBirth.getMonth() && today.getDate() >= dateOfBirth.getDate()));
-    return today.getFullYear() - dateOfBirth.getFullYear() - (birthdayThisYearYet ? 0 : 1) + " Years old";
-  }
+	// Same reader, same UTC day, and same string as the published age
+	// (CPT::age_from_epoc), so the editor preview never disagrees with it.
+	const formatAge = ( dateOfBirth ) => {
+		const years = ageInYears( dateOfBirth )
+		if ( null === years ) {
+			return null
+		}
+		/* translators: %d: age in years */
+		return sprintf( _n( '%d year old', '%d years old', years, 'newspack-elections' ), years )
+	}
 
 
   	let generated_name = [
@@ -107,7 +107,7 @@ export function normalize_profile(profile){
 			first 	: profile.meta?.first_name ?? null,
 			last 	: profile.meta?.last_name ?? null
 		},
-        age : profile.meta?.date_of_birth ? getAgeFromEpoch(profile.meta?.date_of_birth) : null,
+        age : profile.meta?.date_of_birth ? formatAge(profile.meta?.date_of_birth) : null,
 		websites : {
 			campaign : profile.meta?.campaign_url ?? null,
 			legislative : profile.meta?.leg_url ?? null,
